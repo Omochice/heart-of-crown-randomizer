@@ -1,0 +1,14 @@
+{
+  "name": "@heart-of-crown-randomizer/card",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "fmt": "npm-run-all fmt:*",
+    "fmt:package": "sort-package-json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
