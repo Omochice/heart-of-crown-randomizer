@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
+import { princesses } from "../../src/far-eastern-border/princess";
 import { isPrincess } from "../../src/type";
-import { princesses } from "../../src/far-eastern-border/princess"
 
 describe("far-eastern-border/princess", () => {
   test("check schema", () => {
