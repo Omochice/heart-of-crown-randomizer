@@ -4,8 +4,8 @@ import { isPrincess } from "../../src/type";
 
 describe("far-eastern-border/princess", () => {
   test("check schema", () => {
-    princesses.forEach((princess: unknown) => {
+    for (const princess of princesses) {
       expect(isPrincess(princess)).toBe(true);
-    });
+    }
   });
 });
