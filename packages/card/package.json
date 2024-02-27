@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {
     "fmt": "npm-run-all fmt:*",
+    "fmt:code": "biome format --write src/*.ts",
     "fmt:package": "sort-package-json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
