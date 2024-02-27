@@ -12,7 +12,7 @@
     "check:fmt": "biome format .",
     "check:type": "tsc --noEmit",
     "fmt": "npm-run-all fmt:*",
-    "fmt:code": "biome format --write src/*.ts",
+    "fmt:code": "biome format --write .",
     "fmt:package": "sort-package-json",
     "test": "vitest --run"
   },
