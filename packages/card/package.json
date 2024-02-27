@@ -7,6 +7,10 @@
   "author": "",
   "main": "index.js",
   "scripts": {
+    "check": "npm-run-all check:*",
+    "check:code": "biome check .",
+    "check:fmt": "biome format .",
+    "check:type": "tsc --noEmit",
     "fmt": "npm-run-all fmt:*",
     "fmt:code": "biome format --write src/*.ts",
     "fmt:package": "sort-package-json",
