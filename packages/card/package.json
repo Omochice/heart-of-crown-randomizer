@@ -10,5 +10,8 @@
     "fmt": "npm-run-all fmt:*",
     "fmt:package": "sort-package-json",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "unknownutil": "^3.16.3"
   }
 }
