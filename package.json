@@ -8,10 +8,11 @@
   "author": "",
   "main": "index.js",
   "scripts": {
+    "check": "turbo run check",
     "fmt": "npm-run-all fmt:*",
     "fmt:turbo": "turbo run fmt",
     "fmt:package": "sort-package-json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "turbo run test"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
