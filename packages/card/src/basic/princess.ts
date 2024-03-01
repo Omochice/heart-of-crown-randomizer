@@ -1,3 +1,3 @@
-export { default as princesses } from "../../cards/basic/princess.json" with {
+export { default as princesses } from "../assets/basic/princess.json" with {
   type: "json",
 };
