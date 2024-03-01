@@ -1,6 +1,6 @@
-import { defineConfig } from "vite";
-import ts from "typescript";
 import path from "path";
+import ts from "typescript";
+import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
 const getCompileTargets = (): string[] => {

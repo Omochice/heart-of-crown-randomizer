@@ -2,9 +2,7 @@
   {
     "type": "common",
     "name": "隠れ家",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "cost": 2,
     "succession": 0,
     "coin": 1,
@@ -15,9 +13,7 @@
   {
     "type": "common",
     "name": "寄付",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "cost": 2,
     "succession": 0,
     "coin": 0,
@@ -28,9 +24,7 @@
   {
     "type": "common",
     "name": "城壁",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "cost": 2,
     "succession": 0,
     "coin": 1,
@@ -41,9 +35,7 @@
   {
     "type": "common",
     "name": "斥候",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "subType": "millitary",
     "cost": 2,
     "succession": 0,
@@ -55,9 +47,7 @@
   {
     "type": "common",
     "name": "願いの泉",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "cost": 2,
     "succession": 0,
     "coin": 0,
@@ -68,9 +58,7 @@
   {
     "type": "common",
     "name": "早馬",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "cost": 2,
     "succession": 0,
     "coin": 0,
@@ -81,9 +69,7 @@
   {
     "type": "common",
     "name": "埋もれた財宝",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "cost": 3,
     "succession": 0,
     "coin": 0,
@@ -94,9 +80,7 @@
   {
     "type": "common",
     "name": "交易船",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "subType": "merchant",
     "cost": 3,
     "succession": 0,
@@ -108,9 +92,7 @@
   {
     "type": "common",
     "name": "御用商人",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "subType": "merchant",
     "cost": 3,
     "succession": 0,
@@ -122,9 +104,7 @@
   {
     "type": "common",
     "name": "都市開発",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "subType": "merchant",
     "cost": 3,
     "succession": 0,
@@ -136,10 +116,7 @@
   {
     "type": "common",
     "name": "破城槌",
-    "mainType": [
-      "action",
-      "attack"
-    ],
+    "mainType": ["action", "attack"],
     "cost": 3,
     "succession": 0,
     "coin": 0,
@@ -150,9 +127,7 @@
   {
     "type": "common",
     "name": "星詠みの魔女",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "subType": "magic",
     "cost": 3,
     "succession": 0,
@@ -164,9 +139,7 @@
   {
     "type": "common",
     "name": "魔法の護符",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "subType": "magic",
     "cost": 3,
     "succession": 0,
@@ -178,9 +151,7 @@
   {
     "type": "common",
     "name": "よろず屋",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "subType": "merchant",
     "cost": 3,
     "succession": 0,
@@ -192,10 +163,7 @@
   {
     "type": "common",
     "name": "追い立てられた魔獣",
-    "mainType": [
-      "action",
-      "attack"
-    ],
+    "mainType": ["action", "attack"],
     "subType": "plot",
     "cost": 4,
     "succession": 0,
@@ -211,10 +179,7 @@
     "cards": [
       {
         "name": "お付きの侍女 シャリファ",
-        "mainType": [
-          "succession",
-          "attack"
-        ],
+        "mainType": ["succession", "attack"],
         "subType": "handmaiden",
         "cost": 4,
         "succession": 2,
@@ -224,10 +189,7 @@
       },
       {
         "name": "お付きの侍女 プティー",
-        "mainType": [
-          "succession",
-          "attack"
-        ],
+        "mainType": ["succession", "attack"],
         "subType": "handmaiden",
         "cost": 4,
         "succession": 2,
@@ -237,9 +199,7 @@
       },
       {
         "name": "お付きの侍女 ホノカ",
-        "mainType": [
-          "succession"
-        ],
+        "mainType": ["succession"],
         "subType": "handmaiden",
         "cost": 4,
         "succession": 2,
@@ -249,9 +209,7 @@
       },
       {
         "name": "お付きの侍女 ミンニャン",
-        "mainType": [
-          "succession"
-        ],
+        "mainType": ["succession"],
         "subType": "handmaiden",
         "cost": 4,
         "succession": 2,
@@ -261,9 +219,7 @@
       },
       {
         "name": "お付きの侍女 リリー",
-        "mainType": [
-          "succession"
-        ],
+        "mainType": ["succession"],
         "subType": "handmaiden",
         "cost": 4,
         "succession": 2,
@@ -276,10 +232,7 @@
   {
     "type": "common",
     "name": "開墾令",
-    "mainType": [
-      "action",
-      "attack"
-    ],
+    "mainType": ["action", "attack"],
     "subType": "plot",
     "cost": 4,
     "succession": 0,
@@ -291,9 +244,7 @@
   {
     "type": "common",
     "name": "銀行",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "subType": "merchant",
     "cost": 4,
     "succession": 0,
@@ -305,9 +256,7 @@
   {
     "type": "common",
     "name": "図書館",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "cost": 4,
     "succession": 0,
     "coin": 1,
@@ -318,9 +267,7 @@
   {
     "type": "common",
     "name": "のみの市",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "subType": "merchant",
     "cost": 4,
     "succession": 0,
@@ -332,9 +279,7 @@
   {
     "type": "common",
     "name": "補給部隊",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "subType": "millitary",
     "cost": 4,
     "succession": 0,
@@ -346,10 +291,7 @@
   {
     "type": "common",
     "name": "歩兵大隊",
-    "mainType": [
-      "action",
-      "attack"
-    ],
+    "mainType": ["action", "attack"],
     "subType": "millitary",
     "cost": 4,
     "succession": 0,
@@ -361,10 +303,7 @@
   {
     "type": "common",
     "name": "皇室領",
-    "mainType": [
-      "wisdom",
-      "succession"
-    ],
+    "mainType": ["wisdom", "succession"],
     "cost": 5,
     "succession": 2,
     "coin": 2,
@@ -375,10 +314,7 @@
   {
     "type": "common",
     "name": "近衛騎士団",
-    "mainType": [
-      "action",
-      "attack"
-    ],
+    "mainType": ["action", "attack"],
     "subType": "millitary",
     "cost": 5,
     "succession": 0,
@@ -390,10 +326,7 @@
   {
     "type": "common",
     "name": "呪詛の魔女",
-    "mainType": [
-      "action",
-      "attack"
-    ],
+    "mainType": ["action", "attack"],
     "subType": "magic",
     "cost": 5,
     "succession": 0,
@@ -405,9 +338,7 @@
   {
     "type": "common",
     "name": "舞踏会",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "cost": 5,
     "succession": 0,
     "coin": 0,
@@ -418,9 +349,7 @@
   {
     "type": "common",
     "name": "冒険者",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "cost": 5,
     "succession": 0,
     "coin": 0,
@@ -431,10 +360,7 @@
   {
     "type": "common",
     "name": "魅了術の魔女",
-    "mainType": [
-      "action",
-      "attack"
-    ],
+    "mainType": ["action", "attack"],
     "subType": "magic",
     "cost": 5,
     "succession": 0,
@@ -446,9 +372,7 @@
   {
     "type": "common",
     "name": "錬金術師",
-    "mainType": [
-      "action"
-    ],
+    "mainType": ["action"],
     "cost": 5,
     "succession": 0,
     "coin": 0,
@@ -459,10 +383,7 @@
   {
     "type": "common",
     "name": "辺境伯",
-    "mainType": [
-      "action",
-      "succession"
-    ],
+    "mainType": ["action", "succession"],
     "cost": 6,
     "succession": 3,
     "coin": 3,
