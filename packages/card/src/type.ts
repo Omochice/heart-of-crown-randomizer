@@ -24,7 +24,7 @@ const isSubType = is.LiteralOneOf([
   /** 魔法 */
   "magic",
   /** 商人 */
-  "merchane",
+  "merchant",
 ] as const);
 export type SubType = PredicateType<typeof isSubType>;
 
