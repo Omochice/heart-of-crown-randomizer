@@ -58,7 +58,7 @@ const cardBase = {
   effect: is.String,
 };
 
-const isCommonCard = is.OneOf([
+export const isCommonCard = is.UnionOf([
   is.ObjectOf({
     type: is.LiteralOf("common"),
     ...cardBase,
