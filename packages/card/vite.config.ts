@@ -28,8 +28,8 @@ export default defineConfig({
         preserveModulesRoot: "src",
         entryFileNames: "[name].js",
       },
-      external: ["unknownutil"]
-    }
+      external: ["unknownutil"],
+    },
   },
-  plugins: [dts()]
+  plugins: [dts()],
 });
