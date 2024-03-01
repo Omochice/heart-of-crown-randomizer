@@ -42,18 +42,45 @@ export const isPrincess = is.ObjectOf({
   cost: is.LiteralOf(6),
   succession: is.Number,
   effect: is.String,
+  edition: isEdition,
 });
 
 export type Princess = PredicateType<typeof isPrincess>;
 
-const isCommonCard = is.ObjectOf({
-  type: is.LiteralOf("common"),
+const cardBase = {
   name: is.String,
-  mainType: is.LiteralOf(2),
+  mainType: is.ArrayOf(isMainType),
+  subType: is.OptionalOf(isSubType),
   cost: is.Number,
+  link: is.LiteralOneOf([0, 1, 2] as const),
   effect: is.String,
-});
+  edition: isEdition,
+};
+
+const isCommonCard = is.OneOf([
+  is.ObjectOf({
+    type: is.LiteralOf("common"),
+    ...cardBase,
+  }),
+  is.ObjectOf({
+    type: is.LiteralOf("common"),
+    name: is.String,
+    cards: is.ArrayOf(is.ObjectOf(cardBase)),
+  }),
+]);
 
 export type CommonCard = PredicateType<typeof isCommonCard>;
 
-// const isRareCard = is.ObjectOf({})
+export const isBasicCard = is.ObjectOf({
+  type: is.LiteralOf("basic"),
+  ...cardBase,
+});
+
+export type BasicCard = PredicateType<typeof isBasicCard>;
+
+export const isRareCard = is.ObjectOf({
+  type: is.LiteralOf("rare"),
+  ...cardBase,
+});
+
+export type RareCard = PredicateType<typeof isRareCard>;
