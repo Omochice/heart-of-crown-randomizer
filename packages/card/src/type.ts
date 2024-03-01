@@ -56,18 +56,19 @@ const cardBase = {
   cost: is.Number,
   link: is.LiteralOneOf([0, 1, 2] as const),
   effect: is.String,
-  edition: isEdition,
 };
 
 const isCommonCard = is.OneOf([
   is.ObjectOf({
     type: is.LiteralOf("common"),
     ...cardBase,
+    edition: isEdition,
   }),
   is.ObjectOf({
     type: is.LiteralOf("common"),
     name: is.String,
     cards: is.ArrayOf(is.ObjectOf(cardBase)),
+    edition: isEdition,
   }),
 ]);
 
@@ -76,6 +77,7 @@ export type CommonCard = PredicateType<typeof isCommonCard>;
 export const isBasicCard = is.ObjectOf({
   type: is.LiteralOf("basic"),
   ...cardBase,
+  edition: isEdition,
 });
 
 export type BasicCard = PredicateType<typeof isBasicCard>;
@@ -83,6 +85,7 @@ export type BasicCard = PredicateType<typeof isBasicCard>;
 export const isRareCard = is.ObjectOf({
   type: is.LiteralOf("rare"),
   ...cardBase,
+  edition: isEdition,
 });
 
 export type RareCard = PredicateType<typeof isRareCard>;
