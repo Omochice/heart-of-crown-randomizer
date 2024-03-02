@@ -53,6 +53,7 @@ const cardBase = {
   name: is.String,
   mainType: is.ArrayOf(isMainType),
   subType: is.OptionalOf(isSubType),
+  succession: is.Number,
   cost: is.Number,
   link: is.LiteralOneOf([0, 1, 2] as const),
   effect: is.String,
