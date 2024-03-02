@@ -180,7 +180,7 @@
       {
         "name": "お付きの侍女 シャリファ",
         "mainType": ["succession", "attack"],
-        "subType": "handmaiden",
+        "subType": "maid",
         "cost": 4,
         "succession": 2,
         "coin": 0,
@@ -190,7 +190,7 @@
       {
         "name": "お付きの侍女 プティー",
         "mainType": ["succession", "attack"],
-        "subType": "handmaiden",
+        "subType": "maid",
         "cost": 4,
         "succession": 2,
         "coin": 0,
@@ -200,7 +200,7 @@
       {
         "name": "お付きの侍女 ホノカ",
         "mainType": ["succession"],
-        "subType": "handmaiden",
+        "subType": "maid",
         "cost": 4,
         "succession": 2,
         "coin": 0,
@@ -210,7 +210,7 @@
       {
         "name": "お付きの侍女 ミンニャン",
         "mainType": ["succession"],
-        "subType": "handmaiden",
+        "subType": "maid",
         "cost": 4,
         "succession": 2,
         "coin": 0,
@@ -220,7 +220,7 @@
       {
         "name": "お付きの侍女 リリー",
         "mainType": ["succession"],
-        "subType": "handmaiden",
+        "subType": "maid",
         "cost": 4,
         "succession": 2,
         "coin": 0,

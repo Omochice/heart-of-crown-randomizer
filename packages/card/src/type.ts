@@ -18,7 +18,7 @@ export type MainType = PredicateType<typeof isMainType>;
 
 const isSubType = is.LiteralOneOf([
   /** 侍女 */
-  "handmaiden",
+  "maid",
   /** 兵力 */
   "millitary",
   /** 魔法 */
