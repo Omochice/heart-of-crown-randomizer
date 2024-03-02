@@ -303,7 +303,7 @@
   {
     "type": "common",
     "name": "皇室領",
-    "mainType": ["wisdom", "succession"],
+    "mainType": ["territory", "succession"],
     "cost": 5,
     "succession": 2,
     "coin": 2,

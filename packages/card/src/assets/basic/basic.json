@@ -2,7 +2,7 @@
   {
     "type": "basic",
     "name": "農村",
-    "mainType": ["wisdom"],
+    "mainType": ["territory"],
     "cost": 1,
     "succession": -2,
     "coin": 1,
@@ -13,7 +13,7 @@
   {
     "type": "basic",
     "name": "果樹園",
-    "mainType": ["wisdom"],
+    "mainType": ["territory"],
     "cost": 2,
     "succession": 0,
     "coin": 1,
@@ -24,7 +24,7 @@
   {
     "type": "basic",
     "name": "都市",
-    "mainType": ["wisdom"],
+    "mainType": ["territory"],
     "cost": 3,
     "succession": 0,
     "coin": 2,
@@ -35,7 +35,7 @@
   {
     "type": "basic",
     "name": "大都市",
-    "mainType": ["wisdom"],
+    "mainType": ["territory"],
     "cost": 6,
     "succession": 0,
     "coin": 3,

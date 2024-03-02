@@ -4,7 +4,7 @@ const isMainType = is.LiteralOneOf([
   /** プリンセス */
   "princess",
   /** 領地 */
-  "wisdom",
+  "territory",
   /** 継承権 */
   "succession",
   /** 災い */
