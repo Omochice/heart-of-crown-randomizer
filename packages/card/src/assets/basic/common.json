@@ -382,6 +382,17 @@
   },
   {
     "type": "common",
+    "name": "噂好きの公爵夫人",
+    "mainType": ["succession", "attack"],
+    "cost": 6,
+    "succession": 3,
+    "coin": 0,
+    "link": 0,
+    "effect": "このカードを直轄地にセットした時、次の効果を得る。〔全ての対戦相手〕は、各自の直轄地にある「宮廷侍女」「議員」「公爵」の中から〔最もコストの高いカード〕を1枚捨てる。",
+    "edition": 0
+  },
+  {
+    "type": "common",
     "name": "辺境伯",
     "mainType": ["action", "succession"],
     "cost": 6,
