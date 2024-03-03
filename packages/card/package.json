@@ -6,7 +6,28 @@
   "license": "Zlib",
   "author": "",
   "type": "module",
-  "main": "index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.js"
+      }
+    },
+    "./basic/*": {
+      "import": {
+        "default": "./dist/basic/*.js",
+        "types": "./dist/basic/*.d.js"
+      }
+    },
+    "./far-eastern-border/*": {
+      "import": {
+        "default": "./dist/far-eastern-border/*.js",
+        "types": "./dist/far-eastern-border/*.d.js"
+      }
+    }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "vite build",
     "check": "npm-run-all check:*",
