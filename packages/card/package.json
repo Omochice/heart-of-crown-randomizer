@@ -8,22 +8,19 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": {
-        "default": "./dist/index.js",
-        "types": "./dist/index.d.js"
-      }
+      "import": "./dist/index.js"
+    },
+    "./basic": {
+      "import": "./dist/basic/index.js"
     },
     "./basic/*": {
-      "import": {
-        "default": "./dist/basic/*.js",
-        "types": "./dist/basic/*.d.js"
-      }
+      "import": "./dist/basic/*.js"
+    },
+    "./far-eastern-border": {
+      "import": "./dist/far-eastern-border/index.js"
     },
     "./far-eastern-border/*": {
-      "import": {
-        "default": "./dist/far-eastern-border/*.js",
-        "types": "./dist/far-eastern-border/*.d.js"
-      }
+      "import": "./dist/far-eastern-border/*.js"
     }
   },
   "main": "dist/index.js",
