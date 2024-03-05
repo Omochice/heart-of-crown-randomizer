@@ -3,6 +3,9 @@
   "pipeline": {
     "fmt": {},
     "check": {},
-    "test": {}
+    "test": {},
+    "build": {
+      "outputs": ["dist/**"]
+    }
   }
 }
