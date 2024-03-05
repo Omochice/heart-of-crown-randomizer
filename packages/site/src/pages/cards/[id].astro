@@ -1,5 +1,6 @@
 ---
 import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
+import { isUniqueCard } from "@heart-of-crown-randomizer/card/type";
 
 export function getStaticPaths() {
   return [
@@ -24,5 +25,19 @@ const { card } = Astro.props;
   </head>
   <body>
     <h1>{card.name}</h1>
+    {
+      isUniqueCard(card) ? (
+        <ul>
+          {card.cards.map((card) => (
+            <li>
+              <h2>{card.name}</h2>
+              <p>{card.effect}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>{card.effect}</p>
+      )
+    }
   </body>
 </html>
