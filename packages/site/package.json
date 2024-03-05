@@ -1,0 +1,25 @@
+{
+  "name": "@heart-of-crown-randomizer/site",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "astro": "astro",
+    "build": "astro check && astro build",
+    "dev": "astro dev",
+    "fmt": "npm-run-all fmt:*",
+    "fmt:biome": "biome format --write .",
+    "fmt:package": "sort-package-json",
+    "fmt:prettier": "prettier --write src",
+    "preview": "astro preview",
+    "start": "astro dev"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.5.6",
+    "@heart-of-crown-randomizer/card": "workspace:*",
+    "astro": "^4.4.11"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "prettier-plugin-astro": "^0.13.0"
+  }
+}
