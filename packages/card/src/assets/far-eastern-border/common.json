@@ -1,5 +1,6 @@
 [
   {
+    "id": 49,
     "type": "common",
     "name": "家守の精霊",
     "mainType": ["action"],
@@ -12,6 +13,7 @@
     "edition": 1
   },
   {
+    "id": 50,
     "type": "common",
     "name": "お金好きの妖精",
     "mainType": ["action"],
@@ -24,6 +26,7 @@
     "edition": 1
   },
   {
+    "id": 51,
     "type": "common",
     "name": "楽市楽座",
     "mainType": ["action"],
@@ -36,6 +39,7 @@
     "edition": 1
   },
   {
+    "id": 52,
     "type": "common",
     "name": "区画整理",
     "mainType": ["action"],
@@ -47,6 +51,7 @@
     "edition": 1
   },
   {
+    "id": 53,
     "type": "common",
     "name": "クノイチ",
     "mainType": ["action"],
@@ -59,6 +64,7 @@
     "edition": 1
   },
   {
+    "id": 54,
     "type": "common",
     "name": "高価な美術品",
     "mainType": ["action"],
@@ -70,6 +76,7 @@
     "edition": 1
   },
   {
+    "id": 55,
     "type": "common",
     "name": "伝書鳩",
     "mainType": ["action"],
@@ -82,6 +89,7 @@
     "edition": 1
   },
   {
+    "id": 56,
     "type": "common",
     "name": "密偵",
     "mainType": ["action", "attack"],
@@ -94,6 +102,7 @@
     "edition": 1
   },
   {
+    "id": 57,
     "type": "common",
     "name": "弓兵隊",
     "mainType": ["action", "attack"],
@@ -106,6 +115,7 @@
     "edition": 1
   },
   {
+    "id": 58,
     "type": "common",
     "name": "鬼族の戦士",
     "mainType": ["action", "attack"],
@@ -118,6 +128,7 @@
     "edition": 1
   },
   {
+    "id": 59,
     "type": "common",
     "name": "課税",
     "mainType": ["action"],
@@ -130,6 +141,7 @@
     "edition": 1
   },
   {
+    "id": 60,
     "type": "common",
     "name": "鉱山都市",
     "mainType": ["territory"],
@@ -141,6 +153,7 @@
     "edition": 1
   },
   {
+    "id": 61,
     "type": "common",
     "name": "サムライ",
     "mainType": ["action", "attack"],
@@ -153,6 +166,7 @@
     "edition": 1
   },
   {
+    "id": 62,
     "type": "common",
     "name": "港町",
     "mainType": ["territory"],
@@ -164,6 +178,7 @@
     "edition": 1
   },
   {
+    "id": 63,
     "type": "common",
     "name": "見習い魔女",
     "mainType": ["action", "attack"],
@@ -176,6 +191,7 @@
     "edition": 1
   },
   {
+    "id": 64,
     "type": "common",
     "name": "割り符",
     "mainType": ["action"],
@@ -188,6 +204,7 @@
     "edition": 1
   },
   {
+    "id": 65,
     "type": "common",
     "name": "陰陽師",
     "mainType": ["action", "attack"],
@@ -200,6 +217,7 @@
     "edition": 1
   },
   {
+    "id": 66,
     "type": "common",
     "name": "騎馬武者",
     "mainType": ["action", "attack"],
@@ -212,6 +230,7 @@
     "edition": 1
   },
   {
+    "id": 67,
     "type": "common",
     "name": "結盟",
     "mainType": ["action"],
@@ -223,6 +242,7 @@
     "edition": 1
   },
   {
+    "id": 68,
     "type": "common",
     "name": "公正な取引",
     "mainType": ["action"],
@@ -234,6 +254,7 @@
     "edition": 1
   },
   {
+    "id": 69,
     "type": "common",
     "name": "貿易商人",
     "mainType": ["action"],
@@ -246,6 +267,7 @@
     "edition": 1
   },
   {
+    "id": 70,
     "type": "common",
     "name": "大名",
     "mainType": ["action", "succession"],
@@ -257,6 +279,7 @@
     "edition": 1
   },
   {
+    "id": 71,
     "type": "common",
     "name": "精霊契約",
     "effect": "",

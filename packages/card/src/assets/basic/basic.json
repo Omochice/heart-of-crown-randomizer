@@ -1,5 +1,6 @@
 [
   {
+    "id": 6,
     "type": "basic",
     "name": "農村",
     "mainType": ["territory"],
@@ -11,6 +12,7 @@
     "edition": 0
   },
   {
+    "id": 7,
     "type": "basic",
     "name": "果樹園",
     "mainType": ["territory"],
@@ -22,6 +24,7 @@
     "edition": 0
   },
   {
+    "id": 8,
     "type": "basic",
     "name": "都市",
     "mainType": ["territory"],
@@ -33,6 +36,7 @@
     "edition": 0
   },
   {
+    "id": 9,
     "type": "basic",
     "name": "大都市",
     "mainType": ["territory"],
@@ -44,6 +48,7 @@
     "edition": 0
   },
   {
+    "id": 10,
     "type": "basic",
     "name": "見習い侍女",
     "mainType": ["succession"],
@@ -56,6 +61,7 @@
     "edition": 0
   },
   {
+    "id": 11,
     "type": "basic",
     "name": "宮廷侍女",
     "mainType": ["succession"],
@@ -68,6 +74,7 @@
     "edition": 0
   },
   {
+    "id": 12,
     "type": "basic",
     "name": "議員",
     "mainType": ["succession"],
@@ -79,6 +86,7 @@
     "edition": 0
   },
   {
+    "id": 13,
     "type": "basic",
     "name": "公爵",
     "mainType": ["succession"],
@@ -90,6 +98,7 @@
     "edition": 0
   },
   {
+    "id": 14,
     "type": "basic",
     "name": "呪い",
     "mainType": ["disaster"],
