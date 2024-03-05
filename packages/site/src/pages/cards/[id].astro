@@ -1,0 +1,28 @@
+---
+import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
+
+export function getStaticPaths() {
+  return [
+    ...[...Basic.princesses, ...Basic.basics, ...Basic.rares, ...Basic.commons],
+    ...[...FarEasternBorder.princesses, ...FarEasternBorder.commons],
+  ].map((card) => {
+    return {
+      params: { id: card.id },
+      props: { card },
+    };
+  });
+}
+
+const { card } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{card.name}</title>
+  </head>
+  <body>
+    <h1>{card.name}</h1>
+  </body>
+</html>
