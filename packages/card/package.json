@@ -21,6 +21,9 @@
     },
     "./far-eastern-border/*": {
       "import": "./dist/far-eastern-border/*.js"
+    },
+    "./type": {
+      "import": "./dist/type.js"
     }
   },
   "main": "dist/index.js",

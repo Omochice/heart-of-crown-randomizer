@@ -60,20 +60,24 @@ const cardBase = {
   effect: is.String,
 };
 
+export const isDuplicateCard = is.ObjectOf({
+  id: is.Number,
+  type: is.LiteralOf("common"),
+  ...cardBase,
+  edition: isEdition,
+})
+
+export const isUniqueCard = is.ObjectOf({
+  id: is.Number,
+  type: is.LiteralOf("common"),
+  name: is.String,
+  cards: is.ArrayOf(is.ObjectOf(cardBase)),
+  edition: isEdition,
+})
+
 export const isCommonCard = is.UnionOf([
-  is.ObjectOf({
-    id: is.Number,
-    type: is.LiteralOf("common"),
-    ...cardBase,
-    edition: isEdition,
-  }),
-  is.ObjectOf({
-    id: is.Number,
-    type: is.LiteralOf("common"),
-    name: is.String,
-    cards: is.ArrayOf(is.ObjectOf(cardBase)),
-    edition: isEdition,
-  }),
+  isDuplicateCard,
+  isUniqueCard,
 ]);
 
 export type CommonCard = PredicateType<typeof isCommonCard>;
