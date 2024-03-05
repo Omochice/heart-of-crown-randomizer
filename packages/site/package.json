@@ -5,6 +5,10 @@
   "scripts": {
     "astro": "astro",
     "build": "astro check && astro build",
+    "check": "npm-run-all check:*",
+    "check:biome": "biome format .",
+    "check:prettier": "prettier --check .",
+    "check:type": "astro check",
     "dev": "astro dev",
     "fmt": "npm-run-all fmt:*",
     "fmt:biome": "biome format --write .",
