@@ -5,10 +5,45 @@
   "keywords": [],
   "license": "Zlib",
   "author": "",
-  "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./dist/index.js",
+        "types": "./dist/index.d.js"
+      }
+    },
+    "./basic/*": {
+      "import": {
+        "default": "./dist/basic/*.js",
+        "types": "./dist/basic/*.d.js"
+      }
+    },
+    "./far-eastern-border/*": {
+      "import": {
+        "default": "./dist/far-eastern-border/*.js",
+        "types": "./dist/far-eastern-border/*.d.js"
+      }
+    }
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "vite build",
+    "check": "npm-run-all check:*",
+    "check:code": "biome check .",
+    "check:fmt": "biome format .",
+    "check:type": "tsc --noEmit",
+    "clean": "rimraf dist",
     "fmt": "npm-run-all fmt:*",
+    "fmt:code": "biome format --write .",
     "fmt:package": "sort-package-json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest --run"
+  },
+  "dependencies": {
+    "unknownutil": "^3.16.3"
+  },
+  "devDependencies": {
+    "vite-plugin-dts": "^3.7.3"
   }
 }
