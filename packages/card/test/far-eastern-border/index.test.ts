@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { princesses, commons } from "../../src/far-eastern-border";
+import { commons, princesses } from "../../src/far-eastern-border";
 
 describe("basic/index", () => {
   test("Each card kind should have individual id", () => {
