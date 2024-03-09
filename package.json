@@ -8,9 +8,9 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "clean": "turbo clean",
+    "clean": "turbo run clean",
     "check": "turbo run check",
-    "build": "turbo build",
+    "build": "turbo run build",
     "fmt": "npm-run-all fmt:*",
     "fmt:turbo": "turbo run fmt",
     "fmt:package": "sort-package-json",
