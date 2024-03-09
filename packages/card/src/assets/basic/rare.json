@@ -1,5 +1,6 @@
 [
   {
+    "id": 15,
     "type": "rare",
     "name": "帝都カリクマ",
     "mainType": ["territory", "succession"],
@@ -11,6 +12,7 @@
     "edition": 0
   },
   {
+    "id": 16,
     "type": "rare",
     "name": "皇帝の冠",
     "mainType": ["succession"],

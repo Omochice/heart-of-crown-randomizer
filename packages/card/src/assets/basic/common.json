@@ -1,5 +1,6 @@
 [
   {
+    "id": 17,
     "type": "common",
     "name": "隠れ家",
     "mainType": ["action"],
@@ -11,6 +12,7 @@
     "edition": 0
   },
   {
+    "id": 18,
     "type": "common",
     "name": "寄付",
     "mainType": ["action"],
@@ -22,6 +24,7 @@
     "edition": 0
   },
   {
+    "id": 19,
     "type": "common",
     "name": "城壁",
     "mainType": ["action"],
@@ -33,6 +36,7 @@
     "edition": 0
   },
   {
+    "id": 20,
     "type": "common",
     "name": "斥候",
     "mainType": ["action"],
@@ -45,6 +49,7 @@
     "edition": 0
   },
   {
+    "id": 21,
     "type": "common",
     "name": "願いの泉",
     "mainType": ["action"],
@@ -56,6 +61,7 @@
     "edition": 0
   },
   {
+    "id": 22,
     "type": "common",
     "name": "早馬",
     "mainType": ["action"],
@@ -67,6 +73,7 @@
     "edition": 0
   },
   {
+    "id": 23,
     "type": "common",
     "name": "埋もれた財宝",
     "mainType": ["action"],
@@ -78,6 +85,7 @@
     "edition": 0
   },
   {
+    "id": 24,
     "type": "common",
     "name": "交易船",
     "mainType": ["action"],
@@ -90,6 +98,7 @@
     "edition": 0
   },
   {
+    "id": 25,
     "type": "common",
     "name": "御用商人",
     "mainType": ["action"],
@@ -102,6 +111,7 @@
     "edition": 0
   },
   {
+    "id": 26,
     "type": "common",
     "name": "都市開発",
     "mainType": ["action"],
@@ -114,6 +124,7 @@
     "edition": 0
   },
   {
+    "id": 27,
     "type": "common",
     "name": "破城槌",
     "mainType": ["action", "attack"],
@@ -125,6 +136,7 @@
     "edition": 0
   },
   {
+    "id": 28,
     "type": "common",
     "name": "星詠みの魔女",
     "mainType": ["action"],
@@ -137,6 +149,7 @@
     "edition": 0
   },
   {
+    "id": 29,
     "type": "common",
     "name": "魔法の護符",
     "mainType": ["action"],
@@ -149,6 +162,7 @@
     "edition": 0
   },
   {
+    "id": 30,
     "type": "common",
     "name": "よろず屋",
     "mainType": ["action"],
@@ -161,6 +175,7 @@
     "edition": 0
   },
   {
+    "id": 31,
     "type": "common",
     "name": "追い立てられた魔獣",
     "mainType": ["action", "attack"],
@@ -173,6 +188,7 @@
     "edition": 0
   },
   {
+    "id": 32,
     "type": "common",
     "name": "お付きの侍女",
     "edition": 0,
@@ -230,6 +246,7 @@
     ]
   },
   {
+    "id": 33,
     "type": "common",
     "name": "開墾令",
     "mainType": ["action", "attack"],
@@ -242,6 +259,7 @@
     "edition": 0
   },
   {
+    "id": 34,
     "type": "common",
     "name": "銀行",
     "mainType": ["action"],
@@ -254,6 +272,7 @@
     "edition": 0
   },
   {
+    "id": 35,
     "type": "common",
     "name": "図書館",
     "mainType": ["action"],
@@ -265,6 +284,7 @@
     "edition": 0
   },
   {
+    "id": 36,
     "type": "common",
     "name": "のみの市",
     "mainType": ["action"],
@@ -277,6 +297,7 @@
     "edition": 0
   },
   {
+    "id": 37,
     "type": "common",
     "name": "補給部隊",
     "mainType": ["action"],
@@ -289,6 +310,7 @@
     "edition": 0
   },
   {
+    "id": 38,
     "type": "common",
     "name": "歩兵大隊",
     "mainType": ["action", "attack"],
@@ -301,6 +323,7 @@
     "edition": 0
   },
   {
+    "id": 39,
     "type": "common",
     "name": "皇室領",
     "mainType": ["territory", "succession"],
@@ -312,6 +335,7 @@
     "edition": 0
   },
   {
+    "id": 40,
     "type": "common",
     "name": "近衛騎士団",
     "mainType": ["action", "attack"],
@@ -324,6 +348,7 @@
     "edition": 0
   },
   {
+    "id": 41,
     "type": "common",
     "name": "呪詛の魔女",
     "mainType": ["action", "attack"],
@@ -336,6 +361,7 @@
     "edition": 0
   },
   {
+    "id": 42,
     "type": "common",
     "name": "舞踏会",
     "mainType": ["action"],
@@ -347,6 +373,7 @@
     "edition": 0
   },
   {
+    "id": 43,
     "type": "common",
     "name": "冒険者",
     "mainType": ["action"],
@@ -358,6 +385,7 @@
     "edition": 0
   },
   {
+    "id": 44,
     "type": "common",
     "name": "魅了術の魔女",
     "mainType": ["action", "attack"],
@@ -370,6 +398,7 @@
     "edition": 0
   },
   {
+    "id": 45,
     "type": "common",
     "name": "錬金術師",
     "mainType": ["action"],
@@ -381,6 +410,7 @@
     "edition": 0
   },
   {
+    "id": 46,
     "type": "common",
     "name": "噂好きの公爵夫人",
     "mainType": ["succession", "attack"],
@@ -392,6 +422,7 @@
     "edition": 0
   },
   {
+    "id": 47,
     "type": "common",
     "name": "辺境伯",
     "mainType": ["action", "succession"],

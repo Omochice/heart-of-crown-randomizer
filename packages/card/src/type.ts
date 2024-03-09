@@ -38,6 +38,7 @@ const isEdition = is.LiteralOneOf(Object.values(Edition));
 type Edition = PredicateType<typeof isEdition>;
 
 export const isPrincess = is.ObjectOf({
+  id: is.Number,
   type: is.LiteralOf("princess"),
   name: is.String,
   mainType: is.LiteralOf("princess"),
@@ -59,23 +60,27 @@ const cardBase = {
   effect: is.String,
 };
 
-export const isCommonCard = is.UnionOf([
-  is.ObjectOf({
-    type: is.LiteralOf("common"),
-    ...cardBase,
-    edition: isEdition,
-  }),
-  is.ObjectOf({
-    type: is.LiteralOf("common"),
-    name: is.String,
-    cards: is.ArrayOf(is.ObjectOf(cardBase)),
-    edition: isEdition,
-  }),
-]);
+export const isDuplicateCard = is.ObjectOf({
+  id: is.Number,
+  type: is.LiteralOf("common"),
+  ...cardBase,
+  edition: isEdition,
+});
+
+export const isUniqueCard = is.ObjectOf({
+  id: is.Number,
+  type: is.LiteralOf("common"),
+  name: is.String,
+  cards: is.ArrayOf(is.ObjectOf(cardBase)),
+  edition: isEdition,
+});
+
+export const isCommonCard = is.UnionOf([isDuplicateCard, isUniqueCard]);
 
 export type CommonCard = PredicateType<typeof isCommonCard>;
 
 export const isBasicCard = is.ObjectOf({
+  id: is.Number,
   type: is.LiteralOf("basic"),
   ...cardBase,
   edition: isEdition,
@@ -84,6 +89,7 @@ export const isBasicCard = is.ObjectOf({
 export type BasicCard = PredicateType<typeof isBasicCard>;
 
 export const isRareCard = is.ObjectOf({
+  id: is.Number,
   type: is.LiteralOf("rare"),
   ...cardBase,
   edition: isEdition,
