@@ -3,8 +3,7 @@
   "pipeline": {
     "fmt": {},
     "clean": {},
-    "check": {},
-    "@heart-of-crown-randomizer/site#check": {
+    "check": {
       "dependsOn": [
         "@heart-of-crown-randomizer/card#build"
       ]
