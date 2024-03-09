@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+  </head>
+  <body>
+    <h1>Randomizer</h1>
+    <button>ランダマイズ</button>
+    <div id="result"></div>
+    <script>
+      import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
+      function randint(max: number): number {
+        return Math.floor(Math.random() * Math.floor(max));
+      }
+      const cards = [...Basic.commons, ...FarEasternBorder.commons];
+
+      function getRandomCards() {
+        const cardIndexes = new Set<number>();
+        while (cardIndexes.size < 10) {
+          cardIndexes.add(randint(cards.length));
+        }
+        return Array.from(cardIndexes).map((index) => cards[index]);
+      }
+
+      document.querySelector("button")?.addEventListener("click", () => {
+        const result = document.getElementById("result");
+        const cards = getRandomCards();
+        if (result == null) {
+          console.error("button is not found");
+          return;
+        }
+        for (const card of cards) {
+          const cardWrapper = document.createElement("div");
+          const anchor = document.createElement("a");
+          anchor.href = `../cards/${card!.id}`;
+          anchor.textContent = card!.name;
+          cardWrapper.appendChild(anchor);
+          result.appendChild(cardWrapper);
+        }
+      });
+    </script>
+  </body>
+</html>
