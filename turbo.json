@@ -3,9 +3,16 @@
   "pipeline": {
     "fmt": {},
     "check": {},
+    "@heart-of-crown-randomizer/site#check": {
+      "dependsOn": [
+        "@heart-of-crown-randomizer/card#build"
+      ]
+    },
     "test": {},
     "build": {
-      "outputs": ["dist/**"]
+      "outputs": [
+        "dist/**"
+      ]
     }
   }
 }
