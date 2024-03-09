@@ -9,6 +9,7 @@
     "check:biome": "biome format .",
     "check:prettier": "prettier --check .",
     "check:type": "astro check",
+    "clean": "rimraf dist",
     "dev": "astro dev",
     "fmt": "npm-run-all fmt:*",
     "fmt:biome": "biome format --write .",

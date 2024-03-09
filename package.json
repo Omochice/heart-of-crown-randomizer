@@ -8,6 +8,7 @@
   "author": "",
   "main": "index.js",
   "scripts": {
+    "clean": "turbo clean",
     "check": "turbo run check",
     "build": "turbo build",
     "fmt": "npm-run-all fmt:*",
