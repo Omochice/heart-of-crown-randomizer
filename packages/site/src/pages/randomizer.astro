@@ -23,13 +23,20 @@
         return Array.from(cardIndexes).map((index) => cards[index]);
       }
 
+      function clearChild(element: HTMLElement): void {
+        while (element.firstChild) {
+          element.removeChild(element.firstChild);
+        }
+      }
+
       document.querySelector("button")?.addEventListener("click", () => {
         const result = document.getElementById("result");
-        const cards = getRandomCards();
         if (result == null) {
           console.error("button is not found");
           return;
         }
+        clearChild(result);
+        const cards = getRandomCards();
         for (const card of cards) {
           const cardWrapper = document.createElement("div");
           const anchor = document.createElement("a");
