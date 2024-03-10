@@ -1,3 +1,7 @@
+---
+import { rules } from "../rules/index";
+---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,7 +10,20 @@
   </head>
   <body>
     <h1>Randomizer</h1>
-    <button>ランダマイズ</button>
+    <form
+      action="#"
+      id="option-form"
+    >
+      {
+        rules.map((r) => (
+          <div>
+            <input type="checkbox" />
+            <label>{r.description}</label>
+          </div>
+        ))
+      }
+      <button>ランダマイズ</button>
+    </form>
     <div id="result"></div>
     <script>
       import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
@@ -29,23 +46,26 @@
         }
       }
 
-      document.querySelector("button")?.addEventListener("click", () => {
-        const result = document.getElementById("result");
-        if (result == null) {
-          console.error("button is not found");
-          return;
-        }
-        clearChild(result);
-        const cards = getRandomCards();
-        for (const card of cards) {
-          const cardWrapper = document.createElement("div");
-          const anchor = document.createElement("a");
-          anchor.href = `../cards/${card!.id}`;
-          anchor.textContent = card!.name;
-          cardWrapper.appendChild(anchor);
-          result.appendChild(cardWrapper);
-        }
-      });
+      document
+        .querySelector("#option-form")
+        ?.addEventListener("submit", (e: Event) => {
+          e.preventDefault();
+          const result = document.getElementById("result");
+          if (result == null) {
+            console.error("button is not found");
+            return;
+          }
+          clearChild(result);
+          const cards = getRandomCards();
+          for (const card of cards) {
+            const cardWrapper = document.createElement("div");
+            const anchor = document.createElement("a");
+            anchor.href = `../cards/${card!.id}`;
+            anchor.textContent = card!.name;
+            cardWrapper.appendChild(anchor);
+            result.appendChild(cardWrapper);
+          }
+        });
     </script>
   </body>
 </html>
