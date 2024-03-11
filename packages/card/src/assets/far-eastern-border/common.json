@@ -283,6 +283,7 @@
     "type": "common",
     "name": "精霊契約",
     "effect": "",
+    "cost": 8,
     "edition": 1,
     "cards": [
       {
