@@ -72,6 +72,7 @@ export const isUniqueCard = is.ObjectOf({
   type: is.LiteralOf("common"),
   name: is.String,
   cards: is.ArrayOf(is.ObjectOf(cardBase)),
+  cost: is.Number,
   edition: isEdition,
 });
 

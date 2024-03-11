@@ -191,6 +191,7 @@
     "id": 32,
     "type": "common",
     "name": "お付きの侍女",
+    "cost": 4,
     "edition": 0,
     "cards": [
       {
