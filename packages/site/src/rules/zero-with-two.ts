@@ -4,6 +4,12 @@ import {
 } from "@heart-of-crown-randomizer/card/type";
 import type { Rule } from "./type";
 
+/**
+ * Check cards has some links
+ * @param cards Cards to check
+ * @param link Number of links
+ * @returns True if cards has some links
+ */
 function someHas(cards: CommonCard[], link: number): boolean {
   return cards.some((card) => {
     if (isUniqueCard(card)) {
