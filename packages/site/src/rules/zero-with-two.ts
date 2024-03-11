@@ -20,6 +20,9 @@ function someHas(cards: CommonCard[], link: number): boolean {
   });
 }
 
+// NOTE: This rule is based on:
+// https://github.com/kana/hatokurandom/blob/22cf98853340394f2d53a1c59cfab80d438aca36/lib/utils.js#L1509
+
 export const rule: Rule = {
   description:
     "サプライにリンク0のカードが含まれる場合、リンク2のカードを1枚は含めるようにする。",
