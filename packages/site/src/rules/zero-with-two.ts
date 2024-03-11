@@ -7,7 +7,8 @@ import type { Rule } from "./type";
 function someHas(cards: CommonCard[], link: number): boolean {
   return cards.some((card) => {
     if (isUniqueCard(card)) {
-      return card.cards.some((c) => c.link === link);
+      // NOTE: unique card is treats as no link
+      return false;
     }
     return card.link === link;
   });
