@@ -50,13 +50,13 @@ importers:
         version: 0.5.9(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.2)
       '@astrojs/cloudflare':
         specifier: ^9.1.0
-        version: 9.1.0(astro@4.5.3)
+        version: 9.1.0(astro@4.5.4)
       '@heart-of-crown-randomizer/card':
         specifier: workspace:*
         version: link:../card
       astro:
         specifier: ^4.4.11
-        version: 4.5.3(typescript@5.4.2)
+        version: 4.5.4(typescript@5.4.2)
     devDependencies:
       prettier:
         specifier: ^3.2.5
@@ -92,7 +92,7 @@ packages:
       - prettier-plugin-astro
     dev: false
 
-  /@astrojs/cloudflare@9.1.0(astro@4.5.3):
+  /@astrojs/cloudflare@9.1.0(astro@4.5.4):
     resolution: {integrity: sha512-w3wtV/joQLX5CQvpVx/6zn4V0ZVg5Y9gJkJ4vfgD1svC/hOMJACuVdkEN2a6HBsOUntXS3s36wJlDeIr7poF2g==}
     peerDependencies:
       astro: ^4.2.0
@@ -100,7 +100,7 @@ packages:
       '@astrojs/underscore-redirects': 0.3.3
       '@cloudflare/workers-types': 4.20240222.0
       '@iarna/toml': 2.2.5
-      astro: 4.5.3(typescript@5.4.2)
+      astro: 4.5.4(typescript@5.4.2)
       dotenv: 16.4.5
       esbuild: 0.19.12
       find-up: 6.3.0
@@ -1387,8 +1387,8 @@ packages:
     resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
     dev: true
 
-  /astro@4.5.3(typescript@5.4.2):
-    resolution: {integrity: sha512-MEiLeAr3+THeadTZCQ4U+DI9VTTUZdYrPEPedSKmQwqnkiPkLjpLgx4yOcyH7Yp4t57+SWiC6W0rt7lPGM36Fg==}
+  /astro@4.5.4(typescript@5.4.2):
+    resolution: {integrity: sha512-qwMyBn36wXvaCzdCmdbyCxLQGG5hTa3saNdHdqS20Yn1b7Z7oqqcWOb2UjFuq6O8dFqZxU8Hq0/pGFscvsYtJA==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
     dependencies:
@@ -1582,7 +1582,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001597
-      electron-to-chromium: 1.4.703
+      electron-to-chromium: 1.4.705
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
     dev: false
@@ -1953,8 +1953,8 @@ packages:
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  /electron-to-chromium@1.4.703:
-    resolution: {integrity: sha512-094ZZC4nHXPKl/OwPinSMtLN9+hoFkdfQGKnvXbY+3WEAYtVDpz9UhJIViiY6Zb8agvqxiaJzNG9M+pRZWvSZw==}
+  /electron-to-chromium@1.4.705:
+    resolution: {integrity: sha512-LKqhpwJCLhYId2VVwEzFXWrqQI5n5zBppz1W9ehhTlfYU8CUUW6kClbN8LHF/v7flMgRdETS772nqywJ+ckVAw==}
     dev: false
 
   /emmet@2.4.7:
