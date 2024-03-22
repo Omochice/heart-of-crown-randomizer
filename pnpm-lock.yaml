@@ -50,7 +50,7 @@ importers:
         version: 0.5.9(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.3)
       '@astrojs/cloudflare':
         specifier: ^9.1.0
-        version: 9.1.0(astro@4.5.8)
+        version: 9.2.0(astro@4.5.8)
       '@heart-of-crown-randomizer/card':
         specifier: workspace:*
         version: link:../card
@@ -92,13 +92,13 @@ packages:
       - prettier-plugin-astro
     dev: false
 
-  /@astrojs/cloudflare@9.1.0(astro@4.5.8):
-    resolution: {integrity: sha512-w3wtV/joQLX5CQvpVx/6zn4V0ZVg5Y9gJkJ4vfgD1svC/hOMJACuVdkEN2a6HBsOUntXS3s36wJlDeIr7poF2g==}
+  /@astrojs/cloudflare@9.2.0(astro@4.5.8):
+    resolution: {integrity: sha512-mh18aYIgC4ZPHVwRGNUWAEEYpYE1odlY4kd9sGDhZ0+2eZ6uKSJuo19zD0z52t6LEzEve4C5dSNGK2YXmz5MyQ==}
     peerDependencies:
       astro: ^4.2.0
     dependencies:
       '@astrojs/underscore-redirects': 0.3.3
-      '@cloudflare/workers-types': 4.20240222.0
+      '@cloudflare/workers-types': 4.20240320.1
       '@iarna/toml': 2.2.5
       astro: 4.5.8(typescript@5.4.3)
       dotenv: 16.4.5
@@ -565,8 +565,8 @@ packages:
     dev: false
     optional: true
 
-  /@cloudflare/workers-types@4.20240222.0:
-    resolution: {integrity: sha512-luO0BdK3rLlCv3B240+cTrfqm+XSbHtpk+88aJtGwzyVK9QF/Xz8lBgE/oZZLN8nCTmOvxAZnszyxUuZ8GP8Cg==}
+  /@cloudflare/workers-types@4.20240320.1:
+    resolution: {integrity: sha512-CiYtVpQURPgQqtBKkmOAnfPElVZuD7Xyf1IxKtKp2B4aB9gnooapwJhzeY8c4Ls4u17SgMS0MprOkrgYwzZ6xg==}
     dev: false
 
   /@emmetio/abbreviation@2.3.3:
