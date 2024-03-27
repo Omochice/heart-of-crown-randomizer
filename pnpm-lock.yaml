@@ -50,7 +50,7 @@ importers:
         version: 0.5.10(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.3)
       '@astrojs/cloudflare':
         specifier: ^9.1.0
-        version: 9.2.0(astro@4.5.10)
+        version: 9.2.1(astro@4.5.10)
       '@heart-of-crown-randomizer/card':
         specifier: workspace:*
         version: link:../card
@@ -92,8 +92,8 @@ packages:
       - prettier-plugin-astro
     dev: false
 
-  /@astrojs/cloudflare@9.2.0(astro@4.5.10):
-    resolution: {integrity: sha512-mh18aYIgC4ZPHVwRGNUWAEEYpYE1odlY4kd9sGDhZ0+2eZ6uKSJuo19zD0z52t6LEzEve4C5dSNGK2YXmz5MyQ==}
+  /@astrojs/cloudflare@9.2.1(astro@4.5.10):
+    resolution: {integrity: sha512-IPsfuqy3r0OR0CvCdQw72J0iC4dhOW4WXByi2s3vAE3py8RQQtiyJXY8a4rAT/LRUz7WVlpzkm7FxORtmIeKVw==}
     peerDependencies:
       astro: ^4.2.0
     dependencies:
