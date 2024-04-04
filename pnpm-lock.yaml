@@ -41,22 +41,22 @@ importers:
     devDependencies:
       vite-plugin-dts:
         specifier: ^3.7.3
-        version: 3.8.1(typescript@5.4.3)(vite@5.2.8)
+        version: 3.8.1(typescript@5.4.4)(vite@5.2.8)
 
   packages/site:
     dependencies:
       '@astrojs/check':
         specifier: ^0.5.6
-        version: 0.5.10(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.3)
+        version: 0.5.10(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.4)
       '@astrojs/cloudflare':
         specifier: ^10.0.0
-        version: 10.0.2(astro@4.5.15)
+        version: 10.0.2(astro@4.5.16)
       '@heart-of-crown-randomizer/card':
         specifier: workspace:*
         version: link:../card
       astro:
         specifier: ^4.4.11
-        version: 4.5.15(typescript@5.4.3)
+        version: 4.5.16(typescript@5.4.4)
     devDependencies:
       prettier:
         specifier: ^3.2.5
@@ -75,24 +75,24 @@ packages:
       '@jridgewell/trace-mapping': 0.3.25
     dev: false
 
-  /@astrojs/check@0.5.10(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.3):
+  /@astrojs/check@0.5.10(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.4):
     resolution: {integrity: sha512-vliHXM9cu/viGeKiksUM4mXfO816ohWtawTl2ADPgTsd4nUMjFiyAl7xFZhF34yy4hq4qf7jvK1F2PlR3b5I5w==}
     hasBin: true
     peerDependencies:
       typescript: ^5.0.0
     dependencies:
-      '@astrojs/language-server': 2.8.4(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.3)
+      '@astrojs/language-server': 2.8.4(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.4)
       chokidar: 3.6.0
       fast-glob: 3.3.2
       kleur: 4.1.5
-      typescript: 5.4.3
+      typescript: 5.4.4
       yargs: 17.7.2
     transitivePeerDependencies:
       - prettier
       - prettier-plugin-astro
     dev: false
 
-  /@astrojs/cloudflare@10.0.2(astro@4.5.15):
+  /@astrojs/cloudflare@10.0.2(astro@4.5.16):
     resolution: {integrity: sha512-csRatKPw8B/sL5Xz+UZ8Eh5WahSiSQbRNUQx4tYrZaEjUCV0BA14uYaV0rZyTAe62fZlFOqHbpfq0AeZRQWj/w==}
     peerDependencies:
       astro: ^4.2.0
@@ -100,7 +100,7 @@ packages:
       '@astrojs/internal-helpers': 0.3.0
       '@astrojs/underscore-redirects': 0.3.3
       '@cloudflare/workers-types': 4.20240329.0
-      astro: 4.5.15(typescript@5.4.3)
+      astro: 4.5.16(typescript@5.4.4)
       esbuild: 0.19.12
       miniflare: 3.20240329.0
       tiny-glob: 0.2.9
@@ -130,7 +130,7 @@ packages:
     resolution: {integrity: sha512-6B13lz5n6BrbTqCTwhXjJXuR1sqiX/H6rTxzlXx+lN1NnV4jgnq/KJldCQaUWJzPL5SiWahQyinxAbxQtwgPHA==}
     dev: false
 
-  /@astrojs/language-server@2.8.4(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.3):
+  /@astrojs/language-server@2.8.4(prettier-plugin-astro@0.13.0)(prettier@3.2.5)(typescript@5.4.4):
     resolution: {integrity: sha512-sJH5vGTBkhgA8+hdhzX78UUp4cFz4Mt7xkEkevD188OS5bDMkaue6hK+dtXWM47mnrXFveXA2u38K7S+5+IRjA==}
     hasBin: true
     peerDependencies:
@@ -144,7 +144,7 @@ packages:
     dependencies:
       '@astrojs/compiler': 2.7.0
       '@jridgewell/sourcemap-codec': 1.4.15
-      '@volar/kit': 2.1.5(typescript@5.4.3)
+      '@volar/kit': 2.1.5(typescript@5.4.4)
       '@volar/language-core': 2.1.5
       '@volar/language-server': 2.1.5
       '@volar/language-service': 2.1.5
@@ -1641,7 +1641,7 @@ packages:
       pretty-format: 29.7.0
     dev: true
 
-  /@volar/kit@2.1.5(typescript@5.4.3):
+  /@volar/kit@2.1.5(typescript@5.4.4):
     resolution: {integrity: sha512-L4bHJ1TsKNjsmxSGBuzkUvii4EQoQAT9JoHy8aL4Y17qU/z0JWI1BzUDGpMl4oDlsc+WpWIVGo6KZAnclrUx/w==}
     peerDependencies:
       typescript: '*'
@@ -1649,7 +1649,7 @@ packages:
       '@volar/language-service': 2.1.5
       '@volar/typescript': 2.1.5
       typesafe-path: 0.2.2
-      typescript: 5.4.3
+      typescript: 5.4.4
       vscode-languageserver-textdocument: 1.0.11
       vscode-uri: 3.0.8
     dev: false
@@ -1759,7 +1759,7 @@ packages:
       '@vue/shared': 3.4.21
     dev: true
 
-  /@vue/language-core@1.8.27(typescript@5.4.3):
+  /@vue/language-core@1.8.27(typescript@5.4.4):
     resolution: {integrity: sha512-L8Kc27VdQserNaCUNiSFdDl9LWT24ly8Hpwf1ECy3aFb9m6bDhBGQYOujDm21N7EW3moKIOKEanQwe1q5BK+mA==}
     peerDependencies:
       typescript: '*'
@@ -1775,7 +1775,7 @@ packages:
       minimatch: 9.0.3
       muggle-string: 0.3.1
       path-browserify: 1.0.1
-      typescript: 5.4.3
+      typescript: 5.4.4
       vue-template-compiler: 2.7.16
     dev: true
 
@@ -1874,8 +1874,8 @@ packages:
     resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
     dev: true
 
-  /astro@4.5.15(typescript@5.4.3):
-    resolution: {integrity: sha512-d2+yMv4ZlWwWFzfbpXIULMniNmdPlbwGrQScacEni0WLeo4k7ETO51/bHN/i/fXwxL9IGfasdEFkk2baYXDRog==}
+  /astro@4.5.16(typescript@5.4.4):
+    resolution: {integrity: sha512-1nOVsMq2OJiXnG6gO0Y77vTAboGN9nLQSy/8SGazq4h6x+alzbsMbQbArBgvaLzOSUXD0m91XLs3D8bOSuavrQ==}
     engines: {node: '>=18.14.1', npm: '>=6.14.0'}
     hasBin: true
     dependencies:
@@ -1918,7 +1918,7 @@ packages:
       http-cache-semantics: 4.1.1
       js-yaml: 4.1.0
       kleur: 4.1.5
-      magic-string: 0.30.8
+      magic-string: 0.30.9
       mime: 3.0.0
       ora: 7.0.1
       p-limit: 5.0.0
@@ -1932,7 +1932,7 @@ packages:
       shiki: 1.2.4
       string-width: 7.1.0
       strip-ansi: 7.1.0
-      tsconfck: 3.0.3(typescript@5.4.3)
+      tsconfck: 3.0.3(typescript@5.4.4)
       unist-util-visit: 5.0.0
       vfile: 6.0.1
       vite: 5.2.8
@@ -1986,7 +1986,7 @@ packages:
     requiresBuild: true
     dependencies:
       bare-events: 2.2.2
-      bare-path: 2.1.0
+      bare-path: 2.1.1
       streamx: 2.16.1
     dev: false
     optional: true
@@ -1997,8 +1997,8 @@ packages:
     dev: false
     optional: true
 
-  /bare-path@2.1.0:
-    resolution: {integrity: sha512-DIIg7ts8bdRKwJRJrUMy/PICEaQZaPGZ26lsSx9MJSwIhSrcdHn7/C8W+XmnG/rKi6BaRcz+JO00CjZteybDtw==}
+  /bare-path@2.1.1:
+    resolution: {integrity: sha512-OHM+iwRDRMDBsSW7kl3dO62JyHdBKO3B25FB9vNQBPcGHMo4+eA8Yj41Lfbk3pS/seDY+siNge0LdRTulAau/A==}
     requiresBuild: true
     dependencies:
       bare-os: 2.2.1
@@ -2079,7 +2079,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001605
-      electron-to-chromium: 1.4.724
+      electron-to-chromium: 1.4.727
       node-releases: 2.0.14
       update-browserslist-db: 1.0.13(browserslist@4.23.0)
     dev: false
@@ -2440,8 +2440,8 @@ packages:
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  /electron-to-chromium@1.4.724:
-    resolution: {integrity: sha512-RTRvkmRkGhNBPPpdrgtDKvmOEYTrPlXDfc0J/Nfq5s29tEahAwhiX4mmhNzj6febWMleulxVYPh7QwCSL/EldA==}
+  /electron-to-chromium@1.4.727:
+    resolution: {integrity: sha512-brpv4KTeC4g0Fx2FeIKytLd4UGn1zBQq5Lauy7zEWT9oqkaj5mgsxblEZIAOf1HHLlXxzr6adGViiBy5Z39/CA==}
     dev: false
 
   /emmet@2.4.7:
@@ -3293,6 +3293,14 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.15
+    dev: true
+
+  /magic-string@0.30.9:
+    resolution: {integrity: sha512-S1+hd+dIrC8EZqKyT9DstTH/0Z+f76kmmvZnkfQVmOpDEF9iVgdYif3Q/pIWHmCoo59bQVGW0kVL3e2nl+9+Sw==}
+    engines: {node: '>=12'}
+    dependencies:
+      '@jridgewell/sourcemap-codec': 1.4.15
+    dev: false
 
   /markdown-table@3.0.3:
     resolution: {integrity: sha512-Z1NL3Tb1M9wH4XESsCDEksWoKTdlUafKc4pt0GRwjUyXaCFZ+dc3g2erqB6zm3szA2IUSi7VnPI+o/9jnxh9hw==}
@@ -4767,7 +4775,7 @@ packages:
       tar-stream: 3.1.7
     optionalDependencies:
       bare-fs: 2.2.3
-      bare-path: 2.1.0
+      bare-path: 2.1.1
     dev: false
     optional: true
 
@@ -4833,7 +4841,7 @@ packages:
     resolution: {integrity: sha512-tmMpK00BjZiUyVyvrBK7knerNgmgvcV/KLVyuma/SC+TQN167GrMRciANTz09+k3zW8L8t60jWO1GpfkZdjTaw==}
     dev: false
 
-  /tsconfck@3.0.3(typescript@5.4.3):
+  /tsconfck@3.0.3(typescript@5.4.4):
     resolution: {integrity: sha512-4t0noZX9t6GcPTfBAbIbbIU4pfpCwh0ueq3S4O/5qXI1VwK1outmxhe9dOiEWqMz3MW2LKgDTpqWV+37IWuVbA==}
     engines: {node: ^18 || >=20}
     hasBin: true
@@ -4843,7 +4851,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      typescript: 5.4.3
+      typescript: 5.4.4
     dev: false
 
   /tslib@2.6.2:
@@ -4946,6 +4954,12 @@ packages:
 
   /typescript@5.4.3:
     resolution: {integrity: sha512-KrPd3PKaCLr78MalgiwJnA25Nm8HAmdwN3mYUYZgG/wizIo9EainNVQI9/yDavtVFRN2h3k8uf3GLHuhDMgEHg==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: true
+
+  /typescript@5.4.4:
+    resolution: {integrity: sha512-dGE2Vv8cpVvw28v8HCPqyb08EzbBURxDpuhJvTrusShUfGnhHBafDsLdS1EhhxyL6BJQE+2cT3dDPAv+MQ6oLw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -5174,7 +5188,7 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-dts@3.8.1(typescript@5.4.3)(vite@5.2.8):
+  /vite-plugin-dts@3.8.1(typescript@5.4.4)(vite@5.2.8):
     resolution: {integrity: sha512-zEYyQxH7lKto1VTKZHF3ZZeOPkkJgnMrePY4VxDHfDSvDjmYMMfWjZxYmNwW8QxbaItWJQhhXY+geAbyNphI7g==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -5186,13 +5200,13 @@ packages:
     dependencies:
       '@microsoft/api-extractor': 7.43.0
       '@rollup/pluginutils': 5.1.0
-      '@vue/language-core': 1.8.27(typescript@5.4.3)
+      '@vue/language-core': 1.8.27(typescript@5.4.4)
       debug: 4.3.4
       kolorist: 1.8.0
       magic-string: 0.30.8
-      typescript: 5.4.3
+      typescript: 5.4.4
       vite: 5.2.8
-      vue-tsc: 1.8.27(typescript@5.4.3)
+      vue-tsc: 1.8.27(typescript@5.4.4)
     transitivePeerDependencies:
       - '@types/node'
       - rollup
@@ -5447,16 +5461,16 @@ packages:
       he: 1.2.0
     dev: true
 
-  /vue-tsc@1.8.27(typescript@5.4.3):
+  /vue-tsc@1.8.27(typescript@5.4.4):
     resolution: {integrity: sha512-WesKCAZCRAbmmhuGl3+VrdWItEvfoFIPXOvUJkjULi+x+6G/Dy69yO3TBRJDr9eUlmsNAwVmxsNZxvHKzbkKdg==}
     hasBin: true
     peerDependencies:
       typescript: '*'
     dependencies:
       '@volar/typescript': 1.11.1
-      '@vue/language-core': 1.8.27(typescript@5.4.3)
+      '@vue/language-core': 1.8.27(typescript@5.4.4)
       semver: 7.6.0
-      typescript: 5.4.3
+      typescript: 5.4.4
     dev: true
 
   /web-namespaces@2.0.1:
