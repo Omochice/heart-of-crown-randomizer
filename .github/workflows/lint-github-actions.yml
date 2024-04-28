@@ -19,6 +19,7 @@ jobs:
           filters: |
             actions:
               - .github/workflows/*
+              - aqua.yaml
       - uses: aquaproj/aqua-installer@4551ec64e21bf0f557c2525135ff0bd2cba40ec7 # v3.0.0
         if: steps.filter.outputs.actions == 'true'
         with:
