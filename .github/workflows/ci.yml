@@ -5,6 +5,8 @@ on:
 
 jobs:
   basic:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
