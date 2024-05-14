@@ -37,7 +37,7 @@ importers:
     dependencies:
       unknownutil:
         specifier: ^3.16.3
-        version: 3.18.0
+        version: 3.18.1
     devDependencies:
       vite-plugin-dts:
         specifier: ^3.7.3
@@ -2876,8 +2876,8 @@ packages:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
     engines: {node: '>= 4.0.0'}
 
-  unknownutil@3.18.0:
-    resolution: {integrity: sha512-bgzb5lBCXU16rDTu4jwcVul/cGCwfSkxjfVaYbXKn+mzPvXR75FTTG60opLvT9qzxJDsDJTbjpEljhPshORsIA==}
+  unknownutil@3.18.1:
+    resolution: {integrity: sha512-xUxVwGuRfA3TqGwiulvZ8WHR4zTs/u9rN4ACqjVPVU86dBRkerVdwYb4o0c+hfJjsUufNO5pL0bjfB9UELJVOQ==}
 
   update-browserslist-db@1.0.15:
     resolution: {integrity: sha512-K9HWH62x3/EalU1U6sjSZiylm9C8tgq2mSvshZpqc7QE69RaA2qjhkW2HlNA0tFpEbtyFz7HTqbSdN4MSwUodA==}
@@ -6187,7 +6187,7 @@ snapshots:
 
   universalify@0.1.2: {}
 
-  unknownutil@3.18.0: {}
+  unknownutil@3.18.1: {}
 
   update-browserslist-db@1.0.15(browserslist@4.23.0):
     dependencies:
