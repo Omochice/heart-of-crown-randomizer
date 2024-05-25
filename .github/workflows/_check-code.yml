@@ -1,7 +1,6 @@
-name: basic ci
+name: Check based npm
 
-on:
-  - push
+on: workflow_call
 
 jobs:
   basic:
