@@ -50,13 +50,13 @@ importers:
         version: 0.7.0(prettier-plugin-astro@0.14.0)(prettier@3.3.2)(typescript@5.5.2)
       '@astrojs/cloudflare':
         specifier: ^10.0.0
-        version: 10.4.2(astro@4.11.2(@types/node@20.14.7)(typescript@5.5.2))
+        version: 10.4.2(astro@4.11.3(@types/node@20.14.7)(typescript@5.5.2))
       '@heart-of-crown-randomizer/card':
         specifier: workspace:*
         version: link:../card
       astro:
         specifier: ^4.4.11
-        version: 4.11.2(@types/node@20.14.7)(typescript@5.5.2)
+        version: 4.11.3(@types/node@20.14.7)(typescript@5.5.2)
     devDependencies:
       prettier:
         specifier: ^3.2.5
@@ -1244,8 +1244,8 @@ packages:
   assertion-error@1.1.0:
     resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
 
-  astro@4.11.2:
-    resolution: {integrity: sha512-8ulWb74qY5VBFhDTjw1KMCMEf+EXOoSBy4QC6J1oHIq5tzMGCVRt3sUPzUxD737HVPb+CxOIbj35skN0w535fw==}
+  astro@4.11.3:
+    resolution: {integrity: sha512-SuZbB/71XVn+WqWNCe7XOfHuqhS+k4gj8+A3wluTZQrORGaHUFRn/f8F9Tu5yESQZB1q8UKhahvHwkTV3AdVsg==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -3070,12 +3070,12 @@ snapshots:
       - prettier
       - prettier-plugin-astro
 
-  '@astrojs/cloudflare@10.4.2(astro@4.11.2(@types/node@20.14.7)(typescript@5.5.2))':
+  '@astrojs/cloudflare@10.4.2(astro@4.11.3(@types/node@20.14.7)(typescript@5.5.2))':
     dependencies:
       '@astrojs/internal-helpers': 0.3.0
       '@astrojs/underscore-redirects': 0.3.3
       '@cloudflare/workers-types': 4.20240620.0
-      astro: 4.11.2(@types/node@20.14.7)(typescript@5.5.2)
+      astro: 4.11.3(@types/node@20.14.7)(typescript@5.5.2)
       esbuild: 0.19.12
       estree-walker: 3.0.3
       magic-string: 0.30.10
@@ -4124,7 +4124,7 @@ snapshots:
 
   assertion-error@1.1.0: {}
 
-  astro@4.11.2(@types/node@20.14.7)(typescript@5.5.2):
+  astro@4.11.3(@types/node@20.14.7)(typescript@5.5.2):
     dependencies:
       '@astrojs/compiler': 2.8.1
       '@astrojs/internal-helpers': 0.4.1
