@@ -4,6 +4,7 @@ on: workflow_call
 
 jobs:
   basic:
+    timeout-minutes: 30
     permissions:
       contents: read
     runs-on: ubuntu-latest
