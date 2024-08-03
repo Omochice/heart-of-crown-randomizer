@@ -8,28 +8,28 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js"
+      "import": "./dist/index.mjs"
     },
     "./basic": {
-      "import": "./dist/basic/index.js"
+      "import": "./dist/basic/index.mjs"
     },
     "./basic/*": {
-      "import": "./dist/basic/*.js"
+      "import": "./dist/basic/*.mjs"
     },
     "./far-eastern-border": {
-      "import": "./dist/far-eastern-border/index.js"
+      "import": "./dist/far-eastern-border/index.mjs"
     },
     "./far-eastern-border/*": {
-      "import": "./dist/far-eastern-border/*.js"
+      "import": "./dist/far-eastern-border/*.mjs"
     },
     "./type": {
-      "import": "./dist/type.js"
+      "import": "./dist/type.mjs"
     }
   },
-  "main": "dist/index.js",
+  "main": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "vite build",
+    "build": "unbuild",
     "check": "npm-run-all check:*",
     "check:code": "biome check .",
     "check:fmt": "biome format .",
@@ -44,6 +44,8 @@
     "unknownutil": "^3.16.3"
   },
   "devDependencies": {
+    "mkdist": "^1.5.4",
+    "unbuild": "^2.0.0",
     "vite-plugin-dts": "^3.7.3"
   }
 }
