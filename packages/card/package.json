@@ -8,22 +8,44 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
     },
     "./basic": {
-      "import": "./dist/basic/index.mjs"
+      "import": "./dist/basic/index.mjs",
+      "types": "./dist/basic/index.d.ts"
     },
-    "./basic/*": {
-      "import": "./dist/basic/*.mjs"
+    "./basic/basic": {
+      "import": "./dist/basic/basic.mjs",
+      "types": "./dist/basic/basic.d.ts"
+    },
+    "./basic/common": {
+      "import": "./dist/basic/common.mjs",
+      "types": "./dist/basic/common.d.ts"
+    },
+    "./basic/princess": {
+      "import": "./dist/basic/princess.mjs",
+      "types": "./dist/basic/princess.d.ts"
+    },
+    "./basic/rare": {
+      "import": "./dist/basic/rare.mjs",
+      "types": "./dist/basic/rare.d.ts"
     },
     "./far-eastern-border": {
-      "import": "./dist/far-eastern-border/index.mjs"
+      "import": "./dist/far-eastern-border/index.mjs",
+      "types": "./dist/far-eastern-border/index.d.ts"
     },
-    "./far-eastern-border/*": {
-      "import": "./dist/far-eastern-border/*.mjs"
+    "./far-eastern-border/common": {
+      "import": "./dist/far-eastern-border/common.mjs",
+      "types": "./dist/far-eastern-border/common.d.ts"
+    },
+    "./far-eastern-border/princess": {
+      "import": "./dist/far-eastern-border/princess.mjs",
+      "types": "./dist/far-eastern-border/princess.d.ts"
     },
     "./type": {
-      "import": "./dist/type.mjs"
+      "import": "./dist/type.mjs",
+      "types": "./dist/type.d.ts"
     }
   },
   "main": "dist/index.mjs",
