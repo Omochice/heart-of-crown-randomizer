@@ -44,7 +44,6 @@
     "unknownutil": "^3.16.3"
   },
   "devDependencies": {
-    "mkdist": "^1.5.4",
     "unbuild": "^2.0.0",
     "vite-plugin-dts": "^3.7.3"
   }
