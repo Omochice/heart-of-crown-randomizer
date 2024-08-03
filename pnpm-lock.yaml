@@ -11,6 +11,9 @@ importers:
       '@biomejs/biome':
         specifier: ^1.5.3
         version: 1.8.3
+      jsr:
+        specifier: ^0.13.1
+        version: 0.13.1
       npm-run-all2:
         specifier: ^6.1.2
         version: 6.2.2
@@ -35,9 +38,9 @@ importers:
 
   packages/card:
     dependencies:
-      unknownutil:
-        specifier: ^3.16.3
-        version: 3.18.1
+      '@core/unknownutil':
+        specifier: npm:@jsr/core__unknownutil@^3.16.3
+        version: '@jsr/core__unknownutil@3.18.1'
     devDependencies:
       unbuild:
         specifier: ^2.0.0
@@ -1188,6 +1191,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
+
+  '@jsr/core__unknownutil@3.18.1':
+    resolution: {integrity: sha512-m+RizJjOzfqs10hrKjRypRaftjlbQWh4MWPhnoK/Evls4dFNr3hYjrzD0N4rVoXMpA1h54VX2uBGPGBtezFjPQ==, tarball: https://npm.jsr.io/~/11/@jsr/core__unknownutil/3.18.1.tgz}
 
   '@microsoft/api-extractor-model@7.28.13':
     resolution: {integrity: sha512-39v/JyldX4MS9uzHcdfmjjfS6cYGAoXV+io8B5a338pkHiSt+gy2eXQ0Q7cGFJ7quSa1VqqlMdlPrB6sLR/cAw==}
@@ -2342,6 +2348,10 @@ packages:
   jsonfile@4.0.0:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
 
+  jsr@0.13.1:
+    resolution: {integrity: sha512-vKS4Z23V9Ue4hbup85d4dPGi8rNjojoLpZXQDgOudZjJZBvGy03bIzrJEzfMZDiwNx5ARSdp6Y5ua1winxEvsw==}
+    hasBin: true
+
   kind-of@6.0.3:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
     engines: {node: '>=0.10.0'}
@@ -2658,6 +2668,10 @@ packages:
 
   node-releases@2.0.18:
     resolution: {integrity: sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==}
+
+  node-stream-zip@1.15.0:
+    resolution: {integrity: sha512-LN4fydt9TqhZhThkZIVQnF9cwjU3qmUH9h78Mx/K7d3VvfRqqwthLwJEUOEL0QPZ0XQmNN7be5Ggit5+4dq3Bw==}
+    engines: {node: '>=0.12.0'}
 
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
@@ -3137,6 +3151,10 @@ packages:
     resolution: {integrity: sha512-th5B4L2U+eGLq1TVh7zNRGBapioSORUeymIydxgFpwww9d2qyKvtuPU2jJuHvYAwwqi2Y596QBL3eEqcPEYL8Q==}
     engines: {node: '>=10'}
 
+  semiver@1.1.0:
+    resolution: {integrity: sha512-QNI2ChmuioGC1/xjyYwyZYADILWyW6AmS1UH6gDj/SFUUUS4MBAWs/7mxnkRPc/F4iHezDP+O8t0dO8WHiEOdg==}
+    engines: {node: '>=6'}
+
   semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
     hasBin: true
@@ -3462,9 +3480,6 @@ packages:
   universalify@0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
     engines: {node: '>= 4.0.0'}
-
-  unknownutil@3.18.1:
-    resolution: {integrity: sha512-xUxVwGuRfA3TqGwiulvZ8WHR4zTs/u9rN4ACqjVPVU86dBRkerVdwYb4o0c+hfJjsUufNO5pL0bjfB9UELJVOQ==}
 
   untyped@1.4.2:
     resolution: {integrity: sha512-nC5q0DnPEPVURPhfPQLahhSTnemVtPzdx7ofiRxXpOB2SYnb3MfdU3DVGyJdS8Lx+tBWeAePO8BfU/3EgksM7Q==}
@@ -4575,6 +4590,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@jsr/core__unknownutil@3.18.1': {}
 
   '@microsoft/api-extractor-model@7.28.13(@types/node@22.1.0)':
     dependencies:
@@ -5952,6 +5969,12 @@ snapshots:
     optionalDependencies:
       graceful-fs: 4.2.11
 
+  jsr@0.13.1:
+    dependencies:
+      kolorist: 1.8.0
+      node-stream-zip: 1.15.0
+      semiver: 1.1.0
+
   kind-of@6.0.3: {}
 
   kleur@3.0.3: {}
@@ -6439,6 +6462,8 @@ snapshots:
   node-forge@1.3.1: {}
 
   node-releases@2.0.18: {}
+
+  node-stream-zip@1.15.0: {}
 
   normalize-path@3.0.0: {}
 
@@ -6970,6 +6995,8 @@ snapshots:
       '@types/node-forge': 1.3.11
       node-forge: 1.3.1
 
+  semiver@1.1.0: {}
+
   semver@6.3.1: {}
 
   semver@7.5.4:
@@ -7317,8 +7344,6 @@ snapshots:
       unist-util-visit-parents: 6.0.1
 
   universalify@0.1.2: {}
-
-  unknownutil@3.18.1: {}
 
   untyped@1.4.2:
     dependencies:

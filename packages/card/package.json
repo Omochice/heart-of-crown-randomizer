@@ -62,11 +62,11 @@
     "fmt:package": "sort-package-json",
     "test": "vitest --run"
   },
-  "dependencies": {
-    "unknownutil": "^3.16.3"
-  },
   "devDependencies": {
     "unbuild": "^2.0.0",
     "vite-plugin-dts": "^3.7.3"
+  },
+  "dependencies": {
+    "@core/unknownutil": "npm:@jsr/core__unknownutil@^3.16.3"
   }
 }
