@@ -67,6 +67,8 @@ export const isDuplicateCard = is.ObjectOf({
   edition: isEdition,
 });
 
+export type DuplicatedCard = PredicateType<typeof isDuplicateCard>;
+
 export const isUniqueCard = is.ObjectOf({
   id: is.Number,
   type: is.LiteralOf("common"),
@@ -75,6 +77,8 @@ export const isUniqueCard = is.ObjectOf({
   cost: is.Number,
   edition: isEdition,
 });
+
+export type UniqueCard = PredicateType<typeof isUniqueCard>;
 
 export const isCommonCard = is.UnionOf([isDuplicateCard, isUniqueCard]);
 
