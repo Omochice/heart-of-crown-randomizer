@@ -1,4 +1,4 @@
-import { type PredicateType, is } from "unknownutil";
+import { type PredicateType, is } from "@core/unknownutil";
 
 const isMainType = is.LiteralOneOf([
   /** プリンセス */
