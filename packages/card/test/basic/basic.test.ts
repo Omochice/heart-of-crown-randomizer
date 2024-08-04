@@ -1,11 +1,10 @@
-import { describe, expect, test } from "vitest";
+import { describe, expectTypeOf, it } from "vitest";
 import { basics } from "../../src/basic/basic";
-import { isBasicCard } from "../../src/type";
+import type { BasicCard } from "../../src/type";
+import { assert } from "typia";
 
 describe("basic/basic", () => {
-  test("check schema", () => {
-    for (const basic of basics) {
-      expect(isBasicCard(basic)).toBe(true);
-    }
+  it.each(basics)("card($id) satisfy type `BasicCard`", (basic) => {
+    expectTypeOf(assert<BasicCard>(basic)).toEqualTypeOf<BasicCard>();
   });
 });
