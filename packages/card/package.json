@@ -60,6 +60,7 @@
     "fmt": "npm-run-all fmt:*",
     "fmt:code": "biome format --write .",
     "fmt:package": "sort-package-json",
+    "fmt:sort-package": "biome check --write .",
     "test": "vitest --run --typecheck"
   },
   "devDependencies": {
