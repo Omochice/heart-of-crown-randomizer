@@ -34,10 +34,6 @@ importers:
         version: 2.0.5(@types/node@22.1.0)
 
   packages/card:
-    dependencies:
-      unknownutil:
-        specifier: ^3.16.1
-        version: 3.16.1
     devDependencies:
       '@ryoppippi/unplugin-typia':
         specifier: npm:@jsr/ryoppippi__unplugin-typia@^0.6.16
@@ -3665,9 +3661,6 @@ packages:
   universalify@0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
     engines: {node: '>= 4.0.0'}
-
-  unknownutil@3.16.1:
-    resolution: {integrity: sha512-rhRhuMrx2a9AYbCgKQPQKKyXU18w3H77Ohu0Lh2+NdTZMjQjwHHOXI8lAqjc+3TvjzYniJ9L4y6y6yXCEbwncA==}
 
   unplugin@1.12.0:
     resolution: {integrity: sha512-KeczzHl2sATPQUx1gzo+EnUkmN4VmGBYRRVOZSGvGITE9rGHRDGqft6ONceP3vgXcyJ2XjX5axG5jMWUwNCYLw==}
@@ -7756,8 +7749,6 @@ snapshots:
       unist-util-visit-parents: 6.0.1
 
   universalify@0.1.2: {}
-
-  unknownutil@3.16.1: {}
 
   unplugin@1.12.0:
     dependencies:

@@ -62,9 +62,6 @@
     "fmt:package": "sort-package-json",
     "test": "vitest --run --typecheck"
   },
-  "dependencies": {
-    "unknownutil": "^3.16.1"
-  },
   "devDependencies": {
     "@ryoppippi/unplugin-typia": "npm:@jsr/ryoppippi__unplugin-typia@^0.6.16",
     "typia": "^6.7.0",
