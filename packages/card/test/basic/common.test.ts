@@ -1,14 +1,13 @@
-import { describe, expect, test } from "vitest";
+import { assert } from "typia";
+import { describe, expect, expectTypeOf, it } from "vitest";
 import { commons } from "../../src/basic/common";
-import { isCommonCard } from "../../src/type";
+import type { CommonCard } from "../../src/type";
 
 describe("basic/common", () => {
-  test("check schema", () => {
-    for (const common of commons) {
-      expect(isCommonCard(common)).toBe(true);
-      if (common.cards) {
-        expect(common.cards.length).toBe(5);
-      }
+  it.each(commons)("card($id) satisfy type `CommonCard`", (common) => {
+    expectTypeOf(assert<CommonCard>(common)).toEqualTypeOf<CommonCard>();
+    if (common.cards) {
+      expect(common.cards.length).toBe(5);
     }
   });
 });

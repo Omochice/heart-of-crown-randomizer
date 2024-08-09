@@ -60,12 +60,12 @@
     "fmt": "npm-run-all fmt:*",
     "fmt:code": "biome format --write .",
     "fmt:package": "sort-package-json",
-    "test": "vitest --run"
-  },
-  "dependencies": {
-    "unknownutil": "^3.16.3"
+    "fmt:sort-package": "biome check --write .",
+    "test": "vitest --run --typecheck"
   },
   "devDependencies": {
+    "@ryoppippi/unplugin-typia": "npm:@jsr/ryoppippi__unplugin-typia@^0.6.16",
+    "typia": "^6.7.0",
     "unbuild": "^2.0.0",
     "vite-plugin-dts": "^3.7.3"
   }
