@@ -53,13 +53,13 @@ importers:
         version: 0.9.3(prettier-plugin-astro@0.14.1)(prettier@3.4.0)(typescript@5.7.2)
       '@astrojs/cloudflare':
         specifier: ^11.0.0
-        version: 11.2.0(astro@4.16.14(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2))
+        version: 11.2.0(astro@4.16.15(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2))
       '@heart-of-crown-randomizer/card':
         specifier: workspace:*
         version: link:../card
       astro:
         specifier: ^4.4.11
-        version: 4.16.14(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2)
+        version: 4.16.15(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2)
     devDependencies:
       prettier:
         specifier: ^3.2.5
@@ -1476,8 +1476,8 @@ packages:
     peerDependencies:
       astro: ^4.12.0
 
-  astro@4.16.14:
-    resolution: {integrity: sha512-2IuLkIp4idyspugq+F52rHZyNqHHi2AdQzuKp3SGytg/YAm50dNeWhP/7l+enjgWZLloLq5xsH5gVQpoDFoyFg==}
+  astro@4.16.15:
+    resolution: {integrity: sha512-usybZ7nEUiwYKT7r47l4VbkqjKfaE+BgWV/ed4PT3mE3vFRTBWFsXLnkzrN7awfN6+/ekZTAcE+MAkdA551Umw==}
     engines: {node: ^18.17.1 || ^20.3.0 || >=21.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -2345,8 +2345,8 @@ packages:
   magic-string@0.30.12:
     resolution: {integrity: sha512-Ea8I3sQMVXr8JhN4z+H/d8zwo+tYDgHE9+5G4Wnrwhs0gaK9fXTKx0Tw5Xwsd/bCPTTZNRAdpyzvoeORe9LYpw==}
 
-  magic-string@0.30.13:
-    resolution: {integrity: sha512-8rYBO+MsWkgjDSOvLomYnzhdwEG51olQ4zL5KXnNJWV5MNmrb4rTZdrtkhxjnD/QyZUqR/Z/XDsUs/4ej2nx0g==}
+  magic-string@0.30.14:
+    resolution: {integrity: sha512-5c99P1WKTed11ZC0HMJOj6CDIue6F8ySu+bJL+85q1zBEIY8IklrJ1eiKC2NDRh3Ct3FcvmJPyQHb9erXMTJNw==}
 
   magicast@0.3.5:
     resolution: {integrity: sha512-L0WhttDl+2BOsybvEOLK7fW3UA0OQ0IQ2d6Zl2x/a6vVRs3bAY0ECOSHHeL5jD+SbOpOCUEi0y1DgHEn9Qn1AQ==}
@@ -3338,8 +3338,8 @@ packages:
     resolution: {integrity: sha512-vCJPoy8/3KkqY3W0cX2nrwhmtBQSZhEyrVgeJ4NlEXwGxu5vNRQDyV6se5VVAQMwfBsBJswlo87B7ai7Dr1MpQ==}
     hasBin: true
 
-  type-fest@4.27.0:
-    resolution: {integrity: sha512-3IMSWgP7C5KSQqmo1wjhKrwsvXAtF33jO3QY+Uy++ia7hqvgSK6iXbbg5PbDBc1P2ZbNEDgejOrN4YooXvhwCw==}
+  type-fest@4.28.1:
+    resolution: {integrity: sha512-LO/+yb3mf46YqfUC7QkkoAlpa7CTYh//V1Xy9+NQ+pKqDqXIq0NTfPfQRwFfCt+if4Qkwb9gzZfsl6E5TkXZGw==}
     engines: {node: '>=16'}
 
   typesafe-path@0.2.2:
@@ -3806,13 +3806,13 @@ snapshots:
       - prettier
       - prettier-plugin-astro
 
-  '@astrojs/cloudflare@11.2.0(astro@4.16.14(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2))':
+  '@astrojs/cloudflare@11.2.0(astro@4.16.15(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2))':
     dependencies:
       '@astrojs/internal-helpers': 0.4.1
       '@astrojs/underscore-redirects': 0.3.4
       '@cloudflare/workers-types': 4.20241022.0
-      '@inox-tools/astro-when': 0.2.4(astro@4.16.14(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2))
-      astro: 4.16.14(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2)
+      '@inox-tools/astro-when': 0.2.4(astro@4.16.15(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2))
+      astro: 4.16.15(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2)
       esbuild: 0.21.5
       estree-walker: 3.0.3
       magic-string: 0.30.12
@@ -4494,10 +4494,10 @@ snapshots:
   '@img/sharp-win32-x64@0.33.5':
     optional: true
 
-  '@inox-tools/astro-when@0.2.4(astro@4.16.14(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2))':
+  '@inox-tools/astro-when@0.2.4(astro@4.16.15(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2))':
     dependencies:
-      astro: 4.16.14(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2)
-      astro-integration-kit: 0.16.1(astro@4.16.14(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2))
+      astro: 4.16.15(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2)
+      astro-integration-kit: 0.16.1(astro@4.16.15(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2))
       debug: 4.3.7
     transitivePeerDependencies:
       - supports-color
@@ -5016,13 +5016,13 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  astro-integration-kit@0.16.1(astro@4.16.14(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2)):
+  astro-integration-kit@0.16.1(astro@4.16.15(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2)):
     dependencies:
-      astro: 4.16.14(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2)
+      astro: 4.16.15(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2)
       pathe: 1.1.2
       recast: 0.23.9
 
-  astro@4.16.14(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2):
+  astro@4.16.15(@types/node@22.8.1)(rollup@4.25.0)(typescript@5.7.2):
     dependencies:
       '@astrojs/compiler': 2.10.3
       '@astrojs/internal-helpers': 0.4.1
@@ -5061,7 +5061,7 @@ snapshots:
       http-cache-semantics: 4.1.1
       js-yaml: 4.1.0
       kleur: 4.1.5
-      magic-string: 0.30.13
+      magic-string: 0.30.14
       magicast: 0.3.5
       micromatch: 4.0.8
       mrmime: 2.0.0
@@ -5132,7 +5132,7 @@ snapshots:
       chalk: 5.3.0
       cli-boxes: 3.0.0
       string-width: 7.2.0
-      type-fest: 4.27.0
+      type-fest: 4.28.1
       widest-line: 5.0.0
       wrap-ansi: 9.0.0
 
@@ -6018,7 +6018,7 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  magic-string@0.30.13:
+  magic-string@0.30.14:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
 
@@ -7243,7 +7243,7 @@ snapshots:
       turbo-windows-64: 2.3.2
       turbo-windows-arm64: 2.3.2
 
-  type-fest@4.27.0: {}
+  type-fest@4.28.1: {}
 
   typesafe-path@0.2.2: {}
 
