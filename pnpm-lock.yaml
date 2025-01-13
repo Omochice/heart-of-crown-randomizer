@@ -41,7 +41,7 @@ importers:
     devDependencies:
       unbuild:
         specifier: ^3.0.0
-        version: 3.3.0(typescript@5.7.3)(vue-tsc@1.8.27(typescript@5.7.3))
+        version: 3.3.1(typescript@5.7.3)(vue-tsc@1.8.27(typescript@5.7.3))
       vite-plugin-dts:
         specifier: ^4.0.0
         version: 4.5.0(@types/node@22.8.1)(rollup@4.30.1)(typescript@5.7.3)(vite@6.0.7(@types/node@22.8.1)(jiti@2.4.2)(yaml@2.6.1))
@@ -3258,11 +3258,11 @@ packages:
   ufo@1.5.4:
     resolution: {integrity: sha512-UsUk3byDzKd04EyoZ7U4DOlxQaD14JUKQl6/P7wiX4FNvUfm3XL246n9W5AmqwW5RSFJ27NAuM0iLscAOYUiGQ==}
 
-  unbuild@3.3.0:
-    resolution: {integrity: sha512-DRBK6KpMo4A2gAkQglItfLWbjJtiBfNfS87UCLf0yoDsxUUwU4AgQJru0dGoX0vW8bfMaBynvWgTUtzr4CJcbQ==}
+  unbuild@3.3.1:
+    resolution: {integrity: sha512-/5OeeHmW1JlWEyQw3SPkB9BV16lzr6C5i8D+O17NLx6ETgvCZ3ZlyXfWkVVfG2YCsv8xAVQCqJNJtbEAGwHg7A==}
     hasBin: true
     peerDependencies:
-      typescript: ^5.7.2
+      typescript: ^5.7.3
     peerDependenciesMeta:
       typescript:
         optional: true
@@ -7105,7 +7105,7 @@ snapshots:
 
   ufo@1.5.4: {}
 
-  unbuild@3.3.0(typescript@5.7.3)(vue-tsc@1.8.27(typescript@5.7.3)):
+  unbuild@3.3.1(typescript@5.7.3)(vue-tsc@1.8.27(typescript@5.7.3)):
     dependencies:
       '@rollup/plugin-alias': 5.1.1(rollup@4.30.1)
       '@rollup/plugin-commonjs': 28.0.2(rollup@4.30.1)
