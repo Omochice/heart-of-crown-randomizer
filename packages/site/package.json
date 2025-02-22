@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.0",
-    "@astrojs/cloudflare": "^11.0.0",
+    "@astrojs/cloudflare": "^12.0.0",
     "@heart-of-crown-randomizer/card": "workspace:*",
     "astro": "^4.4.11"
   },
