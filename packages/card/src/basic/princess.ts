@@ -1,4 +1,4 @@
-import { Princess } from "../type";
+import type { Princess } from "../type";
 
 export const princesses = [
   {

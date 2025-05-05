@@ -1,4 +1,4 @@
-import { CommonCard } from "../type";
+import type { CommonCard } from "../type";
 
 export const commons = [
   {

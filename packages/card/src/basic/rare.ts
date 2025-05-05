@@ -1,4 +1,4 @@
-import { RareCard } from "../type";
+import type { RareCard } from "../type";
 
 export const rares = [
   {

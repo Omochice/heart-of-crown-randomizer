@@ -1,4 +1,4 @@
-import { BasicCard } from "../type";
+import type { BasicCard } from "../type";
 
 export const basics = [
   {
