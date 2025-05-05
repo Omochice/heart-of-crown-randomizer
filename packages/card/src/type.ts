@@ -1,99 +1,84 @@
-import { type PredicateType, is } from "unknownutil";
-
-const isMainType = is.LiteralOneOf([
+export type MainType =
   /** プリンセス */
-  "princess",
+  | "princess"
   /** 領地 */
-  "territory",
+  | "territory"
   /** 継承権 */
-  "succession",
+  | "succession"
   /** 災い */
-  "disaster",
+  | "disaster"
   /** 行動 */
-  "action",
+  | "action"
   /** 攻撃 */
-  "attack",
-] as const);
-export type MainType = PredicateType<typeof isMainType>;
+  | "attack";
 
-const isSubType = is.LiteralOneOf([
+export type SubType =
   /** 侍女 */
-  "maid",
+  | "maid"
   /** 兵力 */
-  "millitary",
+  | "millitary"
   /** 魔法 */
-  "magic",
+  | "magic"
   /** 商人 */
-  "merchant",
+  | "merchant"
   /** 計略 */
-  "plot",
-] as const);
-export type SubType = PredicateType<typeof isSubType>;
+  | "plot";
 
-const Edition = {
+export const Edition = {
   BASIC: 0,
   FAR_EASTERN_BORDER: 1,
 } as const;
-const isEdition = is.LiteralOneOf(Object.values(Edition));
-type Edition = PredicateType<typeof isEdition>;
+export type Edition = (typeof Edition)[keyof typeof Edition];
 
-export const isPrincess = is.ObjectOf({
-  id: is.Number,
-  type: is.LiteralOf("princess"),
-  name: is.String,
-  mainType: is.LiteralOf("princess"),
-  cost: is.LiteralOf(6),
-  succession: is.Number,
-  effect: is.String,
-  edition: isEdition,
-});
-
-export type Princess = PredicateType<typeof isPrincess>;
-
-const cardBase = {
-  name: is.String,
-  mainType: is.ArrayOf(isMainType),
-  subType: is.OptionalOf(isSubType),
-  succession: is.Number,
-  cost: is.Number,
-  link: is.LiteralOneOf([0, 1, 2] as const),
-  effect: is.String,
+export type Princess = {
+  id: number;
+  type: "princess";
+  name: string;
+  mainType: "princess";
+  cost: 6;
+  succession: number;
+  effect: string;
+  edition: Edition;
 };
 
-export const isDuplicateCard = is.ObjectOf({
-  id: is.Number,
-  type: is.LiteralOf("common"),
-  ...cardBase,
-  edition: isEdition,
-});
+type CardBase = {
+  name: string;
+  mainType: MainType[];
+  subType?: SubType;
+  succession?: number;
+  coin?: number;
+  cost: number;
+  link: 0 | 1 | 2;
+  effect: string;
+};
 
-export const isUniqueCard = is.ObjectOf({
-  id: is.Number,
-  type: is.LiteralOf("common"),
-  name: is.String,
-  cards: is.ArrayOf(is.ObjectOf(cardBase)),
-  cost: is.Number,
-  edition: isEdition,
-});
+export type DuplicateCard = CardBase & {
+  id: number;
+  type: "common";
+  hasChild: false;
+  edition: Edition;
+};
 
-export const isCommonCard = is.UnionOf([isDuplicateCard, isUniqueCard]);
+export type UniqueCard = {
+  id: number;
+  type: "common";
+  name: string;
+  cards: CardBase[];
+  cost: number;
+  hasChild: true;
+  edition: Edition;
+};
 
-export type CommonCard = PredicateType<typeof isCommonCard>;
+export type CommonCard = DuplicateCard | UniqueCard;
 
-export const isBasicCard = is.ObjectOf({
-  id: is.Number,
-  type: is.LiteralOf("basic"),
-  ...cardBase,
-  edition: isEdition,
-});
+export type BasicCard = CardBase & {
+  id: number;
+  type: "basic";
+  edition: Edition;
+};
 
-export type BasicCard = PredicateType<typeof isBasicCard>;
-
-export const isRareCard = is.ObjectOf({
-  id: is.Number,
-  type: is.LiteralOf("rare"),
-  ...cardBase,
-  edition: isEdition,
-});
-
-export type RareCard = PredicateType<typeof isRareCard>;
+export type RareCard = CardBase & {
+  id: number;
+  type: "rare";
+  edition: Edition;
+};
