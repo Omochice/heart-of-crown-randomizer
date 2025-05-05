@@ -34,10 +34,6 @@ importers:
         version: 2.1.9(@types/node@22.8.1)
 
   packages/card:
-    dependencies:
-      unknownutil:
-        specifier: ^3.16.3
-        version: 3.18.1
     devDependencies:
       unbuild:
         specifier: ^3.0.0
@@ -3754,9 +3750,6 @@ packages:
   universalify@2.0.1:
     resolution: {integrity: sha512-gptHNQghINnc/vTGIk0SOFGFNXw7JVrlRUtConJRlvaw6DuX0wO5Jeko9sWrMBhh+PsYAZ7oXAiOnf/UKogyiw==}
     engines: {node: '>= 10.0.0'}
-
-  unknownutil@3.18.1:
-    resolution: {integrity: sha512-xUxVwGuRfA3TqGwiulvZ8WHR4zTs/u9rN4ACqjVPVU86dBRkerVdwYb4o0c+hfJjsUufNO5pL0bjfB9UELJVOQ==}
 
   untyped@2.0.0:
     resolution: {integrity: sha512-nwNCjxJTjNuLCgFr42fEak5OcLuB3ecca+9ksPFNvtfYSLpjf+iJqSIaSnIile6ZPbKYxI5k2AfXqeopGudK/g==}
@@ -7977,8 +7970,6 @@ snapshots:
       unist-util-visit-parents: 6.0.1
 
   universalify@2.0.1: {}
-
-  unknownutil@3.18.1: {}
 
   untyped@2.0.0:
     dependencies:
