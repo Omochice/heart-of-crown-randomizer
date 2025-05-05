@@ -9,7 +9,7 @@ on:
 
 jobs:
   path-filter:
-    timeout-minutes: 30
+    timeout-minutes: 5
     outputs:
       actions: ${{steps.changes.outputs.actions}}
       ts: ${{steps.changes.outputs.ts}}
