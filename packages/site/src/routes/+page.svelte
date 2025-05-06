@@ -4,7 +4,8 @@
   import { page } from "$app/state";
 
   // カードの設定
-  const suits = ["♥", "♦", "♣", "♠"];
+  type Suit = "♥" | "♦" | "♣" | "♠";
+  const suits: Suit[] = ["♥", "♦", "♣", "♠"];
   const values = [
     "A",
     "2",
@@ -22,7 +23,7 @@
   ];
 
   type Card = {
-    suit: string;
+    suit: Suit;
     value: string;
   };
 
@@ -39,10 +40,13 @@
   onMount(() => {
     const results = page.url.searchParams.get("results");
     if (results) {
-      selectedCards = results.split(/\s+/).map((card) => ({
-        suit: card[0],
-        value: card.substring(1),
-      }));
+      selectedCards = results.split(/\s+/).map(
+        (card) =>
+          ({
+            suit: card[0],
+            value: card.substring(1),
+          }) as unknown as Card,
+      );
     }
 
     // localStorageから除外カードを読み込む
@@ -74,16 +78,19 @@
 
     if (includeAllSuits) {
       // 各スートから少なくとも1枚ずつ選ぶ（除外カードを考慮）
-      const cardsBySuit = {};
+      const cardsBySuit = new Map<Suit, Card[]>();
       suits.forEach((suit) => {
-        cardsBySuit[suit] = shuffledDeck.filter((card) => card.suit === suit);
+        cardsBySuit.set(
+          suit,
+          shuffledDeck.filter((card) => card.suit === suit),
+        );
       });
 
       selectedCards = [];
       suits.forEach((suit) => {
-        if (cardsBySuit[suit].length > 0) {
-          selectedCards.push(cardsBySuit[suit][0]);
-        }
+        const c = cardsBySuit.get(suit)?.at(0);
+        if (c == null) return;
+        selectedCards.push(c);
       });
 
       // 残りのカードをランダムに選択
@@ -152,12 +159,12 @@
   }
 
   // カードの色を決定
-  function getCardColor(suit) {
+  function getCardColor(suit: Suit) {
     return suit === "♥" || suit === "♦" ? "text-red-600" : "text-black";
   }
 
   // カードの特別なスタイルを決定
-  function getCardStyle(suit) {
+  function getCardStyle(suit: Suit) {
     if (suit === "♠") {
       return "card-spade";
     } else if (suit === "♥") {
@@ -166,25 +173,25 @@
     return "";
   }
 
-  // カードを除外リストに追加
-  function excludeCard(suit, value) {
-    // 既に除外リストにあるか確認
-    if (!isCardExcluded(suit, value)) {
-      excludedCards = [...excludedCards, { suit, value }];
-      // localStorageに保存
-      localStorage.setItem("excludedCards", JSON.stringify(excludedCards));
-    }
-  }
+  // // カードを除外リストに追加
+  // function excludeCard(suit, value) {
+  //   // 既に除外リストにあるか確認
+  //   if (!isCardExcluded(suit, value)) {
+  //     excludedCards = [...excludedCards, { suit, value }];
+  //     // localStorageに保存
+  //     localStorage.setItem("excludedCards", JSON.stringify(excludedCards));
+  //   }
+  // }
 
   // カードが除外リストにあるか確認
-  function isCardExcluded(suit, value) {
+  function isCardExcluded(suit: Suit, value: string) {
     return excludedCards.some(
       (card) => card.suit === suit && card.value === value,
     );
   }
 
   // 除外リストからカードを削除
-  function removeFromExcluded(suit, value) {
+  function removeFromExcluded(suit: Suit, value: string) {
     excludedCards = excludedCards.filter(
       (card) => !(card.suit === suit && card.value === value),
     );
@@ -193,7 +200,7 @@
   }
 
   // 選択されたカードを表示リストから削除（除外リストには追加しない）
-  function removeSelectedCard(index) {
+  function removeSelectedCard(index: number) {
     // カードを選択リストから削除
     selectedCards = selectedCards.filter((_, i) => i !== index);
 
