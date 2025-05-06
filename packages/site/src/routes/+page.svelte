@@ -286,14 +286,16 @@
     </div>
 
     <div class="mb-6">
-      <label class="block mb-2">カード枚数: {numberOfCards}</label>
-      <input
-        type="range"
-        min="1"
-        max="20"
-        bind:value={numberOfCards}
-        class="w-full"
-      />
+      <label class="block mb-2"
+        >カード枚数: {numberOfCards}
+        <input
+          type="range"
+          min="1"
+          max="20"
+          bind:value={numberOfCards}
+          class="w-full"
+        />
+      </label>
     </div>
 
     <div class="grid grid-cols-2 gap-4">
