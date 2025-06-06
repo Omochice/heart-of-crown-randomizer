@@ -31,7 +31,7 @@
 		"@tailwindcss/vite": "4.1.8",
 		"@testing-library/jest-dom": "6.6.3",
 		"@testing-library/svelte": "5.2.8",
-		"@types/node": "22.15.29",
+		"@types/node": "22.15.30",
 		"jsdom": "26.1.0",
 		"prettier": "3.5.3",
 		"prettier-plugin-svelte": "3.4.0",
