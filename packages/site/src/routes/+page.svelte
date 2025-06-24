@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { Basic, FarEasternBorder } from '@heart-of-crown-randomizer/card';
-	import type { Princess, CommonCard } from '@heart-of-crown-randomizer/card/src/type';
+	import type { CommonCard, Princess } from '@heart-of-crown-randomizer/card/src/type';
+	import { onMount } from 'svelte';
 
 	// Card type definition
 	type Card = Princess | CommonCard;
@@ -26,13 +26,13 @@
 			if (princessIds) {
 				selectedPrincesses = princessIds
 					.split(',')
-					.map((id) => Basic.princesses.find((p) => p.id === parseInt(id)))
+					.map((id) => Basic.princesses.find((p) => p.id === Number.parseInt(id)))
 					.filter(Boolean) as Princess[];
 			}
 			if (commonIds) {
 				selectedCommons = commonIds
 					.split(',')
-					.map((id) => Basic.commons.find((c) => c.id === parseInt(id)))
+					.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
 					.filter(Boolean) as CommonCard[];
 			}
 		}
@@ -139,7 +139,7 @@
 	}
 
 	// State management for swipe functionality
-	let swipeState = {
+	const swipeState = {
 		startX: 0,
 		startY: 0,
 		currentX: 0,
@@ -153,14 +153,14 @@
 	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
 		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
 		const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
-		
+
 		swipeState.startX = clientX;
 		swipeState.startY = clientY;
 		swipeState.currentX = clientX;
 		swipeState.isDragging = true;
 		swipeState.cardElement = event.currentTarget as HTMLElement;
 		swipeState.cardIndex = index;
-		
+
 		// For mouse events, listen at document level
 		if (!('touches' in event)) {
 			document.addEventListener('mousemove', handleSwipeMove);
@@ -171,19 +171,21 @@
 	// Handle swipe move
 	function handleSwipeMove(event: TouchEvent | MouseEvent) {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
-		
+
 		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
 		const deltaX = clientX - swipeState.startX;
-		const deltaY = Math.abs(('touches' in event ? event.touches[0].clientY : event.clientY) - swipeState.startY);
-		
+		const deltaY = Math.abs(
+			('touches' in event ? event.touches[0].clientY : event.clientY) - swipeState.startY
+		);
+
 		// Cancel swipe if vertical movement is too large
 		if (deltaY > 50) {
 			handleSwipeCancel();
 			return;
 		}
-		
+
 		swipeState.currentX = clientX;
-		
+
 		// Update card position
 		swipeState.cardElement.style.transform = `translateX(${deltaX}px)`;
 		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
@@ -192,9 +194,9 @@
 	// Handle swipe end
 	function handleSwipeEnd(event: TouchEvent | MouseEvent) {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
-		
+
 		const deltaX = swipeState.currentX - swipeState.startX;
-		
+
 		// Delete card if threshold exceeded
 		if (Math.abs(deltaX) > swipeState.threshold) {
 			// Delete immediately (no animation)
@@ -205,11 +207,11 @@
 			swipeState.cardElement.style.transform = '';
 			swipeState.cardElement.style.opacity = '';
 		}
-		
+
 		// Clean up event listeners
 		document.removeEventListener('mousemove', handleSwipeMove);
 		document.removeEventListener('mouseup', handleSwipeEnd);
-		
+
 		swipeState.isDragging = false;
 	}
 
@@ -219,28 +221,25 @@
 			swipeState.cardElement.style.transform = '';
 			swipeState.cardElement.style.opacity = '';
 		}
-		
+
 		document.removeEventListener('mousemove', handleSwipeMove);
 		document.removeEventListener('mouseup', handleSwipeEnd);
-		
+
 		swipeState.isDragging = false;
 		swipeState.cardElement = null;
 		swipeState.cardIndex = -1;
 	}
-
 
 	// Check if common card is in excluded list
 	function isCommonExcluded(common: CommonCard) {
 		return excludedCommons.some((c) => c.id === common.id);
 	}
 
-
 	// Remove common card from excluded list
 	function removeFromExcludedCommons(common: CommonCard) {
 		excludedCommons = excludedCommons.filter((c) => c.id !== common.id);
 		localStorage.setItem('excludedCommons', JSON.stringify(excludedCommons));
 	}
-
 
 	// Remove selected common card from display list
 	function removeSelectedCommon(index: number) {
@@ -256,7 +255,6 @@
 		goto(`?results=${resultParam}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
-
 
 	// Draw missing common cards
 	function drawMissingCommons() {
@@ -279,7 +277,6 @@
 		updateUrlAndShare();
 	}
 
-
 	function clearExcludedCommons() {
 		excludedCommons = [];
 		localStorage.removeItem('excludedCommons');
@@ -291,7 +288,6 @@
 
 	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
 		<h2 class="text-xl font-semibold mb-4">オプション設定</h2>
-
 
 		<div class="mb-6">
 			<label class="block mb-2">一般カード枚数:</label>
@@ -349,7 +345,6 @@
 			</button>
 		</div>
 
-
 		{#if excludedCommons.length === 0}
 			<p class="text-gray-500 italic">除外カードはありません</p>
 		{:else}
@@ -372,29 +367,36 @@
 	</div>
 
 	{#if selectedCommons.length > 0}
-		{@const basicCards = selectedCommons.filter(c => c.edition === 0).sort((a, b) => a.cost - b.cost)}
-		{@const farEasternCards = selectedCommons.filter(c => c.edition === 1).sort((a, b) => a.cost - b.cost)}
+		{@const basicCards = selectedCommons
+			.filter((c) => c.edition === 0)
+			.sort((a, b) => a.cost - b.cost)}
+		{@const farEasternCards = selectedCommons
+			.filter((c) => c.edition === 1)
+			.sort((a, b) => a.cost - b.cost)}
 		<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-			<h2 class="text-xl font-semibold mb-4">
-				結果
-			</h2>
+			<h2 class="text-xl font-semibold mb-4">結果</h2>
 
 			{#if basicCards.length > 0}
 				<div class="mb-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each basicCards as common}
-							{@const originalIndex = selectedCommons.findIndex(c => c.id === common.id)}
-							<div 
+							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
+							<div
 								role="button"
 								tabindex="0"
 								aria-label="カード {common.name} をスワイプして削除"
-								class="border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(common.link)} select-none cursor-grab active:cursor-grabbing"
+								class="border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
+									common.link
+								)} select-none cursor-grab active:cursor-grabbing"
 								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
 								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
 								on:touchmove={handleSwipeMove}
 								on:touchend={handleSwipeEnd}
 								on:touchcancel={handleSwipeCancel}
-								on:keydown={(e) => { if (e.key === 'Delete' || e.key === 'Backspace') removeSelectedCommon(originalIndex); }}
+								on:keydown={(e) => {
+									if (e.key === 'Delete' || e.key === 'Backspace')
+										removeSelectedCommon(originalIndex);
+								}}
 							>
 								<button
 									on:click={() => removeSelectedCommon(originalIndex)}
@@ -428,18 +430,23 @@
 				<div class="mb-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each farEasternCards as common}
-							{@const originalIndex = selectedCommons.findIndex(c => c.id === common.id)}
-							<div 
+							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
+							<div
 								role="button"
 								tabindex="0"
 								aria-label="カード {common.name} をスワイプして削除"
-								class="border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(common.link)} select-none cursor-grab active:cursor-grabbing"
+								class="border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
+									common.link
+								)} select-none cursor-grab active:cursor-grabbing"
 								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
 								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
 								on:touchmove={handleSwipeMove}
 								on:touchend={handleSwipeEnd}
 								on:touchcancel={handleSwipeCancel}
-								on:keydown={(e) => { if (e.key === 'Delete' || e.key === 'Backspace') removeSelectedCommon(originalIndex); }}
+								on:keydown={(e) => {
+									if (e.key === 'Delete' || e.key === 'Backspace')
+										removeSelectedCommon(originalIndex);
+								}}
 							>
 								<button
 									on:click={() => removeSelectedCommon(originalIndex)}
@@ -506,7 +513,6 @@
 		font-family: 'Helvetica Neue', Arial, sans-serif;
 	}
 
-
 	/* Common card style - green border */
 	.card-common {
 		box-shadow: 3px 3px 0 #059669;
@@ -520,11 +526,16 @@
 
 	/* Link 1: Yellow highlight on right side */
 	.link-1 {
-		box-shadow: 3px 0 0 #fbbf24, 3px 3px 0 #059669;
+		box-shadow:
+			3px 0 0 #fbbf24,
+			3px 3px 0 #059669;
 	}
 
 	/* Link 2: Yellow highlight on right and bottom */
 	.link-2 {
-		box-shadow: 3px 0 0 #fbbf24, 0 3px 0 #fbbf24, 3px 3px 0 #fbbf24;
+		box-shadow:
+			3px 0 0 #fbbf24,
+			0 3px 0 #fbbf24,
+			3px 3px 0 #fbbf24;
 	}
 </style>
