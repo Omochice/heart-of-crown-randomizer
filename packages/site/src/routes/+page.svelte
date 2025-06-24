@@ -197,15 +197,9 @@
 		
 		// 閾値を超えた場合は削除
 		if (Math.abs(deltaX) > swipeState.threshold) {
-			// カードを画面外に移動してから削除
-			swipeState.cardElement.style.transform = `translateX(${deltaX > 0 ? '100%' : '-100%'})`;
-			swipeState.cardElement.style.opacity = '0';
-			
-			// アニメーション完了後に削除
-			setTimeout(() => {
-				removeSelectedCommon(swipeState.cardIndex);
-				handleSwipeCancel();
-			}, 300);
+			// 即座に削除（アニメーションなし）
+			removeSelectedCommon(swipeState.cardIndex);
+			handleSwipeCancel();
 		} else {
 			// 元の位置に戻す
 			swipeState.cardElement.style.transform = '';
@@ -504,7 +498,6 @@
 	.card-common {
 		box-shadow: 3px 3px 0 #059669;
 		touch-action: pan-y; /* 縦方向のスクロールを許可、横方向はスワイプで制御 */
-		transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 	}
 
 	/* スワイプ中のカードスタイル */
