@@ -2,8 +2,12 @@ import type { Config } from 'prettier';
 
 const config = {
 	useTabs: true,
-	singleQuote: true,
-	trailingComma: 'none',
+	singleQuote: false,
+	singleAttributePerLine: true,
+	bracketSpacing: true,
+	endOfLine: 'lf',
+	semi: true,
+	trailingComma: 'all',
 	printWidth: 100,
 	plugins: ['prettier-plugin-svelte'],
 	overrides: [
