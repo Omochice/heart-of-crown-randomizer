@@ -5,20 +5,20 @@
 	import { Basic, FarEasternBorder } from '@heart-of-crown-randomizer/card';
 	import type { Princess, CommonCard } from '@heart-of-crown-randomizer/card/src/type';
 
-	// カードの型定義
+	// Card type definition
 	type Card = Princess | CommonCard;
 
-	// オプション設定
+	// Option settings
 	let numberOfCommons = 10;
 	let selectedPrincesses: Princess[] = [];
 	let selectedCommons: CommonCard[] = [];
 	let shareUrl = '';
 
-	// 除外カードリスト
+	// Excluded card lists
 	let excludedPrincesses: Princess[] = [];
 	let excludedCommons: CommonCard[] = [];
 
-	// localStorageから除外カードを読み込む
+	// Load excluded cards from localStorage on mount
 	onMount(() => {
 		const results = page.url.searchParams.get('results');
 		if (results) {
@@ -37,7 +37,7 @@
 			}
 		}
 
-		// localStorageから除外カードを読み込む
+		// Load excluded cards from localStorage
 		const storedExcludedPrincesses = localStorage.getItem('excludedPrincesses');
 		if (storedExcludedPrincesses) {
 			excludedPrincesses = JSON.parse(storedExcludedPrincesses);
@@ -47,37 +47,37 @@
 			excludedCommons = JSON.parse(storedExcludedCommons);
 		}
 
-		// 共有用URLを生成
+		// Generate share URL
 		updateShareUrl();
 	});
 
-	// 一般カードをランダムに選択する関数
+	// Function to randomly select common cards
 	function drawRandomCards() {
-		// ベーシックとFar Eastern Borderの一般カードを結合
+		// Combine Basic and Far Eastern Border common cards
 		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 		const availableCommons = allCommons.filter(
 			(c) => !excludedCommons.some((ec) => ec.id === c.id)
 		);
 		const shuffledCommons = [...availableCommons].sort(() => Math.random() - 0.5);
 		selectedCommons = shuffledCommons.slice(0, numberOfCommons).sort((a, b) => {
-			// エディション順、その後コスト順でソート
+			// Sort by edition first, then by cost
 			if (a.edition !== b.edition) {
 				return a.edition - b.edition;
 			}
 			return a.cost - b.cost;
 		});
 
-		// 結果ページへ移動
+		// Navigate to results page
 		const princessIds = selectedPrincesses.map((p) => p.id).join(',');
 		const commonIds = selectedCommons.map((c) => c.id).join(',');
 		const resultParam = `${princessIds}|${commonIds}`;
 		goto(`?results=${resultParam}`, { keepFocus: true, noScroll: true });
 
-		// 共有用URLを更新
+		// Update share URL
 		updateShareUrl();
 	}
 
-	// 共有用URLを更新
+	// Update share URL
 	function updateShareUrl() {
 		if (selectedCommons.length > 0) {
 			const princessIds = selectedPrincesses.map((p) => p.id).join(',');
@@ -87,7 +87,7 @@
 		}
 	}
 
-	// SNSで共有する関数
+	// Functions for sharing on SNS
 	function shareOnTwitter() {
 		const text = 'ハートオブクラウンランダマイザーの結果をチェック！';
 		const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
@@ -110,7 +110,7 @@
 			});
 	}
 
-	// カードの色を決定
+	// Determine card color
 	function getCardColor(card: Card) {
 		if (card.type === 'princess') {
 			return 'text-purple-600';
@@ -118,7 +118,7 @@
 		return 'text-blue-600';
 	}
 
-	// カードの特別なスタイルを決定
+	// Determine card special style
 	function getCardStyle(card: Card) {
 		if (card.type === 'princess') {
 			return 'card-princess';
@@ -126,7 +126,7 @@
 		return 'card-common';
 	}
 
-	// リンクに応じたハイライトスタイルを取得
+	// Get highlight style based on link value
 	function getLinkHighlightClass(link: 0 | 1 | 2) {
 		switch (link) {
 			case 1:
@@ -138,7 +138,7 @@
 		}
 	}
 
-	// スワイプ機能用の状態管理
+	// State management for swipe functionality
 	let swipeState = {
 		startX: 0,
 		startY: 0,
@@ -146,10 +146,10 @@
 		isDragging: false,
 		cardElement: null as HTMLElement | null,
 		cardIndex: -1,
-		threshold: 100 // スワイプ削除の閾値（ピクセル）
+		threshold: 100 // Threshold for swipe deletion (pixels)
 	};
 
-	// スワイプ開始処理
+	// Handle swipe start
 	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
 		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
 		const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
@@ -161,14 +161,14 @@
 		swipeState.cardElement = event.currentTarget as HTMLElement;
 		swipeState.cardIndex = index;
 		
-		// マウスイベントの場合、ドキュメントレベルでイベントを監視
+		// For mouse events, listen at document level
 		if (!('touches' in event)) {
 			document.addEventListener('mousemove', handleSwipeMove);
 			document.addEventListener('mouseup', handleSwipeEnd);
 		}
 	}
 
-	// スワイプ中の処理
+	// Handle swipe move
 	function handleSwipeMove(event: TouchEvent | MouseEvent) {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 		
@@ -176,7 +176,7 @@
 		const deltaX = clientX - swipeState.startX;
 		const deltaY = Math.abs(('touches' in event ? event.touches[0].clientY : event.clientY) - swipeState.startY);
 		
-		// 縦方向の移動が大きい場合はスワイプをキャンセル
+		// Cancel swipe if vertical movement is too large
 		if (deltaY > 50) {
 			handleSwipeCancel();
 			return;
@@ -184,36 +184,36 @@
 		
 		swipeState.currentX = clientX;
 		
-		// カードの位置を更新
+		// Update card position
 		swipeState.cardElement.style.transform = `translateX(${deltaX}px)`;
 		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
 	}
 
-	// スワイプ終了処理
+	// Handle swipe end
 	function handleSwipeEnd(event: TouchEvent | MouseEvent) {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 		
 		const deltaX = swipeState.currentX - swipeState.startX;
 		
-		// 閾値を超えた場合は削除
+		// Delete card if threshold exceeded
 		if (Math.abs(deltaX) > swipeState.threshold) {
-			// 即座に削除（アニメーションなし）
+			// Delete immediately (no animation)
 			removeSelectedCommon(swipeState.cardIndex);
 			handleSwipeCancel();
 		} else {
-			// 元の位置に戻す
+			// Return to original position
 			swipeState.cardElement.style.transform = '';
 			swipeState.cardElement.style.opacity = '';
 		}
 		
-		// イベントリスナーのクリーンアップ
+		// Clean up event listeners
 		document.removeEventListener('mousemove', handleSwipeMove);
 		document.removeEventListener('mouseup', handleSwipeEnd);
 		
 		swipeState.isDragging = false;
 	}
 
-	// スワイプキャンセル処理
+	// Handle swipe cancel
 	function handleSwipeCancel() {
 		if (swipeState.cardElement) {
 			swipeState.cardElement.style.transform = '';
@@ -229,26 +229,26 @@
 	}
 
 
-	// 一般カードが除外リストにあるか確認
+	// Check if common card is in excluded list
 	function isCommonExcluded(common: CommonCard) {
 		return excludedCommons.some((c) => c.id === common.id);
 	}
 
 
-	// 除外リストから一般カードを削除
+	// Remove common card from excluded list
 	function removeFromExcludedCommons(common: CommonCard) {
 		excludedCommons = excludedCommons.filter((c) => c.id !== common.id);
 		localStorage.setItem('excludedCommons', JSON.stringify(excludedCommons));
 	}
 
 
-	// 選択された一般カードを表示リストから削除
+	// Remove selected common card from display list
 	function removeSelectedCommon(index: number) {
 		selectedCommons = selectedCommons.filter((_, i) => i !== index);
 		updateUrlAndShare();
 	}
 
-	// URLと共有URLを更新
+	// Update URL and share URL
 	function updateUrlAndShare() {
 		const princessIds = selectedPrincesses.map((p) => p.id).join(',');
 		const commonIds = selectedCommons.map((c) => c.id).join(',');
@@ -258,7 +258,7 @@
 	}
 
 
-	// 足りない分の一般カードを引きなおす
+	// Draw missing common cards
 	function drawMissingCommons() {
 		if (selectedCommons.length >= numberOfCommons) return;
 
@@ -507,23 +507,23 @@
 	}
 
 
-	/* 一般カードスタイル - 緑の縁取り */
+	/* Common card style - green border */
 	.card-common {
 		box-shadow: 3px 3px 0 #059669;
-		touch-action: pan-y; /* 縦方向のスクロールを許可、横方向はスワイプで制御 */
+		touch-action: pan-y; /* Allow vertical scrolling, control horizontal with swipe */
 	}
 
-	/* スワイプ中のカードスタイル */
+	/* Card style during swipe */
 	.card-common:active {
 		cursor: grabbing;
 	}
 
-	/* リンク1: 右側に黄色のハイライト */
+	/* Link 1: Yellow highlight on right side */
 	.link-1 {
 		box-shadow: 3px 0 0 #fbbf24, 3px 3px 0 #059669;
 	}
 
-	/* リンク2: 右と下に黄色のハイライト */
+	/* Link 2: Yellow highlight on right and bottom */
 	.link-2 {
 		box-shadow: 3px 0 0 #fbbf24, 0 3px 0 #fbbf24, 3px 3px 0 #fbbf24;
 	}
