@@ -1,28 +1,28 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
-	import { Basic, FarEasternBorder } from '@heart-of-crown-randomizer/card';
-	import type { CommonCard } from '@heart-of-crown-randomizer/card/type';
-	import { onMount } from 'svelte';
+	import { goto } from "$app/navigation";
+	import { page } from "$app/state";
+	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
+	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+	import { onMount } from "svelte";
 
 	// Option settings
 	let numberOfCommons = 10;
 	let selectedCommons: CommonCard[] = [];
-	let shareUrl = '';
+	let shareUrl = "";
 
 	// Excluded card lists
 	let excludedCommons: CommonCard[] = [];
 
 	// Load excluded cards from localStorage on mount
 	onMount(() => {
-		const commonIds = page.url.searchParams.get('results')?.split(',');
+		const commonIds = page.url.searchParams.get("results")?.split(",");
 		if (commonIds) {
-				selectedCommons = commonIds
-					.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
-					.filter(Boolean) as CommonCard[];
+			selectedCommons = commonIds
+				.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
+				.filter(Boolean) as CommonCard[];
 		}
 
-		const storedExcludedCommons = localStorage.getItem('excludedCommons');
+		const storedExcludedCommons = localStorage.getItem("excludedCommons");
 		if (storedExcludedCommons) {
 			excludedCommons = JSON.parse(storedExcludedCommons);
 		}
@@ -36,7 +36,7 @@
 		// Combine Basic and Far Eastern Border common cards
 		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 		const availableCommons = allCommons.filter(
-			(c) => !excludedCommons.some((ec) => ec.id === c.id)
+			(c) => !excludedCommons.some((ec) => ec.id === c.id),
 		);
 		const shuffledCommons = [...availableCommons].sort(() => Math.random() - 0.5);
 		selectedCommons = shuffledCommons.slice(0, numberOfCommons).sort((a, b) => {
@@ -48,7 +48,7 @@
 		});
 
 		// Navigate to results page
-		const commonIds = selectedCommons.map((c) => c.id).join(',');
+		const commonIds = selectedCommons.map((c) => c.id).join(",");
 		goto(`?results=${commonIds}`, { keepFocus: true, noScroll: true });
 
 		// Update share URL
@@ -58,31 +58,31 @@
 	// Update share URL
 	function updateShareUrl() {
 		if (selectedCommons.length > 0) {
-			const commonIds = selectedCommons.map((c) => c.id).join(',');
+			const commonIds = selectedCommons.map((c) => c.id).join(",");
 			shareUrl = `${window.location.origin}?results=${commonIds}`;
 		}
 	}
 
 	// Functions for sharing on SNS
 	function shareOnTwitter() {
-		const text = 'ハートオブクラウンランダマイザ';
+		const text = "ハートオブクラウンランダマイザ";
 		const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
-		window.open(url, '_blank');
+		window.open(url, "_blank");
 	}
 
 	function shareOnFacebook() {
 		const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-		window.open(url, '_blank');
+		window.open(url, "_blank");
 	}
 
 	function copyToClipboard() {
 		navigator.clipboard
 			.writeText(shareUrl)
 			.then(() => {
-				alert('URLをクリップボードにコピーしました！');
+				alert("URLをクリップボードにコピーしました！");
 			})
 			.catch((err) => {
-				console.error('クリップボードへのコピーに失敗しました:', err);
+				console.error("クリップボードへのコピーに失敗しました:", err);
 			});
 	}
 
@@ -90,11 +90,11 @@
 	function getLinkHighlightClass(link: 0 | 1 | 2) {
 		switch (link) {
 			case 1:
-				return 'link-1';
+				return "link-1";
 			case 2:
-				return 'link-2';
+				return "link-2";
 			default:
-				return '';
+				return "";
 		}
 	}
 
@@ -106,13 +106,13 @@
 		isDragging: false,
 		cardElement: null as HTMLElement | null,
 		cardIndex: -1,
-		threshold: 100 // Threshold for swipe deletion (pixels)
+		threshold: 100, // Threshold for swipe deletion (pixels)
 	};
 
 	// Handle swipe start
 	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
-		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
-		const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+		const clientX = "touches" in event ? event.touches[0].clientX : event.clientX;
+		const clientY = "touches" in event ? event.touches[0].clientY : event.clientY;
 
 		swipeState.startX = clientX;
 		swipeState.startY = clientY;
@@ -122,9 +122,9 @@
 		swipeState.cardIndex = index;
 
 		// For mouse events, listen at document level
-		if (!('touches' in event)) {
-			document.addEventListener('mousemove', handleSwipeMove);
-			document.addEventListener('mouseup', handleSwipeEnd);
+		if (!("touches" in event)) {
+			document.addEventListener("mousemove", handleSwipeMove);
+			document.addEventListener("mouseup", handleSwipeEnd);
 		}
 	}
 
@@ -132,10 +132,10 @@
 	function handleSwipeMove(event: TouchEvent | MouseEvent) {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 
-		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
+		const clientX = "touches" in event ? event.touches[0].clientX : event.clientX;
 		const deltaX = clientX - swipeState.startX;
 		const deltaY = Math.abs(
-			('touches' in event ? event.touches[0].clientY : event.clientY) - swipeState.startY
+			("touches" in event ? event.touches[0].clientY : event.clientY) - swipeState.startY,
 		);
 
 		// Cancel swipe if vertical movement is too large
@@ -164,13 +164,13 @@
 			handleSwipeCancel();
 		} else {
 			// Return to original position
-			swipeState.cardElement.style.transform = '';
-			swipeState.cardElement.style.opacity = '';
+			swipeState.cardElement.style.transform = "";
+			swipeState.cardElement.style.opacity = "";
 		}
 
 		// Clean up event listeners
-		document.removeEventListener('mousemove', handleSwipeMove);
-		document.removeEventListener('mouseup', handleSwipeEnd);
+		document.removeEventListener("mousemove", handleSwipeMove);
+		document.removeEventListener("mouseup", handleSwipeEnd);
 
 		swipeState.isDragging = false;
 	}
@@ -178,12 +178,12 @@
 	// Handle swipe cancel
 	function handleSwipeCancel() {
 		if (swipeState.cardElement) {
-			swipeState.cardElement.style.transform = '';
-			swipeState.cardElement.style.opacity = '';
+			swipeState.cardElement.style.transform = "";
+			swipeState.cardElement.style.opacity = "";
 		}
 
-		document.removeEventListener('mousemove', handleSwipeMove);
-		document.removeEventListener('mouseup', handleSwipeEnd);
+		document.removeEventListener("mousemove", handleSwipeMove);
+		document.removeEventListener("mouseup", handleSwipeEnd);
 
 		swipeState.isDragging = false;
 		swipeState.cardElement = null;
@@ -193,7 +193,7 @@
 	// Remove common card from excluded list
 	function removeFromExcludedCommons(common: CommonCard) {
 		excludedCommons = excludedCommons.filter((c) => c.id !== common.id);
-		localStorage.setItem('excludedCommons', JSON.stringify(excludedCommons));
+		localStorage.setItem("excludedCommons", JSON.stringify(excludedCommons));
 	}
 
 	// Remove selected common card from display list
@@ -204,7 +204,7 @@
 
 	// Update URL and share URL
 	function updateUrlAndShare() {
-		const commonIds = selectedCommons.map((c) => c.id).join(',');
+		const commonIds = selectedCommons.map((c) => c.id).join(",");
 		goto(`?results=${commonIds}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
@@ -217,7 +217,7 @@
 		const availableCommons = allCommons.filter(
 			(c) =>
 				!excludedCommons.some((ec) => ec.id === c.id) &&
-				!selectedCommons.some((sc) => sc.id === c.id)
+				!selectedCommons.some((sc) => sc.id === c.id),
 		);
 
 		if (availableCommons.length === 0) return;
@@ -232,7 +232,7 @@
 
 	function clearExcludedCommons() {
 		excludedCommons = [];
-		localStorage.removeItem('excludedCommons');
+		localStorage.removeItem("excludedCommons");
 	}
 </script>
 
@@ -339,7 +339,7 @@
 								tabindex="0"
 								aria-label="カード {common.name} をスワイプして削除"
 								class="border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
-									common.hasChild ? 0 : common.link
+									common.hasChild ? 0 : common.link,
 								)} select-none cursor-grab active:cursor-grabbing"
 								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
 								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
@@ -347,7 +347,7 @@
 								on:touchend={handleSwipeEnd}
 								on:touchcancel={handleSwipeCancel}
 								on:keydown={(e) => {
-									if (e.key === 'Delete' || e.key === 'Backspace')
+									if (e.key === "Delete" || e.key === "Backspace")
 										removeSelectedCommon(originalIndex);
 								}}
 							>
@@ -362,10 +362,10 @@
 									<div class="font-bold text-sm mb-1">{common.name}</div>
 									<div class="text-xs text-gray-600">
 										コスト: {common.cost}
-										{#if 'coin' in common && common.coin}
+										{#if "coin" in common && common.coin}
 											| コイン: {common.coin}
 										{/if}
-										{#if 'succession' in common && common.succession}
+										{#if "succession" in common && common.succession}
 											| 継承点: {common.succession}
 										{/if}
 									</div>
@@ -389,7 +389,7 @@
 								tabindex="0"
 								aria-label="カード {common.name} をスワイプして削除"
 								class="border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
-									common.hasChild ? 0 : common.link
+									common.hasChild ? 0 : common.link,
 								)} select-none cursor-grab active:cursor-grabbing"
 								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
 								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
@@ -397,7 +397,7 @@
 								on:touchend={handleSwipeEnd}
 								on:touchcancel={handleSwipeCancel}
 								on:keydown={(e) => {
-									if (e.key === 'Delete' || e.key === 'Backspace')
+									if (e.key === "Delete" || e.key === "Backspace")
 										removeSelectedCommon(originalIndex);
 								}}
 							>
@@ -412,10 +412,10 @@
 									<div class="font-bold text-sm mb-1">{common.name}</div>
 									<div class="text-xs text-gray-600">
 										コスト: {common.cost}
-										{#if 'coin' in common && common.coin}
+										{#if "coin" in common && common.coin}
 											| コイン: {common.coin}
 										{/if}
-										{#if 'succession' in common && common.succession}
+										{#if "succession" in common && common.succession}
 											| 継承点: {common.succession}
 										{/if}
 									</div>
@@ -463,7 +463,7 @@
 <style>
 	:global(body) {
 		background-color: #f5f7fa;
-		font-family: 'Helvetica Neue', Arial, sans-serif;
+		font-family: "Helvetica Neue", Arial, sans-serif;
 	}
 
 	/* Common card style - green border */
