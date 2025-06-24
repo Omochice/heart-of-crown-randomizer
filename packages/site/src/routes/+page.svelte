@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-	import { Basic } from '@heart-of-crown-randomizer/card';
+	import { Basic, FarEasternBorder } from '@heart-of-crown-randomizer/card';
 	import type { Princess, CommonCard } from '@heart-of-crown-randomizer/card/src/type';
 
 	// カードの型定義
@@ -53,12 +53,19 @@
 
 	// 一般カードをランダムに選択する関数
 	function drawRandomCards() {
-		// 一般カードのみランダムに選択
-		const availableCommons = Basic.commons.filter(
+		// ベーシックとFar Eastern Borderの一般カードを結合
+		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
+		const availableCommons = allCommons.filter(
 			(c) => !excludedCommons.some((ec) => ec.id === c.id)
 		);
 		const shuffledCommons = [...availableCommons].sort(() => Math.random() - 0.5);
-		selectedCommons = shuffledCommons.slice(0, numberOfCommons);
+		selectedCommons = shuffledCommons.slice(0, numberOfCommons).sort((a, b) => {
+			// エディション順、その後コスト順でソート
+			if (a.edition !== b.edition) {
+				return a.edition - b.edition;
+			}
+			return a.cost - b.cost;
+		});
 
 		// 結果ページへ移動
 		const princessIds = selectedPrincesses.map((p) => p.id).join(',');
@@ -153,7 +160,8 @@
 	function drawMissingCommons() {
 		if (selectedCommons.length >= numberOfCommons) return;
 
-		const availableCommons = Basic.commons.filter(
+		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
+		const availableCommons = allCommons.filter(
 			(c) =>
 				!excludedCommons.some((ec) => ec.id === c.id) &&
 				!selectedCommons.some((sc) => sc.id === c.id)
@@ -189,7 +197,7 @@
 				<input
 					type="range"
 					min="1"
-					max={Basic.commons.length}
+					max={Basic.commons.length + FarEasternBorder.commons.length}
 					bind:value={numberOfCommons}
 					class="w-full"
 				/>
@@ -249,24 +257,27 @@
 	</div>
 
 	{#if selectedCommons.length > 0}
+		{@const basicCards = selectedCommons.filter(c => c.edition === 0).sort((a, b) => a.cost - b.cost)}
+		{@const farEasternCards = selectedCommons.filter(c => c.edition === 1).sort((a, b) => a.cost - b.cost)}
 		<div class="bg-white rounded-lg shadow-md p-6 mb-6">
 			<h2 class="text-xl font-semibold mb-4">
 				結果
 			</h2>
 
-			<div class="mb-6">
-				<h3 class="text-lg font-semibold mb-2">一般カード ({selectedCommons.length}/{numberOfCommons}枚)</h3>
+			{#if basicCards.length > 0}
+				<div class="mb-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-						{#each selectedCommons as common, index}
-							<div class="border-2 border-green-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative card-common">
+						{#each basicCards as common}
+							{@const originalIndex = selectedCommons.findIndex(c => c.id === common.id)}
+							<div class="border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative card-common">
 								<button
-									on:click={() => removeSelectedCommon(index)}
+									on:click={() => removeSelectedCommon(originalIndex)}
 									class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
 									title="このカードを削除する"
 								>
 									✕
 								</button>
-								<div class="text-green-600">
+								<div class="text-blue-600">
 									<div class="font-bold text-sm mb-1">{common.name}</div>
 									<div class="text-xs text-gray-600">
 										コスト: {common.cost}
@@ -284,7 +295,42 @@
 							</div>
 						{/each}
 					</div>
-			</div>
+				</div>
+			{/if}
+
+			{#if farEasternCards.length > 0}
+				<div class="mb-6">
+					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+						{#each farEasternCards as common}
+							{@const originalIndex = selectedCommons.findIndex(c => c.id === common.id)}
+							<div class="border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative card-common">
+								<button
+									on:click={() => removeSelectedCommon(originalIndex)}
+									class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+									title="このカードを削除する"
+								>
+									✕
+								</button>
+								<div class="text-orange-600">
+									<div class="font-bold text-sm mb-1">{common.name}</div>
+									<div class="text-xs text-gray-600">
+										コスト: {common.cost}
+										{#if 'coin' in common && common.coin}
+											| コイン: {common.coin}
+										{/if}
+										{#if 'succession' in common && common.succession}
+											| 継承点: {common.succession}
+										{/if}
+									</div>
+									{#if common.effect}
+										<div class="text-xs text-gray-500 mt-1">{common.effect}</div>
+									{/if}
+								</div>
+							</div>
+						{/each}
+					</div>
+				</div>
+			{/if}
 
 			<div class="mt-6">
 				<h3 class="text-lg font-semibold mb-2">結果を共有</h3>
