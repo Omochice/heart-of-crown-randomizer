@@ -294,16 +294,29 @@
 
 
 		<div class="mb-6">
-			<label class="block mb-2"
-				>一般カード枚数: {numberOfCommons}
-				<input
-					type="range"
-					min="1"
-					max={Basic.commons.length + FarEasternBorder.commons.length}
-					bind:value={numberOfCommons}
-					class="w-full"
-				/>
-			</label>
+			<label class="block mb-2">一般カード枚数:</label>
+			<div class="flex gap-4">
+				<label class="flex items-center">
+					<input
+						type="radio"
+						name="numberOfCommons"
+						value={10}
+						bind:group={numberOfCommons}
+						class="mr-2"
+					/>
+					10枚
+				</label>
+				<label class="flex items-center">
+					<input
+						type="radio"
+						name="numberOfCommons"
+						value={14}
+						bind:group={numberOfCommons}
+						class="mr-2"
+					/>
+					14枚
+				</label>
+			</div>
 		</div>
 
 		<div class="grid grid-cols-1 gap-4">
