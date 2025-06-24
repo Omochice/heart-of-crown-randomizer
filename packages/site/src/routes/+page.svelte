@@ -9,7 +9,6 @@
 	type Card = Princess | CommonCard;
 
 	// オプション設定
-	let numberOfPrincesses = 6;
 	let numberOfCommons = 10;
 	let selectedPrincesses: Princess[] = [];
 	let selectedCommons: CommonCard[] = [];
@@ -52,16 +51,9 @@
 		updateShareUrl();
 	});
 
-	// カードをランダムに選択する関数
+	// 一般カードをランダムに選択する関数
 	function drawRandomCards() {
-		// プリンセスカードをランダムに選択
-		const availablePrincesses = Basic.princesses.filter(
-			(p) => !excludedPrincesses.some((ep) => ep.id === p.id)
-		);
-		const shuffledPrincesses = [...availablePrincesses].sort(() => Math.random() - 0.5);
-		selectedPrincesses = shuffledPrincesses.slice(0, numberOfPrincesses);
-
-		// 一般カードをランダムに選択
+		// 一般カードのみランダムに選択
 		const availableCommons = Basic.commons.filter(
 			(c) => !excludedCommons.some((ec) => ec.id === c.id)
 		);
@@ -80,7 +72,7 @@
 
 	// 共有用URLを更新
 	function updateShareUrl() {
-		if (selectedPrincesses.length > 0 || selectedCommons.length > 0) {
+		if (selectedCommons.length > 0) {
 			const princessIds = selectedPrincesses.map((p) => p.id).join(',');
 			const commonIds = selectedCommons.map((c) => c.id).join(',');
 			const resultParam = `${princessIds}|${commonIds}`;
@@ -127,21 +119,12 @@
 		return 'card-common';
 	}
 
-	// プリンセスカードが除外リストにあるか確認
-	function isPrincessExcluded(princess: Princess) {
-		return excludedPrincesses.some((p) => p.id === princess.id);
-	}
 
 	// 一般カードが除外リストにあるか確認
 	function isCommonExcluded(common: CommonCard) {
 		return excludedCommons.some((c) => c.id === common.id);
 	}
 
-	// 除外リストからプリンセスカードを削除
-	function removeFromExcludedPrincesses(princess: Princess) {
-		excludedPrincesses = excludedPrincesses.filter((p) => p.id !== princess.id);
-		localStorage.setItem('excludedPrincesses', JSON.stringify(excludedPrincesses));
-	}
 
 	// 除外リストから一般カードを削除
 	function removeFromExcludedCommons(common: CommonCard) {
@@ -149,11 +132,6 @@
 		localStorage.setItem('excludedCommons', JSON.stringify(excludedCommons));
 	}
 
-	// 選択されたプリンセスカードを表示リストから削除
-	function removeSelectedPrincess(index: number) {
-		selectedPrincesses = selectedPrincesses.filter((_, i) => i !== index);
-		updateUrlAndShare();
-	}
 
 	// 選択された一般カードを表示リストから削除
 	function removeSelectedCommon(index: number) {
@@ -170,25 +148,6 @@
 		updateShareUrl();
 	}
 
-	// 足りない分のプリンセスカードを引きなおす
-	function drawMissingPrincesses() {
-		if (selectedPrincesses.length >= numberOfPrincesses) return;
-
-		const availablePrincesses = Basic.princesses.filter(
-			(p) =>
-				!excludedPrincesses.some((ep) => ep.id === p.id) &&
-				!selectedPrincesses.some((sp) => sp.id === p.id)
-		);
-
-		if (availablePrincesses.length === 0) return;
-
-		const shuffled = [...availablePrincesses].sort(() => Math.random() - 0.5);
-		const cardsToAdd = Math.min(numberOfPrincesses - selectedPrincesses.length, shuffled.length);
-		const newCards = shuffled.slice(0, cardsToAdd);
-
-		selectedPrincesses = [...selectedPrincesses, ...newCards];
-		updateUrlAndShare();
-	}
 
 	// 足りない分の一般カードを引きなおす
 	function drawMissingCommons() {
@@ -210,11 +169,6 @@
 		updateUrlAndShare();
 	}
 
-	// 除外リストをクリア
-	function clearExcludedPrincesses() {
-		excludedPrincesses = [];
-		localStorage.removeItem('excludedPrincesses');
-	}
 
 	function clearExcludedCommons() {
 		excludedCommons = [];
@@ -228,18 +182,6 @@
 	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
 		<h2 class="text-xl font-semibold mb-4">オプション設定</h2>
 
-		<div class="mb-4">
-			<label class="block mb-2"
-				>プリンセスカード枚数: {numberOfPrincesses}
-				<input
-					type="range"
-					min="1"
-					max={Basic.princesses.length}
-					bind:value={numberOfPrincesses}
-					class="w-full"
-				/>
-			</label>
-		</div>
 
 		<div class="mb-6">
 			<label class="block mb-2"
@@ -259,26 +201,16 @@
 				on:click={drawRandomCards}
 				class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
 			>
-				カードを引く
+				一般カードを引く
 			</button>
 
-			<div class="grid grid-cols-2 gap-4">
-				<button
-					on:click={drawMissingPrincesses}
-					class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-					disabled={selectedPrincesses.length >= numberOfPrincesses}
-				>
-					プリンセスを追加 ({numberOfPrincesses - selectedPrincesses.length})
-				</button>
-
-				<button
-					on:click={drawMissingCommons}
-					class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-					disabled={selectedCommons.length >= numberOfCommons}
-				>
-					一般カードを追加 ({numberOfCommons - selectedCommons.length})
-				</button>
-			</div>
+			<button
+				on:click={drawMissingCommons}
+				class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+				disabled={selectedCommons.length >= numberOfCommons}
+			>
+				一般カードを追加 ({numberOfCommons - selectedCommons.length})
+			</button>
 		</div>
 	</div>
 
@@ -286,104 +218,44 @@
 	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
 		<div class="flex justify-between items-center mb-4">
 			<h2 class="text-xl font-semibold">除外カードリスト</h2>
-			<div class="flex gap-2">
-				<button
-					on:click={clearExcludedPrincesses}
-					class="bg-purple-500 hover:bg-purple-600 text-white text-sm py-1 px-3 rounded focus:outline-none focus:shadow-outline transition duration-300"
-				>
-					プリンセスクリア
-				</button>
-				<button
-					on:click={clearExcludedCommons}
-					class="bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded focus:outline-none focus:shadow-outline transition duration-300"
-				>
-					一般カードクリア
-				</button>
+			<button
+				on:click={clearExcludedCommons}
+				class="bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded focus:outline-none focus:shadow-outline transition duration-300"
+			>
+				リストをクリア
+			</button>
+		</div>
+
+
+		{#if excludedCommons.length === 0}
+			<p class="text-gray-500 italic">除外カードはありません</p>
+		{:else}
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+				{#each excludedCommons as common}
+					<div class="border border-green-300 rounded p-2 flex items-center justify-between">
+						<span class="text-green-600 text-sm">
+							{common.name}
+						</span>
+						<button
+							on:click={() => removeFromExcludedCommons(common)}
+							class="text-gray-500 hover:text-red-500"
+						>
+							✕
+						</button>
+					</div>
+				{/each}
 			</div>
-		</div>
-
-		<div class="mb-4">
-			<h3 class="text-lg font-semibold mb-2">除外プリンセス</h3>
-			{#if excludedPrincesses.length === 0}
-				<p class="text-gray-500 italic">除外プリンセスはありません</p>
-			{:else}
-				<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-					{#each excludedPrincesses as princess}
-						<div class="border border-purple-300 rounded p-2 flex items-center justify-between">
-							<span class="text-purple-600 text-sm">
-								{princess.name}
-							</span>
-							<button
-								on:click={() => removeFromExcludedPrincesses(princess)}
-								class="text-gray-500 hover:text-red-500"
-							>
-								✕
-							</button>
-						</div>
-					{/each}
-				</div>
-			{/if}
-		</div>
-
-		<div>
-			<h3 class="text-lg font-semibold mb-2">除外一般カード</h3>
-			{#if excludedCommons.length === 0}
-				<p class="text-gray-500 italic">除外一般カードはありません</p>
-			{:else}
-				<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-					{#each excludedCommons as common}
-						<div class="border border-green-300 rounded p-2 flex items-center justify-between">
-							<span class="text-green-600 text-sm">
-								{common.name}
-							</span>
-							<button
-								on:click={() => removeFromExcludedCommons(common)}
-								class="text-gray-500 hover:text-red-500"
-							>
-								✕
-							</button>
-						</div>
-					{/each}
-				</div>
-			{/if}
-		</div>
+		{/if}
 	</div>
 
-	{#if selectedPrincesses.length > 0 || selectedCommons.length > 0}
+	{#if selectedCommons.length > 0}
 		<div class="bg-white rounded-lg shadow-md p-6 mb-6">
 			<h2 class="text-xl font-semibold mb-4">
 				結果
 			</h2>
 
-			{#if selectedPrincesses.length > 0}
-				<div class="mb-6">
-					<h3 class="text-lg font-semibold mb-2">プリンセスカード ({selectedPrincesses.length}/{numberOfPrincesses}枚)</h3>
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-						{#each selectedPrincesses as princess, index}
-							<div class="border-2 border-purple-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative card-princess">
-								<button
-									on:click={() => removeSelectedPrincess(index)}
-									class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
-									title="このカードを削除する"
-								>
-									✕
-								</button>
-								<div class="text-purple-600">
-									<div class="font-bold text-sm mb-1">{princess.name}</div>
-									<div class="text-xs text-gray-600">コスト: {princess.cost} | 継承点: {princess.succession}</div>
-									{#if princess.effect}
-										<div class="text-xs text-gray-500 mt-1">{princess.effect}</div>
-									{/if}
-								</div>
-							</div>
-						{/each}
-					</div>
-				</div>
-			{/if}
-
-			{#if selectedCommons.length > 0}
-				<div class="mb-6">
-					<h3 class="text-lg font-semibold mb-2">一般カード ({selectedCommons.length}/{numberOfCommons}枚)</h3>
+			<div class="mb-6">
+				<h3 class="text-lg font-semibold mb-2">一般カード ({selectedCommons.length}/{numberOfCommons}枚)</h3>
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each selectedCommons as common, index}
 							<div class="border-2 border-green-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative card-common">
@@ -412,8 +284,7 @@
 							</div>
 						{/each}
 					</div>
-				</div>
-			{/if}
+			</div>
 
 			<div class="mt-6">
 				<h3 class="text-lg font-semibold mb-2">結果を共有</h3>
@@ -452,10 +323,6 @@
 		font-family: 'Helvetica Neue', Arial, sans-serif;
 	}
 
-	/* プリンセスカードスタイル - 紫の縁取り */
-	.card-princess {
-		box-shadow: 3px 3px 0 #9333ea;
-	}
 
 	/* 一般カードスタイル - 緑の縁取り */
 	.card-common {
