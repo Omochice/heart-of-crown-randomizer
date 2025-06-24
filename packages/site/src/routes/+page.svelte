@@ -126,6 +126,18 @@
 		return 'card-common';
 	}
 
+	// リンクに応じたハイライトスタイルを取得
+	function getLinkHighlightClass(link: 0 | 1 | 2) {
+		switch (link) {
+			case 1:
+				return 'link-1';
+			case 2:
+				return 'link-2';
+			default:
+				return '';
+		}
+	}
+
 
 	// 一般カードが除外リストにあるか確認
 	function isCommonExcluded(common: CommonCard) {
@@ -269,7 +281,7 @@
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each basicCards as common}
 							{@const originalIndex = selectedCommons.findIndex(c => c.id === common.id)}
-							<div class="border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative card-common">
+							<div class="border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative card-common {getLinkHighlightClass(common.link)}">
 								<button
 									on:click={() => removeSelectedCommon(originalIndex)}
 									class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
@@ -303,7 +315,7 @@
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each farEasternCards as common}
 							{@const originalIndex = selectedCommons.findIndex(c => c.id === common.id)}
-							<div class="border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative card-common">
+							<div class="border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative card-common {getLinkHighlightClass(common.link)}">
 								<button
 									on:click={() => removeSelectedCommon(originalIndex)}
 									class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
@@ -373,5 +385,15 @@
 	/* 一般カードスタイル - 緑の縁取り */
 	.card-common {
 		box-shadow: 3px 3px 0 #059669;
+	}
+
+	/* リンク1: 右側に黄色のハイライト */
+	.link-1 {
+		box-shadow: 3px 0 0 #fbbf24, 3px 3px 0 #059669;
+	}
+
+	/* リンク2: 右と下に黄色のハイライト */
+	.link-2 {
+		box-shadow: 3px 0 0 #fbbf24, 0 3px 0 #fbbf24, 3px 3px 0 #fbbf24;
 	}
 </style>
