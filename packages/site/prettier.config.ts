@@ -1,19 +1,23 @@
-import type { Config } from 'prettier';
+import type { Config } from "prettier";
 
 const config = {
 	useTabs: true,
-	singleQuote: true,
-	trailingComma: 'none',
+	singleQuote: false,
+	singleAttributePerLine: true,
+	bracketSpacing: true,
+	endOfLine: "lf",
+	semi: true,
+	trailingComma: "all",
 	printWidth: 100,
-	plugins: ['prettier-plugin-svelte'],
+	plugins: ["prettier-plugin-svelte"],
 	overrides: [
 		{
-			files: '*.svelte',
+			files: "*.svelte",
 			options: {
-				parser: 'svelte'
-			}
-		}
-	]
+				parser: "svelte",
+			},
+		},
+	],
 } as const satisfies Config;
 
 export default config;

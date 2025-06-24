@@ -1,274 +1,287 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
+	import { goto } from "$app/navigation";
+	import { page } from "$app/state";
+	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
+	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+	import { onMount } from "svelte";
 
-	// カードの設定
-	type Suit = '♥' | '♦' | '♣' | '♠';
-	const suits: Suit[] = ['♥', '♦', '♣', '♠'];
-	const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+	// Option settings
+	let numberOfCommons = 10;
+	let selectedCommons: CommonCard[] = [];
+	let shareUrl = "";
 
-	type Card = {
-		suit: Suit;
-		value: string;
-	};
+	// Excluded card lists
+	let excludedCommons: CommonCard[] = [];
 
-	// オプション設定
-	let includeAllSuits = false;
-	let numberOfCards = 10;
-	let selectedCards: Card[] = [];
-	let shareUrl = '';
-
-	// 除外カードリスト
-	let excludedCards: Card[] = [];
-
-	// localStorageから除外カードを読み込む
+	// Load excluded cards from localStorage on mount
 	onMount(() => {
-		const results = page.url.searchParams.get('results');
-		if (results) {
-			selectedCards = results.split(/\s+/).map(
-				(card) =>
-					({
-						suit: card[0],
-						value: card.substring(1)
-					}) as unknown as Card
-			);
+		const commonIds = page.url.searchParams.get("results")?.split(",");
+		if (commonIds) {
+			selectedCommons = commonIds
+				.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
+				.filter(Boolean) as CommonCard[];
 		}
 
-		// localStorageから除外カードを読み込む
-		const storedExcludedCards = localStorage.getItem('excludedCards');
-		if (storedExcludedCards) {
-			excludedCards = JSON.parse(storedExcludedCards);
+		const storedExcludedCommons = localStorage.getItem("excludedCommons");
+		if (storedExcludedCommons) {
+			excludedCommons = JSON.parse(storedExcludedCommons);
 		}
 
-		// 共有用URLを生成
+		// Generate share URL
 		updateShareUrl();
 	});
 
-	// カードをランダムに選択する関数
+	// Function to randomly select common cards
 	function drawRandomCards() {
-		const deck: Card[] = [];
-
-		// デッキを作成（除外カードを除く）
-		for (const suit of suits) {
-			for (const value of values) {
-				// 除外リストにないカードのみデッキに追加
-				if (!isCardExcluded(suit, value)) {
-					deck.push({ suit, value });
-				}
+		// Combine Basic and Far Eastern Border common cards
+		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
+		const availableCommons = allCommons.filter(
+			(c) => !excludedCommons.some((ec) => ec.id === c.id),
+		);
+		const shuffledCommons = [...availableCommons].sort(() => Math.random() - 0.5);
+		selectedCommons = shuffledCommons.slice(0, numberOfCommons).sort((a, b) => {
+			// Sort by edition first, then by cost
+			if (a.edition !== b.edition) {
+				return a.edition - b.edition;
 			}
-		}
+			return a.cost - b.cost;
+		});
 
-		// カードをシャッフル
-		const shuffledDeck = [...deck].sort(() => Math.random() - 0.5);
+		// Navigate to results page
+		const commonIds = selectedCommons.map((c) => c.id).join(",");
+		goto(`?results=${commonIds}`, { keepFocus: true, noScroll: true });
 
-		if (includeAllSuits) {
-			// 各スートから少なくとも1枚ずつ選ぶ（除外カードを考慮）
-			const cardsBySuit = new Map<Suit, Card[]>();
-			suits.forEach((suit) => {
-				cardsBySuit.set(
-					suit,
-					shuffledDeck.filter((card) => card.suit === suit)
-				);
-			});
-
-			selectedCards = [];
-			suits.forEach((suit) => {
-				const c = cardsBySuit.get(suit)?.at(0);
-				if (c == null) return;
-				selectedCards.push(c);
-			});
-
-			// 残りのカードをランダムに選択
-			const remainingCards = shuffledDeck.filter(
-				(card) =>
-					!selectedCards.some(
-						(selected) => selected.suit === card.suit && selected.value === card.value
-					)
-			);
-
-			while (selectedCards.length < numberOfCards && remainingCards.length > 0) {
-				const randomIndex = Math.floor(Math.random() * remainingCards.length);
-				selectedCards.push(remainingCards[randomIndex]);
-				remainingCards.splice(randomIndex, 1);
-			}
-		} else {
-			// 単純にランダムに選択
-			selectedCards = shuffledDeck.slice(0, numberOfCards);
-		}
-
-		// 結果ページへ移動
-		const resultParam = selectedCards.map((card) => `${card.suit}${card.value}`).join('+');
-		goto(`?results=${resultParam}`);
-
-		// 共有用URLを更新
+		// Update share URL
 		updateShareUrl();
 	}
 
-	// 共有用URLを更新
+	// Update share URL
 	function updateShareUrl() {
-		if (selectedCards.length > 0) {
-			const resultParam = selectedCards.map((card) => `${card.suit}${card.value}`).join('+');
-			shareUrl = `${window.location.origin}?results=${resultParam}`;
+		if (selectedCommons.length > 0) {
+			const commonIds = selectedCommons.map((c) => c.id).join(",");
+			shareUrl = `${window.location.origin}?results=${commonIds}`;
 		}
 	}
 
-	// SNSで共有する関数
+	// Functions for sharing on SNS
 	function shareOnTwitter() {
-		const text = 'トランプカードランダマイザーの結果をチェック！';
+		const text = "ハートオブクラウンランダマイザ";
 		const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
-		window.open(url, '_blank');
+		window.open(url, "_blank");
 	}
 
 	function shareOnFacebook() {
 		const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-		window.open(url, '_blank');
+		window.open(url, "_blank");
 	}
 
 	function copyToClipboard() {
 		navigator.clipboard
 			.writeText(shareUrl)
 			.then(() => {
-				alert('URLをクリップボードにコピーしました！');
+				alert("URLをクリップボードにコピーしました！");
 			})
 			.catch((err) => {
-				console.error('クリップボードへのコピーに失敗しました:', err);
+				console.error("クリップボードへのコピーに失敗しました:", err);
 			});
 	}
 
-	// カードの色を決定
-	function getCardColor(suit: Suit) {
-		return suit === '♥' || suit === '♦' ? 'text-red-600' : 'text-black';
-	}
-
-	// カードの特別なスタイルを決定
-	function getCardStyle(suit: Suit) {
-		if (suit === '♠') {
-			return 'card-spade';
-		} else if (suit === '♥') {
-			return 'card-heart';
+	// Get highlight style based on link value
+	function getLinkHighlightClass(link: 0 | 1 | 2) {
+		switch (link) {
+			case 1:
+				return "link-1";
+			case 2:
+				return "link-2";
+			default:
+				return "";
 		}
-		return '';
 	}
 
-	// // カードを除外リストに追加
-	// function excludeCard(suit, value) {
-	//   // 既に除外リストにあるか確認
-	//   if (!isCardExcluded(suit, value)) {
-	//     excludedCards = [...excludedCards, { suit, value }];
-	//     // localStorageに保存
-	//     localStorage.setItem("excludedCards", JSON.stringify(excludedCards));
-	//   }
-	// }
+	// State management for swipe functionality
+	const swipeState = {
+		startX: 0,
+		startY: 0,
+		currentX: 0,
+		isDragging: false,
+		cardElement: null as HTMLElement | null,
+		cardIndex: -1,
+		threshold: 100, // Threshold for swipe deletion (pixels)
+	};
 
-	// カードが除外リストにあるか確認
-	function isCardExcluded(suit: Suit, value: string) {
-		return excludedCards.some((card) => card.suit === suit && card.value === value);
+	// Handle swipe start
+	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
+		const clientX = "touches" in event ? event.touches[0].clientX : event.clientX;
+		const clientY = "touches" in event ? event.touches[0].clientY : event.clientY;
+
+		swipeState.startX = clientX;
+		swipeState.startY = clientY;
+		swipeState.currentX = clientX;
+		swipeState.isDragging = true;
+		swipeState.cardElement = event.currentTarget as HTMLElement;
+		swipeState.cardIndex = index;
+
+		// For mouse events, listen at document level
+		if (!("touches" in event)) {
+			document.addEventListener("mousemove", handleSwipeMove);
+			document.addEventListener("mouseup", handleSwipeEnd);
+		}
 	}
 
-	// 除外リストからカードを削除
-	function removeFromExcluded(suit: Suit, value: string) {
-		excludedCards = excludedCards.filter((card) => !(card.suit === suit && card.value === value));
-		// localStorageに保存
-		localStorage.setItem('excludedCards', JSON.stringify(excludedCards));
+	// Handle swipe move
+	function handleSwipeMove(event: TouchEvent | MouseEvent) {
+		if (!swipeState.isDragging || !swipeState.cardElement) return;
+
+		const clientX = "touches" in event ? event.touches[0].clientX : event.clientX;
+		const deltaX = clientX - swipeState.startX;
+		const deltaY = Math.abs(
+			("touches" in event ? event.touches[0].clientY : event.clientY) - swipeState.startY,
+		);
+
+		// Cancel swipe if vertical movement is too large
+		if (deltaY > 50) {
+			handleSwipeCancel();
+			return;
+		}
+
+		swipeState.currentX = clientX;
+
+		// Update card position
+		swipeState.cardElement.style.transform = `translateX(${deltaX}px)`;
+		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
 	}
 
-	// 選択されたカードを表示リストから削除（除外リストには追加しない）
-	function removeSelectedCard(index: number) {
-		// カードを選択リストから削除
-		selectedCards = selectedCards.filter((_, i) => i !== index);
+	// Handle swipe end
+	function handleSwipeEnd() {
+		if (!swipeState.isDragging || !swipeState.cardElement) return;
 
-		// 結果ページへ移動
-		const resultParam = selectedCards.map((card) => `${card.suit}${card.value}`).join('+');
-		goto(`?results=${resultParam}`);
+		const deltaX = swipeState.currentX - swipeState.startX;
 
-		// 共有用URLを更新
+		// Delete card if threshold exceeded
+		if (Math.abs(deltaX) > swipeState.threshold) {
+			// Delete immediately (no animation)
+			removeSelectedCommon(swipeState.cardIndex);
+			handleSwipeCancel();
+		} else {
+			// Return to original position
+			swipeState.cardElement.style.transform = "";
+			swipeState.cardElement.style.opacity = "";
+		}
+
+		// Clean up event listeners
+		document.removeEventListener("mousemove", handleSwipeMove);
+		document.removeEventListener("mouseup", handleSwipeEnd);
+
+		swipeState.isDragging = false;
+	}
+
+	// Handle swipe cancel
+	function handleSwipeCancel() {
+		if (swipeState.cardElement) {
+			swipeState.cardElement.style.transform = "";
+			swipeState.cardElement.style.opacity = "";
+		}
+
+		document.removeEventListener("mousemove", handleSwipeMove);
+		document.removeEventListener("mouseup", handleSwipeEnd);
+
+		swipeState.isDragging = false;
+		swipeState.cardElement = null;
+		swipeState.cardIndex = -1;
+	}
+
+	// Remove common card from excluded list
+	function removeFromExcludedCommons(common: CommonCard) {
+		excludedCommons = excludedCommons.filter((c) => c.id !== common.id);
+		localStorage.setItem("excludedCommons", JSON.stringify(excludedCommons));
+	}
+
+	// Remove selected common card from display list
+	function removeSelectedCommon(index: number) {
+		selectedCommons = selectedCommons.filter((_, i) => i !== index);
+		updateUrlAndShare();
+	}
+
+	// Update URL and share URL
+	function updateUrlAndShare() {
+		const commonIds = selectedCommons.map((c) => c.id).join(",");
+		goto(`?results=${commonIds}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
 
-	// 足りない分のカードを引きなおす
-	function drawMissingCards() {
-		if (selectedCards.length >= numberOfCards) return;
+	// Draw missing common cards
+	function drawMissingCommons() {
+		if (selectedCommons.length >= numberOfCommons) return;
 
-		const deck = [];
+		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
+		const availableCommons = allCommons.filter(
+			(c) =>
+				!excludedCommons.some((ec) => ec.id === c.id) &&
+				!selectedCommons.some((sc) => sc.id === c.id),
+		);
 
-		// デッキを作成（除外カードと既に選択されたカードを除く）
-		for (const suit of suits) {
-			for (const value of values) {
-				// 除外リストにないカードかつ既に選択されていないカードのみデッキに追加
-				if (
-					!isCardExcluded(suit, value) &&
-					!selectedCards.some((card) => card.suit === suit && card.value === value)
-				) {
-					deck.push({ suit, value });
-				}
-			}
-		}
+		if (availableCommons.length === 0) return;
 
-		if (deck.length === 0) return; // 選べるカードがない場合
+		const shuffled = [...availableCommons].sort(() => Math.random() - 0.5);
+		const cardsToAdd = Math.min(numberOfCommons - selectedCommons.length, shuffled.length);
+		const newCards = shuffled.slice(0, cardsToAdd);
 
-		// カードをシャッフル
-		const shuffledDeck = [...deck].sort(() => Math.random() - 0.5);
-
-		// 足りない分だけカードを追加
-		const cardsToAdd = Math.min(numberOfCards - selectedCards.length, shuffledDeck.length);
-		const newCards = shuffledDeck.slice(0, cardsToAdd);
-
-		selectedCards = [...selectedCards, ...newCards];
-
-		// 結果ページへ移動
-		const resultParam = selectedCards.map((card) => `${card.suit}${card.value}`).join('+');
-		goto(`?results=${resultParam}`);
-
-		// 共有用URLを更新
-		updateShareUrl();
+		selectedCommons = [...selectedCommons, ...newCards];
+		updateUrlAndShare();
 	}
 
-	// 除外リストをクリア
-	function clearExcludedCards() {
-		excludedCards = [];
-		localStorage.removeItem('excludedCards');
+	function clearExcludedCommons() {
+		excludedCommons = [];
+		localStorage.removeItem("excludedCommons");
 	}
 </script>
 
 <div class="container mx-auto p-4 max-w-3xl">
-	<h1 class="text-3xl font-bold mb-6 text-center">トランプカードランダマイザー</h1>
+	<h1 class="text-3xl font-bold mb-6 text-center">ハートオブクラウンランダマイザー</h1>
 
 	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
 		<h2 class="text-xl font-semibold mb-4">オプション設定</h2>
 
-		<div class="mb-4">
-			<label class="flex items-center space-x-2 cursor-pointer">
-				<input
-					type="checkbox"
-					bind:checked={includeAllSuits}
-					class="form-checkbox h-5 w-5 text-blue-600"
-				/>
-				<span>全てのスート（♥, ♦, ♣, ♠）を含める</span>
-			</label>
-		</div>
-
 		<div class="mb-6">
-			<label class="block mb-2"
-				>カード枚数: {numberOfCards}
-				<input type="range" min="1" max="20" bind:value={numberOfCards} class="w-full" />
-			</label>
+			<label class="block mb-2">一般カード枚数:</label>
+			<div class="flex gap-4">
+				<label class="flex items-center">
+					<input
+						type="radio"
+						name="numberOfCommons"
+						value={10}
+						bind:group={numberOfCommons}
+						class="mr-2"
+					/>
+					10枚
+				</label>
+				<label class="flex items-center">
+					<input
+						type="radio"
+						name="numberOfCommons"
+						value={14}
+						bind:group={numberOfCommons}
+						class="mr-2"
+					/>
+					14枚
+				</label>
+			</div>
 		</div>
 
-		<div class="grid grid-cols-2 gap-4">
+		<div class="grid grid-cols-1 gap-4">
 			<button
 				on:click={drawRandomCards}
 				class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
 			>
-				カードを引く
+				一般カードを引く
 			</button>
 
 			<button
-				on:click={drawMissingCards}
-				class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-				disabled={selectedCards.length >= numberOfCards}
+				on:click={drawMissingCommons}
+				class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+				disabled={selectedCommons.length >= numberOfCommons}
 			>
-				足りない枚数を引く ({numberOfCards - selectedCards.length})
+				一般カードを追加 ({numberOfCommons - selectedCommons.length})
 			</button>
 		</div>
 	</div>
@@ -278,24 +291,24 @@
 		<div class="flex justify-between items-center mb-4">
 			<h2 class="text-xl font-semibold">除外カードリスト</h2>
 			<button
-				on:click={clearExcludedCards}
-				class="bg-red-500 hover:bg-red-600 text-white text-sm py-1 px-3 rounded focus:outline-none focus:shadow-outline transition duration-300"
+				on:click={clearExcludedCommons}
+				class="bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded focus:outline-none focus:shadow-outline transition duration-300"
 			>
 				リストをクリア
 			</button>
 		</div>
 
-		{#if excludedCards.length === 0}
+		{#if excludedCommons.length === 0}
 			<p class="text-gray-500 italic">除外カードはありません</p>
 		{:else}
-			<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 mb-2">
-				{#each excludedCards as card}
-					<div class="border border-gray-300 rounded p-2 flex items-center justify-between">
-						<span class={getCardColor(card.suit)}>
-							{card.suit}{card.value}
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+				{#each excludedCommons as common}
+					<div class="border border-green-300 rounded p-2 flex items-center justify-between">
+						<span class="text-green-600 text-sm">
+							{common.name}
 						</span>
 						<button
-							on:click={() => removeFromExcluded(card.suit, card.value)}
+							on:click={() => removeFromExcludedCommons(common)}
 							class="text-gray-500 hover:text-red-500"
 						>
 							✕
@@ -306,32 +319,115 @@
 		{/if}
 	</div>
 
-	{#if selectedCards.length > 0}
+	{#if selectedCommons.length > 0}
+		{@const basicCards = selectedCommons
+			.filter((c) => c.edition === 0)
+			.sort((a, b) => a.cost - b.cost)}
+		{@const farEasternCards = selectedCommons
+			.filter((c) => c.edition === 1)
+			.sort((a, b) => a.cost - b.cost)}
 		<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-			<h2 class="text-xl font-semibold mb-4">
-				結果 ({selectedCards.length}/{numberOfCards}枚)
-			</h2>
+			<h2 class="text-xl font-semibold mb-4">結果</h2>
 
-			<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-6">
-				{#each selectedCards as card, index}
-					<div
-						class={`border-2 border-gray-300 rounded-lg p-4 flex items-center justify-center aspect-[2/3] shadow-sm hover:shadow-md transition-shadow relative ${getCardStyle(card.suit)}`}
-					>
-						<!-- 除外ボタン -->
-						<button
-							on:click={() => removeSelectedCard(index)}
-							class="absolute top-1 left-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
-							title="このカードを削除する"
-						>
-							✕
-						</button>
-
-						<span class={`text-2xl font-bold ${getCardColor(card.suit)}`}>
-							{card.suit}{card.value}
-						</span>
+			{#if basicCards.length > 0}
+				<div class="mb-6">
+					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+						{#each basicCards as common}
+							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
+							<div
+								role="button"
+								tabindex="0"
+								aria-label="カード {common.name} をスワイプして削除"
+								class="border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
+									common.hasChild ? 0 : common.link,
+								)} select-none cursor-grab active:cursor-grabbing"
+								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
+								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
+								on:touchmove={handleSwipeMove}
+								on:touchend={handleSwipeEnd}
+								on:touchcancel={handleSwipeCancel}
+								on:keydown={(e) => {
+									if (e.key === "Delete" || e.key === "Backspace")
+										removeSelectedCommon(originalIndex);
+								}}
+							>
+								<button
+									on:click={() => removeSelectedCommon(originalIndex)}
+									class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+									title="このカードを削除する"
+								>
+									✕
+								</button>
+								<div class="text-blue-600">
+									<div class="font-bold text-sm mb-1">{common.name}</div>
+									<div class="text-xs text-gray-600">
+										コスト: {common.cost}
+										{#if "coin" in common && common.coin}
+											| コイン: {common.coin}
+										{/if}
+										{#if "succession" in common && common.succession}
+											| 継承点: {common.succession}
+										{/if}
+									</div>
+									{#if !common.hasChild}
+										<div class="text-xs text-gray-500 mt-1">{common.effect}</div>
+									{/if}
+								</div>
+							</div>
+						{/each}
 					</div>
-				{/each}
-			</div>
+				</div>
+			{/if}
+
+			{#if farEasternCards.length > 0}
+				<div class="mb-6">
+					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+						{#each farEasternCards as common}
+							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
+							<div
+								role="button"
+								tabindex="0"
+								aria-label="カード {common.name} をスワイプして削除"
+								class="border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
+									common.hasChild ? 0 : common.link,
+								)} select-none cursor-grab active:cursor-grabbing"
+								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
+								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
+								on:touchmove={handleSwipeMove}
+								on:touchend={handleSwipeEnd}
+								on:touchcancel={handleSwipeCancel}
+								on:keydown={(e) => {
+									if (e.key === "Delete" || e.key === "Backspace")
+										removeSelectedCommon(originalIndex);
+								}}
+							>
+								<button
+									on:click={() => removeSelectedCommon(originalIndex)}
+									class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+									title="このカードを削除する"
+								>
+									✕
+								</button>
+								<div class="text-orange-600">
+									<div class="font-bold text-sm mb-1">{common.name}</div>
+									<div class="text-xs text-gray-600">
+										コスト: {common.cost}
+										{#if "coin" in common && common.coin}
+											| コイン: {common.coin}
+										{/if}
+										{#if "succession" in common && common.succession}
+											| 継承点: {common.succession}
+										{/if}
+									</div>
+									{#if !common.hasChild}
+										<div class="text-xs text-gray-500 mt-1">{common.effect}</div>
+									{/if}
+								</div>
+							</div>
+						{/each}
+					</div>
+				</div>
+			{/if}
 
 			<div class="mt-6">
 				<h3 class="text-lg font-semibold mb-2">結果を共有</h3>
@@ -367,16 +463,32 @@
 <style>
 	:global(body) {
 		background-color: #f5f7fa;
-		font-family: 'Helvetica Neue', Arial, sans-serif;
+		font-family: "Helvetica Neue", Arial, sans-serif;
 	}
 
-	/* スペードのカードスタイル - 右と下に黄色の縁取り */
-	.card-spade {
-		box-shadow: 3px 3px 0 #ffd700;
+	/* Common card style - green border */
+	.card-common {
+		box-shadow: 3px 3px 0 #059669;
+		touch-action: pan-y; /* Allow vertical scrolling, control horizontal with swipe */
 	}
 
-	/* ハートのカードスタイル - 右に黄色の縁取り */
-	.card-heart {
-		box-shadow: 3px 0 0 #ffd700;
+	/* Card style during swipe */
+	.card-common:active {
+		cursor: grabbing;
+	}
+
+	/* Link 1: Yellow highlight on right side */
+	.link-1 {
+		box-shadow:
+			3px 0 0 #fbbf24,
+			3px 3px 0 #059669;
+	}
+
+	/* Link 2: Yellow highlight on right and bottom */
+	.link-2 {
+		box-shadow:
+			3px 0 0 #fbbf24,
+			0 3px 0 #fbbf24,
+			3px 3px 0 #fbbf24;
 	}
 </style>
