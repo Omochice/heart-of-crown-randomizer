@@ -110,22 +110,6 @@
 			});
 	}
 
-	// Determine card color
-	function getCardColor(card: Card) {
-		if (card.type === 'princess') {
-			return 'text-purple-600';
-		}
-		return 'text-blue-600';
-	}
-
-	// Determine card special style
-	function getCardStyle(card: Card) {
-		if (card.type === 'princess') {
-			return 'card-princess';
-		}
-		return 'card-common';
-	}
-
 	// Get highlight style based on link value
 	function getLinkHighlightClass(link: 0 | 1 | 2) {
 		switch (link) {
@@ -228,11 +212,6 @@
 		swipeState.isDragging = false;
 		swipeState.cardElement = null;
 		swipeState.cardIndex = -1;
-	}
-
-	// Check if common card is in excluded list
-	function isCommonExcluded(common: CommonCard) {
-		return excludedCommons.some((c) => c.id === common.id);
 	}
 
 	// Remove common card from excluded list
