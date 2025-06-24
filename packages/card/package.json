@@ -58,7 +58,9 @@
     "check:type": "tsc --noEmit",
     "clean": "rimraf dist",
     "fmt": "npm-run-all fmt:*",
-    "fmt:code": "biome format --write .",
+    "fmt:biome": "npm-run-all fmt:biome:*",
+    "fmt:biome:check": "biome check --write .",
+    "fmt:biome:format": "biome format --write .",
     "fmt:package": "sort-package-json"
   },
   "devDependencies": {

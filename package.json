@@ -8,16 +8,16 @@
   "author": "",
   "main": "index.js",
   "scripts": {
-    "clean": "turbo run clean",
-    "check": "turbo run check",
     "build": "turbo run build",
+    "check": "turbo run check",
+    "clean": "turbo run clean",
     "fmt": "npm-run-all fmt:*",
-    "fmt:turbo": "turbo run fmt",
     "fmt:package": "sort-package-json",
+    "fmt:turbo": "turbo run fmt",
     "test": "turbo run test"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.0.5",
     "@sveltejs/adapter-cloudflare": "7.0.4",
     "npm-run-all2": "8.0.4",
     "rimraf": "6.0.1",

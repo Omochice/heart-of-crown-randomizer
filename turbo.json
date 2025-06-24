@@ -4,15 +4,11 @@
     "fmt": {},
     "clean": {},
     "check": {
-      "dependsOn": [
-        "@heart-of-crown-randomizer/card#build"
-      ]
+      "dependsOn": ["@heart-of-crown-randomizer/card#build"]
     },
     "test": {},
     "build": {
-      "outputs": [
-        "dist/**"
-      ]
+      "outputs": ["dist/**"]
     }
   }
 }
