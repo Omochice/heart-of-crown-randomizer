@@ -184,8 +184,7 @@
 		
 		swipeState.currentX = clientX;
 		
-		// カードの位置を更新（スワイプ中のみアニメーション有効）
-		swipeState.cardElement.style.transition = 'none';
+		// カードの位置を更新
 		swipeState.cardElement.style.transform = `translateX(${deltaX}px)`;
 		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
 	}
@@ -198,8 +197,7 @@
 		
 		// 閾値を超えた場合は削除
 		if (Math.abs(deltaX) > swipeState.threshold) {
-			// カードを画面外に移動してから削除（削除アニメーションのみ有効）
-			swipeState.cardElement.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
+			// カードを画面外に移動してから削除
 			swipeState.cardElement.style.transform = `translateX(${deltaX > 0 ? '100%' : '-100%'})`;
 			swipeState.cardElement.style.opacity = '0';
 			
@@ -209,8 +207,7 @@
 				handleSwipeCancel();
 			}, 300);
 		} else {
-			// 元の位置に戻す（復帰アニメーション有効）
-			swipeState.cardElement.style.transition = 'transform 0.3s ease-out, opacity 0.3s ease-out';
+			// 元の位置に戻す
 			swipeState.cardElement.style.transform = '';
 			swipeState.cardElement.style.opacity = '';
 		}
@@ -225,7 +222,6 @@
 	// スワイプキャンセル処理
 	function handleSwipeCancel() {
 		if (swipeState.cardElement) {
-			swipeState.cardElement.style.transition = '';
 			swipeState.cardElement.style.transform = '';
 			swipeState.cardElement.style.opacity = '';
 		}
@@ -508,7 +504,7 @@
 	.card-common {
 		box-shadow: 3px 3px 0 #059669;
 		touch-action: pan-y; /* 縦方向のスクロールを許可、横方向はスワイプで制御 */
-		/* スワイプ時のみアニメーション、レイアウト変更時はアニメーションなし */
+		transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 	}
 
 	/* スワイプ中のカードスタイル */
