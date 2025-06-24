@@ -138,6 +138,102 @@
 		}
 	}
 
+	// スワイプ機能用の状態管理
+	let swipeState = {
+		startX: 0,
+		startY: 0,
+		currentX: 0,
+		isDragging: false,
+		cardElement: null as HTMLElement | null,
+		cardIndex: -1,
+		threshold: 100 // スワイプ削除の閾値（ピクセル）
+	};
+
+	// スワイプ開始処理
+	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
+		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
+		const clientY = 'touches' in event ? event.touches[0].clientY : event.clientY;
+		
+		swipeState.startX = clientX;
+		swipeState.startY = clientY;
+		swipeState.currentX = clientX;
+		swipeState.isDragging = true;
+		swipeState.cardElement = event.currentTarget as HTMLElement;
+		swipeState.cardIndex = index;
+		
+		// マウスイベントの場合、ドキュメントレベルでイベントを監視
+		if (!('touches' in event)) {
+			document.addEventListener('mousemove', handleSwipeMove);
+			document.addEventListener('mouseup', handleSwipeEnd);
+		}
+	}
+
+	// スワイプ中の処理
+	function handleSwipeMove(event: TouchEvent | MouseEvent) {
+		if (!swipeState.isDragging || !swipeState.cardElement) return;
+		
+		const clientX = 'touches' in event ? event.touches[0].clientX : event.clientX;
+		const deltaX = clientX - swipeState.startX;
+		const deltaY = Math.abs(('touches' in event ? event.touches[0].clientY : event.clientY) - swipeState.startY);
+		
+		// 縦方向の移動が大きい場合はスワイプをキャンセル
+		if (deltaY > 50) {
+			handleSwipeCancel();
+			return;
+		}
+		
+		swipeState.currentX = clientX;
+		
+		// カードの位置を更新
+		swipeState.cardElement.style.transform = `translateX(${deltaX}px)`;
+		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
+	}
+
+	// スワイプ終了処理
+	function handleSwipeEnd(event: TouchEvent | MouseEvent) {
+		if (!swipeState.isDragging || !swipeState.cardElement) return;
+		
+		const deltaX = swipeState.currentX - swipeState.startX;
+		
+		// 閾値を超えた場合は削除
+		if (Math.abs(deltaX) > swipeState.threshold) {
+			// カードを画面外に移動してから削除
+			swipeState.cardElement.style.transform = `translateX(${deltaX > 0 ? '100%' : '-100%'})`;
+			swipeState.cardElement.style.opacity = '0';
+			
+			// アニメーション完了後に削除
+			setTimeout(() => {
+				removeSelectedCommon(swipeState.cardIndex);
+				handleSwipeCancel();
+			}, 300);
+		} else {
+			// 元の位置に戻す
+			swipeState.cardElement.style.transform = '';
+			swipeState.cardElement.style.opacity = '';
+		}
+		
+		// イベントリスナーのクリーンアップ
+		document.removeEventListener('mousemove', handleSwipeMove);
+		document.removeEventListener('mouseup', handleSwipeEnd);
+		
+		swipeState.isDragging = false;
+	}
+
+	// スワイプキャンセル処理
+	function handleSwipeCancel() {
+		if (swipeState.cardElement) {
+			swipeState.cardElement.style.transform = '';
+			swipeState.cardElement.style.opacity = '';
+		}
+		
+		document.removeEventListener('mousemove', handleSwipeMove);
+		document.removeEventListener('mouseup', handleSwipeEnd);
+		
+		swipeState.isDragging = false;
+		swipeState.cardElement = null;
+		swipeState.cardIndex = -1;
+	}
+
 
 	// 一般カードが除外リストにあるか確認
 	function isCommonExcluded(common: CommonCard) {
@@ -281,7 +377,18 @@
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each basicCards as common}
 							{@const originalIndex = selectedCommons.findIndex(c => c.id === common.id)}
-							<div class="border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative card-common {getLinkHighlightClass(common.link)}">
+							<div 
+								role="button"
+								tabindex="0"
+								aria-label="カード {common.name} をスワイプして削除"
+								class="border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(common.link)} select-none cursor-grab active:cursor-grabbing"
+								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
+								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
+								on:touchmove={handleSwipeMove}
+								on:touchend={handleSwipeEnd}
+								on:touchcancel={handleSwipeCancel}
+								on:keydown={(e) => { if (e.key === 'Delete' || e.key === 'Backspace') removeSelectedCommon(originalIndex); }}
+							>
 								<button
 									on:click={() => removeSelectedCommon(originalIndex)}
 									class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
@@ -315,7 +422,18 @@
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each farEasternCards as common}
 							{@const originalIndex = selectedCommons.findIndex(c => c.id === common.id)}
-							<div class="border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative card-common {getLinkHighlightClass(common.link)}">
+							<div 
+								role="button"
+								tabindex="0"
+								aria-label="カード {common.name} をスワイプして削除"
+								class="border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(common.link)} select-none cursor-grab active:cursor-grabbing"
+								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
+								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
+								on:touchmove={handleSwipeMove}
+								on:touchend={handleSwipeEnd}
+								on:touchcancel={handleSwipeCancel}
+								on:keydown={(e) => { if (e.key === 'Delete' || e.key === 'Backspace') removeSelectedCommon(originalIndex); }}
+							>
 								<button
 									on:click={() => removeSelectedCommon(originalIndex)}
 									class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
@@ -385,6 +503,13 @@
 	/* 一般カードスタイル - 緑の縁取り */
 	.card-common {
 		box-shadow: 3px 3px 0 #059669;
+		touch-action: pan-y; /* 縦方向のスクロールを許可、横方向はスワイプで制御 */
+		transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+	}
+
+	/* スワイプ中のカードスタイル */
+	.card-common:active {
+		cursor: grabbing;
 	}
 
 	/* リンク1: 右側に黄色のハイライト */
