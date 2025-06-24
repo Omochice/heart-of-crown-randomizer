@@ -2,46 +2,26 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { Basic, FarEasternBorder } from '@heart-of-crown-randomizer/card';
-	import type { CommonCard, Princess } from '@heart-of-crown-randomizer/card/type';
+	import type { CommonCard } from '@heart-of-crown-randomizer/card/type';
 	import { onMount } from 'svelte';
-
-	// Card type definition
-	type Card = Princess | CommonCard;
 
 	// Option settings
 	let numberOfCommons = 10;
-	let selectedPrincesses: Princess[] = [];
 	let selectedCommons: CommonCard[] = [];
 	let shareUrl = '';
 
 	// Excluded card lists
-	let excludedPrincesses: Princess[] = [];
 	let excludedCommons: CommonCard[] = [];
 
 	// Load excluded cards from localStorage on mount
 	onMount(() => {
-		const results = page.url.searchParams.get('results');
-		if (results) {
-			const [princessIds, commonIds] = results.split('|');
-			if (princessIds) {
-				selectedPrincesses = princessIds
-					.split(',')
-					.map((id) => Basic.princesses.find((p) => p.id === Number.parseInt(id)))
-					.filter(Boolean) as Princess[];
-			}
-			if (commonIds) {
+		const commonIds = page.url.searchParams.get('results')?.split(',');
+		if (commonIds) {
 				selectedCommons = commonIds
-					.split(',')
 					.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
 					.filter(Boolean) as CommonCard[];
-			}
 		}
 
-		// Load excluded cards from localStorage
-		const storedExcludedPrincesses = localStorage.getItem('excludedPrincesses');
-		if (storedExcludedPrincesses) {
-			excludedPrincesses = JSON.parse(storedExcludedPrincesses);
-		}
 		const storedExcludedCommons = localStorage.getItem('excludedCommons');
 		if (storedExcludedCommons) {
 			excludedCommons = JSON.parse(storedExcludedCommons);
@@ -68,10 +48,8 @@
 		});
 
 		// Navigate to results page
-		const princessIds = selectedPrincesses.map((p) => p.id).join(',');
 		const commonIds = selectedCommons.map((c) => c.id).join(',');
-		const resultParam = `${princessIds}|${commonIds}`;
-		goto(`?results=${resultParam}`, { keepFocus: true, noScroll: true });
+		goto(`?results=${commonIds}`, { keepFocus: true, noScroll: true });
 
 		// Update share URL
 		updateShareUrl();
@@ -80,10 +58,8 @@
 	// Update share URL
 	function updateShareUrl() {
 		if (selectedCommons.length > 0) {
-			const princessIds = selectedPrincesses.map((p) => p.id).join(',');
 			const commonIds = selectedCommons.map((c) => c.id).join(',');
-			const resultParam = `${princessIds}|${commonIds}`;
-			shareUrl = `${window.location.origin}?results=${resultParam}`;
+			shareUrl = `${window.location.origin}?results=${commonIds}`;
 		}
 	}
 
@@ -176,7 +152,7 @@
 	}
 
 	// Handle swipe end
-	function handleSwipeEnd(event: TouchEvent | MouseEvent) {
+	function handleSwipeEnd() {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 
 		const deltaX = swipeState.currentX - swipeState.startX;
@@ -228,10 +204,8 @@
 
 	// Update URL and share URL
 	function updateUrlAndShare() {
-		const princessIds = selectedPrincesses.map((p) => p.id).join(',');
 		const commonIds = selectedCommons.map((c) => c.id).join(',');
-		const resultParam = `${princessIds}|${commonIds}`;
-		goto(`?results=${resultParam}`, { keepFocus: true, noScroll: true });
+		goto(`?results=${commonIds}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
 
