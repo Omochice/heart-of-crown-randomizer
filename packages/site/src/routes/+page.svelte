@@ -386,7 +386,7 @@
 								tabindex="0"
 								aria-label="カード {common.name} をスワイプして削除"
 								class="border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
-									common.link
+									common.hasChild ? 0 : common.link
 								)} select-none cursor-grab active:cursor-grabbing"
 								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
 								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
@@ -416,7 +416,7 @@
 											| 継承点: {common.succession}
 										{/if}
 									</div>
-									{#if common.effect}
+									{#if !common.hasChild}
 										<div class="text-xs text-gray-500 mt-1">{common.effect}</div>
 									{/if}
 								</div>
@@ -436,7 +436,7 @@
 								tabindex="0"
 								aria-label="カード {common.name} をスワイプして削除"
 								class="border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
-									common.link
+									common.hasChild ? 0 : common.link
 								)} select-none cursor-grab active:cursor-grabbing"
 								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
 								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
@@ -466,7 +466,7 @@
 											| 継承点: {common.succession}
 										{/if}
 									</div>
-									{#if common.effect}
+									{#if !common.hasChild}
 										<div class="text-xs text-gray-500 mt-1">{common.effect}</div>
 									{/if}
 								</div>
