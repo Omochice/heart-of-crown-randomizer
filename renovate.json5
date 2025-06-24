@@ -3,7 +3,7 @@
   customManagers: [
     {
       customType: "regex",
-      managerFilePattern: ".github/workflows/*.{yml,yaml}",
+      managerFilePatterns: ".github/workflows/*.{yml,yaml}",
       matchStrings: [
         "version:\\s+(?<currentValue>\\d+\\.\\d+.\\d+)  # renovate: depName=(?<depName>\\S+)",
       ],
