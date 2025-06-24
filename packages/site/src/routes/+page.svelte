@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { Basic, FarEasternBorder } from '@heart-of-crown-randomizer/card';
-	import type { CommonCard, Princess } from '@heart-of-crown-randomizer/card/src/type';
+	import type { CommonCard, Princess } from '@heart-of-crown-randomizer/card/type';
 	import { onMount } from 'svelte';
 
 	// Card type definition
