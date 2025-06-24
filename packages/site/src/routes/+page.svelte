@@ -89,7 +89,7 @@
 
 	// Functions for sharing on SNS
 	function shareOnTwitter() {
-		const text = 'ハートオブクラウンランダマイザーの結果をチェック！';
+		const text = 'ハートオブクラウンランダマイザ';
 		const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
 		window.open(url, '_blank');
 	}
