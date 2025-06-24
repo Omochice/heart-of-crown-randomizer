@@ -71,7 +71,7 @@
 		const princessIds = selectedPrincesses.map((p) => p.id).join(',');
 		const commonIds = selectedCommons.map((c) => c.id).join(',');
 		const resultParam = `${princessIds}|${commonIds}`;
-		goto(`?results=${resultParam}`);
+		goto(`?results=${resultParam}`, { keepFocus: true, noScroll: true });
 
 		// 共有用URLを更新
 		updateShareUrl();
@@ -253,7 +253,7 @@
 		const princessIds = selectedPrincesses.map((p) => p.id).join(',');
 		const commonIds = selectedCommons.map((c) => c.id).join(',');
 		const resultParam = `${princessIds}|${commonIds}`;
-		goto(`?results=${resultParam}`);
+		goto(`?results=${resultParam}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
 
