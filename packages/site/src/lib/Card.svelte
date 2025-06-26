@@ -5,9 +5,9 @@
 	export let cardType: 'basic' | 'far-eastern';
 	export let onRemove: (index: number) => void;
 	export let onSwipeStart: (e: MouseEvent | TouchEvent, index: number) => void;
-	export let onSwipeMove: (e: TouchEvent) => void;
-	export let onSwipeEnd: (e: TouchEvent) => void;
-	export let onSwipeCancel: (e: TouchEvent) => void;
+	export let onSwipeMove: (e: TouchEvent | MouseEvent) => void;
+	export let onSwipeEnd: () => void;
+	export let onSwipeCancel: () => void;
 	export let getLinkHighlightClass: (link: number) => string;
 	export let originalIndex: number;
 
@@ -24,9 +24,9 @@
 	)} select-none cursor-grab active:cursor-grabbing"
 	on:mousedown={(e) => onSwipeStart(e, originalIndex)}
 	on:touchstart={(e) => onSwipeStart(e, originalIndex)}
-	on:touchmove={onSwipeMove}
-	on:touchend={onSwipeEnd}
-	on:touchcancel={onSwipeCancel}
+	on:touchmove={(e) => onSwipeMove(e)}
+	on:touchend={() => onSwipeEnd()}
+	on:touchcancel={() => onSwipeCancel()}
 	on:keydown={(e) => {
 		if (e.key === 'Delete' || e.key === 'Backspace') onRemove(originalIndex);
 	}}
