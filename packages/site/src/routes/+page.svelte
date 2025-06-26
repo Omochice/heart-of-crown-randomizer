@@ -369,9 +369,6 @@
 											| 継承点: {common.succession}
 										{/if}
 									</div>
-									{#if !common.hasChild}
-										<div class="text-xs text-gray-500 mt-1">{common.effect}</div>
-									{/if}
 								</div>
 							</div>
 						{/each}
@@ -419,9 +416,6 @@
 											| 継承点: {common.succession}
 										{/if}
 									</div>
-									{#if !common.hasChild}
-										<div class="text-xs text-gray-500 mt-1">{common.effect}</div>
-									{/if}
 								</div>
 							</div>
 						{/each}
