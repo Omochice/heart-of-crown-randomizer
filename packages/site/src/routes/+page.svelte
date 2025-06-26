@@ -16,12 +16,10 @@
 
 	// Load excluded cards from localStorage on mount
 	onMount(() => {
-		const commonIds = page.url.searchParams.get("results")?.split(",");
-		if (commonIds) {
-			selectedCommons = commonIds
-				.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
-				.filter(Boolean) as CommonCard[];
-		}
+		const commonIds = page.url.searchParams.getAll("card");
+		selectedCommons = commonIds
+			.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
+			.filter(Boolean) as CommonCard[];
 
 		const storedExcludedCommons = localStorage.getItem("excludedCommons");
 		if (storedExcludedCommons) {
@@ -31,6 +29,10 @@
 		// Generate share URL
 		updateShareUrl();
 	});
+
+	function cardsToQuery(cards: CommonCard[]): string {
+		return cards.map((c) => `card=${c.id}`).join("&");
+	}
 
 	// Function to randomly select common cards
 	function drawRandomCards() {
@@ -44,9 +46,8 @@
 			return a.id - b.id;
 		});
 
-		// Navigate to results page
-		const commonIds = selectedCommons.map((c) => c.id).join(",");
-		goto(`?results=${commonIds}`, { keepFocus: true, noScroll: true });
+		// Navigate to result page
+		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
 
 		// Update share URL
 		updateShareUrl();
@@ -55,8 +56,7 @@
 	// Update share URL
 	function updateShareUrl() {
 		if (selectedCommons.length > 0) {
-			const commonIds = selectedCommons.map((c) => c.id).join(",");
-			shareUrl = `${window.location.origin}?results=${commonIds}`;
+			shareUrl = `${window.location.origin}?${cardsToQuery(selectedCommons)}`;
 		}
 	}
 
@@ -189,8 +189,7 @@
 
 	// Update URL and share URL
 	function updateUrlAndShare() {
-		const commonIds = selectedCommons.map((c) => c.id).join(",");
-		goto(`?results=${commonIds}`, { keepFocus: true, noScroll: true });
+		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
 
