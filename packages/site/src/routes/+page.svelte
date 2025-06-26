@@ -32,7 +32,12 @@
 	});
 
 	function cardsToQuery(cards: CommonCard[]): string {
-		return cards.map((c) => `card=${c.id}`).join("&");
+		return cards
+			.reduce((query, card) => {
+				query.append("card", card.id.toString());
+				return query;
+			}, new URLSearchParams())
+			.toString();
 	}
 
 	// Function to randomly select common cards
