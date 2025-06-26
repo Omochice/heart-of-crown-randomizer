@@ -32,7 +32,7 @@
 	}}
 >
 	<button
-		on:click={() => onRemove(originalIndex)}
+		on:click|stopPropagation={() => onRemove(originalIndex)}
 		class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
 		title="このカードを削除する"
 	>
