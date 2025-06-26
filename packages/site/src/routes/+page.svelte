@@ -5,6 +5,7 @@
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { onMount } from "svelte";
 	import Card from "$lib/Card.svelte";
+	import { isTouchEvent } from "$lib/utils/is-touch-event";
 
 	// Option settings
 	let numberOfCommons = 10;
@@ -16,12 +17,10 @@
 
 	// Load excluded cards from localStorage on mount
 	onMount(() => {
-		const commonIds = page.url.searchParams.get("results")?.split(",");
-		if (commonIds) {
-			selectedCommons = commonIds
-				.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
-				.filter(Boolean) as CommonCard[];
-		}
+		const commonIds = page.url.searchParams.getAll("card");
+		selectedCommons = commonIds
+			.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
+			.filter(Boolean) as CommonCard[];
 
 		const storedExcludedCommons = localStorage.getItem("excludedCommons");
 		if (storedExcludedCommons) {
@@ -32,6 +31,15 @@
 		updateShareUrl();
 	});
 
+	function cardsToQuery(cards: CommonCard[]): string {
+		return cards
+			.reduce((query, card) => {
+				query.append("card", card.id.toString());
+				return query;
+			}, new URLSearchParams())
+			.toString();
+	}
+
 	// Function to randomly select common cards
 	function drawRandomCards() {
 		// Combine Basic and Far Eastern Border common cards
@@ -41,16 +49,11 @@
 		);
 		const shuffledCommons = [...availableCommons].sort(() => Math.random() - 0.5);
 		selectedCommons = shuffledCommons.slice(0, numberOfCommons).sort((a, b) => {
-			// Sort by edition first, then by cost
-			if (a.edition !== b.edition) {
-				return a.edition - b.edition;
-			}
-			return a.cost - b.cost;
+			return a.id - b.id;
 		});
 
-		// Navigate to results page
-		const commonIds = selectedCommons.map((c) => c.id).join(",");
-		goto(`?results=${commonIds}`, { keepFocus: true, noScroll: true });
+		// Navigate to result page
+		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
 
 		// Update share URL
 		updateShareUrl();
@@ -59,8 +62,7 @@
 	// Update share URL
 	function updateShareUrl() {
 		if (selectedCommons.length > 0) {
-			const commonIds = selectedCommons.map((c) => c.id).join(",");
-			shareUrl = `${window.location.origin}?results=${commonIds}`;
+			shareUrl = `${window.location.origin}?${cardsToQuery(selectedCommons)}`;
 		}
 	}
 
@@ -87,18 +89,6 @@
 			});
 	}
 
-	// Get highlight style based on link value
-	function getLinkHighlightClass(link: 0 | 1 | 2) {
-		switch (link) {
-			case 1:
-				return "link-1";
-			case 2:
-				return "link-2";
-			default:
-				return "";
-		}
-	}
-
 	// State management for swipe functionality
 	const swipeState = {
 		startX: 0,
@@ -112,8 +102,8 @@
 
 	// Handle swipe start
 	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
-		const clientX = "touches" in event ? event.touches[0].clientX : event.clientX;
-		const clientY = "touches" in event ? event.touches[0].clientY : event.clientY;
+		const clientX = isTouchEvent(event) ? event.touches[0].clientX : event.clientX;
+		const clientY = isTouchEvent(event) ? event.touches[0].clientY : event.clientY;
 
 		swipeState.startX = clientX;
 		swipeState.startY = clientY;
@@ -123,7 +113,7 @@
 		swipeState.cardIndex = index;
 
 		// For mouse events, listen at document level
-		if (!("touches" in event)) {
+		if (!isTouchEvent(event)) {
 			document.addEventListener("mousemove", handleSwipeMove);
 			document.addEventListener("mouseup", handleSwipeEnd);
 		}
@@ -133,10 +123,10 @@
 	function handleSwipeMove(event: TouchEvent | MouseEvent) {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 
-		const clientX = "touches" in event ? event.touches[0].clientX : event.clientX;
+		const clientX = isTouchEvent(event) ? event.touches[0].clientX : event.clientX;
 		const deltaX = clientX - swipeState.startX;
 		const deltaY = Math.abs(
-			("touches" in event ? event.touches[0].clientY : event.clientY) - swipeState.startY,
+			(isTouchEvent(event) ? event.touches[0].clientY : event.clientY) - swipeState.startY,
 		);
 
 		// Cancel swipe if vertical movement is too large
@@ -205,8 +195,7 @@
 
 	// Update URL and share URL
 	function updateUrlAndShare() {
-		const commonIds = selectedCommons.map((c) => c.id).join(",");
-		goto(`?results=${commonIds}`, { keepFocus: true, noScroll: true });
+		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
 
@@ -337,14 +326,12 @@
 							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
 							<Card
 								{common}
-								cardType="basic"
 								{originalIndex}
 								onRemove={removeSelectedCommon}
 								onSwipeStart={handleSwipeStart}
 								onSwipeMove={handleSwipeMove}
 								onSwipeEnd={handleSwipeEnd}
 								onSwipeCancel={handleSwipeCancel}
-								{getLinkHighlightClass}
 							/>
 						{/each}
 					</div>
@@ -358,14 +345,12 @@
 							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
 							<Card
 								{common}
-								cardType="far-eastern"
 								{originalIndex}
 								onRemove={removeSelectedCommon}
 								onSwipeStart={handleSwipeStart}
 								onSwipeMove={handleSwipeMove}
 								onSwipeEnd={handleSwipeEnd}
 								onSwipeCancel={handleSwipeCancel}
-								{getLinkHighlightClass}
 							/>
 						{/each}
 					</div>
@@ -407,31 +392,5 @@
 	:global(body) {
 		background-color: #f5f7fa;
 		font-family: "Helvetica Neue", Arial, sans-serif;
-	}
-
-	/* Common card style - green border */
-	.card-common {
-		box-shadow: 3px 3px 0 #059669;
-		touch-action: pan-y; /* Allow vertical scrolling, control horizontal with swipe */
-	}
-
-	/* Card style during swipe */
-	.card-common:active {
-		cursor: grabbing;
-	}
-
-	/* Link 1: Yellow highlight on right side */
-	.link-1 {
-		box-shadow:
-			3px 0 0 #fbbf24,
-			3px 3px 0 #059669;
-	}
-
-	/* Link 2: Yellow highlight on right and bottom */
-	.link-2 {
-		box-shadow:
-			3px 0 0 #fbbf24,
-			0 3px 0 #fbbf24,
-			3px 3px 0 #fbbf24;
 	}
 </style>

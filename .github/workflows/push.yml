@@ -37,6 +37,7 @@ jobs:
               - ./**/tsconfig.json
               - ./**/vite.config.ts
               - packages/card/src/**/*
+              - packages/site/src/**/*
   check-actions:
     needs: path-filter
     if: needs.path-filter.outputs.actions == 'true'
