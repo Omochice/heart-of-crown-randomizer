@@ -8,7 +8,7 @@
 	export let onSwipeMove: (e: TouchEvent | MouseEvent) => void;
 	export let onSwipeEnd: () => void;
 	export let onSwipeCancel: () => void;
-	export let getLinkHighlightClass: (link: number) => string;
+	export let getLinkHighlightClass: (link: 0 | 1 | 2) => string;
 	export let originalIndex: number;
 
 	$: borderColor = cardType === 'basic' ? 'border-blue-300' : 'border-orange-300';
