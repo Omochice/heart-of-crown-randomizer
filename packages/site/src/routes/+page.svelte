@@ -5,6 +5,7 @@
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { onMount } from "svelte";
 	import Card from "$lib/Card.svelte";
+	import { isTouchEvent } from "$lib/utils/is-touch-event";
 
 	// Option settings
 	let numberOfCommons = 10;
@@ -96,8 +97,8 @@
 
 	// Handle swipe start
 	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
-		const clientX = "touches" in event ? event.touches[0].clientX : event.clientX;
-		const clientY = "touches" in event ? event.touches[0].clientY : event.clientY;
+		const clientX = isTouchEvent(event) ? event.touches[0].clientX : event.clientX;
+		const clientY = isTouchEvent(event) ? event.touches[0].clientY : event.clientY;
 
 		swipeState.startX = clientX;
 		swipeState.startY = clientY;
@@ -107,7 +108,7 @@
 		swipeState.cardIndex = index;
 
 		// For mouse events, listen at document level
-		if (!("touches" in event)) {
+		if (!isTouchEvent(event)) {
 			document.addEventListener("mousemove", handleSwipeMove);
 			document.addEventListener("mouseup", handleSwipeEnd);
 		}
@@ -117,10 +118,10 @@
 	function handleSwipeMove(event: TouchEvent | MouseEvent) {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 
-		const clientX = "touches" in event ? event.touches[0].clientX : event.clientX;
+		const clientX = isTouchEvent(event) ? event.touches[0].clientX : event.clientX;
 		const deltaX = clientX - swipeState.startX;
 		const deltaY = Math.abs(
-			("touches" in event ? event.touches[0].clientY : event.clientY) - swipeState.startY,
+			(isTouchEvent(event) ? event.touches[0].clientY : event.clientY) - swipeState.startY,
 		);
 
 		// Cancel swipe if vertical movement is too large
