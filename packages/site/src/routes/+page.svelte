@@ -41,11 +41,7 @@
 		);
 		const shuffledCommons = [...availableCommons].sort(() => Math.random() - 0.5);
 		selectedCommons = shuffledCommons.slice(0, numberOfCommons).sort((a, b) => {
-			// Sort by edition first, then by cost
-			if (a.edition !== b.edition) {
-				return a.edition - b.edition;
-			}
-			return a.cost - b.cost;
+			return a.id - b.id;
 		});
 
 		// Navigate to results page
