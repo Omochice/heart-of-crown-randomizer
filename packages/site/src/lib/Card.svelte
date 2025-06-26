@@ -8,11 +8,22 @@
 	export let onSwipeMove: (e: TouchEvent | MouseEvent) => void;
 	export let onSwipeEnd: () => void;
 	export let onSwipeCancel: () => void;
-	export let getLinkHighlightClass: (link: 0 | 1 | 2) => string;
 	export let originalIndex: number;
 
 	$: borderColor = cardType === "basic" ? "border-blue-300" : "border-orange-300";
 	$: textColor = cardType === "basic" ? "text-blue-600" : "text-orange-600";
+
+	// Get highlight style based on link value
+	function getLinkHighlightClass(link: 0 | 1 | 2) {
+		switch (link) {
+			case 1:
+				return "link-1";
+			case 2:
+				return "link-2";
+			default:
+				return "";
+		}
+	}
 </script>
 
 <div
@@ -51,3 +62,30 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	/* Common card style - green border */
+	.card-common {
+		box-shadow: 3px 3px 0 #059669;
+		touch-action: pan-y; /* Allow vertical scrolling, control horizontal with swipe */
+	}
+
+	/* Card style during swipe */
+	.card-common:active {
+		cursor: grabbing;
+	}
+	/* Link 1: Yellow highlight on right side */
+	.link-1 {
+		box-shadow:
+			3px 0 0 #fbbf24,
+			3px 3px 0 #059669;
+	}
+
+	/* Link 2: Yellow highlight on right and bottom */
+	.link-2 {
+		box-shadow:
+			3px 0 0 #fbbf24,
+			0 3px 0 #fbbf24,
+			3px 3px 0 #fbbf24;
+	}
+</style>
