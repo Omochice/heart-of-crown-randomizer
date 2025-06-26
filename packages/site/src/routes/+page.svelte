@@ -67,14 +67,17 @@
 	}
 
 	async function copyToClipboard() {
-		try {
-			await navigator.share({
+		await navigator
+			.share({
 				url: shareUrl,
 				title: "ハートオブクラウンランダマイザー",
+			})
+			.catch(() => {
+				navigator.clipboard.writeText(shareUrl);
+			})
+			.catch((error) => {
+				console.error("Failed to copy URL:", error);
 			});
-		} catch (error) {
-			console.error("Share failed:", error);
-		}
 	}
 
 	// State management for swipe functionality
