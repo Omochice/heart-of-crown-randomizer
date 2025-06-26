@@ -4,6 +4,7 @@
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { onMount } from "svelte";
+	import Card from "$lib/Card.svelte";
 
 	// Option settings
 	let numberOfCommons = 10;
@@ -334,43 +335,17 @@
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each basicCards as common}
 							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
-							<div
-								role="button"
-								tabindex="0"
-								aria-label="カード {common.name} をスワイプして削除"
-								class="border-2 border-blue-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
-									common.hasChild ? 0 : common.link,
-								)} select-none cursor-grab active:cursor-grabbing"
-								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
-								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
-								on:touchmove={handleSwipeMove}
-								on:touchend={handleSwipeEnd}
-								on:touchcancel={handleSwipeCancel}
-								on:keydown={(e) => {
-									if (e.key === "Delete" || e.key === "Backspace")
-										removeSelectedCommon(originalIndex);
-								}}
-							>
-								<button
-									on:click={() => removeSelectedCommon(originalIndex)}
-									class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
-									title="このカードを削除する"
-								>
-									✕
-								</button>
-								<div class="text-blue-600">
-									<div class="font-bold text-sm mb-1">{common.name}</div>
-									<div class="text-xs text-gray-600">
-										コスト: {common.cost}
-										{#if "coin" in common && common.coin}
-											| コイン: {common.coin}
-										{/if}
-										{#if "succession" in common && common.succession}
-											| 継承点: {common.succession}
-										{/if}
-									</div>
-								</div>
-							</div>
+							<Card
+								{common}
+								cardType="basic"
+								{originalIndex}
+								onRemove={removeSelectedCommon}
+								onSwipeStart={handleSwipeStart}
+								onSwipeMove={handleSwipeMove}
+								onSwipeEnd={handleSwipeEnd}
+								onSwipeCancel={handleSwipeCancel}
+								{getLinkHighlightClass}
+							/>
 						{/each}
 					</div>
 				</div>
@@ -381,43 +356,17 @@
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each farEasternCards as common}
 							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
-							<div
-								role="button"
-								tabindex="0"
-								aria-label="カード {common.name} をスワイプして削除"
-								class="border-2 border-orange-300 rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
-									common.hasChild ? 0 : common.link,
-								)} select-none cursor-grab active:cursor-grabbing"
-								on:mousedown={(e) => handleSwipeStart(e, originalIndex)}
-								on:touchstart={(e) => handleSwipeStart(e, originalIndex)}
-								on:touchmove={handleSwipeMove}
-								on:touchend={handleSwipeEnd}
-								on:touchcancel={handleSwipeCancel}
-								on:keydown={(e) => {
-									if (e.key === "Delete" || e.key === "Backspace")
-										removeSelectedCommon(originalIndex);
-								}}
-							>
-								<button
-									on:click={() => removeSelectedCommon(originalIndex)}
-									class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
-									title="このカードを削除する"
-								>
-									✕
-								</button>
-								<div class="text-orange-600">
-									<div class="font-bold text-sm mb-1">{common.name}</div>
-									<div class="text-xs text-gray-600">
-										コスト: {common.cost}
-										{#if "coin" in common && common.coin}
-											| コイン: {common.coin}
-										{/if}
-										{#if "succession" in common && common.succession}
-											| 継承点: {common.succession}
-										{/if}
-									</div>
-								</div>
-							</div>
+							<Card
+								{common}
+								cardType="far-eastern"
+								{originalIndex}
+								onRemove={removeSelectedCommon}
+								onSwipeStart={handleSwipeStart}
+								onSwipeMove={handleSwipeMove}
+								onSwipeEnd={handleSwipeEnd}
+								onSwipeCancel={handleSwipeCancel}
+								{getLinkHighlightClass}
+							/>
 						{/each}
 					</div>
 				</div>
