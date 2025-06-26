@@ -1,8 +1,7 @@
 <script lang="ts">
-	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+	import { type CommonCard, Edition } from "@heart-of-crown-randomizer/card/type";
 
 	export let common: CommonCard;
-	export let cardType: "basic" | "far-eastern";
 	export let onRemove: (index: number) => void;
 	export let onSwipeStart: (e: MouseEvent | TouchEvent, index: number) => void;
 	export let onSwipeMove: (e: TouchEvent | MouseEvent) => void;
@@ -10,8 +9,8 @@
 	export let onSwipeCancel: () => void;
 	export let originalIndex: number;
 
-	$: borderColor = cardType === "basic" ? "border-blue-300" : "border-orange-300";
-	$: textColor = cardType === "basic" ? "text-blue-600" : "text-orange-600";
+	$: borderColor = common.edition === Edition.BASIC ? "border-blue-300" : "border-orange-300";
+	$: textColor = common.edition === Edition.BASIC ? "text-blue-600" : "text-orange-600";
 
 	// Get highlight style based on link value
 	function getLinkHighlightClass(link: 0 | 1 | 2) {

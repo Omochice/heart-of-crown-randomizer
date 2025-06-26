@@ -325,7 +325,6 @@
 							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
 							<Card
 								{common}
-								cardType="basic"
 								{originalIndex}
 								onRemove={removeSelectedCommon}
 								onSwipeStart={handleSwipeStart}
@@ -345,7 +344,6 @@
 							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
 							<Card
 								{common}
-								cardType="far-eastern"
 								{originalIndex}
 								onRemove={removeSelectedCommon}
 								onSwipeStart={handleSwipeStart}
