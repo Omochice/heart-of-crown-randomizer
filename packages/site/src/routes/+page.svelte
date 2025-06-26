@@ -66,27 +66,15 @@
 		}
 	}
 
-	// Functions for sharing on SNS
-	function shareOnTwitter() {
-		const text = "ハートオブクラウンランダマイザ";
-		const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
-		window.open(url, "_blank");
-	}
-
-	function shareOnFacebook() {
-		const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-		window.open(url, "_blank");
-	}
-
-	function copyToClipboard() {
-		navigator.clipboard
-			.writeText(shareUrl)
-			.then(() => {
-				alert("URLをクリップボードにコピーしました！");
-			})
-			.catch((err) => {
-				console.error("クリップボードへのコピーに失敗しました:", err);
+	async function copyToClipboard() {
+		try {
+			await navigator.share({
+				url: shareUrl,
+				title: "ハートオブクラウンランダマイザー",
 			});
+		} catch (error) {
+			console.error("Share failed:", error);
+		}
 	}
 
 	// State management for swipe functionality
@@ -360,18 +348,6 @@
 			<div class="mt-6">
 				<h3 class="text-lg font-semibold mb-2">結果を共有</h3>
 				<div class="flex flex-wrap gap-2">
-					<button
-						on:click={shareOnTwitter}
-						class="bg-[#1DA1F2] hover:bg-[#0c85d0] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-					>
-						Twitterで共有
-					</button>
-					<button
-						on:click={shareOnFacebook}
-						class="bg-[#4267B2] hover:bg-[#365899] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-					>
-						Facebookで共有
-					</button>
 					<button
 						on:click={copyToClipboard}
 						class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
