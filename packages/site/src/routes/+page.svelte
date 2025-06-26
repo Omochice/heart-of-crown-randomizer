@@ -333,7 +333,7 @@
 			{#if basicCards.length > 0}
 				<div class="mb-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-						{#each basicCards as common}
+						{#each basicCards as common (common.id)}
 							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
 							<Card
 								{common}
@@ -354,7 +354,7 @@
 			{#if farEasternCards.length > 0}
 				<div class="mb-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-						{#each farEasternCards as common}
+						{#each farEasternCards as common (common.id)}
 							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
 							<Card
 								{common}
