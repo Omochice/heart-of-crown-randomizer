@@ -75,8 +75,8 @@
 			.catch(() => {
 				navigator.clipboard.writeText(shareUrl);
 			})
-			.catch((error) => {
-				console.error("Failed to copy URL:", error);
+			.catch((cause) => {
+				console.error("Failed to copy URL", { cause });
 			});
 	}
 
