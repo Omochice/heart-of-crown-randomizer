@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { CommonCard } from '@heart-of-crown-randomizer/card/type';
+	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 
 	export let common: CommonCard;
-	export let cardType: 'basic' | 'far-eastern';
+	export let cardType: "basic" | "far-eastern";
 	export let onRemove: (index: number) => void;
 	export let onSwipeStart: (e: MouseEvent | TouchEvent, index: number) => void;
 	export let onSwipeMove: (e: TouchEvent | MouseEvent) => void;
@@ -11,8 +11,8 @@
 	export let getLinkHighlightClass: (link: 0 | 1 | 2) => string;
 	export let originalIndex: number;
 
-	$: borderColor = cardType === 'basic' ? 'border-blue-300' : 'border-orange-300';
-	$: textColor = cardType === 'basic' ? 'text-blue-600' : 'text-orange-600';
+	$: borderColor = cardType === "basic" ? "border-blue-300" : "border-orange-300";
+	$: textColor = cardType === "basic" ? "text-blue-600" : "text-orange-600";
 </script>
 
 <div
@@ -28,7 +28,7 @@
 	on:touchend={() => onSwipeEnd()}
 	on:touchcancel={() => onSwipeCancel()}
 	on:keydown={(e) => {
-		if (e.key === 'Delete' || e.key === 'Backspace') onRemove(originalIndex);
+		if (e.key === "Delete" || e.key === "Backspace") onRemove(originalIndex);
 	}}
 >
 	<button
@@ -42,10 +42,10 @@
 		<div class="font-bold text-sm mb-1">{common.name}</div>
 		<div class="text-xs text-gray-600">
 			コスト: {common.cost}
-			{#if 'coin' in common && common.coin}
+			{#if "coin" in common && common.coin}
 				| コイン: {common.coin}
 			{/if}
-			{#if 'succession' in common && common.succession}
+			{#if "succession" in common && common.succession}
 				| 継承点: {common.succession}
 			{/if}
 		</div>
