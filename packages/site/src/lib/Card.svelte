@@ -29,7 +29,7 @@
 	role="button"
 	tabindex="0"
 	aria-label="カード {common.name} をスワイプして削除"
-	class="border-2 {borderColor} rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
+	class="card bg-base-100 border-2 {borderColor} shadow-lg hover:shadow-xl transition-all duration-300 relative card-common {getLinkHighlightClass(
 		common.hasChild ? 0 : common.link,
 	)} select-none cursor-grab active:cursor-grabbing"
 	on:mousedown={(e) => onSwipeStart(e, originalIndex)}
@@ -43,21 +43,23 @@
 >
 	<button
 		on:click|stopPropagation={() => onRemove(originalIndex)}
-		class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+		class="btn btn-circle btn-sm btn-error absolute top-2 right-2 z-10"
 		title="このカードを削除する"
 	>
 		✕
 	</button>
-	<div class={textColor}>
-		<div class="font-bold text-sm mb-1">{common.name}</div>
-		<div class="text-xs text-gray-600">
-			コスト: {common.cost}
-			{#if "coin" in common && common.coin}
-				| コイン: {common.coin}
-			{/if}
-			{#if "succession" in common && common.succession}
-				| 継承点: {common.succession}
-			{/if}
+	<div class="card-body p-4">
+		<div class="{textColor}">
+			<div class="card-title text-sm mb-1">{common.name}</div>
+			<div class="text-xs text-base-content/70">
+				コスト: {common.cost}
+				{#if "coin" in common && common.coin}
+					| コイン: {common.coin}
+				{/if}
+				{#if "succession" in common && common.succession}
+					| 継承点: {common.succession}
+				{/if}
+			</div>
 		</div>
 	</div>
 </div>
@@ -65,7 +67,7 @@
 <style>
 	/* Common card style - green border */
 	.card-common {
-		box-shadow: 3px 3px 0 #059669;
+		box-shadow: 3px 3px 0 oklch(var(--su));
 		touch-action: pan-y; /* Allow vertical scrolling, control horizontal with swipe */
 	}
 
@@ -76,15 +78,15 @@
 	/* Link 1: Yellow highlight on right side */
 	.link-1 {
 		box-shadow:
-			3px 0 0 #fbbf24,
-			3px 3px 0 #059669;
+			3px 0 0 oklch(var(--wa)),
+			3px 3px 0 oklch(var(--su));
 	}
 
 	/* Link 2: Yellow highlight on right and bottom */
 	.link-2 {
 		box-shadow:
-			3px 0 0 #fbbf24,
-			0 3px 0 #fbbf24,
-			3px 3px 0 #fbbf24;
+			3px 0 0 oklch(var(--wa)),
+			0 3px 0 oklch(var(--wa)),
+			3px 3px 0 oklch(var(--wa));
 	}
 </style>

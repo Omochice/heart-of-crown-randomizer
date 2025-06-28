@@ -218,10 +218,11 @@
 </script>
 
 <div class="container mx-auto p-4 max-w-3xl">
-	<h1 class="text-3xl font-bold mb-6 text-center">ハートオブクラウンランダマイザー</h1>
+	<h1 class="text-3xl font-bold mb-6 text-center text-primary">ハートオブクラウンランダマイザー</h1>
 
-	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-		<h2 class="text-xl font-semibold mb-4">オプション設定</h2>
+	<div class="card bg-base-100 shadow-xl mb-6">
+		<div class="card-body">
+			<h2 class="card-title mb-4">オプション設定</h2>
 
 		<div class="mb-6">
 			<label class="block mb-2">一般カード枚数:</label>
@@ -252,52 +253,55 @@
 		<div class="grid grid-cols-1 gap-4">
 			<button
 				on:click={drawRandomCards}
-				class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+				class="btn btn-primary w-full"
 			>
 				一般カードを引く
 			</button>
 
 			<button
 				on:click={drawMissingCommons}
-				class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+				class="btn btn-success w-full"
 				disabled={selectedCommons.length >= numberOfCommons}
 			>
 				一般カードを追加 ({numberOfCommons - selectedCommons.length})
 			</button>
+			</div>
 		</div>
 	</div>
 
 	<!-- 除外カードリスト -->
-	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-		<div class="flex justify-between items-center mb-4">
-			<h2 class="text-xl font-semibold">除外カードリスト</h2>
-			<button
-				on:click={clearExcludedCommons}
-				class="bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded focus:outline-none focus:shadow-outline transition duration-300"
-			>
-				リストをクリア
-			</button>
-		</div>
-
-		{#if excludedCommons.length === 0}
-			<p class="text-gray-500 italic">除外カードはありません</p>
-		{:else}
-			<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-				{#each excludedCommons as common}
-					<div class="border border-green-300 rounded p-2 flex items-center justify-between">
-						<span class="text-green-600 text-sm">
-							{common.name}
-						</span>
-						<button
-							on:click={() => removeFromExcludedCommons(common)}
-							class="text-gray-500 hover:text-red-500"
-						>
-							✕
-						</button>
-					</div>
-				{/each}
+	<div class="card bg-base-100 shadow-xl mb-6">
+		<div class="card-body">
+			<div class="flex justify-between items-center mb-4">
+				<h2 class="card-title">除外カードリスト</h2>
+				<button
+					on:click={clearExcludedCommons}
+					class="btn btn-success btn-sm"
+				>
+					リストをクリア
+				</button>
 			</div>
-		{/if}
+
+			{#if excludedCommons.length === 0}
+				<p class="text-base-content/70 italic">除外カードはありません</p>
+			{:else}
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+					{#each excludedCommons as common}
+						<div class="badge badge-success p-3 flex items-center justify-between gap-2">
+							<span class="text-sm">
+								{common.name}
+							</span>
+							<button
+								on:click={() => removeFromExcludedCommons(common)}
+								class="btn btn-ghost btn-xs text-error hover:bg-error hover:text-error-content"
+							>
+								✕
+							</button>
+						</div>
+					{/each}
+				</div>
+			{/if}
+		</div>
 	</div>
 
 	{#if selectedCommons.length > 0}
@@ -307,8 +311,9 @@
 		{@const farEasternCards = selectedCommons
 			.filter((c) => c.edition === 1)
 			.sort((a, b) => a.cost - b.cost)}
-		<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-			<h2 class="text-xl font-semibold mb-4">結果</h2>
+		<div class="card bg-base-100 shadow-xl mb-6">
+			<div class="card-body">
+				<h2 class="card-title mb-4">結果</h2>
 
 			{#if basicCards.length > 0}
 				<div class="mb-6">
@@ -348,28 +353,23 @@
 				</div>
 			{/if}
 
-			<div class="mt-6">
-				<h3 class="text-lg font-semibold mb-2">結果を共有</h3>
-				<div class="flex flex-wrap gap-2">
-					<button
-						on:click={copyToClipboard}
-						class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-					>
-						URLをコピー
-					</button>
+				<div class="mt-6">
+					<h3 class="text-lg font-semibold mb-2">結果を共有</h3>
+					<div class="flex flex-wrap gap-2">
+						<button
+							on:click={copyToClipboard}
+							class="btn btn-neutral"
+						>
+							URLをコピー
+						</button>
+					</div>
 				</div>
-			</div>
 
-			<div class="mt-4">
-				<p class="text-sm text-gray-600 break-all">共有URL: {shareUrl}</p>
+				<div class="mt-4">
+					<p class="text-sm text-base-content/70 break-all">共有URL: {shareUrl}</p>
+				</div>
 			</div>
 		</div>
 	{/if}
 </div>
 
-<style>
-	:global(body) {
-		background-color: #f5f7fa;
-		font-family: "Helvetica Neue", Arial, sans-serif;
-	}
-</style>
