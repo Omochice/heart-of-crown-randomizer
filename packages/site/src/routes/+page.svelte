@@ -225,29 +225,31 @@
 			<h2 class="card-title mb-4">オプション設定</h2>
 
 		<div class="mb-6">
-			<label class="block mb-2">一般カード枚数:</label>
-			<div class="flex gap-4">
-				<label class="flex items-center">
-					<input
-						type="radio"
-						name="numberOfCommons"
-						value={10}
-						bind:group={numberOfCommons}
-						class="mr-2"
-					/>
-					10枚
-				</label>
-				<label class="flex items-center">
-					<input
-						type="radio"
-						name="numberOfCommons"
-						value={14}
-						bind:group={numberOfCommons}
-						class="mr-2"
-					/>
-					14枚
-				</label>
-			</div>
+			<fieldset>
+				<legend class="block mb-2">一般カード枚数:</legend>
+				<div class="flex gap-4">
+					<label class="flex items-center">
+						<input
+							type="radio"
+							name="numberOfCommons"
+							value={10}
+							bind:group={numberOfCommons}
+							class="radio radio-primary mr-2"
+						/>
+						10枚
+					</label>
+					<label class="flex items-center">
+						<input
+							type="radio"
+							name="numberOfCommons"
+							value={14}
+							bind:group={numberOfCommons}
+							class="radio radio-primary mr-2"
+						/>
+						14枚
+					</label>
+				</div>
+			</fieldset>
 		</div>
 
 		<div class="grid grid-cols-1 gap-4">
