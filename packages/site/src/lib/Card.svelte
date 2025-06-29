@@ -49,7 +49,7 @@
 		✕
 	</button>
 	<div class="card-body p-4">
-		<div class="{textColor}">
+		<div class={textColor}>
 			<div class="card-title text-sm mb-1">{common.name}</div>
 			<div class="text-xs text-base-content/70">
 				コスト: {common.cost}
