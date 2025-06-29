@@ -224,8 +224,10 @@
 		<div class="card-body">
 			<h2 class="card-title mb-4">オプション設定</h2>
 
-		<div class="mb-6">
-			<fieldset>
+			<fieldset
+				class="mb-6"
+				aria-label="一般カード枚数:"
+			>
 				<legend class="block mb-2">一般カード枚数:</legend>
 				<div class="flex gap-4">
 					<label class="flex items-center">
@@ -250,23 +252,22 @@
 					</label>
 				</div>
 			</fieldset>
-		</div>
 
-		<div class="grid grid-cols-1 gap-4">
-			<button
-				on:click={drawRandomCards}
-				class="btn btn-primary w-full"
-			>
-				一般カードを引く
-			</button>
+			<div class="grid grid-cols-1 gap-4">
+				<button
+					on:click={drawRandomCards}
+					class="btn btn-primary w-full"
+				>
+					一般カードを引く
+				</button>
 
-			<button
-				on:click={drawMissingCommons}
-				class="btn btn-success w-full"
-				disabled={selectedCommons.length >= numberOfCommons}
-			>
-				一般カードを追加 ({numberOfCommons - selectedCommons.length})
-			</button>
+				<button
+					on:click={drawMissingCommons}
+					class="btn btn-success w-full"
+					disabled={selectedCommons.length >= numberOfCommons}
+				>
+					一般カードを追加 ({numberOfCommons - selectedCommons.length})
+				</button>
 			</div>
 		</div>
 	</div>
@@ -317,43 +318,43 @@
 			<div class="card-body">
 				<h2 class="card-title mb-4">結果</h2>
 
-			{#if basicCards.length > 0}
-				<div class="mb-6">
-					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-						{#each basicCards as common (common.id)}
-							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
-							<Card
-								{common}
-								{originalIndex}
-								onRemove={removeSelectedCommon}
-								onSwipeStart={handleSwipeStart}
-								onSwipeMove={handleSwipeMove}
-								onSwipeEnd={handleSwipeEnd}
-								onSwipeCancel={handleSwipeCancel}
-							/>
-						{/each}
+				{#if basicCards.length > 0}
+					<div class="mb-6">
+						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+							{#each basicCards as common (common.id)}
+								{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
+								<Card
+									{common}
+									{originalIndex}
+									onRemove={removeSelectedCommon}
+									onSwipeStart={handleSwipeStart}
+									onSwipeMove={handleSwipeMove}
+									onSwipeEnd={handleSwipeEnd}
+									onSwipeCancel={handleSwipeCancel}
+								/>
+							{/each}
+						</div>
 					</div>
-				</div>
-			{/if}
+				{/if}
 
-			{#if farEasternCards.length > 0}
-				<div class="mb-6">
-					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-						{#each farEasternCards as common (common.id)}
-							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
-							<Card
-								{common}
-								{originalIndex}
-								onRemove={removeSelectedCommon}
-								onSwipeStart={handleSwipeStart}
-								onSwipeMove={handleSwipeMove}
-								onSwipeEnd={handleSwipeEnd}
-								onSwipeCancel={handleSwipeCancel}
-							/>
-						{/each}
+				{#if farEasternCards.length > 0}
+					<div class="mb-6">
+						<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+							{#each farEasternCards as common (common.id)}
+								{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
+								<Card
+									{common}
+									{originalIndex}
+									onRemove={removeSelectedCommon}
+									onSwipeStart={handleSwipeStart}
+									onSwipeMove={handleSwipeMove}
+									onSwipeEnd={handleSwipeEnd}
+									onSwipeCancel={handleSwipeCancel}
+								/>
+							{/each}
+						</div>
 					</div>
-				</div>
-			{/if}
+				{/if}
 
 				<div class="mt-6">
 					<h3 class="text-lg font-semibold mb-2">結果を共有</h3>
@@ -374,4 +375,3 @@
 		</div>
 	{/if}
 </div>
-
