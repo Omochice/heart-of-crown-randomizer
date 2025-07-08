@@ -64,6 +64,28 @@ importers:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.16.0)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.30.1)(yaml@2.6.1)
 
+  packages/card-selector-ts:
+    dependencies:
+      '@heart-of-crown-randomizer/card':
+        specifier: workspace:*
+        version: link:../card
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 2.0.6
+        version: 2.0.6
+      jsdom:
+        specifier: 26.1.0
+        version: 26.1.0
+      rimraf:
+        specifier: 6.0.1
+        version: 6.0.1
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+      vitest:
+        specifier: 3.2.4
+        version: 3.2.4(@types/node@22.16.0)(jiti@2.4.2)(jsdom@26.1.0)(lightningcss@1.30.1)(yaml@2.6.1)
+
   packages/site:
     dependencies:
       '@heart-of-crown-randomizer/card':
