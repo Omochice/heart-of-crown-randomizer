@@ -28,7 +28,7 @@
 		"@sveltejs/adapter-auto": "6.1.0",
 		"@sveltejs/kit": "2.29.1",
 		"@sveltejs/vite-plugin-svelte": "6.1.2",
-		"@tailwindcss/vite": "4.1.11",
+		"@tailwindcss/vite": "4.1.12",
 		"@testing-library/jest-dom": "6.7.0",
 		"@testing-library/svelte": "5.2.8",
 		"@types/node": "22.17.1",
@@ -38,6 +38,6 @@
 		"storybook": "9.1.2",
 		"svelte": "5.38.1",
 		"svelte-check": "4.3.1",
-		"tailwindcss": "4.1.11"
+		"tailwindcss": "4.1.12"
 	}
 }
