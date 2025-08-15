@@ -64,7 +64,7 @@
     "fmt:package": "sort-package-json"
   },
   "devDependencies": {
-    "unbuild": "3.6.0",
+    "unbuild": "3.6.1",
     "vite-plugin-dts": "4.5.4"
   }
 }
