@@ -17,7 +17,7 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.0",
+    "@biomejs/biome": "2.2.2",
     "@sveltejs/adapter-cloudflare": "7.2.2",
     "npm-run-all2": "8.0.4",
     "rimraf": "6.0.1",
