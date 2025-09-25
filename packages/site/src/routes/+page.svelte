@@ -155,12 +155,6 @@
 			swipeState.cardElement.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
 			swipeState.cardElement.style.transform = "";
 			swipeState.cardElement.style.opacity = "";
-			// Reset transition after animation
-			setTimeout(() => {
-				if (swipeState.cardElement) {
-					swipeState.cardElement.style.transition = "";
-				}
-			}, 200);
 		}
 
 		// Clean up event listeners
@@ -176,12 +170,6 @@
 			swipeState.cardElement.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
 			swipeState.cardElement.style.transform = "";
 			swipeState.cardElement.style.opacity = "";
-			// Reset transition after animation
-			setTimeout(() => {
-				if (swipeState.cardElement) {
-					swipeState.cardElement.style.transition = "";
-				}
-			}, 200);
 		}
 
 		document.removeEventListener("mousemove", handleSwipeMove);
