@@ -84,6 +84,19 @@
 	const VERTICAL_CANCEL_PX = 100; // Vertical movement threshold to cancel horizontal swipe
 	const TRANSITION_MS = 200; // Animation duration in milliseconds
 
+	// Helper function to animate card back to original position
+	function animateCardReset(element: HTMLElement) {
+		element.style.transition = `transform ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`;
+		element.style.transform = "";
+		element.style.opacity = "";
+		// Clear inline transition after animation completes
+		setTimeout(() => {
+			if (element.isConnected) {
+				element.style.transition = "";
+			}
+		}, TRANSITION_MS);
+	}
+
 	// State management for swipe functionality
 	const swipeState = {
 		startX: 0,
@@ -167,15 +180,7 @@
 			// Return to original position with smooth transition
 			const el = swipeState.cardElement;
 			if (el) {
-				el.style.transition = `transform ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`;
-				el.style.transform = "";
-				el.style.opacity = "";
-				// Clear inline transition after animation completes
-				setTimeout(() => {
-					if (el.isConnected) {
-						el.style.transition = "";
-					}
-				}, TRANSITION_MS);
+				animateCardReset(el);
 			}
 		}
 
@@ -190,15 +195,7 @@
 	function handleSwipeCancel() {
 		const el = swipeState.cardElement;
 		if (el) {
-			el.style.transition = `transform ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`;
-			el.style.transform = "";
-			el.style.opacity = "";
-			// Clear inline transition after animation completes
-			setTimeout(() => {
-				if (el.isConnected) {
-					el.style.transition = "";
-				}
-			}, TRANSITION_MS);
+			animateCardReset(el);
 		}
 
 		document.removeEventListener("mousemove", handleSwipeMove);
