@@ -149,7 +149,9 @@
 		if (Math.abs(deltaX) > swipeState.threshold) {
 			// Delete immediately (no animation)
 			removeSelectedCommon(swipeState.cardIndex);
-			handleSwipeCancel();
+			// Reset state without return animation
+			swipeState.cardElement = null;
+			swipeState.cardIndex = -1;
 		} else {
 			// Return to original position with smooth transition
 			swipeState.cardElement.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
