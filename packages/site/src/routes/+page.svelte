@@ -80,6 +80,10 @@
 			});
 	}
 
+	// Constants for swipe behavior
+	const VERTICAL_CANCEL_PX = 100; // Vertical movement threshold to cancel horizontal swipe
+	const TRANSITION_MS = 200; // Animation duration in milliseconds
+
 	// State management for swipe functionality
 	const swipeState = {
 		startX: 0,
@@ -121,7 +125,7 @@
 		);
 
 		// Cancel swipe if vertical movement is too large (increased threshold for better responsiveness)
-		if (deltaY > 100) {
+		if (deltaY > VERTICAL_CANCEL_PX) {
 			handleSwipeCancel();
 			return;
 		}
@@ -156,7 +160,7 @@
 			// Return to original position with smooth transition
 			const el = swipeState.cardElement;
 			if (el) {
-				el.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
+				el.style.transition = `transform ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`;
 				el.style.transform = "";
 				el.style.opacity = "";
 				// Clear inline transition after animation completes
@@ -164,7 +168,7 @@
 					if (el.isConnected) {
 						el.style.transition = "";
 					}
-				}, 200);
+				}, TRANSITION_MS);
 			}
 		}
 
@@ -179,7 +183,7 @@
 	function handleSwipeCancel() {
 		const el = swipeState.cardElement;
 		if (el) {
-			el.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
+			el.style.transition = `transform ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`;
 			el.style.transform = "";
 			el.style.opacity = "";
 			// Clear inline transition after animation completes
@@ -187,7 +191,7 @@
 				if (el.isConnected) {
 					el.style.transition = "";
 				}
-			}, 200);
+			}, TRANSITION_MS);
 		}
 
 		document.removeEventListener("mousemove", handleSwipeMove);
