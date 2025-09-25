@@ -14,6 +14,9 @@
 
 	// Excluded card lists
 	let excludedCommons: CommonCard[] = [];
+	
+	// Pinned cards - cards that should be kept when redrawing
+	let pinnedCards: CommonCard[] = [];
 
 	// Load excluded cards from localStorage on mount
 	onMount(() => {
@@ -25,6 +28,11 @@
 		const storedExcludedCommons = localStorage.getItem("excludedCommons");
 		if (storedExcludedCommons) {
 			excludedCommons = JSON.parse(storedExcludedCommons);
+		}
+
+		const storedPinnedCards = localStorage.getItem("pinnedCards");
+		if (storedPinnedCards) {
+			pinnedCards = JSON.parse(storedPinnedCards);
 		}
 
 		// Generate share URL
@@ -49,6 +57,41 @@
 		);
 		const shuffledCommons = [...availableCommons].sort(() => Math.random() - 0.5);
 		selectedCommons = shuffledCommons.slice(0, numberOfCommons).sort((a, b) => {
+			return a.id - b.id;
+		});
+
+		// Navigate to result page
+		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
+
+		// Update share URL
+		updateShareUrl();
+	}
+
+	// Function to redraw only unpinned cards, keeping pinned ones
+	function redrawUnpinnedCards() {
+		// Get currently pinned cards from selectedCommons
+		const currentPinnedCards = selectedCommons.filter(card => isPinned(card));
+		
+		// Calculate how many new cards we need
+		const cardsToRedraw = numberOfCommons - currentPinnedCards.length;
+		
+		if (cardsToRedraw <= 0) {
+			// All cards are pinned, nothing to redraw
+			return;
+		}
+
+		// Get all available cards excluding excluded ones and currently pinned ones
+		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
+		const availableCommons = allCommons.filter(
+			(c) => !excludedCommons.some((ec) => ec.id === c.id) &&
+			       !currentPinnedCards.some((pc) => pc.id === c.id)
+		);
+		
+		const shuffledCommons = [...availableCommons].sort(() => Math.random() - 0.5);
+		const newCards = shuffledCommons.slice(0, cardsToRedraw);
+		
+		// Combine pinned cards with new random cards
+		selectedCommons = [...currentPinnedCards, ...newCards].sort((a, b) => {
 			return a.id - b.id;
 		});
 
@@ -211,8 +254,29 @@
 		localStorage.setItem("excludedCommons", JSON.stringify(excludedCommons));
 	}
 
+	// Pin/unpin card functions
+	function togglePinCard(common: CommonCard) {
+		const isPinned = pinnedCards.some((c) => c.id === common.id);
+		if (isPinned) {
+			pinnedCards = pinnedCards.filter((c) => c.id !== common.id);
+		} else {
+			pinnedCards = [...pinnedCards, common];
+		}
+		localStorage.setItem("pinnedCards", JSON.stringify(pinnedCards));
+	}
+
+	function isPinned(common: CommonCard): boolean {
+		return pinnedCards.some((c) => c.id === common.id);
+	}
+
 	// Remove selected common card from display list
 	function removeSelectedCommon(index: number) {
+		const cardToRemove = selectedCommons[index];
+		// Also remove from pinned cards if it was pinned
+		if (cardToRemove && isPinned(cardToRemove)) {
+			pinnedCards = pinnedCards.filter((c) => c.id !== cardToRemove.id);
+			localStorage.setItem("pinnedCards", JSON.stringify(pinnedCards));
+		}
 		selectedCommons = selectedCommons.filter((_, i) => i !== index);
 		updateUrlAndShare();
 	}
@@ -247,6 +311,11 @@
 	function clearExcludedCommons() {
 		excludedCommons = [];
 		localStorage.removeItem("excludedCommons");
+	}
+
+	function clearPinnedCards() {
+		pinnedCards = [];
+		localStorage.removeItem("pinnedCards");
 	}
 </script>
 
@@ -297,6 +366,16 @@
 			>
 				一般カードを追加 ({numberOfCommons - selectedCommons.length})
 			</button>
+
+			{#if selectedCommons.length > 0}
+				<button
+					on:click={redrawUnpinnedCards}
+					class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
+					disabled={pinnedCards.length >= numberOfCommons}
+				>
+					ピンしていないカードを引き直す
+				</button>
+			{/if}
 		</div>
 	</div>
 
@@ -333,6 +412,39 @@
 		{/if}
 	</div>
 
+	<!-- ピンカードリスト -->
+	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
+		<div class="flex justify-between items-center mb-4">
+			<h2 class="text-xl font-semibold">ピンカードリスト</h2>
+			<button
+				on:click={clearPinnedCards}
+				class="bg-yellow-500 hover:bg-yellow-600 text-white text-sm py-1 px-3 rounded focus:outline-none focus:shadow-outline transition duration-300"
+			>
+				リストをクリア
+			</button>
+		</div>
+
+		{#if pinnedCards.length === 0}
+			<p class="text-gray-500 italic">ピンカードはありません</p>
+		{:else}
+			<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+				{#each pinnedCards as common}
+					<div class="border border-yellow-300 rounded p-2 flex items-center justify-between bg-yellow-50">
+						<span class="text-yellow-700 text-sm">
+							{common.name}
+						</span>
+						<button
+							on:click={() => togglePinCard(common)}
+							class="text-gray-500 hover:text-red-500"
+						>
+							✕
+						</button>
+					</div>
+				{/each}
+			</div>
+		{/if}
+	</div>
+
 	{#if selectedCommons.length > 0}
 		{@const basicCards = selectedCommons
 			.filter((c) => c.edition === 0)
@@ -351,7 +463,9 @@
 							<Card
 								{common}
 								{originalIndex}
+								isPinned={isPinned(common)}
 								onRemove={removeSelectedCommon}
+								onTogglePin={togglePinCard}
 								onSwipeStart={handleSwipeStart}
 								onSwipeMove={handleSwipeMove}
 								onSwipeEnd={handleSwipeEnd}
@@ -370,7 +484,9 @@
 							<Card
 								{common}
 								{originalIndex}
+								isPinned={isPinned(common)}
 								onRemove={removeSelectedCommon}
+								onTogglePin={togglePinCard}
 								onSwipeStart={handleSwipeStart}
 								onSwipeMove={handleSwipeMove}
 								onSwipeEnd={handleSwipeEnd}
