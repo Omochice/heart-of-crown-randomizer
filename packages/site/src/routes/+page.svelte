@@ -107,6 +107,9 @@
 		swipeState.cardElement = event.currentTarget as HTMLElement;
 		swipeState.cardIndex = index;
 
+		// Disable transition at start to avoid conflicts during drag
+		swipeState.cardElement.style.transition = "none";
+
 		// For mouse events, listen at document level
 		if (!isTouchEvent(event)) {
 			document.addEventListener("mousemove", handleSwipeMove);
@@ -145,7 +148,6 @@
 		// Update card position with hardware acceleration
 		swipeState.cardElement.style.transform = `translate3d(${deltaX}px, 0, 0)`;
 		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
-		swipeState.cardElement.style.transition = "none"; // Remove transition during drag
 	}
 
 	// Handle swipe end
