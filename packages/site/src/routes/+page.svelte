@@ -97,6 +97,15 @@
 		}, TRANSITION_MS);
 	}
 
+	// Helper function to reset swipe state and clean up event listeners
+	function resetSwipeState() {
+		document.removeEventListener("mousemove", handleSwipeMove);
+		document.removeEventListener("mouseup", handleSwipeEnd);
+		swipeState.isDragging = false;
+		swipeState.cardElement = null;
+		swipeState.cardIndex = -1;
+	}
+
 	// State management for swipe functionality
 	const swipeState = {
 		startX: 0,
@@ -173,9 +182,6 @@
 		if (Math.abs(deltaX) > swipeState.threshold) {
 			// Delete immediately (no animation)
 			removeSelectedCommon(swipeState.cardIndex);
-			// Reset state without return animation
-			swipeState.cardElement = null;
-			swipeState.cardIndex = -1;
 		} else {
 			// Return to original position with smooth transition
 			const el = swipeState.cardElement;
@@ -184,11 +190,8 @@
 			}
 		}
 
-		// Clean up event listeners
-		document.removeEventListener("mousemove", handleSwipeMove);
-		document.removeEventListener("mouseup", handleSwipeEnd);
-
-		swipeState.isDragging = false;
+		// Clean up state and event listeners
+		resetSwipeState();
 	}
 
 	// Handle swipe cancel
@@ -198,12 +201,8 @@
 			animateCardReset(el);
 		}
 
-		document.removeEventListener("mousemove", handleSwipeMove);
-		document.removeEventListener("mouseup", handleSwipeEnd);
-
-		swipeState.isDragging = false;
-		swipeState.cardElement = null;
-		swipeState.cardIndex = -1;
+		// Clean up state and event listeners
+		resetSwipeState();
 	}
 
 	// Remove common card from excluded list
