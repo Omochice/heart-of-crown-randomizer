@@ -154,9 +154,18 @@
 			swipeState.cardIndex = -1;
 		} else {
 			// Return to original position with smooth transition
-			swipeState.cardElement.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
-			swipeState.cardElement.style.transform = "";
-			swipeState.cardElement.style.opacity = "";
+			const el = swipeState.cardElement;
+			if (el) {
+				el.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
+				el.style.transform = "";
+				el.style.opacity = "";
+				// Clear inline transition after animation completes
+				setTimeout(() => {
+					if (el.isConnected) {
+						el.style.transition = "";
+					}
+				}, 200);
+			}
 		}
 
 		// Clean up event listeners
@@ -168,10 +177,17 @@
 
 	// Handle swipe cancel
 	function handleSwipeCancel() {
-		if (swipeState.cardElement) {
-			swipeState.cardElement.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
-			swipeState.cardElement.style.transform = "";
-			swipeState.cardElement.style.opacity = "";
+		const el = swipeState.cardElement;
+		if (el) {
+			el.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
+			el.style.transform = "";
+			el.style.opacity = "";
+			// Clear inline transition after animation completes
+			setTimeout(() => {
+				if (el.isConnected) {
+					el.style.transition = "";
+				}
+			}, 200);
 		}
 
 		document.removeEventListener("mousemove", handleSwipeMove);
