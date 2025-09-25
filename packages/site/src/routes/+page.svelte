@@ -131,7 +131,7 @@
 		}
 
 		// Prevent default for touch events to avoid conflicts
-		if (isTouchEvent(event)) {
+		if (isTouchEvent(event) && event.cancelable) {
 			event.preventDefault();
 		}
 
