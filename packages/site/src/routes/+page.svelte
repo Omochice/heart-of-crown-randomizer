@@ -110,7 +110,7 @@
 		}
 	}
 
-	// Handle swipe move
+	// Handle swipe move with improved responsiveness
 	function handleSwipeMove(event: TouchEvent | MouseEvent) {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 
@@ -120,17 +120,23 @@
 			(isTouchEvent(event) ? event.touches[0].clientY : event.clientY) - swipeState.startY,
 		);
 
-		// Cancel swipe if vertical movement is too large
-		if (deltaY > 50) {
+		// Cancel swipe if vertical movement is too large (increased threshold for better responsiveness)
+		if (deltaY > 100) {
 			handleSwipeCancel();
 			return;
 		}
 
+		// Prevent default for touch events to avoid conflicts
+		if (isTouchEvent(event)) {
+			event.preventDefault();
+		}
+
 		swipeState.currentX = clientX;
 
-		// Update card position
-		swipeState.cardElement.style.transform = `translateX(${deltaX}px)`;
+		// Update card position with hardware acceleration
+		swipeState.cardElement.style.transform = `translate3d(${deltaX}px, 0, 0)`;
 		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
+		swipeState.cardElement.style.transition = "none"; // Remove transition during drag
 	}
 
 	// Handle swipe end
@@ -145,9 +151,16 @@
 			removeSelectedCommon(swipeState.cardIndex);
 			handleSwipeCancel();
 		} else {
-			// Return to original position
+			// Return to original position with smooth transition
+			swipeState.cardElement.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
 			swipeState.cardElement.style.transform = "";
 			swipeState.cardElement.style.opacity = "";
+			// Reset transition after animation
+			setTimeout(() => {
+				if (swipeState.cardElement) {
+					swipeState.cardElement.style.transition = "";
+				}
+			}, 200);
 		}
 
 		// Clean up event listeners
@@ -160,8 +173,15 @@
 	// Handle swipe cancel
 	function handleSwipeCancel() {
 		if (swipeState.cardElement) {
+			swipeState.cardElement.style.transition = "transform 0.2s ease-out, opacity 0.2s ease-out";
 			swipeState.cardElement.style.transform = "";
 			swipeState.cardElement.style.opacity = "";
+			// Reset transition after animation
+			setTimeout(() => {
+				if (swipeState.cardElement) {
+					swipeState.cardElement.style.transition = "";
+				}
+			}, 200);
 		}
 
 		document.removeEventListener("mousemove", handleSwipeMove);

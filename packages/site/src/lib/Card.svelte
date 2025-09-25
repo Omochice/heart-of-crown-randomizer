@@ -67,6 +67,7 @@
 	.card-common {
 		box-shadow: 3px 3px 0 #059669;
 		touch-action: pan-y; /* Allow vertical scrolling, control horizontal with swipe */
+		will-change: transform, opacity; /* Optimize for animations */
 	}
 
 	/* Card style during swipe */
