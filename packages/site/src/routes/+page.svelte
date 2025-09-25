@@ -80,6 +80,32 @@
 			});
 	}
 
+	// Constants for swipe behavior
+	const VERTICAL_CANCEL_PX = 100; // Vertical movement threshold to cancel horizontal swipe
+	const TRANSITION_MS = 200; // Animation duration in milliseconds
+
+	// Helper function to animate card back to original position
+	function animateCardReset(element: HTMLElement) {
+		element.style.transition = `transform ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`;
+		element.style.transform = "";
+		element.style.opacity = "";
+		// Clear inline transition after animation completes
+		setTimeout(() => {
+			if (element.isConnected) {
+				element.style.transition = "";
+			}
+		}, TRANSITION_MS);
+	}
+
+	// Helper function to reset swipe state and clean up event listeners
+	function resetSwipeState() {
+		document.removeEventListener("mousemove", handleSwipeMove);
+		document.removeEventListener("mouseup", handleSwipeEnd);
+		swipeState.isDragging = false;
+		swipeState.cardElement = null;
+		swipeState.cardIndex = -1;
+	}
+
 	// State management for swipe functionality
 	const swipeState = {
 		startX: 0,
@@ -103,6 +129,9 @@
 		swipeState.cardElement = event.currentTarget as HTMLElement;
 		swipeState.cardIndex = index;
 
+		// Disable transition at start to avoid conflicts during drag
+		swipeState.cardElement.style.transition = "none";
+
 		// For mouse events, listen at document level
 		if (!isTouchEvent(event)) {
 			document.addEventListener("mousemove", handleSwipeMove);
@@ -110,7 +139,7 @@
 		}
 	}
 
-	// Handle swipe move
+	// Handle swipe move with improved responsiveness
 	function handleSwipeMove(event: TouchEvent | MouseEvent) {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 
@@ -120,16 +149,26 @@
 			(isTouchEvent(event) ? event.touches[0].clientY : event.clientY) - swipeState.startY,
 		);
 
-		// Cancel swipe if vertical movement is too large
-		if (deltaY > 50) {
+		// Cancel swipe if vertical movement is too large (increased threshold for better responsiveness)
+		if (deltaY > VERTICAL_CANCEL_PX) {
 			handleSwipeCancel();
 			return;
 		}
 
+		// Prevent default for touch events only when horizontal movement exceeds threshold and is greater than vertical movement
+		if (
+			isTouchEvent(event) &&
+			event.cancelable &&
+			Math.abs(deltaX) > 10 &&
+			Math.abs(deltaX) > deltaY
+		) {
+			event.preventDefault();
+		}
+
 		swipeState.currentX = clientX;
 
-		// Update card position
-		swipeState.cardElement.style.transform = `translateX(${deltaX}px)`;
+		// Update card position with hardware acceleration
+		swipeState.cardElement.style.transform = `translate3d(${deltaX}px, 0, 0)`;
 		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
 	}
 
@@ -143,33 +182,27 @@
 		if (Math.abs(deltaX) > swipeState.threshold) {
 			// Delete immediately (no animation)
 			removeSelectedCommon(swipeState.cardIndex);
-			handleSwipeCancel();
 		} else {
-			// Return to original position
-			swipeState.cardElement.style.transform = "";
-			swipeState.cardElement.style.opacity = "";
+			// Return to original position with smooth transition
+			const el = swipeState.cardElement;
+			if (el) {
+				animateCardReset(el);
+			}
 		}
 
-		// Clean up event listeners
-		document.removeEventListener("mousemove", handleSwipeMove);
-		document.removeEventListener("mouseup", handleSwipeEnd);
-
-		swipeState.isDragging = false;
+		// Clean up state and event listeners
+		resetSwipeState();
 	}
 
 	// Handle swipe cancel
 	function handleSwipeCancel() {
-		if (swipeState.cardElement) {
-			swipeState.cardElement.style.transform = "";
-			swipeState.cardElement.style.opacity = "";
+		const el = swipeState.cardElement;
+		if (el) {
+			animateCardReset(el);
 		}
 
-		document.removeEventListener("mousemove", handleSwipeMove);
-		document.removeEventListener("mouseup", handleSwipeEnd);
-
-		swipeState.isDragging = false;
-		swipeState.cardElement = null;
-		swipeState.cardIndex = -1;
+		// Clean up state and event listeners
+		resetSwipeState();
 	}
 
 	// Remove common card from excluded list
