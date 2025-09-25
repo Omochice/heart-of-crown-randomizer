@@ -130,8 +130,13 @@
 			return;
 		}
 
-		// Prevent default for touch events to avoid conflicts
-		if (isTouchEvent(event) && event.cancelable) {
+		// Prevent default for touch events only when horizontal movement exceeds threshold and is greater than vertical movement
+		if (
+			isTouchEvent(event) &&
+			event.cancelable &&
+			Math.abs(deltaX) > 10 &&
+			Math.abs(deltaX) > deltaY
+		) {
 			event.preventDefault();
 		}
 
