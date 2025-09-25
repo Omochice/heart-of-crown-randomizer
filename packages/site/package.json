@@ -15,7 +15,8 @@
 		"build-storybook": "storybook build"
 	},
 	"dependencies": {
-		"@heart-of-crown-randomizer/card": "workspace:*"
+		"@heart-of-crown-randomizer/card": "workspace:*",
+		"@heart-of-crown-randomizer/card-selector": "workspace:*"
 	},
 	"devDependencies": {
 		"@storybook/addon-essentials": "8.6.14",
