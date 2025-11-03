@@ -11,7 +11,7 @@
     }
   ],
   extends: [
-    "github>Omochice/personal-renovate-config",
+    "github>Omochice/personal-renovate-config#v1.8.0",
     "github>aquaproj/aqua-renovate-config#2.9.0",
   ],
 }
