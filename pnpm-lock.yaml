@@ -109,8 +109,8 @@ importers:
         specifier: 5.39.6
         version: 5.39.6
       svelte-check:
-        specifier: 4.3.2
-        version: 4.3.2(picomatch@4.0.3)(svelte@5.39.6)(typescript@5.9.3)
+        specifier: 4.3.3
+        version: 4.3.3(picomatch@4.0.3)(svelte@5.39.6)(typescript@5.9.3)
       tailwindcss:
         specifier: 4.1.13
         version: 4.1.13
@@ -2770,8 +2770,8 @@ packages:
     peerDependencies:
       svelte: ^5.0.0
 
-  svelte-check@4.3.2:
-    resolution: {integrity: sha512-71udP5w2kaSTcX8iV0hn3o2FWlabQHhJTJLIQrCqMsrcOeDUO2VhCQKKCA8AMVHSPwdxLEWkUWh9OKxns5PD9w==}
+  svelte-check@4.3.3:
+    resolution: {integrity: sha512-RYP0bEwenDXzfv0P1sKAwjZSlaRyqBn0Fz1TVni58lqyEiqgwztTpmodJrGzP6ZT2aHl4MbTvWP6gbmQ3FOnBg==}
     engines: {node: '>= 18.0.0'}
     hasBin: true
     peerDependencies:
@@ -5720,7 +5720,7 @@ snapshots:
       svelte: 5.39.6
       zimmerframe: 1.1.2
 
-  svelte-check@4.3.2(picomatch@4.0.3)(svelte@5.39.6)(typescript@5.9.3):
+  svelte-check@4.3.3(picomatch@4.0.3)(svelte@5.39.6)(typescript@5.9.3):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.25
       chokidar: 4.0.1
