@@ -8,12 +8,12 @@
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
 
 	// Option settings
-	let numberOfCommons = 10;
-	let selectedCommons: CommonCard[] = [];
-	let shareUrl = "";
+	let numberOfCommons = $state(10);
+	let selectedCommons: CommonCard[] = $state([]);
+	let shareUrl = $state("");
 
 	// Excluded card lists
-	let excludedCommons: CommonCard[] = [];
+	let excludedCommons: CommonCard[] = $state([]);
 
 	// Load excluded cards from localStorage on mount
 	onMount(() => {
@@ -284,14 +284,14 @@
 
 		<div class="grid grid-cols-1 gap-4">
 			<button
-				on:click={drawRandomCards}
+				onclick={drawRandomCards}
 				class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
 			>
 				一般カードを引く
 			</button>
 
 			<button
-				on:click={drawMissingCommons}
+				onclick={drawMissingCommons}
 				class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
 				disabled={selectedCommons.length >= numberOfCommons}
 			>
@@ -305,7 +305,7 @@
 		<div class="flex justify-between items-center mb-4">
 			<h2 class="text-xl font-semibold">除外カードリスト</h2>
 			<button
-				on:click={clearExcludedCommons}
+				onclick={clearExcludedCommons}
 				class="bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded focus:outline-none focus:shadow-outline transition duration-300"
 			>
 				リストをクリア
@@ -322,7 +322,7 @@
 							{common.name}
 						</span>
 						<button
-							on:click={() => removeFromExcludedCommons(common)}
+							onclick={() => removeFromExcludedCommons(common)}
 							class="text-gray-500 hover:text-red-500"
 						>
 							✕
@@ -385,7 +385,7 @@
 				<h3 class="text-lg font-semibold mb-2">結果を共有</h3>
 				<div class="flex flex-wrap gap-2">
 					<button
-						on:click={copyToClipboard}
+						onclick={copyToClipboard}
 						class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
 					>
 						URLをコピー

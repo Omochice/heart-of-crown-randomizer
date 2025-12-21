@@ -1,16 +1,30 @@
 <script lang="ts">
+	import { stopPropagation } from 'svelte/legacy';
+
 	import { type CommonCard, Edition } from "@heart-of-crown-randomizer/card/type";
 
-	export let common: CommonCard;
-	export let onRemove: (index: number) => void;
-	export let onSwipeStart: (e: MouseEvent | TouchEvent, index: number) => void;
-	export let onSwipeMove: (e: TouchEvent | MouseEvent) => void;
-	export let onSwipeEnd: () => void;
-	export let onSwipeCancel: () => void;
-	export let originalIndex: number;
+	interface Props {
+		common: CommonCard;
+		onRemove: (index: number) => void;
+		onSwipeStart: (e: MouseEvent | TouchEvent, index: number) => void;
+		onSwipeMove: (e: TouchEvent | MouseEvent) => void;
+		onSwipeEnd: () => void;
+		onSwipeCancel: () => void;
+		originalIndex: number;
+	}
 
-	$: borderColor = common.edition === Edition.BASIC ? "border-blue-300" : "border-orange-300";
-	$: textColor = common.edition === Edition.BASIC ? "text-blue-600" : "text-orange-600";
+	let {
+		common,
+		onRemove,
+		onSwipeStart,
+		onSwipeMove,
+		onSwipeEnd,
+		onSwipeCancel,
+		originalIndex
+	}: Props = $props();
+
+	let borderColor = $derived(common.edition === Edition.BASIC ? "border-blue-300" : "border-orange-300");
+	let textColor = $derived(common.edition === Edition.BASIC ? "text-blue-600" : "text-orange-600");
 
 	// Get highlight style based on link value
 	function getLinkHighlightClass(link: 0 | 1 | 2) {
@@ -32,17 +46,17 @@
 	class="border-2 {borderColor} rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 relative card-common {getLinkHighlightClass(
 		common.hasChild ? 0 : common.link,
 	)} select-none cursor-grab active:cursor-grabbing"
-	on:mousedown={(e) => onSwipeStart(e, originalIndex)}
-	on:touchstart={(e) => onSwipeStart(e, originalIndex)}
-	on:touchmove={(e) => onSwipeMove(e)}
-	on:touchend={() => onSwipeEnd()}
-	on:touchcancel={() => onSwipeCancel()}
-	on:keydown={(e) => {
+	onmousedown={(e) => onSwipeStart(e, originalIndex)}
+	ontouchstart={(e) => onSwipeStart(e, originalIndex)}
+	ontouchmove={(e) => onSwipeMove(e)}
+	ontouchend={() => onSwipeEnd()}
+	ontouchcancel={() => onSwipeCancel()}
+	onkeydown={(e) => {
 		if (e.key === "Delete" || e.key === "Backspace") onRemove(originalIndex);
 	}}
 >
 	<button
-		on:click|stopPropagation={() => onRemove(originalIndex)}
+		onclick={stopPropagation(() => onRemove(originalIndex))}
 		class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
 		title="このカードを削除する"
 	>
