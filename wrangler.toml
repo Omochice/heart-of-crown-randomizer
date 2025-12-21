@@ -1,0 +1,6 @@
+name = "heart-of-crown-randomizer"
+pages_build_output_dir = "packages/site/.svelte-kit/cloudflare"
+compatibility_date = "2024-03-09"
+
+[vars]
+NODE_VERSION = "24.12.0"
