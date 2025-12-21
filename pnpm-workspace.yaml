@@ -1,8 +1,10 @@
 packages:
   - packages/*
 onlyBuiltDependencies:
-  - '@biomejs/biome'
+  - "@biomejs/biome"
   - esbuild
   - sharp
   - svelte-preprocess
   - workerd
+catalog:
+  tsdown: "0.18.2"

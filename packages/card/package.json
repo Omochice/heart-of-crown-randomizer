@@ -8,50 +8,50 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
     },
     "./basic": {
-      "import": "./dist/basic/index.mjs",
-      "types": "./dist/basic/index.d.ts"
+      "types": "./dist/basic/index.d.mts",
+      "import": "./dist/basic/index.mjs"
     },
     "./basic/basic": {
-      "import": "./dist/basic/basic.mjs",
-      "types": "./dist/basic/basic.d.ts"
+      "types": "./dist/basic/basic.d.mts",
+      "import": "./dist/basic/basic.mjs"
     },
     "./basic/common": {
-      "import": "./dist/basic/common.mjs",
-      "types": "./dist/basic/common.d.ts"
+      "types": "./dist/basic/common.d.mts",
+      "import": "./dist/basic/common.mjs"
     },
     "./basic/princess": {
-      "import": "./dist/basic/princess.mjs",
-      "types": "./dist/basic/princess.d.ts"
+      "types": "./dist/basic/princess.d.mts",
+      "import": "./dist/basic/princess.mjs"
     },
     "./basic/rare": {
-      "import": "./dist/basic/rare.mjs",
-      "types": "./dist/basic/rare.d.ts"
+      "types": "./dist/basic/rare.d.mts",
+      "import": "./dist/basic/rare.mjs"
     },
     "./far-eastern-border": {
-      "import": "./dist/far-eastern-border/index.mjs",
-      "types": "./dist/far-eastern-border/index.d.ts"
+      "types": "./dist/far-eastern-border/index.d.mts",
+      "import": "./dist/far-eastern-border/index.mjs"
     },
     "./far-eastern-border/common": {
-      "import": "./dist/far-eastern-border/common.mjs",
-      "types": "./dist/far-eastern-border/common.d.ts"
+      "types": "./dist/far-eastern-border/common.d.mts",
+      "import": "./dist/far-eastern-border/common.mjs"
     },
     "./far-eastern-border/princess": {
-      "import": "./dist/far-eastern-border/princess.mjs",
-      "types": "./dist/far-eastern-border/princess.d.ts"
+      "types": "./dist/far-eastern-border/princess.d.mts",
+      "import": "./dist/far-eastern-border/princess.mjs"
     },
     "./type": {
-      "import": "./dist/type.mjs",
-      "types": "./dist/type.d.ts"
+      "types": "./dist/type.d.mts",
+      "import": "./dist/type.mjs"
     }
   },
   "main": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "types": "dist/index.d.mts",
   "scripts": {
-    "build": "unbuild",
+    "build": "tsdown",
     "check": "npm-run-all check:*",
     "check:code": "biome check .",
     "check:fmt": "biome format .",
@@ -64,7 +64,6 @@
     "fmt:package": "sort-package-json"
   },
   "devDependencies": {
-    "unbuild": "3.6.1",
-    "vite-plugin-dts": "4.5.4"
+    "tsdown": "catalog:"
   }
 }
