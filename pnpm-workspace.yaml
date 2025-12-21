@@ -6,7 +6,5 @@ onlyBuiltDependencies:
   - sharp
   - svelte-preprocess
   - workerd
-executionEnv:
-  nodeVersion: 24.12.0
 catalog:
   tsdown: "0.18.2"
