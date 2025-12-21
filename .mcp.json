@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "svelte": {
+      "type": "stdio",
+      "command": "pnpm",
+      "env": {},
+      "args": ["exec", "svelte-mcp"]
+    }
+  }
+}
