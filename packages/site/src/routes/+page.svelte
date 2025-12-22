@@ -3,7 +3,6 @@
 	import { page } from "$app/state";
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-	import { onMount } from "svelte";
 	import Card from "$lib/Card.svelte";
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
 
@@ -15,20 +14,28 @@
 	// Excluded card lists
 	let excludedCommons: CommonCard[] = $state([]);
 
-	// Load excluded cards from localStorage on mount
-	onMount(() => {
-		const commonIds = page.url.searchParams.getAll("card");
-		selectedCommons = commonIds
-			.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
-			.filter(Boolean) as CommonCard[];
+	// Flag to ensure initialization happens only once
+	let isInitialized = $state(false);
 
-		const storedExcludedCommons = localStorage.getItem("excludedCommons");
-		if (storedExcludedCommons) {
-			excludedCommons = JSON.parse(storedExcludedCommons);
+	// Load excluded cards from localStorage and URL params on mount (only once)
+	$effect(() => {
+		if (!isInitialized) {
+			const commonIds = page.url.searchParams.getAll("card");
+			selectedCommons = commonIds
+				.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
+				.filter(Boolean) as CommonCard[];
+
+			const storedExcludedCommons = localStorage.getItem("excludedCommons");
+			if (storedExcludedCommons) {
+				excludedCommons = JSON.parse(storedExcludedCommons);
+			}
+
+			// Generate share URL
+			updateShareUrl();
+
+			// Mark as initialized to prevent re-running
+			isInitialized = true;
 		}
-
-		// Generate share URL
-		updateShareUrl();
 	});
 
 	function cardsToQuery(cards: CommonCard[]): string {
@@ -107,7 +114,7 @@
 	}
 
 	// State management for swipe functionality
-	const swipeState = {
+	const swipeState = $state({
 		startX: 0,
 		startY: 0,
 		currentX: 0,
@@ -115,7 +122,7 @@
 		cardElement: null as HTMLElement | null,
 		cardIndex: -1,
 		threshold: 100, // Threshold for swipe deletion (pixels)
-	};
+	});
 
 	// Handle swipe start
 	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
@@ -248,6 +255,14 @@
 		excludedCommons = [];
 		localStorage.removeItem("excludedCommons");
 	}
+
+	// Derived values for card filtering and sorting
+	const basicCards = $derived(
+		selectedCommons.filter((c) => c.edition === 0).sort((a, b) => a.cost - b.cost),
+	);
+	const farEasternCards = $derived(
+		selectedCommons.filter((c) => c.edition === 1).sort((a, b) => a.cost - b.cost),
+	);
 </script>
 
 <div class="container mx-auto p-4 max-w-3xl">
@@ -257,7 +272,7 @@
 		<h2 class="text-xl font-semibold mb-4">オプション設定</h2>
 
 		<div class="mb-6">
-			<label class="block mb-2">一般カード枚数:</label>
+			<div class="block mb-2">一般カード枚数:</div>
 			<div class="flex gap-4">
 				<label class="flex items-center">
 					<input
@@ -316,7 +331,7 @@
 			<p class="text-gray-500 italic">除外カードはありません</p>
 		{:else}
 			<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-				{#each excludedCommons as common}
+				{#each excludedCommons as common (common.id)}
 					<div class="border border-green-300 rounded p-2 flex items-center justify-between">
 						<span class="text-green-600 text-sm">
 							{common.name}
@@ -334,12 +349,6 @@
 	</div>
 
 	{#if selectedCommons.length > 0}
-		{@const basicCards = selectedCommons
-			.filter((c) => c.edition === 0)
-			.sort((a, b) => a.cost - b.cost)}
-		{@const farEasternCards = selectedCommons
-			.filter((c) => c.edition === 1)
-			.sort((a, b) => a.cost - b.cost)}
 		<div class="bg-white rounded-lg shadow-md p-6 mb-6">
 			<h2 class="text-xl font-semibold mb-4">結果</h2>
 
