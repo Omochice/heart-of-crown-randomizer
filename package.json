@@ -19,7 +19,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.10",
     "@sveltejs/adapter-cloudflare": "7.2.4",
-    "@sveltejs/mcp": "^0.1.15",
+    "@sveltejs/mcp": "0.1.15",
     "npm-run-all2": "8.0.4",
     "rimraf": "6.1.2",
     "sort-package-json": "3.6.0",
