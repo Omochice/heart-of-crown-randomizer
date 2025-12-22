@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { stopPropagation } from 'svelte/legacy';
-
 	import { type CommonCard, Edition } from "@heart-of-crown-randomizer/card/type";
 
 	interface Props {
@@ -20,10 +18,12 @@
 		onSwipeMove,
 		onSwipeEnd,
 		onSwipeCancel,
-		originalIndex
+		originalIndex,
 	}: Props = $props();
 
-	let borderColor = $derived(common.edition === Edition.BASIC ? "border-blue-300" : "border-orange-300");
+	let borderColor = $derived(
+		common.edition === Edition.BASIC ? "border-blue-300" : "border-orange-300",
+	);
 	let textColor = $derived(common.edition === Edition.BASIC ? "text-blue-600" : "text-orange-600");
 
 	// Get highlight style based on link value
@@ -56,7 +56,10 @@
 	}}
 >
 	<button
-		onclick={stopPropagation(() => onRemove(originalIndex))}
+		onclick={(e) => {
+			e.stopPropagation();
+			onRemove(originalIndex);
+		}}
 		class="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
 		title="このカードを削除する"
 	>
