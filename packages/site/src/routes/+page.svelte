@@ -16,9 +16,17 @@
 
 	// Load excluded cards from localStorage once on mount
 	$effect(() => {
-		const storedExcludedCommons = localStorage.getItem("excludedCommons");
-		if (storedExcludedCommons) {
-			excludedCommons = JSON.parse(storedExcludedCommons);
+		// SSR safety: localStorage is only available in browser
+		if (typeof localStorage !== "undefined") {
+			try {
+				const storedExcludedCommons = localStorage.getItem("excludedCommons");
+				if (storedExcludedCommons) {
+					excludedCommons = JSON.parse(storedExcludedCommons);
+				}
+			} catch (error) {
+				// Ignore malformed localStorage data
+				console.warn("Failed to parse excludedCommons from localStorage:", error);
+			}
 		}
 	});
 
