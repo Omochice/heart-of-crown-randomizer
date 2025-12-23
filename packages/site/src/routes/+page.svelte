@@ -1,33 +1,52 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
-	import { page } from "$app/state";
+	import { page } from "$app/stores";
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-	import { onMount } from "svelte";
 	import Card from "$lib/Card.svelte";
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
 
 	// Option settings
-	let numberOfCommons = 10;
-	let selectedCommons: CommonCard[] = [];
-	let shareUrl = "";
+	let numberOfCommons = $state(10);
+	let selectedCommons: CommonCard[] = $state([]);
+	let shareUrl = $state("");
 
 	// Excluded card lists
-	let excludedCommons: CommonCard[] = [];
+	let excludedCommons: CommonCard[] = $state([]);
 
-	// Load excluded cards from localStorage on mount
-	onMount(() => {
-		const commonIds = page.url.searchParams.getAll("card");
-		selectedCommons = commonIds
-			.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
+	// Load excluded cards from localStorage once on mount
+	$effect(() => {
+		// SSR safety: localStorage is only available in browser
+		if (typeof localStorage !== "undefined") {
+			try {
+				const storedExcludedCommons = localStorage.getItem("excludedCommons");
+				if (storedExcludedCommons) {
+					excludedCommons = JSON.parse(storedExcludedCommons);
+				}
+			} catch (error) {
+				// Ignore malformed localStorage data
+				console.warn("Failed to parse excludedCommons from localStorage:", error);
+			}
+		}
+	});
+
+	// Reactively sync selectedCommons with URL parameters
+	// This allows browser back/forward to update the displayed cards
+	$effect(() => {
+		const commonIds = $page.url.searchParams.getAll("card");
+		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
+		const newSelectedCommons = commonIds
+			.map((id) => allCommons.find((c) => c.id === Number.parseInt(id)))
 			.filter(Boolean) as CommonCard[];
 
-		const storedExcludedCommons = localStorage.getItem("excludedCommons");
-		if (storedExcludedCommons) {
-			excludedCommons = JSON.parse(storedExcludedCommons);
+		// Only update if actually changed to avoid infinite loops
+		if (JSON.stringify(selectedCommons) !== JSON.stringify(newSelectedCommons)) {
+			selectedCommons = newSelectedCommons;
 		}
+	});
 
-		// Generate share URL
+	// Update share URL when selectedCommons changes
+	$effect(() => {
 		updateShareUrl();
 	});
 
@@ -107,7 +126,7 @@
 	}
 
 	// State management for swipe functionality
-	const swipeState = {
+	const swipeState = $state({
 		startX: 0,
 		startY: 0,
 		currentX: 0,
@@ -115,7 +134,7 @@
 		cardElement: null as HTMLElement | null,
 		cardIndex: -1,
 		threshold: 100, // Threshold for swipe deletion (pixels)
-	};
+	});
 
 	// Handle swipe start
 	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
@@ -248,6 +267,14 @@
 		excludedCommons = [];
 		localStorage.removeItem("excludedCommons");
 	}
+
+	// Derived values for card filtering and sorting
+	const basicCards = $derived(
+		selectedCommons.filter((c) => c.edition === 0).sort((a, b) => a.cost - b.cost),
+	);
+	const farEasternCards = $derived(
+		selectedCommons.filter((c) => c.edition === 1).sort((a, b) => a.cost - b.cost),
+	);
 </script>
 
 <div class="container mx-auto p-4 max-w-3xl">
@@ -256,8 +283,8 @@
 	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
 		<h2 class="text-xl font-semibold mb-4">オプション設定</h2>
 
-		<div class="mb-6">
-			<label class="block mb-2">一般カード枚数:</label>
+		<fieldset class="mb-6">
+			<legend class="block mb-2">一般カード枚数:</legend>
 			<div class="flex gap-4">
 				<label class="flex items-center">
 					<input
@@ -280,18 +307,18 @@
 					14枚
 				</label>
 			</div>
-		</div>
+		</fieldset>
 
 		<div class="grid grid-cols-1 gap-4">
 			<button
-				on:click={drawRandomCards}
+				onclick={drawRandomCards}
 				class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
 			>
 				一般カードを引く
 			</button>
 
 			<button
-				on:click={drawMissingCommons}
+				onclick={drawMissingCommons}
 				class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
 				disabled={selectedCommons.length >= numberOfCommons}
 			>
@@ -305,7 +332,7 @@
 		<div class="flex justify-between items-center mb-4">
 			<h2 class="text-xl font-semibold">除外カードリスト</h2>
 			<button
-				on:click={clearExcludedCommons}
+				onclick={clearExcludedCommons}
 				class="bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded focus:outline-none focus:shadow-outline transition duration-300"
 			>
 				リストをクリア
@@ -316,13 +343,13 @@
 			<p class="text-gray-500 italic">除外カードはありません</p>
 		{:else}
 			<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-				{#each excludedCommons as common}
+				{#each excludedCommons as common (common.id)}
 					<div class="border border-green-300 rounded p-2 flex items-center justify-between">
 						<span class="text-green-600 text-sm">
 							{common.name}
 						</span>
 						<button
-							on:click={() => removeFromExcludedCommons(common)}
+							onclick={() => removeFromExcludedCommons(common)}
 							class="text-gray-500 hover:text-red-500"
 						>
 							✕
@@ -334,12 +361,6 @@
 	</div>
 
 	{#if selectedCommons.length > 0}
-		{@const basicCards = selectedCommons
-			.filter((c) => c.edition === 0)
-			.sort((a, b) => a.cost - b.cost)}
-		{@const farEasternCards = selectedCommons
-			.filter((c) => c.edition === 1)
-			.sort((a, b) => a.cost - b.cost)}
 		<div class="bg-white rounded-lg shadow-md p-6 mb-6">
 			<h2 class="text-xl font-semibold mb-4">結果</h2>
 
@@ -385,7 +406,7 @@
 				<h3 class="text-lg font-semibold mb-2">結果を共有</h3>
 				<div class="flex flex-wrap gap-2">
 					<button
-						on:click={copyToClipboard}
+						onclick={copyToClipboard}
 						class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
 					>
 						URLをコピー
