@@ -18,7 +18,8 @@ describe("+page.svelte localStorage Error Handling", () => {
 		// Expected: Should wrap in try-catch
 		const localStorageGetPattern = /localStorage\.getItem\("excludedCommons"\)/;
 		const jsonParsePattern = /JSON\.parse\(storedExcludedCommons\)/;
-		const tryCatchPattern = /try\s*\{[\s\S]*?JSON\.parse\(storedExcludedCommons\)[\s\S]*?\}\s*catch/;
+		const tryCatchPattern =
+			/try\s*\{[\s\S]*?JSON\.parse\(storedExcludedCommons\)[\s\S]*?\}\s*catch/;
 
 		expect(pageContent).toMatch(localStorageGetPattern);
 		expect(pageContent).toMatch(jsonParsePattern);
