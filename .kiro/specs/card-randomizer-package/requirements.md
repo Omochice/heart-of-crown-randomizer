@@ -37,7 +37,7 @@ specへの変更は都度chore(spec):で打つこと
 1. When a seed value is provided, the Randomizer Package shall produce deterministic, reproducible shuffle results
 2. When no seed value is provided, the Randomizer Package shall use cryptographically random values for non-deterministic shuffling
 3. The Randomizer Package shall provide a `shuffle<T>(items: T[], seed?: number): T[]` function
-4. The Randomizer Package shall provide a `select<T>(items: T[], count: number, options?: SelectOptions): T[]` function where `SelectOptions` includes optional seed and filter
+4. The Randomizer Package shall provide a `select<T>(items: T[], count: number, options?: SelectOptions): T[]` function where `SelectOptions` includes optional seed, filter, required items, and exclusion predicates
 5. The Randomizer Package shall not mutate input arrays
 6. When input array is empty, the Randomizer Package shall return an empty array
 7. When requested count exceeds available items, the Randomizer Package shall return all available items without error
@@ -53,7 +53,22 @@ specへの変更は都度chore(spec):で打つこと
 3. When filtering with empty exclusion list, the Randomizer Package shall return all items
 4. The Randomizer Package shall not mutate input arrays during filtering
 
-### Requirement 4: 既存カードデータとの統合
+### Requirement 4: 制約ベースのカード選択
+
+**Objective:** ゲームマスターとして、カード選択に柔軟な制約を適用したい。これにより、「攻撃カードを含まない」「特定カードを必ず含む」などのゲームバランス調整が可能になる。
+
+#### Acceptance Criteria
+1. The Randomizer Package shall support excluding cards based on property predicates (e.g., `card => card.mainType.includes('attack')`)
+2. The Randomizer Package shall support requiring specific cards to always be included in the result
+3. When required cards are specified, the Randomizer Package shall include all required cards first, then randomly select remaining cards
+4. When required cards count exceeds requested count, the Randomizer Package shall return only the required cards
+5. The Randomizer Package shall support combining multiple exclusion predicates with AND/OR logic
+6. When exclusion predicate filters out all available cards, the Randomizer Package shall return an empty array
+7. The Randomizer Package shall validate that required cards are not filtered out by exclusion predicates and throw descriptive error if conflict detected
+8. The `select()` function shall accept `constraints?: { exclude?: Predicate<T>[], require?: T[] }` option
+9. When both exclusion and required cards are specified, the Randomizer Package shall validate consistency before selection
+
+### Requirement 5: 既存カードデータとの統合
 
 **Objective:** アプリケーション開発者として、既存の `@heart-of-crown-randomizer/card` パッケージと seamless に統合したい。これにより、既存のカード型定義を再利用できる。
 
@@ -63,7 +78,7 @@ specへの変更は都度chore(spec):で打つこと
 3. When working with card objects having `id` property, the Randomizer Package shall preserve all object properties during operations
 4. The Randomizer Package shall provide type guards for common card operations if needed
 
-### Requirement 5: テストカバレッジとTDD
+### Requirement 6: テストカバレッジとTDD
 
 **Objective:** 品質保証担当者として、完全なテストカバレッジを持つコードを提供したい。これにより、リグレッションを防ぎ、将来の変更が安全に行える。
 
@@ -75,8 +90,10 @@ specへの変更は都度chore(spec):で打つこと
 5. The Randomizer Package shall include property-based tests for shuffle invariants (same length, same elements)
 6. The Randomizer Package shall include tests verifying deterministic behavior with seeds
 7. The Randomizer Package shall include tests verifying non-deterministic behavior without seeds
+8. The Randomizer Package shall include tests for constraint-based selection (required cards, exclusion predicates, conflict detection)
+9. The Randomizer Package shall include tests verifying constraint validation errors are thrown with descriptive messages
 
-### Requirement 6: 開発ワークフローとコミット規約
+### Requirement 7: 開発ワークフローとコミット規約
 
 **Objective:** プロジェクトメンテナーとして、一貫性のある開発ワークフローを維持したい。これにより、コードレビューが容易になり、変更履歴が明確になる。
 
@@ -91,7 +108,7 @@ specへの変更は都度chore(spec):で打つこと
 8. The codebase shall use English for all code comments and commit messages
 9. When API documentation is needed, the code shall use JSDoc comments for public functions
 
-### Requirement 7: サイトパッケージとの統合
+### Requirement 8: サイトパッケージとの統合
 
 **Objective:** フロントエンド開発者として、既存のサイトコードを新しいランダマイザーパッケージに移行したい。これにより、UIロジックとランダマイズロジックが分離され、テストが容易になる。
 
@@ -102,7 +119,7 @@ specへの変更は都度chore(spec):で打つこと
 4. When migration is complete, the site shall maintain identical user-facing behavior
 5. The refactored code shall be verified by existing tests and manual testing
 
-### Requirement 8: パフォーマンスと効率性
+### Requirement 9: パフォーマンスと効率性
 
 **Objective:** パフォーマンスエンジニアとして、ランダマイズ処理が効率的に実行されることを保証したい。これにより、ユーザー体験が損なわれない。
 
@@ -112,7 +129,7 @@ specへの変更は都度chore(spec):で打つこと
 3. The Randomizer Package shall use O(n) space complexity for shuffle operations
 4. The Randomizer Package shall not perform unnecessary array allocations
 
-### Requirement 9: ドキュメンテーション
+### Requirement 10: ドキュメンテーション
 
 **Objective:** パッケージユーザーとして、APIの使い方を理解できるドキュメントが必要である。これにより、パッケージの採用と正しい使用が促進される。
 
@@ -122,4 +139,6 @@ specへの変更は都度chore(spec):で打つこと
 3. The README shall include examples of deterministic testing with seeds
 4. The README shall include examples of filtering cards by exclusion list
 5. The README shall include TypeScript usage examples
+6. The README shall include examples of constraint-based selection (excluding attack cards, requiring specific cards)
+7. The README shall document constraint validation behavior and error cases
 
