@@ -283,8 +283,8 @@
 	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
 		<h2 class="text-xl font-semibold mb-4">オプション設定</h2>
 
-		<div class="mb-6">
-			<div class="block mb-2">一般カード枚数:</div>
+		<fieldset class="mb-6">
+			<legend class="block mb-2">一般カード枚数:</legend>
 			<div class="flex gap-4">
 				<label class="flex items-center">
 					<input
@@ -307,7 +307,7 @@
 					14枚
 				</label>
 			</div>
-		</div>
+		</fieldset>
 
 		<div class="grid grid-cols-1 gap-4">
 			<button
