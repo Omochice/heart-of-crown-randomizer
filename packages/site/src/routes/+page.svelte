@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
-	import { page } from "$app/state";
+	import { page } from "$app/stores";
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import Card from "$lib/Card.svelte";
@@ -14,28 +14,32 @@
 	// Excluded card lists
 	let excludedCommons: CommonCard[] = $state([]);
 
-	// Flag to ensure initialization happens only once
-	let isInitialized = $state(false);
-
-	// Load excluded cards from localStorage and URL params on mount (only once)
+	// Load excluded cards from localStorage once on mount
 	$effect(() => {
-		if (!isInitialized) {
-			const commonIds = page.url.searchParams.getAll("card");
-			selectedCommons = commonIds
-				.map((id) => Basic.commons.find((c) => c.id === Number.parseInt(id)))
-				.filter(Boolean) as CommonCard[];
-
-			const storedExcludedCommons = localStorage.getItem("excludedCommons");
-			if (storedExcludedCommons) {
-				excludedCommons = JSON.parse(storedExcludedCommons);
-			}
-
-			// Generate share URL
-			updateShareUrl();
-
-			// Mark as initialized to prevent re-running
-			isInitialized = true;
+		const storedExcludedCommons = localStorage.getItem("excludedCommons");
+		if (storedExcludedCommons) {
+			excludedCommons = JSON.parse(storedExcludedCommons);
 		}
+	});
+
+	// Reactively sync selectedCommons with URL parameters
+	// This allows browser back/forward to update the displayed cards
+	$effect(() => {
+		const commonIds = $page.url.searchParams.getAll("card");
+		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
+		const newSelectedCommons = commonIds
+			.map((id) => allCommons.find((c) => c.id === Number.parseInt(id)))
+			.filter(Boolean) as CommonCard[];
+
+		// Only update if actually changed to avoid infinite loops
+		if (JSON.stringify(selectedCommons) !== JSON.stringify(newSelectedCommons)) {
+			selectedCommons = newSelectedCommons;
+		}
+	});
+
+	// Update share URL when selectedCommons changes
+	$effect(() => {
+		updateShareUrl();
 	});
 
 	function cardsToQuery(cards: CommonCard[]): string {
