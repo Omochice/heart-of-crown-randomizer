@@ -10,7 +10,6 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "declaration": true,
     "isolatedDeclarations": true,
     "noEmit": true,
 
