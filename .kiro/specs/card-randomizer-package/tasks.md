@@ -13,7 +13,7 @@
   - tsconfig.json（isolatedDeclarations: true、strict mode）を設定
   - vitest.config.ts（テスト環境設定、@fast-check/vitest統合）を作成
   - turbo.jsonにrandomizerパッケージのビルド依存を追加
-  - ソースディレクトリ `src/` と `src/__tests__/` を作成
+  - ソースディレクトリ `src/` を作成（テストはコロケーション: `.test.ts`で同階層に配置）
   - _Requirements: 1.1, 1.2, 1.5, 1.6, 1.7_
 
 - [x] 1.2 依存関係のインストールとビルド確認
