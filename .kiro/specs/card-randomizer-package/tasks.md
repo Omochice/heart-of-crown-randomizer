@@ -7,7 +7,7 @@
 ## 実装タスク
 
 - [ ] 1. パッケージ構造とビルド環境のセットアップ
-- [ ] 1.1 パッケージディレクトリと設定ファイルの作成
+- [x] 1.1 パッケージディレクトリと設定ファイルの作成
   - `packages/randomizer/`ディレクトリを作成
   - package.json（name、exports、scripts、dependencies）を設定
   - tsconfig.json（isolatedDeclarations: true、strict mode）を設定
