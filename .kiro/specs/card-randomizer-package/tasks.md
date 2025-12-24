@@ -254,18 +254,53 @@
 ## タスク実行ガイド
 
 ### TDDサイクル
-各タスクは以下のサイクルで実行すること:
-1. **Red**: テストを書く（失敗することを確認）
-2. **Green**: 最小限の実装でテストを通す
-3. **Refactor**: コードを改善（テストは通ったまま）
+各サブタスクは以下のサイクルで実行し、**各ステップごとにコミット**すること:
+
+1. **Red**: テストを書く（失敗することを確認）→ **コミット**
+2. **Green**: 最小限の実装でテストを通す → **コミット**
+3. **Refactor**: コードを改善（テストは通ったまま）→ **コミット**（変更があった場合）
 
 ### コミット規約
-- 各タスク完了時にコミットを作成
+- **TDDの各ステップごとにコミットを作成**（Red、Green、Refactor）
 - コミットメッセージは英語で記述
 - コミットメッセージには「why」を記載
 - バグ修正の場合は確認方法を記載
 - specファイル変更時は `chore(spec):` プレフィックスを使用
-- 最小の意味単位でコミットを分ける
+
+#### TDDステップ別のコミット例
+
+**Red（テスト作成）**:
+```bash
+git commit -m "test(randomizer): add test for shuffle with empty array
+
+Test that shuffle returns empty array when input is empty.
+This establishes the baseline behavior for edge case handling.
+
+Why: TDD Red phase - define expected behavior before implementation
+Verified by: Test fails as expected (function not implemented yet)"
+```
+
+**Green（実装）**:
+```bash
+git commit -m "feat(randomizer): implement shuffle function
+
+Implement Fisher-Yates algorithm with seed support.
+Handles empty array, single element, and basic shuffling.
+
+Why: TDD Green phase - minimal implementation to pass tests
+Verified by: npm test -- shuffle.test.ts passes"
+```
+
+**Refactor（リファクタリング）**:
+```bash
+git commit -m "refactor(randomizer): extract RNG creation logic
+
+Extracted createRNG helper to improve shuffle readability.
+No behavior change, all tests still pass.
+
+Why: TDD Refactor phase - improve code structure without changing behavior
+Verified by: npm test -- shuffle.test.ts still passes"
+```
 
 ### コード品質
 - 不要なコメントは含めない（WHATではなくWHY NOTを記載）
