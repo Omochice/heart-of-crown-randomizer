@@ -25,13 +25,13 @@
   - _Requirements: 1.3, 1.4, 1.7_
 
 - [ ] 2. シード付き乱数生成器の実装（TDD）
-- [ ] 2.1 (P) createRNG関数のテスト作成
+- [x] 2.1 (P) createRNG関数のテスト作成
   - シード付きRNG生成のテストケース作成（決定性確認）
   - シードなしRNG生成のテストケース作成（Math.random使用確認）
   - 同じシードで同じ乱数列が生成されることを確認するテスト
   - _Requirements: 2.1, 2.2_
 
-- [ ] 2.2 (P) createRNG関数の実装
+- [x] 2.2 (P) createRNG関数の実装
   - seedrandomライブラリを使用してシード付きRNGを生成
   - seedがundefinedの場合はMath.randomを返す
   - テストがグリーンになることを確認
