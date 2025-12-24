@@ -16,7 +16,7 @@
   - ソースディレクトリ `src/` と `src/__tests__/` を作成
   - _Requirements: 1.1, 1.2, 1.5, 1.6, 1.7_
 
-- [ ] 1.2 依存関係のインストールとビルド確認
+- [x] 1.2 依存関係のインストールとビルド確認
   - seedrandom、@types/seedrandomをdependenciesに追加
   - @fast-check/vitestをdevDependenciesに追加
   - `pnpm install`で依存解決を確認
