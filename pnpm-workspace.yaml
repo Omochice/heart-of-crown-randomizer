@@ -8,3 +8,4 @@ onlyBuiltDependencies:
   - workerd
 catalog:
   tsdown: "0.18.2"
+  vitest: "4.0.16"
