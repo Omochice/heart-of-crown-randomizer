@@ -1,3 +1,4 @@
+import { fc, test } from "@fast-check/vitest";
 import { describe, expect, it } from "vitest";
 import { select } from "./select";
 
@@ -425,4 +426,143 @@ describe("select - Integration Tests", () => {
 			});
 		}).toThrow("Invalid seed");
 	});
+});
+
+describe("select - Property-Based Tests", () => {
+	test.prop([fc.array(fc.integer()), fc.nat()])(
+		"selected array length should be less than or equal to requested count",
+		(items, count) => {
+			const result = select(items, count);
+			expect(result.length).toBeLessThanOrEqual(count);
+		},
+	);
+
+	test.prop([fc.array(fc.integer()), fc.nat()])(
+		"selected array length should be less than or equal to available items",
+		(items, count) => {
+			const result = select(items, count);
+			expect(result.length).toBeLessThanOrEqual(items.length);
+		},
+	);
+
+	test.prop([
+		fc.array(fc.integer()),
+		fc.nat(),
+		fc.array(fc.integer()),
+	])(
+		"all required items should be included in result",
+		(items, count, requiredItems) => {
+			// Filter required items to only include those that exist in items
+			const validRequired = requiredItems.filter((req) => items.includes(req));
+
+			if (validRequired.length === 0) {
+				return; // Skip test if no valid required items
+			}
+
+			const result = select(items, count, {
+				constraints: {
+					require: validRequired,
+				},
+			});
+
+			// All valid required items should be in result
+			for (const required of validRequired) {
+				expect(result).toContain(required);
+			}
+		},
+	);
+
+	test.prop([
+		fc.array(fc.integer({ min: 1, max: 100 })),
+		fc.nat({ max: 50 }),
+	])(
+		"no excluded items should be in result when using exclude predicates",
+		(items, count) => {
+			// Exclude all even numbers
+			const excludePredicate = (item: number) => item % 2 === 0;
+
+			const result = select(items, count, {
+				constraints: {
+					exclude: [excludePredicate],
+				},
+			});
+
+			// All items in result should be odd (not excluded)
+			for (const item of result) {
+				expect(item % 2).toBe(1);
+			}
+		},
+	);
+
+	test.prop([
+		fc.array(fc.integer()),
+		fc.nat(),
+		fc.integer(),
+	])(
+		"same seed should produce same result (deterministic invariant)",
+		(items, count, seed) => {
+			const result1 = select(items, count, { seed });
+			const result2 = select(items, count, { seed });
+			expect(result1).toEqual(result2);
+		},
+	);
+
+	test.prop([fc.array(fc.integer()), fc.nat()])(
+		"should not mutate input array (immutability invariant)",
+		(items, count) => {
+			const original = [...items];
+			select(items, count);
+			expect(items).toEqual(original);
+		},
+	);
+
+	test.prop([
+		fc.array(fc.integer({ min: 1, max: 100 })),
+		fc.nat({ max: 50 }),
+		fc.array(fc.integer({ min: 1, max: 100 })),
+	])(
+		"result should respect both exclusion and required constraints",
+		(items, count, requiredItems) => {
+			// Filter required items to only include odd numbers that exist in items
+			const validRequired = requiredItems.filter(
+				(req) => items.includes(req) && req % 2 === 1,
+			);
+
+			if (validRequired.length === 0) {
+				return; // Skip test if no valid required items
+			}
+
+			// Exclude all even numbers
+			const excludePredicate = (item: number) => item % 2 === 0;
+
+			const result = select(items, count, {
+				constraints: {
+					exclude: [excludePredicate],
+					require: validRequired,
+				},
+			});
+
+			// All required items should be included
+			for (const required of validRequired) {
+				expect(result).toContain(required);
+			}
+
+			// No even numbers should be included
+			for (const item of result) {
+				expect(item % 2).toBe(1);
+			}
+		},
+	);
+
+	test.prop([fc.array(fc.integer()), fc.nat()])(
+		"all selected items should be from original array",
+		(items, count) => {
+			const result = select(items, count);
+
+			// All items in result should exist in original array
+			for (const item of result) {
+				expect(items).toContain(item);
+			}
+		},
+	);
 });
