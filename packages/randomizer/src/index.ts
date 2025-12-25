@@ -5,3 +5,4 @@
 
 export { createRNG } from "./rng";
 export { shuffle } from "./shuffle";
+export { filter, filterByIds } from "./filter";
