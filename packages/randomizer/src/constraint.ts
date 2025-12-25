@@ -44,3 +44,39 @@ export interface SelectOptions<T> {
 	/** Constraints for card selection */
 	constraints?: Constraint<T>;
 }
+
+/**
+ * Validates constraints for conflicts.
+ *
+ * @param constraint - Constraint to validate
+ * @throws {ConstraintConflictError} If required cards are excluded by predicates
+ *
+ * @example
+ * validateConstraints({
+ *   exclude: [card => card.mainType.includes('attack')],
+ *   require: [attackCard] // throws error: required card excluded
+ * });
+ */
+export function validateConstraints<T>(
+	constraint: Constraint<T> | undefined,
+): void {
+	if (!constraint || !constraint.require || !constraint.exclude) {
+		return;
+	}
+
+	const conflictingItems: T[] = [];
+
+	for (const item of constraint.require) {
+		const isExcluded = constraint.exclude.some((predicate) => predicate(item));
+		if (isExcluded) {
+			conflictingItems.push(item);
+		}
+	}
+
+	if (conflictingItems.length > 0) {
+		throw new ConstraintConflictError(
+			`Constraint conflict: ${conflictingItems.length} required item(s) are excluded by predicates`,
+			conflictingItems,
+		);
+	}
+}
