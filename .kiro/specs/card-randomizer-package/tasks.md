@@ -100,20 +100,20 @@
   - _Requirements: 3.2, 3.4_
 
 - [ ] 5. 制約検証エンジンの実装（TDD）
-- [ ] 5.1 (P) ConstraintConflictErrorクラスの実装
+- [x] 5.1 (P) ConstraintConflictErrorクラスの実装
   - カスタムエラークラスを定義（Errorを継承）
   - conflictingItemsプロパティを追加（競合したアイテムを保持）
   - エラーメッセージと競合アイテムをコンストラクタで設定
   - _Requirements: 4.7_
 
-- [ ] 5.2 (P) validateConstraints関数のテスト作成
+- [x] 5.2 (P) validateConstraints関数のテスト作成
   - 制約なし（undefined）のテスト（エラーを投げない）
   - 必須カードと除外述語が矛盾しないテスト（エラーを投げない）
   - 必須カードが除外述語に該当するテスト（ConstraintConflictErrorを投げる）
   - エラーメッセージに競合カードの情報が含まれることを確認
   - _Requirements: 4.7, 4.9_
 
-- [ ] 5.3 (P) validateConstraints関数の実装
+- [x] 5.3 (P) validateConstraints関数の実装
   - require配列の各要素をexclude述語で検証
   - 競合検出時はConstraintConflictErrorを投げる
   - エラーメッセージに競合したアイテムの詳細を含める
