@@ -1,3 +1,4 @@
+import { fc, test } from "@fast-check/vitest";
 import { describe, expect, it } from "vitest";
 import { shuffle } from "./shuffle";
 
@@ -92,5 +93,52 @@ describe("shuffle", () => {
 			// This test might fail very rarely, but it's acceptable for randomness verification
 			expect(result1).not.toEqual(result2);
 		});
+	});
+
+	describe("property-based tests", () => {
+		test.prop([fc.array(fc.anything())])(
+			"shuffled array should have same length as original",
+			(items) => {
+				const shuffled = shuffle(items);
+				expect(shuffled.length).toBe(items.length);
+			},
+		);
+
+		test.prop([fc.array(fc.integer())])(
+			"shuffled array should contain same elements as original",
+			(items) => {
+				const shuffled = shuffle(items);
+				// Create frequency maps to compare element sets
+				// Why not sort: fc.anything() can generate non-comparable types
+				const countMap = (arr: number[]) => {
+					const map = new Map<number, number>();
+					for (const item of arr) {
+						map.set(item, (map.get(item) || 0) + 1);
+					}
+					return map;
+				};
+				const originalCounts = countMap(items);
+				const shuffledCounts = countMap(shuffled);
+				expect(shuffledCounts).toEqual(originalCounts);
+			},
+		);
+
+		test.prop([fc.array(fc.anything()), fc.integer()])(
+			"same seed should produce same result (deterministic invariant)",
+			(items, seed) => {
+				const result1 = shuffle(items, seed);
+				const result2 = shuffle(items, seed);
+				expect(result1).toEqual(result2);
+			},
+		);
+
+		test.prop([fc.array(fc.anything())])(
+			"should not mutate original array (immutability invariant)",
+			(items) => {
+				const original = [...items];
+				shuffle(items);
+				expect(items).toEqual(original);
+			},
+		);
 	});
 });
