@@ -36,8 +36,18 @@ export function select<T>(
 		return [];
 	}
 
-	// Shuffle items with optional seed
-	const shuffled = shuffle(items, options?.seed);
+	// Apply exclusion constraints
+	let availableItems = items;
+	const excludePredicates = options?.constraints?.exclude;
+	if (excludePredicates && excludePredicates.length > 0) {
+		// OR logic: exclude item if ANY predicate returns true
+		availableItems = items.filter((item) => {
+			return !excludePredicates.some((predicate) => predicate(item));
+		});
+	}
+
+	// Shuffle available items with optional seed
+	const shuffled = shuffle(availableItems, options?.seed);
 
 	// Select up to count items (or all if count > length)
 	return shuffled.slice(0, Math.min(count, shuffled.length));
