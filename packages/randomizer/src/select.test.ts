@@ -270,3 +270,159 @@ describe("select - Required Card Constraints", () => {
 		}
 	});
 });
+
+describe("select - Integration Tests", () => {
+	it("should handle complex scenario with seed, exclusion, and required constraints", () => {
+		type Card = { id: number; cost: number; type: string; rarity: string };
+		const cards: Card[] = [
+			{ id: 1, cost: 2, type: "action", rarity: "common" },
+			{ id: 2, cost: 3, type: "attack", rarity: "common" },
+			{ id: 3, cost: 4, type: "action", rarity: "rare" },
+			{ id: 4, cost: 5, type: "defense", rarity: "common" },
+			{ id: 5, cost: 6, type: "action", rarity: "rare" },
+			{ id: 6, cost: 3, type: "action", rarity: "common" },
+			{ id: 7, cost: 7, type: "attack", rarity: "rare" },
+			{ id: 8, cost: 2, type: "defense", rarity: "common" },
+		];
+
+		const requiredCards: Card[] = [
+			{ id: 1, cost: 2, type: "action", rarity: "common" },
+			{ id: 6, cost: 3, type: "action", rarity: "common" },
+		];
+
+		const result = select(cards, 5, {
+			seed: 42,
+			constraints: {
+				exclude: [
+					(card) => card.type === "attack",
+					(card) => card.cost > 5,
+				],
+				require: requiredCards,
+			},
+		});
+
+		expect(result).toHaveLength(5);
+		// All required cards must be included
+		for (const required of requiredCards) {
+			expect(result).toContainEqual(required);
+		}
+		// No attack cards or high-cost cards should be included
+		for (const card of result) {
+			expect(card.type).not.toBe("attack");
+			expect(card.cost).toBeLessThanOrEqual(5);
+		}
+		// All selected cards should be from original array
+		for (const card of result) {
+			expect(cards).toContainEqual(card);
+		}
+	});
+
+	it("should produce same result with same seed in complex scenario", () => {
+		type Card = { id: number; cost: number; type: string };
+		const cards: Card[] = [
+			{ id: 1, cost: 2, type: "action" },
+			{ id: 2, cost: 3, type: "attack" },
+			{ id: 3, cost: 4, type: "action" },
+			{ id: 4, cost: 5, type: "defense" },
+			{ id: 5, cost: 6, type: "action" },
+			{ id: 6, cost: 3, type: "action" },
+			{ id: 7, cost: 7, type: "attack" },
+			{ id: 8, cost: 2, type: "defense" },
+		];
+
+		const requiredCard: Card = { id: 1, cost: 2, type: "action" };
+		const seed = 12345;
+
+		const result1 = select(cards, 5, {
+			seed,
+			constraints: {
+				exclude: [(card) => card.type === "attack"],
+				require: [requiredCard],
+			},
+		});
+
+		const result2 = select(cards, 5, {
+			seed,
+			constraints: {
+				exclude: [(card) => card.type === "attack"],
+				require: [requiredCard],
+			},
+		});
+
+		expect(result1).toEqual(result2);
+	});
+
+	it("should produce different results with different seeds", () => {
+		const items = Array.from({ length: 20 }, (_, i) => i + 1);
+		const requiredItems = [1, 2];
+
+		const result1 = select(items, 10, {
+			seed: 100,
+			constraints: {
+				exclude: [(item) => item % 3 === 0],
+				require: requiredItems,
+			},
+		});
+
+		const result2 = select(items, 10, {
+			seed: 200,
+			constraints: {
+				exclude: [(item) => item % 3 === 0],
+				require: requiredItems,
+			},
+		});
+
+		// Both should have same required items
+		expect(result1).toContain(1);
+		expect(result1).toContain(2);
+		expect(result2).toContain(1);
+		expect(result2).toContain(2);
+
+		// But different overall results (very high probability)
+		expect(result1).not.toEqual(result2);
+	});
+
+	it("should throw error for invalid seed (NaN)", () => {
+		const items = [1, 2, 3, 4, 5];
+
+		expect(() => {
+			select(items, 3, {
+				seed: Number.NaN,
+			});
+		}).toThrow("Invalid seed");
+	});
+
+	it("should throw error for invalid seed (Infinity)", () => {
+		const items = [1, 2, 3, 4, 5];
+
+		expect(() => {
+			select(items, 3, {
+				seed: Number.POSITIVE_INFINITY,
+			});
+		}).toThrow("Invalid seed");
+	});
+
+	it("should throw error for invalid seed (-Infinity)", () => {
+		const items = [1, 2, 3, 4, 5];
+
+		expect(() => {
+			select(items, 3, {
+				seed: Number.NEGATIVE_INFINITY,
+			});
+		}).toThrow("Invalid seed");
+	});
+
+	it("should throw error for invalid seed with constraints", () => {
+		const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+		expect(() => {
+			select(items, 5, {
+				seed: Number.NaN,
+				constraints: {
+					exclude: [(item) => item % 2 === 0],
+					require: [1],
+				},
+			});
+		}).toThrow("Invalid seed");
+	});
+});
