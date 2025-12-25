@@ -154,7 +154,7 @@
   - 必須カードと除外述語の競合テスト（ConstraintConflictErrorを投げる）
   - _Requirements: 4.2, 4.3, 4.4, 4.7_
 
-- [ ] 6.6 select関数の必須カード制約実装
+- [x] 6.6 select関数の必須カード制約実装
   - validateConstraints関数で制約の矛盾を検証
   - require配列を結果に優先配置
   - 残り枠をshuffle→選択で埋める
