@@ -1,8 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { placeholder } from "./index.js";
+import { createRNG, shuffle } from "./index.js";
 
-describe("placeholder", () => {
-	it("should return expected string", () => {
-		expect(placeholder()).toBe("randomizer package");
+describe("module exports", () => {
+	it("should export createRNG function", () => {
+		expect(typeof createRNG).toBe("function");
+	});
+
+	it("should export shuffle function", () => {
+		expect(typeof shuffle).toBe("function");
 	});
 });

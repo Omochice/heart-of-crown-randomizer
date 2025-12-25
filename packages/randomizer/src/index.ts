@@ -3,6 +3,5 @@
  * Testable card randomization library with deterministic seeding
  */
 
-export function placeholder(): string {
-	return "randomizer package";
-}
+export { createRNG } from "./rng";
+export { shuffle } from "./shuffle";
