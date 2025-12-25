@@ -57,7 +57,7 @@
   - シードなしで異なる結果が得られることを確認するテスト（確率的テスト、複数回実行）
   - _Requirements: 2.1, 2.2_
 
-- [ ] 3.4 (P) shuffle関数とcreateRNGの統合
+- [x] 3.4 (P) shuffle関数とcreateRNGの統合
   - createRNG関数を使用してRNGを生成
   - Fisher-Yatesアルゴリズムで配列をシャッフル
   - 決定性テストがグリーンになることを確認
