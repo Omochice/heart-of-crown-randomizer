@@ -45,7 +45,7 @@
   - 入力配列が変更されないこと（非破壊性）のテスト
   - _Requirements: 2.5, 2.6, 2.8_
 
-- [ ] 3.2 (P) shuffle関数の基本実装（Fisher-Yates Modern）
+- [x] 3.2 (P) shuffle関数の基本実装（Fisher-Yates Modern）
   - Fisher-Yates逆方向ループ（末尾→先頭）で実装
   - 新配列を作成して非破壊性を保証
   - シードバリデーション（NaN、Infinity→エラー）を実装
