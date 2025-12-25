@@ -13,3 +13,4 @@ export {
 	type Predicate,
 	type SelectOptions,
 } from "./constraint";
+export { select } from "./select";
