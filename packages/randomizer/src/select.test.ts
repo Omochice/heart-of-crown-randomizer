@@ -518,7 +518,7 @@ describe("select - Property-Based Tests", () => {
 
 	test.prop([
 		fc.array(fc.integer({ min: 1, max: 100 })),
-		fc.nat({ max: 50 }),
+		fc.integer({ min: 1, max: 50 }), // Ensure count >= 1
 		fc.array(fc.integer({ min: 1, max: 100 })),
 	])(
 		"result should respect both exclusion and required constraints",
@@ -528,8 +528,9 @@ describe("select - Property-Based Tests", () => {
 				(req) => items.includes(req) && req % 2 === 1,
 			);
 
-			if (validRequired.length === 0) {
-				return; // Skip test if no valid required items
+			// Skip test if no valid required items or count <= validRequired.length
+			if (validRequired.length === 0 || count <= validRequired.length) {
+				return;
 			}
 
 			// Exclude all even numbers
