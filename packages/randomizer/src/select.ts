@@ -1,4 +1,5 @@
 import { shuffle } from "./shuffle";
+import { validateConstraints } from "./constraint";
 import type { SelectOptions } from "./constraint";
 
 /**
@@ -36,6 +37,12 @@ export function select<T>(
 		return [];
 	}
 
+	// Validate constraints for conflicts
+	validateConstraints(options?.constraints);
+
+	// Get required cards
+	const requiredCards = options?.constraints?.require ?? [];
+
 	// Apply exclusion constraints
 	let availableItems = items;
 	const excludePredicates = options?.constraints?.exclude;
@@ -46,9 +53,28 @@ export function select<T>(
 		});
 	}
 
-	// Shuffle available items with optional seed
-	const shuffled = shuffle(availableItems, options?.seed);
+	// If required cards count >= requested count, return required cards only
+	if (requiredCards.length >= count) {
+		return requiredCards;
+	}
 
-	// Select up to count items (or all if count > length)
-	return shuffled.slice(0, Math.min(count, shuffled.length));
+	// Remove required cards from available items to avoid duplicates
+	const availableWithoutRequired = availableItems.filter(
+		(item) => !requiredCards.includes(item),
+	);
+
+	// Shuffle available items (excluding required) with optional seed
+	const shuffled = shuffle(availableWithoutRequired, options?.seed);
+
+	// Calculate remaining slots after required cards
+	const remainingSlots = count - requiredCards.length;
+
+	// Select remaining cards from shuffled pool
+	const selectedFromPool = shuffled.slice(
+		0,
+		Math.min(remainingSlots, shuffled.length),
+	);
+
+	// Combine required cards with randomly selected cards
+	return [...requiredCards, ...selectedFromPool];
 }
