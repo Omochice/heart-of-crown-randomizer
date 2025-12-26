@@ -1,6 +1,6 @@
-import { shuffle } from "./shuffle";
-import { validateConstraints } from "./constraint";
 import type { SelectOptions } from "./constraint";
+import { validateConstraints } from "./constraint";
+import { shuffle } from "./shuffle";
 
 /**
  * Selects a specified number of items from an array with optional constraints.
@@ -53,51 +53,51 @@ import type { SelectOptions } from "./constraint";
  * });
  */
 export function select<T>(
-	items: T[],
-	count: number,
-	options?: SelectOptions<T>,
+  items: T[],
+  count: number,
+  options?: SelectOptions<T>,
 ): T[] {
-	// Edge case: empty input array
-	if (items.length === 0) {
-		return [];
-	}
+  // Edge case: empty input array
+  if (items.length === 0) {
+    return [];
+  }
 
-	// Edge case: zero count requested
-	if (count === 0) {
-		return [];
-	}
+  // Edge case: zero count requested
+  if (count === 0) {
+    return [];
+  }
 
-	// Validate constraint conflicts before processing
-	validateConstraints(options?.constraints);
+  // Validate constraint conflicts before processing
+  validateConstraints(options?.constraints);
 
-	const requiredItems = options?.constraints?.require ?? [];
-	const excludePredicates = options?.constraints?.exclude;
+  const requiredItems = options?.constraints?.require ?? [];
+  const excludePredicates = options?.constraints?.exclude;
 
-	// Apply exclusion filters if specified
-	// Why not AND logic: We want to exclude items matching ANY predicate (more flexible filtering)
-	const filteredItems = applyExclusionFilters(items, excludePredicates);
+  // Apply exclusion filters if specified
+  // Why not AND logic: We want to exclude items matching ANY predicate (more flexible filtering)
+  const filteredItems = applyExclusionFilters(items, excludePredicates);
 
-	// Edge case: required items count meets or exceeds requested count
-	if (requiredItems.length >= count) {
-		return requiredItems;
-	}
+  // Edge case: required items count meets or exceeds requested count
+  if (requiredItems.length >= count) {
+    return requiredItems;
+  }
 
-	// Remove required items from pool to avoid duplicates
-	// Why not shuffle all items then remove required: Required items must be guaranteed first
-	const selectionPool = filteredItems.filter(
-		(item) => !requiredItems.includes(item),
-	);
+  // Remove required items from pool to avoid duplicates
+  // Why not shuffle all items then remove required: Required items must be guaranteed first
+  const selectionPool = filteredItems.filter(
+    (item) => !requiredItems.includes(item),
+  );
 
-	// Shuffle selection pool and select items to fill remaining slots
-	const shuffledPool = shuffle(selectionPool, options?.seed);
-	const remainingSlots = count - requiredItems.length;
-	const selectedItems = shuffledPool.slice(
-		0,
-		Math.min(remainingSlots, shuffledPool.length),
-	);
+  // Shuffle selection pool and select items to fill remaining slots
+  const shuffledPool = shuffle(selectionPool, options?.seed);
+  const remainingSlots = count - requiredItems.length;
+  const selectedItems = shuffledPool.slice(
+    0,
+    Math.min(remainingSlots, shuffledPool.length),
+  );
 
-	// Combine required items (guaranteed) with selected items (randomized)
-	return [...requiredItems, ...selectedItems];
+  // Combine required items (guaranteed) with selected items (randomized)
+  return [...requiredItems, ...selectedItems];
 }
 
 /**
@@ -108,14 +108,14 @@ export function select<T>(
  * @returns Filtered array with excluded items removed
  */
 function applyExclusionFilters<T>(
-	items: T[],
-	excludePredicates?: Array<(item: T) => boolean>,
+  items: T[],
+  excludePredicates?: Array<(item: T) => boolean>,
 ): T[] {
-	if (!excludePredicates || excludePredicates.length === 0) {
-		return items;
-	}
+  if (!excludePredicates || excludePredicates.length === 0) {
+    return items;
+  }
 
-	return items.filter((item) => {
-		return !excludePredicates.some((predicate) => predicate(item));
-	});
+  return items.filter((item) => {
+    return !excludePredicates.some((predicate) => predicate(item));
+  });
 }

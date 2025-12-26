@@ -9,7 +9,7 @@
  * const nonAttackCards = filter(cards, card => !card.mainType.includes('attack'));
  */
 export function filter<T>(items: T[], predicate: (item: T) => boolean): T[] {
-	return items.filter(predicate);
+  return items.filter(predicate);
 }
 
 /**
@@ -23,8 +23,8 @@ export function filter<T>(items: T[], predicate: (item: T) => boolean): T[] {
  * const filtered = filterByIds(cards, [1, 5, 10]); // excludes cards with id 1, 5, 10
  */
 export function filterByIds<T extends { id: number }>(
-	items: T[],
-	excludedIds: number[],
+  items: T[],
+  excludedIds: number[],
 ): T[] {
-	return items.filter((item) => !excludedIds.includes(item.id));
+  return items.filter((item) => !excludedIds.includes(item.id));
 }
