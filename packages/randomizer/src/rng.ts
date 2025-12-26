@@ -11,9 +11,9 @@ import seedrandom from "seedrandom";
  * const random = createRNG();  // non-deterministic (Math.random)
  */
 export function createRNG(seed?: number): () => number {
-	if (seed === undefined) {
-		return Math.random;
-	}
+  if (seed === undefined) {
+    return Math.random;
+  }
 
-	return seedrandom(String(seed));
+  return seedrandom(String(seed));
 }

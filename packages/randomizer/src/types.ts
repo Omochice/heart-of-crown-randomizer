@@ -14,5 +14,5 @@
  * ```
  */
 export interface Identifiable {
-	id: number;
+  id: number;
 }

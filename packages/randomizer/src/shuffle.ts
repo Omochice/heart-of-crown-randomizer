@@ -14,33 +14,33 @@ import { createRNG } from "./rng";
  * const random = shuffle(cards);       // non-deterministic
  */
 export function shuffle<T>(items: T[], seed?: number): T[] {
-	// Validate seed if provided
-	if (seed !== undefined && !Number.isFinite(seed)) {
-		throw new Error("Invalid seed: seed must be a finite number");
-	}
+  // Validate seed if provided
+  if (seed !== undefined && !Number.isFinite(seed)) {
+    throw new Error("Invalid seed: seed must be a finite number");
+  }
 
-	// Handle empty array
-	if (items.length === 0) {
-		return [];
-	}
+  // Handle empty array
+  if (items.length === 0) {
+    return [];
+  }
 
-	// Handle single element
-	if (items.length === 1) {
-		return [items[0]];
-	}
+  // Handle single element
+  if (items.length === 1) {
+    return [items[0]];
+  }
 
-	// Create new array to preserve immutability
-	const result = [...items];
+  // Create new array to preserve immutability
+  const result = [...items];
 
-	// Create RNG
-	const rng = createRNG(seed);
+  // Create RNG
+  const rng = createRNG(seed);
 
-	// Fisher-Yates shuffle (modern algorithm, reverse direction)
-	// Why reverse: better cache locality, avoids redundant swap
-	for (let i = result.length - 1; i > 0; i--) {
-		const j = Math.floor(rng() * (i + 1));
-		[result[i], result[j]] = [result[j], result[i]];
-	}
+  // Fisher-Yates shuffle (modern algorithm, reverse direction)
+  // Why reverse: better cache locality, avoids redundant swap
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
 
-	return result;
+  return result;
 }
