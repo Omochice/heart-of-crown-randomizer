@@ -14,3 +14,4 @@ export {
 	type SelectOptions,
 } from "./constraint";
 export { select } from "./select";
+export { type Identifiable } from "./types";
