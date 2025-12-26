@@ -225,7 +225,7 @@
   - Math.random()ベースのシャッフルを削除
   - _Requirements: 8.2_
 
-- [ ] 10.3 drawMissingCommons関数のリファクタリング
+- [x] 10.3 drawMissingCommons関数のリファクタリング
   - +page.svelteのdrawMissingCommons関数をselect APIに移行
   - 除外リスト処理をfilterByIds関数で実装
   - ランダム選択をselect関数で実装
