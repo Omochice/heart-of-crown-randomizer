@@ -218,7 +218,7 @@
   - pnpm installで依存解決を確認
   - _Requirements: 8.1_
 
-- [ ] 10.2 drawRandomCards関数のリファクタリング
+- [x] 10.2 drawRandomCards関数のリファクタリング
   - +page.svelteのdrawRandomCards関数をselect APIに移行
   - 除外リスト（excludedList）をfilterByIds関数で処理
   - ランダム選択をselect関数で実装
