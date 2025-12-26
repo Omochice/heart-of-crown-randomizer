@@ -213,7 +213,7 @@
   - _Requirements: 1.4, 1.6, 5.2_
 
 - [ ] 10. サイトパッケージとの統合
-- [ ] 10.1 サイトパッケージへの依存追加
+- [x] 10.1 サイトパッケージへの依存追加
   - packages/site/package.jsonにrandomizerパッケージを追加（workspace:*）
   - pnpm installで依存解決を確認
   - _Requirements: 8.1_
