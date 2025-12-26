@@ -22,7 +22,8 @@
     "clean": "rimraf dist",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "verify-build": "bash scripts/verify-build.sh"
   },
   "dependencies": {
     "seedrandom": "^3.0.5"
