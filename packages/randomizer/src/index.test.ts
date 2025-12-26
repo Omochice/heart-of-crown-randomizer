@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { createRNG, filter, filterByIds, shuffle } from "./index.js";
+import {
+	createRNG,
+	filter,
+	filterByIds,
+	shuffle,
+	type Identifiable,
+} from "./index.js";
 
 describe("module exports", () => {
 	it("should export createRNG function", () => {
@@ -16,5 +22,11 @@ describe("module exports", () => {
 
 	it("should export filterByIds function", () => {
 		expect(typeof filterByIds).toBe("function");
+	});
+
+	it("should export Identifiable type", () => {
+		// Type-level test: this should compile without errors
+		const item: Identifiable = { id: 42 };
+		expect(item.id).toBe(42);
 	});
 });
