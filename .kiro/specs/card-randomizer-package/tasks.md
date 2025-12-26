@@ -240,7 +240,7 @@
   - _Requirements: 8.4, 8.5_
 
 - [ ] 11. ドキュメンテーション
-- [ ] 11.1 README.mdの作成
+- [x] 11.1 README.mdの作成
   - Overview セクション（パッケージの目的、主要機能）
   - Installation セクション（pnpm add コマンド）
   - Quick Start セクション（基本的な使用例）
