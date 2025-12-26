@@ -78,6 +78,9 @@ importers:
       '@heart-of-crown-randomizer/card':
         specifier: workspace:*
         version: link:../card
+      '@heart-of-crown-randomizer/randomizer':
+        specifier: workspace:*
+        version: link:../randomizer
     devDependencies:
       '@storybook/addon-essentials':
         specifier: 8.6.14
