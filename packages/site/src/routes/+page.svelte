@@ -3,6 +3,7 @@
 	import { page } from "$app/stores";
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+	import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
 	import Card from "$lib/Card.svelte";
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
 
@@ -61,20 +62,13 @@
 
 	// Function to randomly select common cards
 	function drawRandomCards() {
-		// Combine Basic and Far Eastern Border common cards
 		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
-		const availableCommons = allCommons.filter(
-			(c) => !excludedCommons.some((ec) => ec.id === c.id),
-		);
-		const shuffledCommons = [...availableCommons].sort(() => Math.random() - 0.5);
-		selectedCommons = shuffledCommons.slice(0, numberOfCommons).sort((a, b) => {
-			return a.id - b.id;
-		});
+		const excludedIds = excludedCommons.map((c) => c.id);
+		const availableCommons = filterByIds(allCommons, excludedIds);
+		const randomCards = select(availableCommons, numberOfCommons);
+		selectedCommons = randomCards.sort((a, b) => a.id - b.id);
 
-		// Navigate to result page
 		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
-
-		// Update share URL
 		updateShareUrl();
 	}
 
@@ -247,17 +241,13 @@
 		if (selectedCommons.length >= numberOfCommons) return;
 
 		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
-		const availableCommons = allCommons.filter(
-			(c) =>
-				!excludedCommons.some((ec) => ec.id === c.id) &&
-				!selectedCommons.some((sc) => sc.id === c.id),
-		);
+		const excludedIds = [...excludedCommons, ...selectedCommons].map((c) => c.id);
+		const availableCommons = filterByIds(allCommons, excludedIds);
 
 		if (availableCommons.length === 0) return;
 
-		const shuffled = [...availableCommons].sort(() => Math.random() - 0.5);
-		const cardsToAdd = Math.min(numberOfCommons - selectedCommons.length, shuffled.length);
-		const newCards = shuffled.slice(0, cardsToAdd);
+		const cardsToAdd = numberOfCommons - selectedCommons.length;
+		const newCards = select(availableCommons, cardsToAdd);
 
 		selectedCommons = [...selectedCommons, ...newCards];
 		updateUrlAndShare();

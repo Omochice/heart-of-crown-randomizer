@@ -3,19 +3,22 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite dev",
 		"build": "vite build",
-		"preview": "vite preview",
-		"prepare": "svelte-kit sync || echo ''",
+		"build-storybook": "storybook build",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"fmt": "prettier --write .",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"test:unit": "vitest",
+		"dev": "vite dev",
+		"fmt": "npm-run-all2 fmt:*",
+		"fmt:package": "sort-package-json",
+		"fmt:prettier": "prettier --write .",
+		"prepare": "svelte-kit sync || echo ''",
+		"preview": "vite preview",
 		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"test:unit": "vitest"
 	},
 	"dependencies": {
-		"@heart-of-crown-randomizer/card": "workspace:*"
+		"@heart-of-crown-randomizer/card": "workspace:*",
+		"@heart-of-crown-randomizer/randomizer": "workspace:*"
 	},
 	"devDependencies": {
 		"@storybook/addon-essentials": "8.6.14",
@@ -35,9 +38,11 @@
 		"jsdom": "27.3.0",
 		"prettier": "3.7.4",
 		"prettier-plugin-svelte": "3.4.1",
+		"sort-package-json": "catalog:",
 		"storybook": "10.1.10",
 		"svelte": "5.46.1",
 		"svelte-check": "4.3.5",
-		"tailwindcss": "4.1.18"
+		"tailwindcss": "4.1.18",
+		"vite": "7.3.0"
 	}
 }
