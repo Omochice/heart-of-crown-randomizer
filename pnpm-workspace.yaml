@@ -7,4 +7,4 @@ onlyBuiltDependencies:
   - svelte-preprocess
   - workerd
 catalog:
-  tsdown: "0.18.2"
+  tsdown: "0.18.3"
