@@ -1,18 +1,17 @@
 /**
  * Item with id property (for filterByIds)
  *
- * This interface represents any object that has a numeric id property,
+ * This type represents any object that has a numeric id property,
  * which is the minimum requirement for using the filterByIds function.
  *
  * @example
  * ```typescript
- * interface Card extends Identifiable {
- *   id: number;
+ * type Card = Identifiable & {
  *   name: string;
  *   cost: number;
- * }
+ * };
  * ```
  */
-export interface Identifiable {
+export type Identifiable = {
   id: number;
-}
+};

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Identifiable } from "./types";
 
-describe("Identifiable interface", () => {
+describe("Identifiable type", () => {
   it("should allow objects with numeric id property", () => {
     const item: Identifiable = { id: 1 };
     expect(item.id).toBe(1);

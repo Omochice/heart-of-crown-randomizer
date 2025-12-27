@@ -28,22 +28,22 @@ export type Predicate<T> = (item: T) => boolean;
 /**
  * Constraint definition for card selection
  */
-export interface Constraint<T> {
+export type Constraint<T> = {
   /** Array of exclusion predicates (OR logic: any match excludes card) */
   exclude?: Predicate<T>[];
   /** Array of required cards (must be included in result) */
   require?: T[];
-}
+};
 
 /**
  * Options for select function
  */
-export interface SelectOptions<T> {
+export type SelectOptions<T> = {
   /** Optional seed for deterministic selection */
   seed?: number;
   /** Constraints for card selection */
   constraints?: Constraint<T>;
-}
+};
 
 /**
  * Validates constraints for conflicts.

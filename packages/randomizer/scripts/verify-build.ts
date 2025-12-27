@@ -43,7 +43,6 @@ function verifyExports(filePath: string, exports: string[]): void {
     const patterns = [
       `export.*${exportName}`,
       `declare.*${exportName}`,
-      `interface ${exportName}`,
       `type ${exportName}`,
       `class ${exportName}`,
       `function ${exportName}`,
