@@ -52,18 +52,23 @@
   "types": "dist/index.d.mts",
   "scripts": {
     "build": "tsdown",
-    "check": "npm-run-all check:*",
+    "check": "npm-run-all2 check:*",
     "check:code": "biome check .",
     "check:fmt": "biome format .",
     "check:type": "tsc --noEmit",
     "clean": "rimraf dist",
-    "fmt": "npm-run-all fmt:*",
-    "fmt:biome": "npm-run-all fmt:biome:*",
+    "fmt": "npm-run-all2 fmt:*",
+    "fmt:biome": "npm-run-all2 fmt:biome:*",
     "fmt:biome:check": "biome check --write .",
     "fmt:biome:format": "biome format --write .",
     "fmt:package": "sort-package-json"
   },
   "devDependencies": {
-    "tsdown": "catalog:"
+    "@biomejs/biome": "catalog:",
+    "npm-run-all2": "catalog:",
+    "rimraf": "catalog:",
+    "sort-package-json": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
   }
 }

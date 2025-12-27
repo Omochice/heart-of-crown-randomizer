@@ -36,9 +36,14 @@
     "seedrandom": "^3.0.5"
   },
   "devDependencies": {
-    "@fast-check/vitest": "^0.2.4",
+    "@biomejs/biome": "catalog:",
+    "@fast-check/vitest": "catalog:",
     "@types/seedrandom": "^3.0.8",
+    "npm-run-all2": "catalog:",
+    "rimraf": "catalog:",
+    "sort-package-json": "catalog:",
     "tsdown": "catalog:",
+    "typescript": "catalog:",
     "vitest": "catalog:"
   }
 }

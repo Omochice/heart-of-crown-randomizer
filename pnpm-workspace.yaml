@@ -7,4 +7,11 @@ onlyBuiltDependencies:
   - svelte-preprocess
   - workerd
 catalog:
-  tsdown: "0.18.3"
+  "@biomejs/biome": "2.3.10"
+  "@fast-check/vitest": "0.2.4"
+  npm-run-all2: "8.0.4"
+  rimraf: "6.1.2"
+  sort-package-json: "3.6.0"
+  tsdown: "0.18.2"
+  vitest: "4.0.16"
+  typescript: "5.9.3"
