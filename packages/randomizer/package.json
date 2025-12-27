@@ -38,7 +38,7 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@fast-check/vitest": "catalog:",
-    "@types/seedrandom": "^3.0.8",
+    "@types/seedrandom": "3.0.8",
     "npm-run-all2": "catalog:",
     "rimraf": "catalog:",
     "sort-package-json": "catalog:",
