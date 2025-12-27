@@ -23,12 +23,11 @@ jobs:
         with:
           filters: |
             actions:
-              - .github/workflows/*.yml
               - .github/workflows/*.yaml
-              - aqua.yaml
+              - devbox.json
+              - devbox.lock
             ts:
-              - .github/workflows/push.yml
-              - .github/workflows/_check-code.yml
+              - .github/workflows/*.yaml
               - pnpm-lock.yml
               - pnpm-workspace.yaml
               - turbo.json
@@ -36,8 +35,7 @@ jobs:
               - ./**/package.json
               - ./**/tsconfig.json
               - ./**/vite.config.ts
-              - packages/card/src/**/*
-              - packages/site/src/**/*
+              - packages/**/*
   check-actions:
     needs: path-filter
     if: needs.path-filter.outputs.actions == 'true'
@@ -50,13 +48,11 @@ jobs:
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
           persist-credentials: false
-      - uses: aquaproj/aqua-installer@11dd79b4e498d471a9385aa9fb7f62bb5f52a73c # v4.0.4
-        with:
-          aqua_version: v2.56.1
+      - uses: jetify-com/devbox-install-action@a0d2d53632934ae004f878c840055956d9f741b0 # v0.14.0
       - name: Lint github actions
         run: |
-          actionlint -color
-          ghalint run
+          devbox run actionlint -color
+          devbox run ghalint run
   check-typescript:
     needs: path-filter
     if: needs.path-filter.outputs.ts == 'true'
