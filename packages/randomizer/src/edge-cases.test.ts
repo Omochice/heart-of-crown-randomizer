@@ -609,20 +609,21 @@ describe("Edge Cases - Complex Constraint Combinations", () => {
       expect(result).toHaveLength(3);
     });
 
-    it("should handle required items that don't exist in items array", () => {
+    it("should throw error when required items don't exist in items array", () => {
       const items = [1, 2, 3, 4, 5];
       const requiredItems = [99, 100]; // Don't exist in items
 
-      const result = select(items, 3, {
-        seed: 42,
-        constraints: {
-          require: requiredItems,
-        },
-      });
-
-      // Required items that don't exist in original array are included anyway
-      expect(result).toContain(99);
-      expect(result).toContain(100);
+      expect(() => {
+        select(items, 3, {
+          seed: 42,
+          constraints: {
+            require: requiredItems,
+          },
+        });
+      }).toThrow(
+        "Required items must be references from the items array. " +
+          "Do not pass object literals; use items.find() or items[index] to get the reference.",
+      );
     });
   });
 

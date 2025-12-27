@@ -252,7 +252,8 @@ describe("select - Required Card Constraints", () => {
       { id: 5, cost: 6, type: "action" },
     ];
 
-    const requiredCard: Card = { id: 2, cost: 3, type: "action" };
+    // Use reference from the array, not object literal
+    const requiredCard = cards[1]; // Reference to { id: 2, cost: 3, type: "action" }
 
     const result = select(cards, 3, {
       seed: 42,
@@ -264,11 +265,34 @@ describe("select - Required Card Constraints", () => {
 
     expect(result).toHaveLength(3);
     // Required card must be included
-    expect(result).toContainEqual(requiredCard);
+    expect(result).toContain(requiredCard);
     // No attack cards should be included
     for (const card of result) {
       expect(card.type).not.toBe("attack");
     }
+  });
+
+  it("should throw error when required items are not references from the items array", () => {
+    type Card = { id: number; cost: number; type: string };
+    const cards: Card[] = [
+      { id: 1, cost: 2, type: "action" },
+      { id: 2, cost: 3, type: "action" },
+      { id: 3, cost: 4, type: "attack" },
+    ];
+
+    // Object literal with same properties but different reference
+    const requiredCard: Card = { id: 2, cost: 3, type: "action" };
+
+    expect(() => {
+      select(cards, 2, {
+        constraints: {
+          require: [requiredCard],
+        },
+      });
+    }).toThrow(
+      "Required items must be references from the items array. " +
+        "Do not pass object literals; use items.find() or items[index] to get the reference.",
+    );
   });
 });
 
@@ -286,10 +310,8 @@ describe("select - Integration Tests", () => {
       { id: 8, cost: 2, type: "defense", rarity: "common" },
     ];
 
-    const requiredCards: Card[] = [
-      { id: 1, cost: 2, type: "action", rarity: "common" },
-      { id: 6, cost: 3, type: "action", rarity: "common" },
-    ];
+    // Use references from the array, not object literals
+    const requiredCards: Card[] = [cards[0], cards[5]]; // cards with id 1 and 6
 
     const result = select(cards, 5, {
       seed: 42,
@@ -302,7 +324,7 @@ describe("select - Integration Tests", () => {
     expect(result).toHaveLength(5);
     // All required cards must be included
     for (const required of requiredCards) {
-      expect(result).toContainEqual(required);
+      expect(result).toContain(required);
     }
     // No attack cards or high-cost cards should be included
     for (const card of result) {
@@ -311,7 +333,7 @@ describe("select - Integration Tests", () => {
     }
     // All selected cards should be from original array
     for (const card of result) {
-      expect(cards).toContainEqual(card);
+      expect(cards).toContain(card);
     }
   });
 
@@ -328,7 +350,8 @@ describe("select - Integration Tests", () => {
       { id: 8, cost: 2, type: "defense" },
     ];
 
-    const requiredCard: Card = { id: 1, cost: 2, type: "action" };
+    // Use reference from the array, not object literal
+    const requiredCard = cards[0]; // cards with id 1
     const seed = 12345;
 
     const result1 = select(cards, 5, {

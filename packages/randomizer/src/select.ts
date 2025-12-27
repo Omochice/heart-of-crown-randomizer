@@ -13,6 +13,10 @@ import { shuffle } from "./shuffle";
  * When both exclusion and required constraints are specified, the function validates
  * that required items are not excluded by predicates before selection.
  *
+ * **IMPORTANT:** Required items must be **references to items in the source array**.
+ * This function uses reference equality (===) to identify required items.
+ * Do not pass object literals with the same properties; pass actual array references.
+ *
  * @template T - The type of items in the array
  * @param items - Array of items to select from (not mutated)
  * @param count - Number of items to select. If count > available items after filtering, returns all available items
@@ -20,7 +24,7 @@ import { shuffle } from "./shuffle";
  * @param options.seed - Optional seed for deterministic selection (same seed produces same result)
  * @param options.constraints - Optional constraints for selection
  * @param options.constraints.exclude - Array of predicates; items matching ANY predicate are excluded (OR logic)
- * @param options.constraints.require - Array of items that must be included in the result
+ * @param options.constraints.require - Array of items that must be included in the result (must be references from the items array)
  * @returns Array of selected items. If required items count >= count, returns only required items
  * @throws {ConstraintConflictError} If required items are excluded by predicates
  * @throws {Error} If seed is invalid (NaN or Infinity)
@@ -43,14 +47,25 @@ import { shuffle } from "./shuffle";
  * });
  *
  * @example
- * // Selection with required items
+ * // Selection with required items (CORRECT USAGE)
+ * const cards = [...allCards];
+ * const requiredCard = cards.find(c => c.id === 5); // Get reference from array
  * const result = select(cards, 10, {
  *   seed: 42,
  *   constraints: {
  *     exclude: [card => card.type === 'attack'],
- *     require: [specificCard1, specificCard2]
+ *     require: [requiredCard] // Pass array reference, not object literal
  *   }
  * });
+ *
+ * @example
+ * // INCORRECT: Do not use object literals
+ * // This will NOT work as expected:
+ * // const result = select(cards, 10, {
+ * //   constraints: {
+ * //     require: [{ id: 5, name: 'Card' }] // Wrong! Different reference
+ * //   }
+ * // });
  */
 export function select<T>(
   items: T[],
@@ -72,6 +87,17 @@ export function select<T>(
 
   const requiredItems = options?.constraints?.require ?? [];
   const excludePredicates = options?.constraints?.exclude;
+
+  // Validate that required items are references from the items array
+  // This prevents bugs from passing object literals instead of array references
+  for (const requiredItem of requiredItems) {
+    if (!items.includes(requiredItem)) {
+      throw new Error(
+        "Required items must be references from the items array. " +
+          "Do not pass object literals; use items.find() or items[index] to get the reference.",
+      );
+    }
+  }
 
   // Apply exclusion filters if specified
   // Why not AND logic: We want to exclude items matching ANY predicate (more flexible filtering)
