@@ -2,7 +2,13 @@
   "name": "@heart-of-crown-randomizer/randomizer",
   "version": "1.0.0",
   "description": "Testable card randomization library with deterministic seeding",
-  "keywords": ["randomizer", "shuffle", "seeded", "tdd", "heart-of-crown"],
+  "keywords": [
+    "randomizer",
+    "shuffle",
+    "seeded",
+    "tdd",
+    "heart-of-crown"
+  ],
   "license": "Zlib",
   "type": "module",
   "exports": {
@@ -15,14 +21,16 @@
   "types": "dist/index.d.mts",
   "scripts": {
     "build": "tsdown",
-    "fmt": "biome format .",
-    "check": "npm-run-all check:*",
+    "check": "npm-run-all2 check:*",
     "check:code": "biome check .",
     "check:type": "tsc --noEmit",
     "clean": "rimraf dist",
+    "fmt": "npm-run-all2 fmt:*",
+    "fmt:biome": "biome format .",
+    "fmt:package": "sort-package-json",
     "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "seedrandom": "^3.0.5"
