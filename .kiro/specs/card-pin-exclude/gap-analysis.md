@@ -12,7 +12,7 @@
 
 ### 主な発見
 
-- ✅ **既存の除外機能**: `excludedCommons`がlocalStorageベースで実装済み（packages/site/src/routes/+page.svelte:15-32）
+- ✅ **既存の除外機能**: `excludedCommons`がlocalStorageベースで実装済み（packages/site/src/routes/+page.svelte:15-32）→ **削除対象**
 - ✅ **URL状態管理**: カードIDベースのURLパラメータシステムが存在（packages/site/src/routes/+page.svelte:34-47, 54-61）
 - ✅ **Randomizer API**: `select()`関数が`constraints.require`をサポート（packages/randomizer/src/select.ts:88-109）
 - ⚠️ **ギャップ**: ピン機能なし、UI操作ボタンなし、URL同期が除外/ピン状態に対応していない
@@ -137,6 +137,24 @@ selectedCommons ← URL更新 (goto)
 - `role="button"`, `tabindex="0"`, `aria-label`の使用実績あり
 - キーボードイベント処理の実績あり（Delete/Backspace）
 
+### Requirement 7: 既存機能の移行
+
+| 受入基準 | 既存資産 | ギャップ | タグ |
+|---------|---------|---------|-----|
+| 7.1 localStorageベースの除外機能削除 | `excludedCommons` (L16-32, L222-225) | 削除が必要 | **Delete** |
+| 7.2 除外カードリスト表示削除 | UIセクション (L320-351) | 削除が必要 | **Delete** |
+| 7.3 localStorage関連コード削除 | `localStorage.setItem/getItem/removeItem` | 削除が必要 | **Delete** |
+| 7.4 移行通知の表示 (SHOULD) | N/A | 実装が必要 | **Missing** |
+| 7.5 全状態のURL管理 | 部分的実装（selectedCommonsのみ） | ピン/除外の追加が必要 | **Missing** |
+
+**削除対象コード**:
+- `excludedCommons` state (L16)
+- localStorage読み込み $effect (L19-32)
+- `removeFromExcludedCommons()` (L222-225)
+- `clearExcludedCommons()` (L256-259)
+- 除外カードリストUI (L320-351)
+- `drawRandomCards()`, `drawMissingCommons()`内のexcludedIds参照 (L66-67, L244)
+
 ---
 
 ## 3. 実装アプローチのオプション
@@ -250,24 +268,26 @@ selectedCommons ← URL更新 (goto)
 
 **M (3-7日)**:
 - **Option A: 既存拡張**
+  - 既存コード削除: 0.5日
   - 状態管理追加: 1日
   - UI実装: 1日
   - URL同期: 2日
   - テスト: 1日
-  - **合計**: 5日
+  - **合計**: 5.5日
 
 **L (1-2週)**:
 - **Option B: 新規作成**
+  - 既存コード削除: 0.5日
   - ストア設計・実装: 2日
   - CardWithActions実装: 1日
   - 統合・URL同期: 2日
   - テスト: 2日
-  - **合計**: 7日
+  - **合計**: 7.5日
 
 - **Option C: ハイブリッド**
-  - Phase 1: 5日（Option Aと同等）
+  - Phase 1: 5.5日（Option Aと同等）
   - Phase 2: 3日（リファクタリング）
-  - **合計**: 8日
+  - **合計**: 8.5日
 
 **XL (2週+)**: 該当なし
 
@@ -305,15 +325,16 @@ selectedCommons ← URL更新 (goto)
 
 **次フェーズで決定すべき事項**:
 1. **URL同期の具体的手法**:
-   - カンマ区切り（`?pin=1,2&exclude=3`）
+   - カンマ区切り（`?card=1&card=2&pin=1&exclude=3`）
    - Base64エンコード（`?state=eyJwaW4iOlsxLDJdLCJleGNsdWRlIjpbM119`）
    - ビットマップ（カードIDを2進数で表現）
 2. **エラーハンドリング**:
    - `ConstraintConflictError`のUI表示方法
    - カード不足時のユーザー通知
-3. **既存除外機能の移行**:
-   - 現在のlocalStorageベースの`excludedCommons`をURL同期に移行するか
-   - 移行する場合の後方互換性（既存のlocalStorageデータの扱い）
+3. **移行通知の設計**:
+   - 既存のlocalStorageデータが存在する場合の通知UI
+   - 通知の表示タイミングと内容
+   - 移行ガイダンスの提供方法
 
 ### 設計フェーズの研究項目
 
@@ -330,10 +351,10 @@ selectedCommons ← URL更新 (goto)
 
 ### ギャップサマリー
 
-- **実装済み**: 除外機能（localStorageベース）、URL同期（カードID）、Randomizer API（`require`サポート）
-- **新規実装が必要**: ピン状態管理、UI操作ボタン、ピン/除外のURL同期、状態トグル、エラーハンドリング
+- **削除対象**: 既存の除外機能（localStorageベース、約200行のコード）
+- **新規実装が必要**: ピン状態管理、UI操作ボタン、ピン/除外のURL同期、状態トグル、エラーハンドリング、移行通知
 - **既存資産の活用**: `select()`の`constraints.require`、`filterByIds()`、URL同期パターン、テスト分割パターン
-- **移行検討**: 既存の`excludedCommons`（localStorage）をURL同期に統一することで、共有可能性とデータの一貫性が向上
+- **アーキテクチャ改善**: localStorageとURLの二重管理を解消し、URLを単一情報源（Single Source of Truth）に統一
 
 ### 技術的実現可能性
 

@@ -13,6 +13,8 @@
 この機能は、ランダマイズされたカードに対して、ユーザーが特定のカードを必須化（ピン留め）または除外できるようにするものです。
 これにより、プレイヤーは自分の好みに応じてカード選択をカスタマイズし、より柔軟なゲームセットアップを実現できます。
 
+また、既存のlocalStorageベースの除外機能を削除し、全ての状態をURL経由で管理することで、データの一貫性と共有性を向上させます。
+
 ## Requirements
 
 ### Requirement 1: カード状態管理
@@ -86,4 +88,16 @@
 3. The Site MUST カラーだけに依存しない視覚的区別を提供する（アイコン、パターンなど）
 4. The Site MAY ピンボタンと除外ボタンに適切なARIAラベルを提供する
 5. When カードの状態が変更される, the Site MAY スクリーンリーダーに変更を通知する（aria-live または同等の手段）
+
+### Requirement 7: 既存機能の移行
+
+**Objective:** 開発者として、既存のlocalStorageベースの除外機能を削除し、URL-firstアプローチに統一したいので、データの一貫性と共有性を向上させる
+
+#### Acceptance Criteria
+
+1. The Site MUST 既存のlocalStorageベースのカード除外機能（`excludedCommons`）を削除する
+2. The Site MUST 除外カードリスト表示セクションを削除する
+3. The Site MUST localStorage関連のコード（保存、読み込み、クリア）を削除する
+4. The Site SHOULD 既存のlocalStorageデータが存在する場合、初回アクセス時に移行通知を表示する
+5. The Site MUST 全てのカード状態（選択結果、ピン、除外）をURL経由で管理する
 
