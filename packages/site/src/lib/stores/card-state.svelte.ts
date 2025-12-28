@@ -26,8 +26,8 @@ export const excludedCardIds = state.excludedCardIds;
  * Derived state: get card state by ID
  */
 export function getCardState(cardId: number): CardStateType {
-	if (pinnedCardIds.has(cardId)) return "pinned";
-	if (excludedCardIds.has(cardId)) return "excluded";
+	if (state.pinnedCardIds.has(cardId)) return "pinned";
+	if (state.excludedCardIds.has(cardId)) return "excluded";
 	return "normal";
 }
 
@@ -67,12 +67,12 @@ export function toggleExclude(cardId: number): void {
  * Get pinned cards from a list of cards
  */
 export function getPinnedCards(allCards: CommonCard[]): CommonCard[] {
-	return allCards.filter((card) => pinnedCardIds.has(card.id));
+	return allCards.filter((card) => state.pinnedCardIds.has(card.id));
 }
 
 /**
  * Get excluded cards from a list of cards
  */
 export function getExcludedCards(allCards: CommonCard[]): CommonCard[] {
-	return allCards.filter((card) => excludedCardIds.has(card.id));
+	return allCards.filter((card) => state.excludedCardIds.has(card.id));
 }
