@@ -14,40 +14,40 @@
 
 ## 2. CardState状態管理の実装
 
-- [ ] 2.1 (P) CardStateモジュールを作成
+- [x] 2.1 (P) CardStateモジュールを作成
   - `packages/site/src/lib/stores/card-state.svelte.ts` を作成
   - `CardStateType` 型定義（`"normal" | "pinned" | "excluded"`）
   - モジュールスコープ状態: `pinnedCardIds`, `excludedCardIds` (`$state<Set<number>>`)
   - SSR警告コメント追加（モジュールスコープの永続化リスク）
   - _Requirements: 1.1_
 
-- [ ] 2.2 状態取得関数を実装
+- [x] 2.2 状態取得関数を実装
   - `getCardState(cardId)` 関数
   - ピンID → "pinned"、除外ID → "excluded"、その他 → "normal" を返す
   - _Requirements: 1.1_
 
-- [ ] 2.3 ピントグル関数を実装
+- [x] 2.3 ピントグル関数を実装
   - `togglePin(cardId)` 関数
   - ピン中なら削除、未ピンなら追加
   - 追加時は `excludedCardIds` から自動削除（相互排他）
-  - Svelte 5 runes対応: Set再代入でリアクティブトリガー
-  - "why not"コメント: 手動unexclude不要の理由、再代入の理由
+  - Svelte 5 runes対応: オブジェクトラッパーパターンでリアクティブトリガー
+  - "why not"コメント: 手動unexclude不要の理由を追加
   - _Requirements: 1.2, 1.4, 3.1, 3.4_
 
-- [ ] 2.4 除外トグル関数を実装
+- [x] 2.4 除外トグル関数を実装
   - `toggleExclude(cardId)` 関数
   - 除外中なら削除、未除外なら追加
   - 追加時は `pinnedCardIds` から自動削除（相互排他）
-  - Svelte 5 runes対応: Set再代入でリアクティブトリガー
-  - "why not"コメント: 手動unpin不要の理由、再代入の理由
+  - Svelte 5 runes対応: オブジェクトラッパーパターンでリアクティブトリガー
+  - "why not"コメント: 手動unpin不要の理由を追加
   - _Requirements: 1.3, 1.4, 3.2, 3.4_
 
-- [ ] 2.5 ヘルパー関数を実装
+- [x] 2.5 ヘルパー関数を実装
   - `getPinnedCards(allCards)` - ピンカードのフィルタリング
   - `getExcludedCards(allCards)` - 除外カードのフィルタリング
   - _Requirements: 1.2, 1.3_
 
-- [ ] 2.6* CardStateユニットテストを作成
+- [x] 2.6* CardStateユニットテストを作成
   - `togglePin()` のトグル動作テスト（通常→ピン、ピン→通常）
   - `togglePin()` の相互排他テスト（除外→ピン で除外解除）
   - `toggleExclude()` のトグル動作テスト（通常→除外、除外→通常）
