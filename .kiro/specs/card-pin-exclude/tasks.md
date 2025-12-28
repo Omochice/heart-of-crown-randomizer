@@ -2,7 +2,7 @@
 
 ## 1. 既存localStorage機能の削除
 
-- [ ] 1.1 (P) localStorage依存コードを削除
+- [x] 1.1 (P) localStorage依存コードを削除
   - `excludedCommons` state宣言を削除 (L16)
   - localStorage読み込み `$effect` を削除 (L19-32)
   - `removeFromExcludedCommons()` 関数を削除 (L222-225)

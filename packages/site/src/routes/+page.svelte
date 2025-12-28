@@ -12,25 +12,6 @@
 	let selectedCommons: CommonCard[] = $state([]);
 	let shareUrl = $state("");
 
-	// Excluded card lists
-	let excludedCommons: CommonCard[] = $state([]);
-
-	// Load excluded cards from localStorage once on mount
-	$effect(() => {
-		// SSR safety: localStorage is only available in browser
-		if (typeof localStorage !== "undefined") {
-			try {
-				const storedExcludedCommons = localStorage.getItem("excludedCommons");
-				if (storedExcludedCommons) {
-					excludedCommons = JSON.parse(storedExcludedCommons);
-				}
-			} catch (error) {
-				// Ignore malformed localStorage data
-				console.warn("Failed to parse excludedCommons from localStorage:", error);
-			}
-		}
-	});
-
 	// Reactively sync selectedCommons with URL parameters
 	// This allows browser back/forward to update the displayed cards
 	$effect(() => {
@@ -63,9 +44,7 @@
 	// Function to randomly select common cards
 	function drawRandomCards() {
 		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
-		const excludedIds = excludedCommons.map((c) => c.id);
-		const availableCommons = filterByIds(allCommons, excludedIds);
-		const randomCards = select(availableCommons, numberOfCommons);
+		const randomCards = select(allCommons, numberOfCommons);
 		selectedCommons = randomCards.sort((a, b) => a.id - b.id);
 
 		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
@@ -218,12 +197,6 @@
 		resetSwipeState();
 	}
 
-	// Remove common card from excluded list
-	function removeFromExcludedCommons(common: CommonCard) {
-		excludedCommons = excludedCommons.filter((c) => c.id !== common.id);
-		localStorage.setItem("excludedCommons", JSON.stringify(excludedCommons));
-	}
-
 	// Remove selected common card from display list
 	function removeSelectedCommon(index: number) {
 		selectedCommons = selectedCommons.filter((_, i) => i !== index);
@@ -241,7 +214,7 @@
 		if (selectedCommons.length >= numberOfCommons) return;
 
 		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
-		const excludedIds = [...excludedCommons, ...selectedCommons].map((c) => c.id);
+		const excludedIds = selectedCommons.map((c) => c.id);
 		const availableCommons = filterByIds(allCommons, excludedIds);
 
 		if (availableCommons.length === 0) return;
@@ -251,11 +224,6 @@
 
 		selectedCommons = [...selectedCommons, ...newCards];
 		updateUrlAndShare();
-	}
-
-	function clearExcludedCommons() {
-		excludedCommons = [];
-		localStorage.removeItem("excludedCommons");
 	}
 
 	// Derived values for card filtering and sorting
@@ -315,39 +283,6 @@
 				一般カードを追加 ({numberOfCommons - selectedCommons.length})
 			</button>
 		</div>
-	</div>
-
-	<!-- 除外カードリスト -->
-	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-		<div class="flex justify-between items-center mb-4">
-			<h2 class="text-xl font-semibold">除外カードリスト</h2>
-			<button
-				onclick={clearExcludedCommons}
-				class="bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded focus:outline-none focus:shadow-outline transition duration-300"
-			>
-				リストをクリア
-			</button>
-		</div>
-
-		{#if excludedCommons.length === 0}
-			<p class="text-gray-500 italic">除外カードはありません</p>
-		{:else}
-			<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-				{#each excludedCommons as common (common.id)}
-					<div class="border border-green-300 rounded p-2 flex items-center justify-between">
-						<span class="text-green-600 text-sm">
-							{common.name}
-						</span>
-						<button
-							onclick={() => removeFromExcludedCommons(common)}
-							class="text-gray-500 hover:text-red-500"
-						>
-							✕
-						</button>
-					</div>
-				{/each}
-			</div>
-		{/if}
 	</div>
 
 	{#if selectedCommons.length > 0}
