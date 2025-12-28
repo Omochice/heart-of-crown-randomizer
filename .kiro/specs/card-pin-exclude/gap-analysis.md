@@ -186,7 +186,7 @@ selectedCommons ← URL更新 (goto)
    - `pinnedCards`, `excludedCards`の状態管理
    - `togglePin()`, `toggleExclude()`, `clearPin()`, `clearExclude()`
    - URL同期ロジック（`encodeState()`, `decodeState()`）
-   - localStorage永続化
+   - **Note**: URLが状態の単一情報源（Single Source of Truth）となるため、localStorage永続化は不要
 
 2. **CardWithActions.svelte**
    - カード表示（`Card.svelte`をラップ）
@@ -311,9 +311,9 @@ selectedCommons ← URL更新 (goto)
 2. **エラーハンドリング**:
    - `ConstraintConflictError`のUI表示方法
    - カード不足時のユーザー通知
-3. **ストアの永続化戦略**:
-   - localStorage（除外のみ）vs URL（両方）の使い分け
-   - ページリロード時の状態復元優先順位
+3. **既存除外機能の移行**:
+   - 現在のlocalStorageベースの`excludedCommons`をURL同期に移行するか
+   - 移行する場合の後方互換性（既存のlocalStorageデータの扱い）
 
 ### 設計フェーズの研究項目
 
@@ -330,9 +330,10 @@ selectedCommons ← URL更新 (goto)
 
 ### ギャップサマリー
 
-- **実装済み**: 除外機能（localStorage）、URL同期（カードID）、Randomizer API（`require`サポート）
+- **実装済み**: 除外機能（localStorageベース）、URL同期（カードID）、Randomizer API（`require`サポート）
 - **新規実装が必要**: ピン状態管理、UI操作ボタン、ピン/除外のURL同期、状態トグル、エラーハンドリング
 - **既存資産の活用**: `select()`の`constraints.require`、`filterByIds()`、URL同期パターン、テスト分割パターン
+- **移行検討**: 既存の`excludedCommons`（localStorage）をURL同期に統一することで、共有可能性とデータの一貫性が向上
 
 ### 技術的実現可能性
 
