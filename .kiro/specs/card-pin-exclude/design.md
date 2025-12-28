@@ -284,8 +284,10 @@ export function getCardState(cardId: number): CardStateType {
 
 /**
  * Toggle pin state for a card
- * - If pinned, remove from pinnedCardIds
- * - If not pinned, add to pinnedCardIds and remove from excludedCardIds
+ *
+ * We auto-remove from excludedCardIds rather than requiring the caller
+ * to manually unexclude first, because the UI interaction is a single
+ * button click and users expect immediate state change.
  */
 export function togglePin(cardId: number): void {
   if (pinnedCardIds.has(cardId)) {
@@ -294,15 +296,18 @@ export function togglePin(cardId: number): void {
     pinnedCardIds.add(cardId);
     excludedCardIds.delete(cardId); // Cannot be both pinned and excluded
   }
-  // Trigger reactivity by reassigning
+  // We reassign rather than mutating in-place because Svelte 5 runes
+  // only detect reactivity on assignment, not on Set.add()/delete()
   pinnedCardIds = new Set(pinnedCardIds);
   excludedCardIds = new Set(excludedCardIds);
 }
 
 /**
  * Toggle exclude state for a card
- * - If excluded, remove from excludedCardIds
- * - If not excluded, add to excludedCardIds and remove from pinnedCardIds
+ *
+ * We auto-remove from pinnedCardIds rather than requiring the caller
+ * to manually unpin first, because the UI interaction is a single
+ * button click and users expect immediate state change.
  */
 export function toggleExclude(cardId: number): void {
   if (excludedCardIds.has(cardId)) {
@@ -311,7 +316,8 @@ export function toggleExclude(cardId: number): void {
     excludedCardIds.add(cardId);
     pinnedCardIds.delete(cardId); // Cannot be both excluded and pinned
   }
-  // Trigger reactivity by reassigning
+  // We reassign rather than mutating in-place because Svelte 5 runes
+  // only detect reactivity on assignment, not on Set.add()/delete()
   pinnedCardIds = new Set(pinnedCardIds);
   excludedCardIds = new Set(excludedCardIds);
 }
@@ -490,65 +496,158 @@ function handleToggleExclude() {
 
 **URL → State Sync**:
 ```typescript
-// Read URL parameters and update CardState
-$effect(() => {
-  const pinIds = $page.url.searchParams.getAll("pin").map(Number);
-  const excludeIds = $page.url.searchParams.getAll("exclude").map(Number);
+/**
+ * Parse card IDs from URL parameter
+ *
+ * We filter NaN values rather than throwing errors because invalid
+ * URLs (e.g., ?pin=abc) should not crash the app, just be ignored.
+ */
+function parseCardIdsFromUrl(url: URL, param: string): Set<number> {
+  return new Set(
+    url.searchParams.getAll(param)
+      .map(Number)
+      .filter((id) => !isNaN(id))
+  );
+}
 
-  pinnedCardIds = new Set(pinIds);
-  excludedCardIds = new Set(excludeIds);
+$effect(() => {
+  // We parse on every URL change rather than caching because users
+  // might manually edit the URL or use browser back/forward buttons
+  pinnedCardIds = parseCardIdsFromUrl($page.url, "pin");
+  excludedCardIds = parseCardIdsFromUrl($page.url, "exclude");
 });
 ```
 
 **State → URL Sync**:
 ```typescript
-// Update URL when state changes
-$effect(() => {
-  const url = new URL($page.url);
-
-  // Clear existing pin/exclude params
+/**
+ * Build URL with card state
+ *
+ * We delete params before appending rather than using set() because
+ * URLSearchParams doesn't support setting multiple values with one
+ * call, and we need to support multiple IDs per parameter.
+ */
+function buildUrlWithCardState(
+  baseUrl: URL,
+  pinnedIds: Set<number>,
+  excludedIds: Set<number>
+): URL {
+  const url = new URL(baseUrl);
   url.searchParams.delete("pin");
   url.searchParams.delete("exclude");
 
-  // Add current state
-  for (const id of pinnedCardIds) {
+  for (const id of pinnedIds) {
     url.searchParams.append("pin", String(id));
   }
-  for (const id of excludedCardIds) {
+  for (const id of excludedIds) {
     url.searchParams.append("exclude", String(id));
   }
 
+  return url;
+}
+
+$effect(() => {
+  const url = buildUrlWithCardState($page.url, pinnedCardIds, excludedCardIds);
+  // We use replaceState rather than pushState to avoid polluting browser
+  // history with every state change (users don't want back button to undo
+  // each individual pin/exclude operation)
   goto(url, { replaceState: true, noScroll: true });
 });
 ```
 
 **Randomize with Constraints**:
 ```typescript
+type ValidationResult =
+  | { ok: true }
+  | { ok: false; message: string };
+
+/**
+ * Validate pin constraints
+ *
+ * We allow pinnedCount === 0 because users may want random selection
+ * without any pinned cards.
+ */
+function validatePinConstraints(
+  pinnedCount: number,
+  targetCount: number
+): ValidationResult {
+  if (pinnedCount > targetCount) {
+    return {
+      ok: false,
+      message: `ピンされたカードが多すぎます（${pinnedCount}/${targetCount}）。ピンを${pinnedCount - targetCount}枚解除してください。`
+    };
+  }
+  return { ok: true };
+}
+
+/**
+ * Validate exclude constraints
+ *
+ * We require strict inequality (< not <=) because we need exactly
+ * targetCount cards to select from, not just "at least targetCount".
+ */
+function validateExcludeConstraints(
+  availableCount: number,
+  targetCount: number
+): ValidationResult {
+  if (availableCount < targetCount) {
+    return {
+      ok: false,
+      message: `除外により選択可能なカードが不足しています（${availableCount}/${targetCount}）。除外を${targetCount - availableCount}枚解除してください。`
+    };
+  }
+  return { ok: true };
+}
+
+/**
+ * Select cards with constraints
+ *
+ * We pass pinnedCards directly to constraints.require rather than
+ * filtering them out first, because select() guarantees they appear
+ * in the result and this avoids double-filtering.
+ */
+function selectWithConstraints(
+  allCards: CommonCard[],
+  pinnedCards: CommonCard[],
+  excludedIds: Set<number>,
+  count: number
+): CommonCard[] {
+  return select(allCards, count, {
+    constraints: {
+      require: pinnedCards,
+      exclude: [(card) => excludedIds.has(card.id)],
+    },
+  });
+}
+
 function drawRandomCards() {
   const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
   const pinnedCards = getPinnedCards(allCommons);
 
-  // Validation: Check if pinned cards exceed count
-  if (pinnedCards.length > targetCount) {
-    errorMessage = `ピンされたカードが多すぎます（${pinnedCards.length}/${targetCount}）`;
+  const pinValidation = validatePinConstraints(pinnedCards.length, targetCount);
+  if (!pinValidation.ok) {
+    errorMessage = pinValidation.message;
     return;
   }
 
-  // Validation: Check if available cards are sufficient
   const availableCards = allCommons.filter(
     (card) => !excludedCardIds.has(card.id)
   );
-  if (availableCards.length < targetCount) {
-    errorMessage = `除外により選択可能なカードが不足しています（${availableCards.length}/${targetCount}）`;
+  const availableValidation = validateExcludeConstraints(
+    availableCards.length,
+    targetCount
+  );
+  if (!availableValidation.ok) {
+    errorMessage = availableValidation.message;
     return;
   }
 
-  selectedCommons = select(allCommons, targetCount, {
-    constraints: {
-      require: pinnedCards,
-      exclude: [(card) => excludedCardIds.has(card.id)],
-    },
-  });
+  selectedCommons = selectWithConstraints(
+    allCommons,
+    pinnedCards,
+    excludedCardIds,
+    targetCount
+  );
   errorMessage = "";
 }
 ```
@@ -766,6 +865,24 @@ flowchart TD
 **Property-based Testing (fast-check)**:
 1. ランダムなピン/除外操作 → 相互排他が常に成立
 2. ランダムな制約 → エラー判定の正確性
+
+### SSR Safety Tests
+
+**CardState SSR Isolation (`card-state.ssr.test.ts`)**:
+1. 複数SSRリクエストでの状態独立性
+   - 同一モジュールが複数リクエストで再利用されても、URL由来の初期化が優先される
+   - Request A (`?pin=1`) → Request B (`?pin=2`) で、Request BがRequest Aの状態を見ない
+2. `$effect`初期化の優先順位
+   - ページロード時に必ずURL由来の状態で上書きされることを確認
+   - モジュールスコープ変数の初期値（空Set）が使われないことを確認
+3. 状態リーク検出
+   - 連続した異なるユーザーのリクエストで、前のユーザーの状態が残らない
+   - 並行リクエストでも状態が混在しない
+
+**Test Implementation Notes**:
+- SvelteKitの`@sveltejs/kit/test`を使用してSSR環境をシミュレート
+- 複数の仮想リクエストを連続/並行で実行し、状態の独立性を検証
+- 各リクエストで異なるURL（`?pin=X`）を使用し、正しい状態が復元されることを確認
 
 ## Migration Strategy
 
