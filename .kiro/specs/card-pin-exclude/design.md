@@ -378,9 +378,9 @@ export function getExcludedCards(allCards: CommonCard[]): CommonCard[] {
 import type { CommonCard } from "@omochice/heart-of-crown-randomizer-card";
 import { getCardState, togglePin, toggleExclude } from "$lib/stores/card-state.svelte";
 
-interface Props {
+type Props = {
   card: CommonCard;
-}
+};
 
 let { card }: Props = $props();
 
@@ -591,10 +591,10 @@ function drawRandomCards() {
 
 ```typescript
 // Card State Management
-interface CardState {
+type CardState = {
   pinnedCardIds: Set<number>;      // Pinned card IDs
   excludedCardIds: Set<number>;    // Excluded card IDs
-}
+};
 
 // Card State Type
 type CardStateType = "normal" | "pinned" | "excluded";
