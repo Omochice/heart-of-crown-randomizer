@@ -129,7 +129,7 @@
   - `untrack()` でURL読み取りを非リアクティブ化（無限ループ回避）
   - _Requirements: 1.5, 5.1, 5.3_
 
-- [ ] 4.5* URL同期のユニットテストを作成
+- [x] 4.5* URL同期のユニットテストを作成
   - URL → State同期テスト（`?pin=1,5` → `pinnedCardIds = {1, 5}`）
   - State → URL同期テスト（`togglePin(12)` → URL contains `pin=12`）
   - 無効なID処理テスト（`?pin=abc` → NaN除外、エラーなし）
