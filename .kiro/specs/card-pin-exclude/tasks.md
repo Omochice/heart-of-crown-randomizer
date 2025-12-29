@@ -72,14 +72,14 @@
   - `aria-pressed` 属性で状態表示
   - _Requirements: 2.1, 2.2, 2.4_
 
-- [ ] 3.3 除外ボタンを実装
+- [x] 3.3 除外ボタンを実装
   - 除外ボタンUI（🚫アイコン）
   - `onclick` で `toggleExclude(card.id)` 呼び出し
   - 状態に応じたスタイル変更（除外中: `bg-red-500 text-white`、未除外: `bg-gray-200`）
   - `aria-pressed` 属性で状態表示
   - _Requirements: 2.1, 2.3, 2.5_
 
-- [ ] 3.4 カード状態の視覚的フィードバックを実装
+- [x] 3.4 カード状態の視覚的フィードバックを実装
   - ピン状態: 青い背景（`bg-blue-100`）、青いボーダー（`border-blue-500`）
   - 除外状態: グレー背景（`bg-gray-100`）、透明度60%（`opacity-60`）、取り消し線（`line-through`）
   - 通常状態: デフォルトスタイル
