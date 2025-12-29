@@ -21,8 +21,14 @@ export type ValidationResult = { ok: true } | { ok: false; message: string };
  * @returns Validation result with error message if invalid
  */
 export function validatePinConstraints(pinnedCount: number, targetCount: number): ValidationResult {
-	// Implementation will be added in GREEN phase
-	throw new Error("Not implemented yet");
+	if (pinnedCount > targetCount) {
+		const cardsToRemove = pinnedCount - targetCount;
+		return {
+			ok: false,
+			message: `ピンされたカードが多すぎます（${pinnedCount}/${targetCount}）。ピンを${cardsToRemove}枚解除してください。`,
+		};
+	}
+	return { ok: true };
 }
 
 /**
@@ -39,6 +45,12 @@ export function validateExcludeConstraints(
 	availableCount: number,
 	targetCount: number,
 ): ValidationResult {
-	// Implementation will be added in GREEN phase
-	throw new Error("Not implemented yet");
+	if (availableCount < targetCount) {
+		const exclusionsToRemove = targetCount - availableCount;
+		return {
+			ok: false,
+			message: `除外により選択可能なカードが不足しています（${availableCount}/${targetCount}）。除外を${exclusionsToRemove}枚解除してください。`,
+		};
+	}
+	return { ok: true };
 }
