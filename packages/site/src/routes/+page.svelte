@@ -7,13 +7,15 @@
 	import { untrack } from "svelte";
 	import Card from "$lib/Card.svelte";
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
-	import { pinnedCardIds, excludedCardIds } from "$lib/stores/card-state.svelte";
+	import { pinnedCardIds, excludedCardIds, getPinnedCards } from "$lib/stores/card-state.svelte";
 	import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
+	import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
 
 	// Option settings
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
 	let shareUrl = $state("");
+	let errorMessage = $state("");
 
 	// Reactively sync selectedCommons with URL parameters
 	// This allows browser back/forward to update the displayed cards
@@ -117,8 +119,34 @@
 	// Function to randomly select common cards
 	function drawRandomCards() {
 		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
-		const randomCards = select(allCommons, numberOfCommons);
+		const pinnedCards = getPinnedCards(allCommons);
+
+		// Validate pin constraints
+		const pinValidation = validatePinConstraints(pinnedCards.length, numberOfCommons);
+		if (!pinValidation.ok) {
+			errorMessage = pinValidation.message;
+			return;
+		}
+
+		// Calculate available cards after exclusion
+		const availableCards = allCommons.filter((card) => !excludedCardIds.has(card.id));
+
+		// Validate exclude constraints
+		const excludeValidation = validateExcludeConstraints(availableCards.length, numberOfCommons);
+		if (!excludeValidation.ok) {
+			errorMessage = excludeValidation.message;
+			return;
+		}
+
+		// All validations passed, proceed with randomization
+		const randomCards = selectWithConstraints(
+			allCommons,
+			pinnedCards,
+			excludedCardIds,
+			numberOfCommons,
+		);
 		selectedCommons = randomCards.sort((a, b) => a.id - b.id);
+		errorMessage = ""; // Clear error message on success
 
 		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
@@ -356,6 +384,15 @@
 				一般カードを追加 ({numberOfCommons - selectedCommons.length})
 			</button>
 		</div>
+
+		{#if errorMessage}
+			<div
+				class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
+				role="alert"
+			>
+				<p>{errorMessage}</p>
+			</div>
+		{/if}
 	</div>
 
 	{#if selectedCommons.length > 0}
