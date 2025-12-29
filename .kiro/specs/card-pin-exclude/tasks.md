@@ -137,7 +137,7 @@
 
 ## 5. ランダマイズ制約ロジックの実装
 
-- [ ] 5.1 バリデーション関数を実装
+- [x] 5.1 バリデーション関数を実装
   - `ValidationResult` 型定義（`{ ok: true } | { ok: false; message: string }`）
   - `validatePinConstraints(pinnedCount, targetCount)` 関数
   - ピン数 > 選択枠 → エラーメッセージ（"ピンされたカードが多すぎます（X/Y）。ピンをZ枚解除してください。"）
