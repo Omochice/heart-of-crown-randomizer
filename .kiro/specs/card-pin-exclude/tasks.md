@@ -58,7 +58,7 @@
 
 ## 3. CardWithActionsコンポーネントの実装
 
-- [ ] 3.1 (P) CardWithActionsコンポーネントを作成
+- [x] 3.1 (P) CardWithActionsコンポーネントを作成
   - `packages/site/src/lib/CardWithActions.svelte` を作成
   - Props型定義: `type Props = { card: CommonCard }`
   - CardStateから状態取得（`$derived(getCardState(card.id))`）
