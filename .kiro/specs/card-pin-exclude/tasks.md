@@ -154,7 +154,7 @@
   - "why not"コメント: ピンカードを直接渡す理由（二重フィルタリング回避）
   - _Requirements: 1.2, 1.3, 4.1, 4.2_
 
-- [ ] 5.3 drawRandomCards()を更新
+- [x] 5.3 drawRandomCards()を更新
   - `validatePinConstraints()` でピン数チェック
   - エラー時は `errorMessage` 設定、早期リターン
   - `validateExcludeConstraints()` で利用可能カードチェック
