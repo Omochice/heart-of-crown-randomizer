@@ -121,11 +121,12 @@
   - "why not"コメント: キャッシュせず毎回解析する理由（手動編集/戻る進む対応）
   - _Requirements: 1.5, 5.2, 5.3_
 
-- [ ] 4.4 State → URL同期を実装
+- [x] 4.4 State → URL同期を実装
   - `$effect` で状態変更を監視
   - `buildUrlWithCardState($page.url, pinnedCardIds, excludedCardIds)` でURL構築
   - `goto(url, { replaceState: true, noScroll: true })` で更新
   - "why not"コメント: replaceState理由（履歴汚染回避）
+  - `untrack()` でURL読み取りを非リアクティブ化（無限ループ回避）
   - _Requirements: 1.5, 5.1, 5.3_
 
 - [ ] 4.5* URL同期のユニットテストを作成
