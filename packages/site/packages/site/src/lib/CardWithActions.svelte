@@ -9,6 +9,8 @@
 	let { card }: Props = $props();
 
 	const state = $derived(getCardState(card.id));
+	const isPinned = $derived(state === "pinned");
+	const isExcluded = $derived(state === "excluded");
 
 	function handleTogglePin() {
 		togglePin(card.id);
@@ -21,16 +23,13 @@
 
 <!-- Visual feedback based on state -->
 <div
-	class={`
-    card-container
-    ${state === "pinned" ? "bg-blue-100 border-blue-500" : ""}
-    ${state === "excluded" ? "bg-gray-100 opacity-60" : ""}
-    border rounded p-4
-  `}
+	class="border rounded p-4 {isPinned ? 'bg-blue-100 border-blue-500' : ''} {isExcluded
+		? 'bg-gray-100 opacity-60'
+		: ''}"
 >
 	<!-- Card content -->
 	<div class="card-content">
-		<h3 class={state === "excluded" ? "line-through" : ""}>
+		<h3 class:line-through={isExcluded}>
 			{card.name}
 		</h3>
 		<p class="text-sm text-gray-600">{card.category}</p>
@@ -42,28 +41,24 @@
 		<button
 			type="button"
 			onclick={handleTogglePin}
-			class={`
-        px-3 py-1 rounded
-        focus:outline-none focus:ring-2 focus:ring-blue-500
-        ${state === "pinned" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"}
-      `}
-			aria-pressed={state === "pinned"}
+			class="px-3 py-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 {isPinned
+				? 'bg-blue-500 text-white'
+				: 'bg-gray-200 text-gray-700'}"
+			aria-pressed={isPinned}
 		>
-			{state === "pinned" ? "📌 ピン中" : "📌 ピン"}
+			{isPinned ? "📌 ピン中" : "📌 ピン"}
 		</button>
 
 		<!-- Exclude button -->
 		<button
 			type="button"
 			onclick={handleToggleExclude}
-			class={`
-        px-3 py-1 rounded
-        focus:outline-none focus:ring-2 focus:ring-red-500
-        ${state === "excluded" ? "bg-red-500 text-white" : "bg-gray-200 text-gray-700"}
-      `}
-			aria-pressed={state === "excluded"}
+			class="px-3 py-1 rounded focus:outline-none focus:ring-2 focus:ring-red-500 {isExcluded
+				? 'bg-red-500 text-white'
+				: 'bg-gray-200 text-gray-700'}"
+			aria-pressed={isExcluded}
 		>
-			{state === "excluded" ? "🚫 除外中" : "🚫 除外"}
+			{isExcluded ? "🚫 除外中" : "🚫 除外"}
 		</button>
 	</div>
 </div>
