@@ -114,7 +114,7 @@
   - "why not"コメント: delete+append理由（set()は複数値非対応）
   - _Requirements: 5.1_
 
-- [ ] 4.3 URL → State同期を実装
+- [x] 4.3 URL → State同期を実装
   - `$effect` でURL変更を監視
   - `parseCardIdsFromUrl($page.url, "pin")` で `pinnedCardIds` を更新
   - `parseCardIdsFromUrl($page.url, "exclude")` で `excludedCardIds` を更新
