@@ -147,7 +147,7 @@
   - "why not"コメント: 厳密な不等号（< not <=）を使う理由
   - _Requirements: 4.4, 4.5_
 
-- [ ] 5.2 選択ヘルパー関数を実装
+- [x] 5.2 選択ヘルパー関数を実装
   - `selectWithConstraints(allCards, pinnedCards, excludedIds, count)` 関数
   - `select()` に `constraints.require: pinnedCards` を渡す
   - `select()` に `constraints.exclude: [(card) => excludedIds.has(card.id)]` を渡す
