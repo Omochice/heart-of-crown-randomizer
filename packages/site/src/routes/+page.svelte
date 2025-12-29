@@ -5,7 +5,7 @@
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
 	import { untrack } from "svelte";
-	import Card from "$lib/Card.svelte";
+	import CardWithActions from "$lib/CardWithActions.svelte";
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
 	import { pinnedCardIds, excludedCardIds, getPinnedCards } from "$lib/stores/card-state.svelte";
 	import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
@@ -403,16 +403,7 @@
 				<div class="mb-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each basicCards as common (common.id)}
-							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
-							<Card
-								{common}
-								{originalIndex}
-								onRemove={removeSelectedCommon}
-								onSwipeStart={handleSwipeStart}
-								onSwipeMove={handleSwipeMove}
-								onSwipeEnd={handleSwipeEnd}
-								onSwipeCancel={handleSwipeCancel}
-							/>
+							<CardWithActions card={common} />
 						{/each}
 					</div>
 				</div>
@@ -422,16 +413,7 @@
 				<div class="mb-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each farEasternCards as common (common.id)}
-							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
-							<Card
-								{common}
-								{originalIndex}
-								onRemove={removeSelectedCommon}
-								onSwipeStart={handleSwipeStart}
-								onSwipeMove={handleSwipeMove}
-								onSwipeEnd={handleSwipeEnd}
-								onSwipeCancel={handleSwipeCancel}
-							/>
+							<CardWithActions card={common} />
 						{/each}
 					</div>
 				</div>
