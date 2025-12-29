@@ -99,7 +99,7 @@
 
 ## 4. URL同期ロジックの実装
 
-- [ ] 4.1 URL解析ヘルパー関数を実装
+- [x] 4.1 URL解析ヘルパー関数を実装
   - `parseCardIdsFromUrl(url, param)` 関数を `+page.svelte` に追加
   - `URLSearchParams.getAll(param)` でIDを取得
   - `Number()` で変換、`filter(id => !isNaN(id))` でNaN除外
