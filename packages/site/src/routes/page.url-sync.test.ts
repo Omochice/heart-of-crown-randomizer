@@ -1,5 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, beforeEach } from "vitest";
 import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
+import { pinnedCardIds, excludedCardIds } from "$lib/stores/card-state.svelte";
 
 describe("parseCardIdsFromUrl", () => {
 	it("should parse single card ID from URL parameter", () => {
@@ -158,5 +159,86 @@ describe("buildUrlWithCardState", () => {
 
 		// Result should have pin parameter
 		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
+	});
+});
+
+describe("URL → State sync (integration)", () => {
+	beforeEach(() => {
+		// Clear state before each test
+		pinnedCardIds.clear();
+		excludedCardIds.clear();
+	});
+
+	it("should sync pinned card IDs from URL to state", () => {
+		const url = new URL("http://example.com?pin=1&pin=5");
+		const pinnedIds = parseCardIdsFromUrl(url, "pin");
+
+		// Simulate the $effect behavior
+		pinnedCardIds.clear();
+		for (const id of pinnedIds) {
+			pinnedCardIds.add(id);
+		}
+
+		expect(pinnedCardIds.has(1)).toBe(true);
+		expect(pinnedCardIds.has(5)).toBe(true);
+		expect(pinnedCardIds.size).toBe(2);
+	});
+
+	it("should sync excluded card IDs from URL to state", () => {
+		const url = new URL("http://example.com?exclude=7&exclude=9");
+		const excludedIds = parseCardIdsFromUrl(url, "exclude");
+
+		// Simulate the $effect behavior
+		excludedCardIds.clear();
+		for (const id of excludedIds) {
+			excludedCardIds.add(id);
+		}
+
+		expect(excludedCardIds.has(7)).toBe(true);
+		expect(excludedCardIds.has(9)).toBe(true);
+		expect(excludedCardIds.size).toBe(2);
+	});
+
+	it("should sync both pinned and excluded card IDs from URL to state", () => {
+		const url = new URL("http://example.com?pin=1&pin=5&exclude=7");
+		const pinnedIds = parseCardIdsFromUrl(url, "pin");
+		const excludedIds = parseCardIdsFromUrl(url, "exclude");
+
+		// Simulate the $effect behavior
+		pinnedCardIds.clear();
+		excludedCardIds.clear();
+		for (const id of pinnedIds) {
+			pinnedCardIds.add(id);
+		}
+		for (const id of excludedIds) {
+			excludedCardIds.add(id);
+		}
+
+		expect(pinnedCardIds.has(1)).toBe(true);
+		expect(pinnedCardIds.has(5)).toBe(true);
+		expect(excludedCardIds.has(7)).toBe(true);
+	});
+
+	it("should clear state when URL has no pin/exclude parameters", () => {
+		// Set initial state
+		pinnedCardIds.add(1);
+		excludedCardIds.add(7);
+
+		const url = new URL("http://example.com");
+		const pinnedIds = parseCardIdsFromUrl(url, "pin");
+		const excludedIds = parseCardIdsFromUrl(url, "exclude");
+
+		// Simulate the $effect behavior
+		pinnedCardIds.clear();
+		excludedCardIds.clear();
+		for (const id of pinnedIds) {
+			pinnedCardIds.add(id);
+		}
+		for (const id of excludedIds) {
+			excludedCardIds.add(id);
+		}
+
+		expect(pinnedCardIds.size).toBe(0);
+		expect(excludedCardIds.size).toBe(0);
 	});
 });

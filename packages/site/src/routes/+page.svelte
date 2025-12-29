@@ -6,6 +6,8 @@
 	import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
 	import Card from "$lib/Card.svelte";
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
+	import { pinnedCardIds, excludedCardIds } from "$lib/stores/card-state.svelte";
+	import { parseCardIdsFromUrl } from "$lib/utils/url-sync";
 
 	// Option settings
 	let numberOfCommons = $state(10);
@@ -30,6 +32,28 @@
 	// Update share URL when selectedCommons changes
 	$effect(() => {
 		updateShareUrl();
+	});
+
+	/**
+	 * Sync pin/exclude state from URL parameters
+	 *
+	 * We parse on every URL change rather than caching because users
+	 * might manually edit the URL or use browser back/forward buttons.
+	 */
+	$effect(() => {
+		const newPinnedIds = parseCardIdsFromUrl($page.url, "pin");
+		const newExcludedIds = parseCardIdsFromUrl($page.url, "exclude");
+
+		// Clear and repopulate to ensure sync with URL
+		pinnedCardIds.clear();
+		excludedCardIds.clear();
+
+		for (const id of newPinnedIds) {
+			pinnedCardIds.add(id);
+		}
+		for (const id of newExcludedIds) {
+			excludedCardIds.add(id);
+		}
 	});
 
 	function cardsToQuery(cards: CommonCard[]): string {
