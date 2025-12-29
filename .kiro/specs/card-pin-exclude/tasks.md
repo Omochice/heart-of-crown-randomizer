@@ -65,7 +65,7 @@
   - カード表示: カード名、カテゴリ
   - _Requirements: 2.1_
 
-- [ ] 3.2 ピンボタンを実装
+- [x] 3.2 ピンボタンを実装
   - ピンボタンUI（📌アイコン）
   - `onclick` で `togglePin(card.id)` 呼び出し
   - 状態に応じたスタイル変更（ピン中: `bg-blue-500 text-white`、未ピン: `bg-gray-200`）
