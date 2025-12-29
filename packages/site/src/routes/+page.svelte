@@ -4,10 +4,11 @@
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
+	import { untrack } from "svelte";
 	import Card from "$lib/Card.svelte";
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
 	import { pinnedCardIds, excludedCardIds } from "$lib/stores/card-state.svelte";
-	import { parseCardIdsFromUrl } from "$lib/utils/url-sync";
+	import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
 
 	// Option settings
 	let numberOfCommons = $state(10);
@@ -54,6 +55,33 @@
 		for (const id of newExcludedIds) {
 			excludedCardIds.add(id);
 		}
+	});
+
+	/**
+	 * Sync pin/exclude state to URL parameters
+	 *
+	 * We use replaceState rather than pushState to avoid polluting browser
+	 * history with every state change (users don't want back button to undo
+	 * each individual pin/exclude operation).
+	 *
+	 * We use untrack() for reading $page.url to avoid circular dependency
+	 * with the URL → State sync effect (otherwise, updating URL would trigger
+	 * URL → State sync, which would trigger State → URL sync, creating an
+	 * infinite loop).
+	 */
+	$effect(() => {
+		// Track state changes by accessing the Set properties
+		// Note: We access the Sets to establish reactive dependencies
+		const _ = pinnedCardIds.size;
+		const __ = excludedCardIds.size;
+
+		// Use untrack to read $page.url without creating a reactive dependency
+		const url = buildUrlWithCardState(
+			untrack(() => $page.url),
+			pinnedCardIds,
+			excludedCardIds,
+		);
+		goto(url, { replaceState: true, noScroll: true, keepFocus: true });
 	});
 
 	function cardsToQuery(cards: CommonCard[]): string {
