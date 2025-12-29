@@ -242,3 +242,118 @@ describe("URL → State sync (integration)", () => {
 		expect(excludedCardIds.size).toBe(0);
 	});
 });
+
+describe("State → URL sync (integration)", () => {
+	beforeEach(() => {
+		// Clear state before each test
+		pinnedCardIds.clear();
+		excludedCardIds.clear();
+	});
+
+	it("should build URL with current pinned card IDs when state changes", () => {
+		// Set up initial state
+		pinnedCardIds.add(1);
+		pinnedCardIds.add(5);
+
+		const currentUrl = new URL("http://example.com");
+		const result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+
+		expect(result.searchParams.getAll("pin")).toContain("1");
+		expect(result.searchParams.getAll("pin")).toContain("5");
+		expect(result.searchParams.getAll("pin")).toHaveLength(2);
+	});
+
+	it("should build URL with current excluded card IDs when state changes", () => {
+		// Set up initial state
+		excludedCardIds.add(7);
+		excludedCardIds.add(9);
+
+		const currentUrl = new URL("http://example.com");
+		const result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+
+		expect(result.searchParams.getAll("exclude")).toContain("7");
+		expect(result.searchParams.getAll("exclude")).toContain("9");
+		expect(result.searchParams.getAll("exclude")).toHaveLength(2);
+	});
+
+	it("should build URL with both pinned and excluded card IDs", () => {
+		// Set up initial state
+		pinnedCardIds.add(1);
+		pinnedCardIds.add(5);
+		excludedCardIds.add(7);
+
+		const currentUrl = new URL("http://example.com");
+		const result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+
+		expect(result.searchParams.getAll("pin")).toContain("1");
+		expect(result.searchParams.getAll("pin")).toContain("5");
+		expect(result.searchParams.getAll("exclude")).toContain("7");
+	});
+
+	it("should remove pin/exclude parameters when state is empty", () => {
+		// Start with URL that has parameters
+		const currentUrl = new URL("http://example.com?pin=1&exclude=7");
+
+		// State is empty (cleared in beforeEach)
+		const result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+
+		expect(result.searchParams.has("pin")).toBe(false);
+		expect(result.searchParams.has("exclude")).toBe(false);
+	});
+
+	it("should update URL when new card is pinned", () => {
+		// Initial state: card 1 is already pinned
+		pinnedCardIds.add(1);
+
+		// Create URL with current state
+		const currentUrl = new URL("http://example.com");
+		let result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
+
+		// Add new pinned card
+		pinnedCardIds.add(5);
+
+		// Update URL with new state
+		result = buildUrlWithCardState(result, pinnedCardIds, excludedCardIds);
+
+		expect(result.searchParams.getAll("pin")).toContain("1");
+		expect(result.searchParams.getAll("pin")).toContain("5");
+		expect(result.searchParams.getAll("pin")).toHaveLength(2);
+	});
+
+	it("should update URL when pinned card is removed", () => {
+		// Initial state: cards 1 and 5 are pinned
+		pinnedCardIds.add(1);
+		pinnedCardIds.add(5);
+
+		// Create URL with current state
+		const currentUrl = new URL("http://example.com");
+		let result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+		expect(result.searchParams.getAll("pin")).toHaveLength(2);
+
+		// Remove one pinned card
+		pinnedCardIds.delete(5);
+
+		// Update URL with new state
+		result = buildUrlWithCardState(result, pinnedCardIds, excludedCardIds);
+
+		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
+		expect(result.searchParams.getAll("pin")).not.toContain("5");
+	});
+
+	it("should preserve existing non-pin/exclude parameters when state changes", () => {
+		// Start with URL that has other parameters
+		const currentUrl = new URL("http://example.com?card=10&card=11&foo=bar");
+
+		// Add pin state
+		pinnedCardIds.add(1);
+
+		const result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+
+		// Should preserve existing parameters
+		expect(result.searchParams.getAll("card")).toEqual(["10", "11"]);
+		expect(result.searchParams.get("foo")).toBe("bar");
+		// Should add pin parameter
+		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
+	});
+});
