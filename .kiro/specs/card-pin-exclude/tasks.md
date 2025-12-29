@@ -177,7 +177,7 @@
   - `{#each selectedCommons as card}` 内で `<CardWithActions {card} />` を使用
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7_
 
-- [ ] 6.2* Full Flow E2Eテストを作成
+- [x] 6.2* Full Flow E2Eテストを作成
   - ピン → ランダマイズ → 結果確認（ピンカードが必ず含まれる）
   - 除外 → ランダマイズ → 結果確認（除外カードが含まれない）
   - URL共有 → 状態復元（別タブで同じ状態が復元される）
