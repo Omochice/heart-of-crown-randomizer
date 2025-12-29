@@ -172,7 +172,7 @@
 
 ## 6. +page.svelteへの統合
 
-- [ ] 6.1 CardWithActionsをページに統合
+- [x] 6.1 CardWithActionsをページに統合
   - 既存のカード表示を `CardWithActions` コンポーネントに置き換え
   - `{#each selectedCommons as card}` 内で `<CardWithActions {card} />` を使用
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7_
