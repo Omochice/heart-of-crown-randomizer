@@ -8,7 +8,7 @@ import {
 	pinnedCardIds,
 	excludedCardIds,
 } from "./card-state.svelte";
-import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+import type { CommonCard, DuplicateCard } from "@heart-of-crown-randomizer/card/type";
 
 // Test helper: create mock CommonCard
 function createMockCard(id: number): CommonCard {
@@ -18,9 +18,11 @@ function createMockCard(id: number): CommonCard {
 		cost: 3,
 		type: "common",
 		edition: 0,
-		category: "test",
-		action: "",
-	};
+		hasChild: false,
+		mainType: ["action"],
+		link: 0,
+		effect: "test effect",
+	} satisfies DuplicateCard;
 }
 
 describe("CardState", () => {

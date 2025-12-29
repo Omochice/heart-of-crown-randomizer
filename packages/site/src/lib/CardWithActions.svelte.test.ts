@@ -93,11 +93,11 @@ describe("CardWithActions.svelte Component", () => {
 		expect(cardWithActionsContent).toContain("focus:ring");
 	});
 
-	it("should display card name and category", () => {
+	it("should display card name and cost", () => {
 		const cardWithActionsContent = readFileSync(join(__dirname, "CardWithActions.svelte"), "utf-8");
 
-		// Should render card.name and card.category
+		// Should render card.name and card.cost
 		expect(cardWithActionsContent).toContain("{card.name}");
-		expect(cardWithActionsContent).toContain("{card.category}");
+		expect(cardWithActionsContent).toContain("{card.cost}");
 	});
 });

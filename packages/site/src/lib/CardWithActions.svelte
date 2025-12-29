@@ -32,7 +32,7 @@
 		<h3 class:line-through={isExcluded}>
 			{card.name}
 		</h3>
-		<p class="text-sm text-gray-600">{card.category}</p>
+		<p class="text-sm text-gray-600">コスト: {card.cost}</p>
 	</div>
 
 	<!-- Action buttons -->
