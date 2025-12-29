@@ -91,7 +91,7 @@
   - `focus:ring-*` でフォーカスインジケーター表示
   - _Requirements: 6.1, 6.2_
 
-- [ ] 3.6* CardWithActionsコンポーネントテストを作成
+- [x] 3.6* CardWithActionsコンポーネントテストを作成
   - ピンボタンクリック → `togglePin()` 呼び出しテスト
   - 除外ボタンクリック → `toggleExclude()` 呼び出しテスト
   - 視覚的フィードバックのスタイルテスト（ピン状態、除外状態）
