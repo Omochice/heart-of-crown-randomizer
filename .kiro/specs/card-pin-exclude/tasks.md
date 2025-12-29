@@ -107,7 +107,7 @@
   - "why not"コメント: NaN除外理由（エラーではなく無視）
   - _Requirements: 5.2_
 
-- [ ] 4.2 URL構築ヘルパー関数を実装
+- [x] 4.2 URL構築ヘルパー関数を実装
   - `buildUrlWithCardState(baseUrl, pinnedIds, excludedIds)` 関数を `+page.svelte` に追加
   - 既存パラメータ削除（`delete("pin")`, `delete("exclude")`）
   - ループで `append("pin", id)`, `append("exclude", id)`
