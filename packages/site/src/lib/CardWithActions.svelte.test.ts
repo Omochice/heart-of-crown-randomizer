@@ -11,7 +11,10 @@ const mockCard: CommonCard = {
 	cost: 3,
 	type: "common",
 	link: 0,
-	category: "攻撃",
+	mainType: ["attack"],
+	effect: "",
+	hasChild: false,
+	edition: 0,
 };
 
 describe("CardWithActions Component Tests", () => {

@@ -22,7 +22,10 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 		cost: 3,
 		type: "common",
 		link: 0,
-		category: "攻撃",
+		mainType: ["attack"],
+		effect: "",
+		hasChild: false,
+		edition: 0,
 	};
 
 	beforeEach(() => {
