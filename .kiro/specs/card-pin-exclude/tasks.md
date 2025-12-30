@@ -240,7 +240,7 @@
   - 実装コード（`card-state.svelte.ts`）は正しいが、設計文書が誤解を招く
   - _Review: @gemini-code-assist[bot] (MEDIUM priority)_
 
-- [ ] 8.4 class:ディレクティブへのリファクタリング
+- [x] 8.4 class:ディレクティブへのリファクタリング
   - `packages/site/src/lib/CardWithActions.svelte` の条件付きクラスを修正
   - 文字列補完からSvelte `class:` ディレクティブへ変更
   - 対象: メインdiv (L26-29)、ピンボタン (L43-46)、除外ボタン (L55-58)
