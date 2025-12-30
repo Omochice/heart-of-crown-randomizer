@@ -233,7 +233,7 @@
   - DRY原則違反の修正、保守性とテスト性の向上
   - _Review: @gemini-code-assist[bot] (HIGH priority)_
 
-- [ ] 8.3 design.mdのSvelte 5パターン修正
+- [x] 8.3 design.mdのSvelte 5パターン修正
   - `.kiro/specs/card-pin-exclude/design.md` L299-302のコメントと実装例を修正
   - 誤: "Svelte 5 runesはSet.add()/delete()で反応しないため再代入が必要"
   - 正: "Svelte 5 runesはSet.add()/delete()を自動追跡するため再代入不要"

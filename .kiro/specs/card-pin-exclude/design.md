@@ -296,10 +296,9 @@ export function togglePin(cardId: number): void {
     pinnedCardIds.add(cardId);
     excludedCardIds.delete(cardId); // Cannot be both pinned and excluded
   }
-  // We reassign rather than mutating in-place because Svelte 5 runes
-  // only detect reactivity on assignment, not on Set.add()/delete()
-  pinnedCardIds = new Set(pinnedCardIds);
-  excludedCardIds = new Set(excludedCardIds);
+  // NOTE: Svelte 5 runes automatically track Set.add()/delete() mutations
+  // when the Set is wrapped in a $state() object, so no reassignment is needed.
+  // See actual implementation in card-state.svelte.ts for the correct pattern.
 }
 
 /**
@@ -316,10 +315,9 @@ export function toggleExclude(cardId: number): void {
     excludedCardIds.add(cardId);
     pinnedCardIds.delete(cardId); // Cannot be both excluded and pinned
   }
-  // We reassign rather than mutating in-place because Svelte 5 runes
-  // only detect reactivity on assignment, not on Set.add()/delete()
-  pinnedCardIds = new Set(pinnedCardIds);
-  excludedCardIds = new Set(excludedCardIds);
+  // NOTE: Svelte 5 runes automatically track Set.add()/delete() mutations
+  // when the Set is wrapped in a $state() object, so no reassignment is needed.
+  // See actual implementation in card-state.svelte.ts for the correct pattern.
 }
 
 /**
