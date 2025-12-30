@@ -218,3 +218,31 @@
 - Requirement 7 (既存機能の移行): タスク1.1
 
 全7要件がタスクにマッピングされています。
+
+## 8. PRレビューフィードバック対応
+
+- [x] 8.1 (P) 重複ファイルの削除
+  - `packages/site/packages/site/src/lib/CardWithActions.svelte` を削除
+  - 不正な入れ子パスのファイル（ビルドエラーまたはインポート問題の原因）
+  - 所有者からの「must change」コメント（冗長なHTMLコメント）も同時に解決
+  - _Review: @coderabbitai, @Omochice_
+
+- [ ] 8.2 (P) selectWithConstraints関数の重複削除
+  - `packages/site/src/routes/+page.svelte` 内のローカル定義を削除 (L98-117)
+  - `$lib/utils/select-with-constraints.ts` からインポートして使用
+  - DRY原則違反の修正、保守性とテスト性の向上
+  - _Review: @gemini-code-assist[bot] (HIGH priority)_
+
+- [ ] 8.3 design.mdのSvelte 5パターン修正
+  - `.kiro/specs/card-pin-exclude/design.md` L299-302のコメントと実装例を修正
+  - 誤: "Svelte 5 runesはSet.add()/delete()で反応しないため再代入が必要"
+  - 正: "Svelte 5 runesはSet.add()/delete()を自動追跡するため再代入不要"
+  - 実装コード（`card-state.svelte.ts`）は正しいが、設計文書が誤解を招く
+  - _Review: @gemini-code-assist[bot] (MEDIUM priority)_
+
+- [ ] 8.4 class:ディレクティブへのリファクタリング
+  - `packages/site/src/lib/CardWithActions.svelte` の条件付きクラスを修正
+  - 文字列補完からSvelte `class:` ディレクティブへ変更
+  - 対象: メインdiv (L26-29)、ピンボタン (L43-46)、除外ボタン (L55-58)
+  - 可読性向上とSvelteベストプラクティス準拠
+  - _Review: @gemini-code-assist[bot] (MEDIUM priority)_
