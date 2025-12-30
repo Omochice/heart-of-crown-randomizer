@@ -18,7 +18,6 @@ const state = $state({
 	excludedCardIds: new Set<number>(),
 });
 
-// Export readonly access to the Sets
 export const pinnedCardIds = state.pinnedCardIds;
 export const excludedCardIds = state.excludedCardIds;
 

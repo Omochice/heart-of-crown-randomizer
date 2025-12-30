@@ -21,7 +21,6 @@
 	}
 </script>
 
-<!-- Visual feedback based on state -->
 <div
 	class="border rounded p-4"
 	class:bg-blue-100={isPinned}
@@ -29,7 +28,6 @@
 	class:bg-gray-100={isExcluded}
 	class:opacity-60={isExcluded}
 >
-	<!-- Card content -->
 	<div class="card-content">
 		<h3 class:line-through={isExcluded}>
 			{card.name}
@@ -37,9 +35,7 @@
 		<p class="text-sm text-gray-600">コスト: {card.cost}</p>
 	</div>
 
-	<!-- Action buttons -->
 	<div class="flex gap-2 mt-2">
-		<!-- Pin button -->
 		<button
 			type="button"
 			onclick={handleTogglePin}
@@ -53,7 +49,6 @@
 			{isPinned ? "📌 ピン中" : "📌 ピン"}
 		</button>
 
-		<!-- Exclude button -->
 		<button
 			type="button"
 			onclick={handleToggleExclude}

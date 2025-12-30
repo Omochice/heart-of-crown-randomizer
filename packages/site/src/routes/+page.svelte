@@ -12,13 +12,11 @@
 	import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
 	import { selectWithConstraints } from "$lib/utils/select-with-constraints";
 
-	// Option settings
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
 	let shareUrl = $state("");
 	let errorMessage = $state("");
 
-	// Reactively sync selectedCommons with URL parameters
 	// This allows browser back/forward to update the displayed cards
 	$effect(() => {
 		const commonIds = $page.url.searchParams.getAll("card");
@@ -33,7 +31,6 @@
 		}
 	});
 
-	// Update share URL when selectedCommons changes
 	$effect(() => {
 		updateShareUrl();
 	});
@@ -73,12 +70,9 @@
 	 * infinite loop).
 	 */
 	$effect(() => {
-		// Track state changes by accessing the Set properties
-		// Note: We access the Sets to establish reactive dependencies
 		const _ = pinnedCardIds.size;
 		const __ = excludedCardIds.size;
 
-		// Use untrack to read $page.url without creating a reactive dependency
 		const url = buildUrlWithCardState(
 			untrack(() => $page.url),
 			pinnedCardIds,
@@ -96,29 +90,24 @@
 			.toString();
 	}
 
-	// Function to randomly select common cards
 	function drawRandomCards() {
 		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 		const pinnedCards = getPinnedCards(allCommons);
 
-		// Validate pin constraints
 		const pinValidation = validatePinConstraints(pinnedCards.length, numberOfCommons);
 		if (!pinValidation.ok) {
 			errorMessage = pinValidation.message;
 			return;
 		}
 
-		// Calculate available cards after exclusion
 		const availableCards = allCommons.filter((card) => !excludedCardIds.has(card.id));
 
-		// Validate exclude constraints
 		const excludeValidation = validateExcludeConstraints(availableCards.length, numberOfCommons);
 		if (!excludeValidation.ok) {
 			errorMessage = excludeValidation.message;
 			return;
 		}
 
-		// All validations passed, proceed with randomization
 		const randomCards = selectWithConstraints(
 			allCommons,
 			pinnedCards,
@@ -132,7 +121,6 @@
 		updateShareUrl();
 	}
 
-	// Update share URL
 	function updateShareUrl() {
 		if (selectedCommons.length > 0) {
 			shareUrl = `${window.location.origin}?${cardsToQuery(selectedCommons)}`;
@@ -153,11 +141,9 @@
 			});
 	}
 
-	// Constants for swipe behavior
 	const VERTICAL_CANCEL_PX = 100; // Vertical movement threshold to cancel horizontal swipe
 	const TRANSITION_MS = 200; // Animation duration in milliseconds
 
-	// Helper function to animate card back to original position
 	function animateCardReset(element: HTMLElement) {
 		element.style.transition = `transform ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`;
 		element.style.transform = "";
@@ -170,7 +156,6 @@
 		}, TRANSITION_MS);
 	}
 
-	// Helper function to reset swipe state and clean up event listeners
 	function resetSwipeState() {
 		document.removeEventListener("mousemove", handleSwipeMove);
 		document.removeEventListener("mouseup", handleSwipeEnd);
@@ -179,7 +164,6 @@
 		swipeState.cardIndex = -1;
 	}
 
-	// State management for swipe functionality
 	const swipeState = $state({
 		startX: 0,
 		startY: 0,
@@ -190,7 +174,6 @@
 		threshold: 100, // Threshold for swipe deletion (pixels)
 	});
 
-	// Handle swipe start
 	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
 		const clientX = isTouchEvent(event) ? event.touches[0].clientX : event.clientX;
 		const clientY = isTouchEvent(event) ? event.touches[0].clientY : event.clientY;
@@ -212,7 +195,6 @@
 		}
 	}
 
-	// Handle swipe move with improved responsiveness
 	function handleSwipeMove(event: TouchEvent | MouseEvent) {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 
@@ -245,7 +227,6 @@
 		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
 	}
 
-	// Handle swipe end
 	function handleSwipeEnd() {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 
@@ -267,7 +248,6 @@
 		resetSwipeState();
 	}
 
-	// Handle swipe cancel
 	function handleSwipeCancel() {
 		const el = swipeState.cardElement;
 		if (el) {
@@ -278,19 +258,16 @@
 		resetSwipeState();
 	}
 
-	// Remove selected common card from display list
 	function removeSelectedCommon(index: number) {
 		selectedCommons = selectedCommons.filter((_, i) => i !== index);
 		updateUrlAndShare();
 	}
 
-	// Update URL and share URL
 	function updateUrlAndShare() {
 		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
 
-	// Draw missing common cards
 	function drawMissingCommons() {
 		if (selectedCommons.length >= numberOfCommons) return;
 
@@ -307,7 +284,6 @@
 		updateUrlAndShare();
 	}
 
-	// Derived values for card filtering and sorting
 	const basicCards = $derived(
 		selectedCommons.filter((c) => c.edition === 0).sort((a, b) => a.cost - b.cost),
 	);
