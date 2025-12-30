@@ -18,10 +18,8 @@ describe("+page.svelte CardWithActions integration preparation", () => {
 	const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 
 	it("should have cards available for CardWithActions to render", () => {
-		// Arrange: Simulate selected commons (what +page.svelte will have)
 		const selectedCommons: CommonCard[] = [allCommons[0], allCommons[1], allCommons[2]];
 
-		// Assert: Cards should be available for rendering
 		expect(selectedCommons.length).toBe(3);
 		expect(selectedCommons[0]).toBeDefined();
 		expect(selectedCommons[0].id).toBeDefined();
@@ -29,27 +27,22 @@ describe("+page.svelte CardWithActions integration preparation", () => {
 	});
 
 	it("should be able to separate cards by edition (for grid rendering)", () => {
-		// Arrange: Mix of Basic and Far Eastern Border cards
 		const selectedCommons: CommonCard[] = [
 			Basic.commons[0], // Basic edition
 			FarEasternBorder.commons[0], // Far Eastern Border edition
 			Basic.commons[1], // Basic edition
 		];
 
-		// Act: Separate by edition (this is what +page.svelte does)
 		const basicCards = selectedCommons.filter((c) => c.edition === Edition.BASIC);
 		const farEasternCards = selectedCommons.filter((c) => c.edition === Edition.FAR_EASTERN_BORDER);
 
-		// Assert: Cards should be correctly separated
 		expect(basicCards.length).toBe(2);
 		expect(farEasternCards.length).toBe(1);
 	});
 
 	it("should provide card data needed for CardWithActions component", () => {
-		// Arrange: A card to be rendered with CardWithActions
 		const card = allCommons[0];
 
-		// Assert: Card has all necessary properties for CardWithActions
 		expect(card.id).toBeDefined();
 		expect(card.name).toBeDefined();
 		expect(card.cost).toBeDefined();
@@ -68,13 +61,11 @@ describe("+page.svelte CardWithActions integration preparation", () => {
 	 * - Buttons have correct aria-pressed attributes
 	 */
 	it("should prepare card data structure compatible with CardWithActions props", () => {
-		// Arrange: Simulate the props that CardWithActions expects
 		const card = allCommons[0];
 		const cardWithActionsProps = {
 			card: card,
 		};
 
-		// Assert: Props structure matches CardWithActions requirements
 		expect(cardWithActionsProps.card).toBeDefined();
 		expect(cardWithActionsProps.card.id).toBe(card.id);
 		expect(cardWithActionsProps.card.name).toBe(card.name);
