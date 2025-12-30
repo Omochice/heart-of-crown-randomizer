@@ -23,9 +23,11 @@
 
 <!-- Visual feedback based on state -->
 <div
-	class="border rounded p-4 {isPinned ? 'bg-blue-100 border-blue-500' : ''} {isExcluded
-		? 'bg-gray-100 opacity-60'
-		: ''}"
+	class="border rounded p-4"
+	class:bg-blue-100={isPinned}
+	class:border-blue-500={isPinned}
+	class:bg-gray-100={isExcluded}
+	class:opacity-60={isExcluded}
 >
 	<!-- Card content -->
 	<div class="card-content">
@@ -41,9 +43,11 @@
 		<button
 			type="button"
 			onclick={handleTogglePin}
-			class="px-3 py-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 {isPinned
-				? 'bg-blue-500 text-white'
-				: 'bg-gray-200 text-gray-700'}"
+			class="px-3 py-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+			class:bg-blue-500={isPinned}
+			class:text-white={isPinned}
+			class:bg-gray-200={!isPinned}
+			class:text-gray-700={!isPinned}
 			aria-pressed={isPinned}
 		>
 			{isPinned ? "📌 ピン中" : "📌 ピン"}
@@ -53,9 +57,11 @@
 		<button
 			type="button"
 			onclick={handleToggleExclude}
-			class="px-3 py-1 rounded focus:outline-none focus:ring-2 focus:ring-red-500 {isExcluded
-				? 'bg-red-500 text-white'
-				: 'bg-gray-200 text-gray-700'}"
+			class="px-3 py-1 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
+			class:bg-red-500={isExcluded}
+			class:text-white={isExcluded}
+			class:bg-gray-200={!isExcluded}
+			class:text-gray-700={!isExcluded}
 			aria-pressed={isExcluded}
 		>
 			{isExcluded ? "🚫 除外中" : "🚫 除外"}
