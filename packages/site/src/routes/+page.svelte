@@ -10,6 +10,7 @@
 	import { pinnedCardIds, excludedCardIds, getPinnedCards } from "$lib/stores/card-state.svelte";
 	import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
 	import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
+	import { selectWithConstraints } from "$lib/utils/select-with-constraints";
 
 	// Option settings
 	let numberOfCommons = $state(10);
@@ -93,27 +94,6 @@
 				return query;
 			}, new URLSearchParams())
 			.toString();
-	}
-
-	/**
-	 * Select cards with constraints
-	 *
-	 * We pass pinnedCards directly to constraints.require rather than
-	 * filtering them out first, because select() guarantees they appear
-	 * in the result and this avoids double-filtering.
-	 */
-	function selectWithConstraints(
-		allCards: CommonCard[],
-		pinnedCards: CommonCard[],
-		excludedIds: Set<number>,
-		count: number,
-	): CommonCard[] {
-		return select(allCards, count, {
-			constraints: {
-				require: pinnedCards,
-				exclude: [(card) => excludedIds.has(card.id)],
-			},
-		});
 	}
 
 	// Function to randomly select common cards

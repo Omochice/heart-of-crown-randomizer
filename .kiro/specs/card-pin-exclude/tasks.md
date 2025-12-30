@@ -227,7 +227,7 @@
   - 所有者からの「must change」コメント（冗長なHTMLコメント）も同時に解決
   - _Review: @coderabbitai, @Omochice_
 
-- [ ] 8.2 (P) selectWithConstraints関数の重複削除
+- [x] 8.2 (P) selectWithConstraints関数の重複削除
   - `packages/site/src/routes/+page.svelte` 内のローカル定義を削除 (L98-117)
   - `$lib/utils/select-with-constraints.ts` からインポートして使用
   - DRY原則違反の修正、保守性とテスト性の向上
