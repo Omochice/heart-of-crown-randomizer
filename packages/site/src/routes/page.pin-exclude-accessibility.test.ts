@@ -64,7 +64,9 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 		});
 
 		it("should maintain tab order: pin button before exclude button", () => {
-			const { container } = render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			const { container } = render(CardWithActions, {
+				props: { card: mockCard, ...mockSwipeHandlers },
+			});
 
 			const buttons = container.querySelectorAll("button");
 			expect(buttons.length).toBe(2);
@@ -91,7 +93,9 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 
 	describe("Keyboard Operation - Native Button Semantics", () => {
 		it("should use native button element for pin button (guarantees Enter/Space support)", () => {
-			const { container } = render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			const { container } = render(CardWithActions, {
+				props: { card: mockCard, ...mockSwipeHandlers },
+			});
 
 			const pinButton = screen.getByRole("button", { name: /ピン/ });
 
@@ -100,7 +104,9 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 		});
 
 		it("should use native button element for exclude button (guarantees Enter/Space support)", () => {
-			const { container } = render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			const { container } = render(CardWithActions, {
+				props: { card: mockCard, ...mockSwipeHandlers },
+			});
 
 			const excludeButton = screen.getByRole("button", { name: /除外/ });
 

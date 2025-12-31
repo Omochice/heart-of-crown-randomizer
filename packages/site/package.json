@@ -14,7 +14,8 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"preview": "vite preview",
 		"storybook": "storybook dev -p 6006",
-		"test": "vitest run"
+		"test": "vitest run",
+		"test:browser": "vitest run --config=vitest.browser.config.ts"
 	},
 	"dependencies": {
 		"@heart-of-crown-randomizer/card": "workspace:*",

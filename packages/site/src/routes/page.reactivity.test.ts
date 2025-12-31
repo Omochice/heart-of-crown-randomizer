@@ -25,7 +25,6 @@ vi.mock("$app/navigation", () => ({
 
 describe("+page.svelte URL change reactivity", () => {
 	beforeEach(() => {
-		// Mock localStorage
 		const localStorageMock = {
 			getItem: vi.fn(() => null),
 			setItem: vi.fn(),
@@ -36,7 +35,6 @@ describe("+page.svelte URL change reactivity", () => {
 	});
 
 	it("BUG: should update cards when URL changes (browser back/forward)", async () => {
-		// Initial render with cards 17, 18, 19 from URL parameters
 		render(Page);
 		await new Promise((resolve) => setTimeout(resolve, 100));
 

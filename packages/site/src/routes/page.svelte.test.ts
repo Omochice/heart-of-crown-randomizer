@@ -25,7 +25,6 @@ vi.mock("$app/navigation", () => ({
 
 describe("+page.svelte URL parameter card restoration", () => {
 	beforeEach(() => {
-		// Mock localStorage
 		const localStorageMock = {
 			getItem: vi.fn(() => null),
 			setItem: vi.fn(),
@@ -37,21 +36,16 @@ describe("+page.svelte URL parameter card restoration", () => {
 
 	it("should restore Basic cards from URL parameters", async () => {
 		render(Page);
-
-		// Wait for effect to run
 		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		// Note: This test needs URL parameter mocking which requires different approach
 		// with svelteTesting() plugin
-		// For now, we just verify initial rendering works without errors
 		const cards = screen.queryAllByRole("article");
 		expect(cards.length).toBeGreaterThanOrEqual(0);
 	});
 
 	it("BUG: should restore Far Eastern Border cards from URL parameters", async () => {
 		render(Page);
-
-		// Wait for effect to run
 		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		// Note: This test needs URL parameter mocking which requires different approach
@@ -67,13 +61,11 @@ describe("+page.svelte URL parameter card restoration", () => {
 
 	it("should restore mixed Basic and Far Eastern Border cards", async () => {
 		render(Page);
-
 		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		// Note: This test needs URL parameter mocking which requires different approach
 		// with svelteTesting() plugin
 		const cards = screen.queryAllByRole("article");
-
 		expect(cards.length).toBeGreaterThanOrEqual(0);
 
 		// After fix, change to:
