@@ -1,19 +1,22 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/svelte";
-import Page from "./+page.svelte";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { render } from "@testing-library/svelte";
+import type { Page } from "@sveltejs/kit";
+import type { Writable } from "svelte/store";
+import PageComponent from "./+page.svelte";
 
 vi.mock("$app/stores", async () => {
 	const { writable } = await import("svelte/store");
+	const pageStore = writable({
+		url: new URL("http://localhost"),
+		params: {},
+		route: { id: "/" },
+		status: 200,
+		error: null,
+		data: {},
+		form: null,
+	});
 	return {
-		page: writable({
-			url: new URL("http://localhost"),
-			params: {},
-			route: { id: "/" },
-			status: 200,
-			error: null,
-			data: {},
-			form: null,
-		}),
+		page: pageStore,
 		navigating: writable(null),
 		updated: writable(false),
 	};
@@ -34,41 +37,85 @@ describe("+page.svelte URL parameter card restoration", () => {
 		vi.stubGlobal("localStorage", localStorageMock);
 	});
 
-	it("should restore Basic cards from URL parameters", async () => {
-		render(Page);
-		await new Promise((resolve) => setTimeout(resolve, 100));
-
-		// Note: This test needs URL parameter mocking which requires different approach
-		// with svelteTesting() plugin
-		const cards = screen.queryAllByRole("article");
-		expect(cards.length).toBeGreaterThanOrEqual(0);
+	afterEach(() => {
+		vi.clearAllMocks();
 	});
 
-	it("BUG: should restore Far Eastern Border cards from URL parameters", async () => {
-		render(Page);
-		await new Promise((resolve) => setTimeout(resolve, 100));
+	it("should restore Basic cards from URL parameters", async () => {
+		const stores = await import("$app/stores");
+		const pageStore = stores.page as unknown as Writable<Page>;
 
-		// Note: This test needs URL parameter mocking which requires different approach
-		// with svelteTesting() plugin
-		const cards = screen.queryAllByRole("article");
+		const testUrl = new URL("http://localhost?card=17&card=18&card=19");
+		pageStore.set({
+			url: testUrl as Page["url"],
+			params: {},
+			route: { id: "/" },
+			status: 200,
+			error: null,
+			data: {},
+			state: {},
+			form: null,
+		});
 
-		// Currently this will be 0 (bug), should be 3 after fix
-		expect(cards.length).toBeGreaterThanOrEqual(0);
+		await new Promise((resolve) => setTimeout(resolve, 0));
 
-		// After fix, change to:
-		// expect(cards.length).toBe(3);
+		const { container } = render(PageComponent);
+
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
+		const cards = container.querySelectorAll(".card-swipeable");
+		expect(cards.length).toBe(3);
+	});
+
+	it("should restore Far Eastern Border cards from URL parameters", async () => {
+		const stores = await import("$app/stores");
+		const pageStore = stores.page as unknown as Writable<Page>;
+
+		const testUrl = new URL("http://localhost?card=49&card=50&card=51");
+		pageStore.set({
+			url: testUrl as Page["url"],
+			params: {},
+			route: { id: "/" },
+			status: 200,
+			error: null,
+			data: {},
+			state: {},
+			form: null,
+		});
+
+		await new Promise((resolve) => setTimeout(resolve, 0));
+
+		const { container } = render(PageComponent);
+
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
+		const cards = container.querySelectorAll(".card-swipeable");
+		expect(cards.length).toBe(3);
 	});
 
 	it("should restore mixed Basic and Far Eastern Border cards", async () => {
-		render(Page);
-		await new Promise((resolve) => setTimeout(resolve, 100));
+		const stores = await import("$app/stores");
+		const pageStore = stores.page as unknown as Writable<Page>;
 
-		// Note: This test needs URL parameter mocking which requires different approach
-		// with svelteTesting() plugin
-		const cards = screen.queryAllByRole("article");
-		expect(cards.length).toBeGreaterThanOrEqual(0);
+		const testUrl = new URL("http://localhost?card=17&card=18&card=49&card=50");
+		pageStore.set({
+			url: testUrl as Page["url"],
+			params: {},
+			route: { id: "/" },
+			status: 200,
+			error: null,
+			data: {},
+			state: {},
+			form: null,
+		});
 
-		// After fix, change to:
-		// expect(cards.length).toBe(4);
+		await new Promise((resolve) => setTimeout(resolve, 0));
+
+		const { container } = render(PageComponent);
+
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
+		const cards = container.querySelectorAll(".card-swipeable");
+		expect(cards.length).toBe(4);
 	});
 });
