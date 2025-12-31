@@ -41,7 +41,28 @@ Conduct interactive quality review of technical design documents to ensure they 
 - Clear API boundaries and data structures
 - Input validation and error handling coverage
 
+### 5. Code Quality Standards (from CLAUDE.md)
+- **Comment Quality**: Code examples use "why not" comments explaining alternative approaches not taken, rather than "what/how" descriptions
+- **Function Decomposition**: No "step 1, step 2" patterns; each function follows single responsibility principle
+- **Test Clarity**: Test code comments describe "what is being tested"
+- **Standards Compliance**: Adherence to project-wide standards in `.claude/CLAUDE.md`
+
+**Evidence Checks**:
+- Search design.md code examples for anti-patterns: `// Step`, `// First`, `// Then`, sequential procedure comments
+- Identify functions with multiple responsibilities (validation + transformation + persistence in one function)
+- Verify comments explain "why not alternative X" rather than "what this does"
+- Reference: `.claude/CLAUDE.md` § Code Documentation Guidelines
+
 ## Review Process
+
+### Step 0: Load Standards (Execute First)
+1. Read `.claude/CLAUDE.md` for project-wide code standards
+2. Read entire `.kiro/steering/` directory for architecture context
+3. Extract checklist items from CLAUDE.md:
+   - Code Documentation Guidelines → Comment quality verification
+   - Language Requirements → Consistency checks
+   - Commit Requirements → (not applicable to design review)
+4. Keep standards in mind throughout analysis
 
 ### Step 1: Analyze
 Analyze design against all review criteria, focusing on critical issues impacting integration, maintainability, complexity, and requirements fulfillment.
@@ -107,4 +128,6 @@ Engage on designer's perspective, alternatives, clarifications, and necessary ch
 - **Critical Issues ≤ 3** and each includes Impact and Recommendation
 - **Traceability**: Each issue references requirement ID/section
 - **Evidence**: Each issue cites design doc location
+- **Code Quality**: Verified comments use "why not", no step-based functions
+- **Standards Loaded**: Confirmed `.claude/CLAUDE.md` was reviewed before analysis
 - **Decision**: GO/NO-GO with clear rationale and next steps

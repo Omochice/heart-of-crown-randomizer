@@ -32,8 +32,14 @@ Execute implementation tasks for feature **$1** using Test-Driven Development.
 
 ### Step 2: Select Tasks
 
+**Validate task existence**:
+- Read tasks.md and extract all task numbers (e.g., "1.1", "2.3", "3.1")
+- If `$2` provided: Verify each specified task number exists in tasks.md
+- **If any task doesn't exist**: Report missing task(s) and STOP execution
+  - Example error: "Task 1.2 does not exist. Available tasks in section 1: 1.1. Available tasks in section 2: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6"
+
 **Determine which tasks to execute**:
-- If `$2` provided: Execute specified task numbers (e.g., "1.1" or "1,2,3")
+- If `$2` provided and all tasks exist: Execute specified task numbers (e.g., "1.1" or "1,2,3")
 - Otherwise: Execute all pending tasks (unchecked `- [ ]` in tasks.md)
 
 ### Step 3: Execute with TDD
@@ -93,6 +99,11 @@ Provide brief summary in the language specified in spec.json:
 **Tasks Not Approved or Missing Spec Files**:
 - **Stop Execution**: All spec files must exist and tasks must be approved
 - **Suggested Action**: "Complete previous phases: `/kiro:spec-requirements`, `/kiro:spec-design`, `/kiro:spec-tasks`"
+
+**Task Does Not Exist**:
+- **Stop Execution**: Specified task number not found in tasks.md
+- **Action**: Report available tasks by section and ask user to clarify
+- **Example**: "Task 1.2 does not exist. Available: Section 1 has tasks 1.1 only. Section 2 has tasks 2.1-2.6."
 
 **Test Failures**:
 - **Stop Implementation**: Fix failing tests before continuing

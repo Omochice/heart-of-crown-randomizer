@@ -8,10 +8,11 @@ import { defineConfig } from "vite";
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit(), svelteTesting()],
 	test: {
-		// Default: jsdom for fast unit tests
-		environment: "jsdom",
-		clearMocks: true,
-		include: ["src/**/*.{test,spec}.{js,ts}"],
-		exclude: ["**/node_modules/**", "**/dist/**", "**/*.browser.{test,spec}.{js,ts}"],
+		browser: {
+			enabled: true,
+			name: "chromium",
+			headless: true,
+		},
+		include: ["src/**/*.browser.{test,spec}.{js,ts}"],
 	},
 });

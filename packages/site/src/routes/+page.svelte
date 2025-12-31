@@ -4,34 +4,19 @@
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
-	import Card from "$lib/Card.svelte";
+	import { untrack } from "svelte";
+	import CardWithActions from "$lib/CardWithActions.svelte";
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
+	import { pinnedCardIds, excludedCardIds, getPinnedCards } from "$lib/stores/card-state.svelte";
+	import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
+	import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
+	import { selectWithConstraints } from "$lib/utils/select-with-constraints";
 
-	// Option settings
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
 	let shareUrl = $state("");
+	let errorMessage = $state("");
 
-	// Excluded card lists
-	let excludedCommons: CommonCard[] = $state([]);
-
-	// Load excluded cards from localStorage once on mount
-	$effect(() => {
-		// SSR safety: localStorage is only available in browser
-		if (typeof localStorage !== "undefined") {
-			try {
-				const storedExcludedCommons = localStorage.getItem("excludedCommons");
-				if (storedExcludedCommons) {
-					excludedCommons = JSON.parse(storedExcludedCommons);
-				}
-			} catch (error) {
-				// Ignore malformed localStorage data
-				console.warn("Failed to parse excludedCommons from localStorage:", error);
-			}
-		}
-	});
-
-	// Reactively sync selectedCommons with URL parameters
 	// This allows browser back/forward to update the displayed cards
 	$effect(() => {
 		const commonIds = $page.url.searchParams.getAll("card");
@@ -46,9 +31,54 @@
 		}
 	});
 
-	// Update share URL when selectedCommons changes
 	$effect(() => {
 		updateShareUrl();
+	});
+
+	/**
+	 * Sync pin/exclude state from URL parameters
+	 *
+	 * We parse on every URL change rather than caching because users
+	 * might manually edit the URL or use browser back/forward buttons.
+	 */
+	$effect(() => {
+		const newPinnedIds = parseCardIdsFromUrl($page.url, "pin");
+		const newExcludedIds = parseCardIdsFromUrl($page.url, "exclude");
+
+		// Clear and repopulate to ensure sync with URL
+		pinnedCardIds.clear();
+		excludedCardIds.clear();
+
+		for (const id of newPinnedIds) {
+			pinnedCardIds.add(id);
+		}
+		for (const id of newExcludedIds) {
+			excludedCardIds.add(id);
+		}
+	});
+
+	/**
+	 * Sync pin/exclude state to URL parameters
+	 *
+	 * We use replaceState rather than pushState to avoid polluting browser
+	 * history with every state change (users don't want back button to undo
+	 * each individual pin/exclude operation).
+	 *
+	 * We use untrack() for reading $page.url to avoid circular dependency
+	 * with the URL → State sync effect (otherwise, updating URL would trigger
+	 * URL → State sync, which would trigger State → URL sync, creating an
+	 * infinite loop).
+	 */
+	$effect(() => {
+		const _ = pinnedCardIds.size;
+		const __ = excludedCardIds.size;
+
+		const url = buildUrlWithCardState(
+			untrack(() => $page.url),
+			pinnedCardIds,
+			excludedCardIds,
+		);
+		goto(url, { replaceState: true, noScroll: true, keepFocus: true });
 	});
 
 	function cardsToQuery(cards: CommonCard[]): string {
@@ -60,19 +90,37 @@
 			.toString();
 	}
 
-	// Function to randomly select common cards
 	function drawRandomCards() {
 		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
-		const excludedIds = excludedCommons.map((c) => c.id);
-		const availableCommons = filterByIds(allCommons, excludedIds);
-		const randomCards = select(availableCommons, numberOfCommons);
+		const pinnedCards = getPinnedCards(allCommons);
+
+		const pinValidation = validatePinConstraints(pinnedCards.length, numberOfCommons);
+		if (!pinValidation.ok) {
+			errorMessage = pinValidation.message;
+			return;
+		}
+
+		const availableCards = allCommons.filter((card) => !excludedCardIds.has(card.id));
+
+		const excludeValidation = validateExcludeConstraints(availableCards.length, numberOfCommons);
+		if (!excludeValidation.ok) {
+			errorMessage = excludeValidation.message;
+			return;
+		}
+
+		const randomCards = selectWithConstraints(
+			allCommons,
+			pinnedCards,
+			excludedCardIds,
+			numberOfCommons,
+		);
 		selectedCommons = randomCards.sort((a, b) => a.id - b.id);
+		errorMessage = ""; // Clear error message on success
 
 		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
 
-	// Update share URL
 	function updateShareUrl() {
 		if (selectedCommons.length > 0) {
 			shareUrl = `${window.location.origin}?${cardsToQuery(selectedCommons)}`;
@@ -93,11 +141,9 @@
 			});
 	}
 
-	// Constants for swipe behavior
 	const VERTICAL_CANCEL_PX = 100; // Vertical movement threshold to cancel horizontal swipe
 	const TRANSITION_MS = 200; // Animation duration in milliseconds
 
-	// Helper function to animate card back to original position
 	function animateCardReset(element: HTMLElement) {
 		element.style.transition = `transform ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`;
 		element.style.transform = "";
@@ -110,7 +156,6 @@
 		}, TRANSITION_MS);
 	}
 
-	// Helper function to reset swipe state and clean up event listeners
 	function resetSwipeState() {
 		document.removeEventListener("mousemove", handleSwipeMove);
 		document.removeEventListener("mouseup", handleSwipeEnd);
@@ -119,7 +164,6 @@
 		swipeState.cardIndex = -1;
 	}
 
-	// State management for swipe functionality
 	const swipeState = $state({
 		startX: 0,
 		startY: 0,
@@ -130,7 +174,6 @@
 		threshold: 100, // Threshold for swipe deletion (pixels)
 	});
 
-	// Handle swipe start
 	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
 		const clientX = isTouchEvent(event) ? event.touches[0].clientX : event.clientX;
 		const clientY = isTouchEvent(event) ? event.touches[0].clientY : event.clientY;
@@ -152,7 +195,6 @@
 		}
 	}
 
-	// Handle swipe move with improved responsiveness
 	function handleSwipeMove(event: TouchEvent | MouseEvent) {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 
@@ -185,7 +227,6 @@
 		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
 	}
 
-	// Handle swipe end
 	function handleSwipeEnd() {
 		if (!swipeState.isDragging || !swipeState.cardElement) return;
 
@@ -207,7 +248,6 @@
 		resetSwipeState();
 	}
 
-	// Handle swipe cancel
 	function handleSwipeCancel() {
 		const el = swipeState.cardElement;
 		if (el) {
@@ -218,30 +258,21 @@
 		resetSwipeState();
 	}
 
-	// Remove common card from excluded list
-	function removeFromExcludedCommons(common: CommonCard) {
-		excludedCommons = excludedCommons.filter((c) => c.id !== common.id);
-		localStorage.setItem("excludedCommons", JSON.stringify(excludedCommons));
-	}
-
-	// Remove selected common card from display list
 	function removeSelectedCommon(index: number) {
 		selectedCommons = selectedCommons.filter((_, i) => i !== index);
 		updateUrlAndShare();
 	}
 
-	// Update URL and share URL
 	function updateUrlAndShare() {
 		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
 
-	// Draw missing common cards
 	function drawMissingCommons() {
 		if (selectedCommons.length >= numberOfCommons) return;
 
 		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
-		const excludedIds = [...excludedCommons, ...selectedCommons].map((c) => c.id);
+		const excludedIds = selectedCommons.map((c) => c.id);
 		const availableCommons = filterByIds(allCommons, excludedIds);
 
 		if (availableCommons.length === 0) return;
@@ -253,18 +284,16 @@
 		updateUrlAndShare();
 	}
 
-	function clearExcludedCommons() {
-		excludedCommons = [];
-		localStorage.removeItem("excludedCommons");
-	}
-
-	// Derived values for card filtering and sorting
 	const basicCards = $derived(
 		selectedCommons.filter((c) => c.edition === 0).sort((a, b) => a.cost - b.cost),
 	);
 	const farEasternCards = $derived(
 		selectedCommons.filter((c) => c.edition === 1).sort((a, b) => a.cost - b.cost),
 	);
+
+	function getOriginalIndex(cardId: number): number {
+		return selectedCommons.findIndex((c) => c.id === cardId);
+	}
 </script>
 
 <div class="container mx-auto p-4 max-w-3xl">
@@ -315,37 +344,13 @@
 				一般カードを追加 ({numberOfCommons - selectedCommons.length})
 			</button>
 		</div>
-	</div>
 
-	<!-- 除外カードリスト -->
-	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-		<div class="flex justify-between items-center mb-4">
-			<h2 class="text-xl font-semibold">除外カードリスト</h2>
-			<button
-				onclick={clearExcludedCommons}
-				class="bg-green-500 hover:bg-green-600 text-white text-sm py-1 px-3 rounded focus:outline-none focus:shadow-outline transition duration-300"
+		{#if errorMessage}
+			<div
+				class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
+				role="alert"
 			>
-				リストをクリア
-			</button>
-		</div>
-
-		{#if excludedCommons.length === 0}
-			<p class="text-gray-500 italic">除外カードはありません</p>
-		{:else}
-			<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-				{#each excludedCommons as common (common.id)}
-					<div class="border border-green-300 rounded p-2 flex items-center justify-between">
-						<span class="text-green-600 text-sm">
-							{common.name}
-						</span>
-						<button
-							onclick={() => removeFromExcludedCommons(common)}
-							class="text-gray-500 hover:text-red-500"
-						>
-							✕
-						</button>
-					</div>
-				{/each}
+				<p>{errorMessage}</p>
 			</div>
 		{/if}
 	</div>
@@ -358,11 +363,9 @@
 				<div class="mb-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each basicCards as common (common.id)}
-							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
-							<Card
-								{common}
-								{originalIndex}
-								onRemove={removeSelectedCommon}
+							<CardWithActions
+								card={common}
+								originalIndex={getOriginalIndex(common.id)}
 								onSwipeStart={handleSwipeStart}
 								onSwipeMove={handleSwipeMove}
 								onSwipeEnd={handleSwipeEnd}
@@ -377,11 +380,9 @@
 				<div class="mb-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each farEasternCards as common (common.id)}
-							{@const originalIndex = selectedCommons.findIndex((c) => c.id === common.id)}
-							<Card
-								{common}
-								{originalIndex}
-								onRemove={removeSelectedCommon}
+							<CardWithActions
+								card={common}
+								originalIndex={getOriginalIndex(common.id)}
 								onSwipeStart={handleSwipeStart}
 								onSwipeMove={handleSwipeMove}
 								onSwipeEnd={handleSwipeEnd}

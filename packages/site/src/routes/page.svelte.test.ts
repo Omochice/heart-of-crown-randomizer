@@ -1,11 +1,33 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/svelte";
-import { readable } from "svelte/store";
-import Page from "./+page.svelte";
+import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { render, waitFor } from "@testing-library/svelte";
+import type { Page } from "@sveltejs/kit";
+import type { Writable } from "svelte/store";
+import PageComponent from "./+page.svelte";
+
+vi.mock("$app/stores", async () => {
+	const { writable } = await import("svelte/store");
+	const pageStore = writable({
+		url: new URL("http://localhost"),
+		params: {},
+		route: { id: "/" },
+		status: 200,
+		error: null,
+		data: {},
+		form: null,
+	});
+	return {
+		page: pageStore,
+		navigating: writable(null),
+		updated: writable(false),
+	};
+});
+
+vi.mock("$app/navigation", () => ({
+	goto: vi.fn(),
+}));
 
 describe("+page.svelte URL parameter card restoration", () => {
 	beforeEach(() => {
-		// Mock localStorage
 		const localStorageMock = {
 			getItem: vi.fn(() => null),
 			setItem: vi.fn(),
@@ -15,75 +37,85 @@ describe("+page.svelte URL parameter card restoration", () => {
 		vi.stubGlobal("localStorage", localStorageMock);
 	});
 
-	it("should restore Basic cards from URL parameters", async () => {
-		// Mock page store with Basic card IDs (1, 2, 3)
-		const mockPage = readable({
-			url: new URL("http://localhost?card=1&card=2&card=3"),
-		});
-
-		vi.mock("$app/state", () => ({
-			page: mockPage,
-		}));
-
-		render(Page);
-
-		// Wait for effect to run
-		await new Promise((resolve) => setTimeout(resolve, 100));
-
-		// Basic cards should be displayed
-		// Note: You'll need to check actual card names from your data
-		// This is a placeholder - adjust based on actual card data
-		const cards = screen.queryAllByRole("article"); // or whatever role your cards have
-		expect(cards.length).toBeGreaterThan(0);
+	afterEach(() => {
+		vi.clearAllMocks();
 	});
 
-	it("BUG: should restore Far Eastern Border cards from URL parameters", async () => {
-		// Mock page store with Far Eastern Border card IDs (49, 50, 51)
-		const mockPage = readable({
-			url: new URL("http://localhost?card=49&card=50&card=51"),
+	it("should restore Basic cards from URL parameters", async () => {
+		const stores = await import("$app/stores");
+		const pageStore = stores.page as unknown as Writable<Page>;
+
+		const testUrl = new URL("http://localhost?card=17&card=18&card=19");
+		pageStore.set({
+			url: testUrl as Page["url"],
+			params: {},
+			route: { id: "/" },
+			status: 200,
+			error: null,
+			data: {},
+			state: {},
+			form: null,
 		});
 
-		vi.mock("$app/state", () => ({
-			page: mockPage,
-		}));
+		await new Promise((resolve) => setTimeout(resolve, 0));
 
-		render(Page);
+		const { container } = render(PageComponent);
 
-		// Wait for effect to run
-		await new Promise((resolve) => setTimeout(resolve, 100));
+		await new Promise((resolve) => setTimeout(resolve, 500));
 
-		// 🐛 BUG: Far Eastern Border cards are NOT restored
-		// This test should FAIL until the bug is fixed
-		const cards = screen.queryAllByRole("article");
+		const cards = container.querySelectorAll(".card-swipeable");
+		expect(cards.length).toBe(3);
+	});
 
-		// Currently this will be 0 (bug), should be 3 after fix
-		expect(cards.length).toBe(0); // Documents the bug
+	it("should restore Far Eastern Border cards from URL parameters", async () => {
+		const stores = await import("$app/stores");
+		const pageStore = stores.page as unknown as Writable<Page>;
 
-		// After fix, change to:
-		// expect(cards.length).toBe(3);
+		const testUrl = new URL("http://localhost?card=49&card=50&card=51");
+		pageStore.set({
+			url: testUrl as Page["url"],
+			params: {},
+			route: { id: "/" },
+			status: 200,
+			error: null,
+			data: {},
+			state: {},
+			form: null,
+		});
+
+		await new Promise((resolve) => setTimeout(resolve, 0));
+
+		const { container } = render(PageComponent);
+
+		await waitFor(() => {
+			const cards = container.querySelectorAll(".card-swipeable");
+			expect(cards.length).toBe(3);
+		});
 	});
 
 	it("should restore mixed Basic and Far Eastern Border cards", async () => {
-		// Mock page store with mixed card IDs
-		const mockPage = readable({
-			url: new URL("http://localhost?card=1&card=2&card=49&card=50"),
+		const stores = await import("$app/stores");
+		const pageStore = stores.page as unknown as Writable<Page>;
+
+		const testUrl = new URL("http://localhost?card=17&card=18&card=49&card=50");
+		pageStore.set({
+			url: testUrl as Page["url"],
+			params: {},
+			route: { id: "/" },
+			status: 200,
+			error: null,
+			data: {},
+			state: {},
+			form: null,
 		});
 
-		vi.mock("$app/state", () => ({
-			page: mockPage,
-		}));
+		await new Promise((resolve) => setTimeout(resolve, 0));
 
-		render(Page);
+		const { container } = render(PageComponent);
 
-		await new Promise((resolve) => setTimeout(resolve, 100));
-
-		const cards = screen.queryAllByRole("article");
-
-		// 🐛 BUG: Only 2 cards (Basic) will be shown, not 4
-		// This documents the bug
-		expect(cards.length).toBe(2); // Current buggy behavior
-
-		// After fix, change to:
-		// expect(cards.length).toBe(4);
+		await waitFor(() => {
+			const cards = container.querySelectorAll(".card-swipeable");
+			expect(cards.length).toBe(4);
+		});
 	});
 });
