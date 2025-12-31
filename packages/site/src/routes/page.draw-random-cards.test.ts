@@ -3,17 +3,6 @@ import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
 import { getPinnedCards } from "$lib/stores/card-state.svelte";
 
-/**
- * RED PHASE: Tests for drawRandomCards() logic with pin/exclude validation
- *
- * These tests verify the core logic that drawRandomCards() should implement:
- * 1. Validate pin constraints before randomization
- * 2. Validate exclude constraints before randomization
- * 3. Use selectWithConstraints() when constraints are valid
- *
- * Following TDD methodology: Write tests first, then implement.
- */
-
 describe("drawRandomCards() validation logic", () => {
 	const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 	const targetCount = 10;

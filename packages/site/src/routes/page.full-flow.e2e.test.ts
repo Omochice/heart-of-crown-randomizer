@@ -1,17 +1,3 @@
-/**
- * Full Flow E2E tests for pin/exclude functionality
- *
- * Tests validate the complete user journey through integration testing:
- * 1. Pin → Randomize → Result confirmation (pinned cards are always included)
- * 2. Exclude → Randomize → Result confirmation (excluded cards are never included)
- * 3. URL sharing → State restoration (state is restored from URL parameters)
- *
- * These are integration tests that verify the full flow works correctly by testing
- * the interaction between state management, validation, and randomization logic.
- *
- * Requirements: 1.2, 1.3, 1.5, 4.1, 4.2, 4.3, 5.2
- */
-
 import { describe, it, expect, beforeEach } from "vitest";
 import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";

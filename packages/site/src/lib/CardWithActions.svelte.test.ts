@@ -4,7 +4,6 @@ import CardWithActions from "./CardWithActions.svelte";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import * as cardState from "$lib/stores/card-state.svelte";
 
-// Mock card data
 const mockCard: CommonCard = {
 	id: 1,
 	name: "Test Card",
@@ -17,7 +16,6 @@ const mockCard: CommonCard = {
 	edition: 0,
 };
 
-// Mock swipe handlers
 const mockSwipeHandlers = {
 	onSwipeStart: vi.fn(),
 	onSwipeMove: vi.fn(),
@@ -32,7 +30,6 @@ describe("CardWithActions Component Tests", () => {
 		cardState.pinnedCardIds.clear();
 		cardState.excludedCardIds.clear();
 
-		// Clear all mocks
 		vi.clearAllMocks();
 	});
 

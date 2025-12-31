@@ -1,13 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
 
-/**
- * RED PHASE: Tests for pin/exclude validation functions
- *
- * These tests will fail initially because the implementations throw errors.
- * Following TDD methodology: Write tests first, then implement.
- */
-
 describe("validatePinConstraints", () => {
 	it("should return ok when pinned count is less than target count", () => {
 		const result = validatePinConstraints(3, 10);

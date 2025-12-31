@@ -3,17 +3,6 @@ import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { Edition } from "@heart-of-crown-randomizer/card/type";
 
-/**
- * Test suite for CardWithActions component integration in +page.svelte
- *
- * Requirement 2.1: When randomize results are displayed, the Site MUST show
- * pin and exclude buttons for each card.
- *
- * This test verifies the logic that will be used when CardWithActions is
- * integrated into +page.svelte.
- *
- * RED PHASE: These tests will pass once Card component is replaced with CardWithActions
- */
 describe("+page.svelte CardWithActions integration preparation", () => {
 	const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 
