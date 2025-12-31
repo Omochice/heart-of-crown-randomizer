@@ -23,7 +23,7 @@
     "@vitest/browser": "^4.0.16",
     "@vitest/browser-playwright": "^4.0.16",
     "npm-run-all2": "catalog:",
-    "playwright": "^1.57.0",
+    "playwright": "1.57.0",
     "rimraf": "catalog:",
     "sort-package-json": "catalog:",
     "turbo": "2.7.2",
