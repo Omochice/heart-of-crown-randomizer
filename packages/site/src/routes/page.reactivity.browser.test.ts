@@ -10,29 +10,25 @@ describe("+page.svelte URL change reactivity (Browser Mode)", () => {
 
 	it("should render page component without errors", async () => {
 		render(Page);
-		await new Promise((resolve) => setTimeout(resolve, 100));
 
-		const heading = screen.getByRole("heading", { name: /ハートオブクラウンランダマイザー/i });
+		const heading = await screen.findByRole("heading", { name: /ハートオブクラウンランダマイザー/i });
 		expect(heading).toBeDefined();
 	});
 
 	it("should show randomize button", async () => {
 		render(Page);
-		await new Promise((resolve) => setTimeout(resolve, 100));
 
-		const button = screen.getByRole("button", { name: /一般カードを引く/i });
+		const button = await screen.findByRole("button", { name: /一般カードを引く/i });
 		expect(button).toBeDefined();
 	});
 
 	it("should be able to click randomize button", async () => {
 		render(Page);
-		await new Promise((resolve) => setTimeout(resolve, 100));
 
-		const button = screen.getByRole("button", { name: /一般カードを引く/i });
+		const button = await screen.findByRole("button", { name: /一般カードを引く/i });
 		await userEvent.click(button);
-		await new Promise((resolve) => setTimeout(resolve, 200));
 
-		const cards = screen.queryAllByRole("article");
+		const cards = await screen.findAllByRole("article");
 		expect(cards.length).toBeGreaterThan(0);
 	});
 });

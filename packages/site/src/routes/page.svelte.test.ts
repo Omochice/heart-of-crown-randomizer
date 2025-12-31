@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
-import { render } from "@testing-library/svelte";
+import { render, waitFor } from "@testing-library/svelte";
 import type { Page } from "@sveltejs/kit";
 import type { Writable } from "svelte/store";
 import PageComponent from "./+page.svelte";
@@ -87,10 +87,10 @@ describe("+page.svelte URL parameter card restoration", () => {
 
 		const { container } = render(PageComponent);
 
-		await new Promise((resolve) => setTimeout(resolve, 500));
-
-		const cards = container.querySelectorAll(".card-swipeable");
-		expect(cards.length).toBe(3);
+		await waitFor(() => {
+			const cards = container.querySelectorAll(".card-swipeable");
+			expect(cards.length).toBe(3);
+		});
 	});
 
 	it("should restore mixed Basic and Far Eastern Border cards", async () => {
@@ -113,9 +113,9 @@ describe("+page.svelte URL parameter card restoration", () => {
 
 		const { container } = render(PageComponent);
 
-		await new Promise((resolve) => setTimeout(resolve, 500));
-
-		const cards = container.querySelectorAll(".card-swipeable");
-		expect(cards.length).toBe(4);
+		await waitFor(() => {
+			const cards = container.querySelectorAll(".card-swipeable");
+			expect(cards.length).toBe(4);
+		});
 	});
 });
