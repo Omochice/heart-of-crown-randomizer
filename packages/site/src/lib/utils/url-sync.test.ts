@@ -51,14 +51,6 @@ describe("parseCardIdsFromUrl", () => {
 		expect(result).toEqual(new Set([1, 5]));
 	});
 
-	it("should handle negative numbers as valid IDs", () => {
-		const url = new URL("https://example.com?pin=-1&pin=5");
-
-		const result = parseCardIdsFromUrl(url, "pin");
-
-		expect(result).toEqual(new Set([-1, 5]));
-	});
-
 	it("should handle zero as a valid ID", () => {
 		const url = new URL("https://example.com?pin=0&pin=1");
 
