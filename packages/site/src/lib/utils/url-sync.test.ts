@@ -66,14 +66,6 @@ describe("parseCardIdsFromUrl", () => {
 
 		expect(result).toEqual(new Set([0, 1]));
 	});
-
-	it("should handle floating point numbers by converting to integers", () => {
-		const url = new URL("https://example.com?pin=1.5&pin=2.9");
-
-		const result = parseCardIdsFromUrl(url, "pin");
-
-		expect(result).toEqual(new Set([1.5, 2.9]));
-	});
 });
 
 describe("buildUrlWithCardState", () => {

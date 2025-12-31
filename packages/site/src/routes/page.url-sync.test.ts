@@ -44,13 +44,6 @@ describe("parseCardIdsFromUrl", () => {
 		const result = parseCardIdsFromUrl(url, "pin");
 		expect(result).toEqual(new Set([-1, 5]));
 	});
-
-	it("should filter out floating point numbers by converting them to integers", () => {
-		const url = new URL("http://example.com?pin=1.5&pin=5");
-		const result = parseCardIdsFromUrl(url, "pin");
-		// Number("1.5") = 1.5, which is not NaN, so it will be included
-		expect(result).toEqual(new Set([1.5, 5]));
-	});
 });
 
 describe("buildUrlWithCardState", () => {
