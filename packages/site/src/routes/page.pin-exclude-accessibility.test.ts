@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/svelte";
 import CardWithActions from "$lib/CardWithActions.svelte";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
@@ -28,6 +28,14 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 		edition: 0,
 	};
 
+	const mockSwipeHandlers = {
+		onSwipeStart: vi.fn(),
+		onSwipeMove: vi.fn(),
+		onSwipeEnd: vi.fn(),
+		onSwipeCancel: vi.fn(),
+		originalIndex: 0,
+	};
+
 	beforeEach(() => {
 		// Reset card state before each test
 		CardState.pinnedCardIds.clear();
@@ -36,7 +44,7 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 
 	describe("Keyboard Operation - Tab Navigation", () => {
 		it("should allow focusing pin button with Tab key", () => {
-			render(CardWithActions, { props: { card: mockCard } });
+			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const pinButton = screen.getByRole("button", { name: /ピン/ });
 
@@ -46,7 +54,7 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 		});
 
 		it("should allow focusing exclude button with Tab key", () => {
-			render(CardWithActions, { props: { card: mockCard } });
+			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const excludeButton = screen.getByRole("button", { name: /除外/ });
 
@@ -56,7 +64,7 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 		});
 
 		it("should maintain tab order: pin button before exclude button", () => {
-			const { container } = render(CardWithActions, { props: { card: mockCard } });
+			const { container } = render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const buttons = container.querySelectorAll("button");
 			expect(buttons.length).toBe(2);
@@ -70,7 +78,7 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 		});
 
 		it("should not have tabindex attribute (relying on native button behavior)", () => {
-			render(CardWithActions, { props: { card: mockCard } });
+			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const pinButton = screen.getByRole("button", { name: /ピン/ });
 			const excludeButton = screen.getByRole("button", { name: /除外/ });
@@ -83,7 +91,7 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 
 	describe("Keyboard Operation - Native Button Semantics", () => {
 		it("should use native button element for pin button (guarantees Enter/Space support)", () => {
-			const { container } = render(CardWithActions, { props: { card: mockCard } });
+			const { container } = render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const pinButton = screen.getByRole("button", { name: /ピン/ });
 
@@ -92,7 +100,7 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 		});
 
 		it("should use native button element for exclude button (guarantees Enter/Space support)", () => {
-			const { container } = render(CardWithActions, { props: { card: mockCard } });
+			const { container } = render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const excludeButton = screen.getByRole("button", { name: /除外/ });
 
@@ -101,7 +109,7 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 		});
 
 		it("should have type=button on pin button to prevent form submission", () => {
-			render(CardWithActions, { props: { card: mockCard } });
+			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const pinButton = screen.getByRole("button", { name: /ピン/ });
 
@@ -110,7 +118,7 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 		});
 
 		it("should have type=button on exclude button to prevent form submission", () => {
-			render(CardWithActions, { props: { card: mockCard } });
+			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const excludeButton = screen.getByRole("button", { name: /除外/ });
 
@@ -121,7 +129,7 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 
 	describe("Keyboard Operation - Focus Retention After Click", () => {
 		it("should retain focus on pin button after click activation", async () => {
-			render(CardWithActions, { props: { card: mockCard } });
+			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const pinButton = screen.getByRole("button", { name: /ピン/ });
 			pinButton.focus();
@@ -135,7 +143,7 @@ describe("CardWithActions Keyboard Accessibility (Task 7.1 - Requirement 6.1)", 
 		});
 
 		it("should retain focus on exclude button after click activation", async () => {
-			render(CardWithActions, { props: { card: mockCard } });
+			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const excludeButton = screen.getByRole("button", { name: /除外/ });
 			excludeButton.focus();

@@ -290,6 +290,10 @@
 	const farEasternCards = $derived(
 		selectedCommons.filter((c) => c.edition === 1).sort((a, b) => a.cost - b.cost),
 	);
+
+	function getOriginalIndex(cardId: number): number {
+		return selectedCommons.findIndex((c) => c.id === cardId);
+	}
 </script>
 
 <div class="container mx-auto p-4 max-w-3xl">
@@ -359,7 +363,14 @@
 				<div class="mb-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each basicCards as common (common.id)}
-							<CardWithActions card={common} />
+							<CardWithActions
+								card={common}
+								originalIndex={getOriginalIndex(common.id)}
+								onSwipeStart={handleSwipeStart}
+								onSwipeMove={handleSwipeMove}
+								onSwipeEnd={handleSwipeEnd}
+								onSwipeCancel={handleSwipeCancel}
+							/>
 						{/each}
 					</div>
 				</div>
@@ -369,7 +380,14 @@
 				<div class="mb-6">
 					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
 						{#each farEasternCards as common (common.id)}
-							<CardWithActions card={common} />
+							<CardWithActions
+								card={common}
+								originalIndex={getOriginalIndex(common.id)}
+								onSwipeStart={handleSwipeStart}
+								onSwipeMove={handleSwipeMove}
+								onSwipeEnd={handleSwipeEnd}
+								onSwipeCancel={handleSwipeCancel}
+							/>
 						{/each}
 					</div>
 				</div>
