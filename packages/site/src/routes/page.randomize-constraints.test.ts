@@ -12,7 +12,7 @@
 import { describe, it, expect } from "vitest";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
-import { select } from "@heart-of-crown-randomizer/randomizer";
+import { selectWithConstraints } from "$lib/utils/select-with-constraints";
 
 // Mock card data for testing
 const mockCards: CommonCard[] = [
@@ -150,25 +150,6 @@ describe("Exclude Constraint Validation", () => {
 });
 
 describe("Constraint Application in selectWithConstraints", () => {
-	/**
-	 * Helper function to select cards with constraints
-	 *
-	 * This matches the implementation in +page.svelte
-	 */
-	function selectWithConstraints(
-		allCards: CommonCard[],
-		pinnedCards: CommonCard[],
-		excludedIds: Set<number>,
-		count: number,
-	): CommonCard[] {
-		return select(allCards, count, {
-			constraints: {
-				require: pinnedCards,
-				exclude: [(card) => excludedIds.has(card.id)],
-			},
-		});
-	}
-
 	it("should include all pinned cards in result", () => {
 		// Pin cards with id 1 and 2, select 3 cards
 		const pinnedCards = mockCards.filter((c) => c.id === 1 || c.id === 2);
