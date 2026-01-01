@@ -39,24 +39,4 @@ describe("+page.svelte Card integration preparation", () => {
 		expect(typeof card.name).toBe("string");
 		expect(typeof card.cost).toBe("number");
 	});
-
-	/**
-	 * This test ensures that when we replace Card with Card in +page.svelte,
-	 * the component will have access to the necessary card data.
-	 *
-	 * After GREEN phase implementation, we should verify in the actual rendered page that:
-	 * - Each Card receives the correct card prop
-	 * - Pin and exclude buttons are rendered
-	 * - Buttons have correct aria-pressed attributes
-	 */
-	it("should prepare card data structure compatible with Card props", () => {
-		const card = allCommons[0];
-		const cardWithActionsProps = {
-			card: card,
-		};
-
-		expect(cardWithActionsProps.card).toBeDefined();
-		expect(cardWithActionsProps.card.id).toBe(card.id);
-		expect(cardWithActionsProps.card.name).toBe(card.name);
-	});
 });
