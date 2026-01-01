@@ -83,8 +83,8 @@ Heart of Crownランダマイザーにおいて、ユーザーが特定のカー
    - 約200行のlocalStorageコード削除 + 新規実装
 
 1. モジュール間の依存関係:
-   - Card.svelte → stores/card-state.svelte.ts の依存
-   - +page.svelte → stores/card-state.svelte.ts, select() の依存
+   - Card.svelte → stores/card-state.svelte.ts への依存
+   - +page.svelte → stores/card-state.svelte.ts, select() への依存
    - 依存関係の変更時に複数ファイルの修正が必要
 
 1. 学習コスト:
