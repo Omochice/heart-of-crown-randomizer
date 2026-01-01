@@ -26,14 +26,14 @@ Heart of Crownランダマイザーにおいて、ユーザーが特定のカー
 
 実装アプローチ:
 
-1. CardState (`.svelte.ts`): ピン/除外状態の集中管理、URL同期ロジックの分離
-1. CardWithActions (`.svelte`): アクションボタン付きカード表示、視覚的フィードバック
+1. card-state.svelte.ts (`stores/`): ピン/除外状態の集中管理（関数群: `getCardState`, `togglePin`, `toggleExclude`, `getPinnedCards`, `getExcludedCards`）
+1. Card.svelte: アクションボタン付きカード表示、視覚的フィードバック
 1. +page.svelte: URL同期、ランダマイズオーケストレーション、制約適用
 
 ドメイン境界:
 
-- UI Layer (`site`): CardWithActions.svelte（アクションボタン付きカード表示）
-- State Layer (`site`): card-state.svelte.ts（ピン/除外状態管理）
+- UI Layer (`site`): Card.svelte（アクションボタン付きカード表示）
+- State Layer (`site`): stores/card-state.svelte.ts（ピン/除外状態管理、関数群としてエクスポート）
 - Logic Layer (`randomizer`): 既存`select()`関数を再利用（新規実装不要）
 
 状態管理:
@@ -54,16 +54,16 @@ Heart of Crownランダマイザーにおいて、ユーザーが特定のカー
 ### 採用した Pros
 
 1. 保守性向上: 単一責任原則（SRP）に準拠
-   - 各コンポーネントが単一の責任を持つ（CardState: 状態管理、CardWithActions: UI表示）
+   - 各モジュールが単一の責任を持つ（card-state.svelte.ts: 状態管理、Card.svelte: UI表示）
    - 変更が局所化され、影響範囲が明確
 
-1. テスト性向上: コンポーネント単位でテスト可能
-   - CardState: 純粋な状態ロジックとしてunit test
-   - CardWithActions: UI統合としてintegration test
+1. テスト性向上: モジュール単位でテスト可能
+   - card-state.svelte.ts: 純粋な状態ロジックとしてunit test
+   - Card.svelte: UI統合としてintegration test
    - +page.svelte: フルフローとしてE2E test
 
 1. 再利用性: 将来の拡張が容易
-   - CardStateは他の機能（例: お気に入り管理）からも参照可能
+   - card-state.svelte.tsの関数群は他の機能（例: お気に入り管理）からも参照可能
 
 1. プロジェクト方針準拠:
    - URL-based state sharing（設定の共有性を重視）
@@ -78,17 +78,17 @@ Heart of Crownランダマイザーにおいて、ユーザーが特定のカー
 ### 採用した Cons
 
 1. 初期実装コストが高い:
-   - 新規コンポーネント2つ（CardState, CardWithActions）を作成
+   - 新規モジュール2つ（stores/card-state.svelte.ts, Card.svelte）を作成
    - 既存コンポーネントの変更（+page.svelte）
    - 約200行のlocalStorageコード削除 + 新規実装
 
-1. コンポーネント間の依存関係:
-   - CardWithActions → CardState の依存
-   - +page.svelte → CardState, select() の依存
+1. モジュール間の依存関係:
+   - Card.svelte → stores/card-state.svelte.ts の依存
+   - +page.svelte → stores/card-state.svelte.ts, select() の依存
    - 依存関係の変更時に複数ファイルの修正が必要
 
 1. 学習コスト:
-   - Svelte 5 runesの`.svelte.ts`パターンに不慣れな開発者向け
+   - Svelte 5 runesの`.svelte.ts`パターン（stores/card-state.svelte.ts）に不慣れな開発者向け
    - URL同期の双方向バインディング（URL ↔ State）の理解が必要
 
 ## 他の検討案
