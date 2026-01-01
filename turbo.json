@@ -5,7 +5,11 @@
     "clean": {},
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "dependsOn": [
+        "@heart-of-crown-randomizer/card#build",
+        "@heart-of-crown-randomizer/randomizer#build"
+      ]
     },
     "check": {
       "dependsOn": [
