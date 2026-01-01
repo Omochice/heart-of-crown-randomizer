@@ -3,6 +3,10 @@
   "tasks": {
     "fmt": {},
     "clean": {},
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
     "check": {
       "dependsOn": [
         "@heart-of-crown-randomizer/card#build",
