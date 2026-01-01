@@ -11,7 +11,9 @@ describe("+page.svelte URL change reactivity (Browser Mode)", () => {
 	it("should render page component without errors", async () => {
 		render(Page);
 
-		const heading = await screen.findByRole("heading", { name: /ハートオブクラウンランダマイザー/i });
+		const heading = await screen.findByRole("heading", {
+			name: /ハートオブクラウンランダマイザー/i,
+		});
 		expect(heading).toBeDefined();
 	});
 

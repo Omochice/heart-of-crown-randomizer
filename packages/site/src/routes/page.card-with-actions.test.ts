@@ -3,10 +3,10 @@ import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { Edition } from "@heart-of-crown-randomizer/card/type";
 
-describe("+page.svelte CardWithActions integration preparation", () => {
+describe("+page.svelte Card integration preparation", () => {
 	const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 
-	it("should have cards available for CardWithActions to render", () => {
+	it("should have cards available for Card to render", () => {
 		const selectedCommons: CommonCard[] = [allCommons[0], allCommons[1], allCommons[2]];
 
 		expect(selectedCommons.length).toBe(3);
@@ -29,7 +29,7 @@ describe("+page.svelte CardWithActions integration preparation", () => {
 		expect(farEasternCards.length).toBe(1);
 	});
 
-	it("should provide card data needed for CardWithActions component", () => {
+	it("should provide card data needed for Card component", () => {
 		const card = allCommons[0];
 
 		expect(card.id).toBeDefined();
@@ -41,15 +41,15 @@ describe("+page.svelte CardWithActions integration preparation", () => {
 	});
 
 	/**
-	 * This test ensures that when we replace Card with CardWithActions in +page.svelte,
+	 * This test ensures that when we replace Card with Card in +page.svelte,
 	 * the component will have access to the necessary card data.
 	 *
 	 * After GREEN phase implementation, we should verify in the actual rendered page that:
-	 * - Each CardWithActions receives the correct card prop
+	 * - Each Card receives the correct card prop
 	 * - Pin and exclude buttons are rendered
 	 * - Buttons have correct aria-pressed attributes
 	 */
-	it("should prepare card data structure compatible with CardWithActions props", () => {
+	it("should prepare card data structure compatible with Card props", () => {
 		const card = allCommons[0];
 		const cardWithActionsProps = {
 			card: card,

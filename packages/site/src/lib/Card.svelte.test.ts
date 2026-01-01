@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/svelte";
-import CardWithActions from "./CardWithActions.svelte";
+import Card from "./Card.svelte";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import * as cardState from "$lib/stores/card-state.svelte";
 
@@ -24,7 +24,7 @@ const mockSwipeHandlers = {
 	originalIndex: 0,
 };
 
-describe("CardWithActions Component Tests", () => {
+describe("Card Component Tests", () => {
 	beforeEach(() => {
 		// Reset card state before each test by clearing the Sets
 		cardState.pinnedCardIds.clear();
@@ -37,7 +37,7 @@ describe("CardWithActions Component Tests", () => {
 		it("should call togglePin when pin button is clicked", async () => {
 			const togglePinSpy = vi.spyOn(cardState, "togglePin");
 
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const pinButton = screen.getByRole("button", { name: /ピン/ });
 			await fireEvent.click(pinButton);
@@ -47,7 +47,7 @@ describe("CardWithActions Component Tests", () => {
 		});
 
 		it("should toggle pin state when clicked multiple times", async () => {
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const pinButton = screen.getByRole("button", { name: /ピン/ });
 
@@ -68,7 +68,7 @@ describe("CardWithActions Component Tests", () => {
 		it("should call toggleExclude when exclude button is clicked", async () => {
 			const toggleExcludeSpy = vi.spyOn(cardState, "toggleExclude");
 
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const excludeButton = screen.getByRole("button", { name: /除外/ });
 			await fireEvent.click(excludeButton);
@@ -78,7 +78,7 @@ describe("CardWithActions Component Tests", () => {
 		});
 
 		it("should toggle exclude state when clicked multiple times", async () => {
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const excludeButton = screen.getByRole("button", { name: /除外/ });
 
@@ -100,7 +100,7 @@ describe("CardWithActions Component Tests", () => {
 			// Pin the card first
 			cardState.pinnedCardIds.add(mockCard.id);
 
-			const { container } = render(CardWithActions, {
+			const { container } = render(Card, {
 				props: { card: mockCard, ...mockSwipeHandlers },
 			});
 
@@ -117,7 +117,7 @@ describe("CardWithActions Component Tests", () => {
 		});
 
 		it("should display normal styles when card is not pinned", () => {
-			const { container } = render(CardWithActions, {
+			const { container } = render(Card, {
 				props: { card: mockCard, ...mockSwipeHandlers },
 			});
 
@@ -137,7 +137,7 @@ describe("CardWithActions Component Tests", () => {
 			// Exclude the card first
 			cardState.excludedCardIds.add(mockCard.id);
 
-			const { container } = render(CardWithActions, {
+			const { container } = render(Card, {
 				props: { card: mockCard, ...mockSwipeHandlers },
 			});
 
@@ -158,7 +158,7 @@ describe("CardWithActions Component Tests", () => {
 		});
 
 		it("should display normal styles when card is not excluded", () => {
-			const { container } = render(CardWithActions, {
+			const { container } = render(Card, {
 				props: { card: mockCard, ...mockSwipeHandlers },
 			});
 
@@ -179,7 +179,7 @@ describe("CardWithActions Component Tests", () => {
 
 	describe("Accessibility features", () => {
 		it("should have aria-pressed=false on pin button when not pinned", () => {
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const pinButton = screen.getByRole("button", { name: /ピン/ });
 			expect(pinButton.getAttribute("aria-pressed")).toBe("false");
@@ -188,14 +188,14 @@ describe("CardWithActions Component Tests", () => {
 		it("should have aria-pressed=true on pin button when pinned", () => {
 			cardState.pinnedCardIds.add(mockCard.id);
 
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const pinButton = screen.getByRole("button", { name: /ピン中/ });
 			expect(pinButton.getAttribute("aria-pressed")).toBe("true");
 		});
 
 		it("should have aria-pressed=false on exclude button when not excluded", () => {
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const excludeButton = screen.getByRole("button", { name: /除外/ });
 			expect(excludeButton.getAttribute("aria-pressed")).toBe("false");
@@ -204,14 +204,14 @@ describe("CardWithActions Component Tests", () => {
 		it("should have aria-pressed=true on exclude button when excluded", () => {
 			cardState.excludedCardIds.add(mockCard.id);
 
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const excludeButton = screen.getByRole("button", { name: /除外中/ });
 			expect(excludeButton.getAttribute("aria-pressed")).toBe("true");
 		});
 
 		it("should have focus ring classes on buttons", () => {
-			const { container } = render(CardWithActions, {
+			const { container } = render(Card, {
 				props: { card: mockCard, ...mockSwipeHandlers },
 			});
 
@@ -230,14 +230,14 @@ describe("CardWithActions Component Tests", () => {
 
 	describe("Card content display", () => {
 		it("should display card name", () => {
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const cardName = screen.getByText(mockCard.name);
 			expect(cardName).toBeTruthy();
 		});
 
 		it("should display card cost", () => {
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			const cardCost = screen.getByText(`コスト: ${mockCard.cost}`);
 			expect(cardCost).toBeTruthy();
@@ -250,7 +250,7 @@ describe("CardWithActions Component Tests", () => {
 			cardState.excludedCardIds.add(mockCard.id);
 			expect(cardState.getCardState(mockCard.id)).toBe("excluded");
 
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			// Click pin button
 			const pinButton = screen.getByRole("button", { name: /ピン/ });
@@ -266,7 +266,7 @@ describe("CardWithActions Component Tests", () => {
 			cardState.pinnedCardIds.add(mockCard.id);
 			expect(cardState.getCardState(mockCard.id)).toBe("pinned");
 
-			render(CardWithActions, { props: { card: mockCard, ...mockSwipeHandlers } });
+			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
 			// Click exclude button
 			const excludeButton = screen.getByRole("button", { name: /除外/ });
