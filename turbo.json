@@ -19,7 +19,7 @@
     },
     "test": {},
     "build": {
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", ".svelte-kit/**"]
     }
   }
 }
