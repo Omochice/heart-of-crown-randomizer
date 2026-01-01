@@ -11,6 +11,7 @@
     "build": "turbo run build",
     "check": "turbo run check",
     "clean": "turbo run clean",
+    "dev": "turbo run dev --filter=@heart-of-crown-randomizer/site",
     "fmt": "npm-run-all fmt:*",
     "fmt:package": "sort-package-json",
     "fmt:turbo": "turbo run fmt",

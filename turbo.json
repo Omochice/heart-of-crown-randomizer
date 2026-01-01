@@ -3,6 +3,14 @@
   "tasks": {
     "fmt": {},
     "clean": {},
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": [
+        "@heart-of-crown-randomizer/card#build",
+        "@heart-of-crown-randomizer/randomizer#build"
+      ]
+    },
     "check": {
       "dependsOn": [
         "@heart-of-crown-randomizer/card#build",
@@ -11,7 +19,7 @@
     },
     "test": {},
     "build": {
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", ".svelte-kit/**"]
     }
   }
 }
