@@ -3,6 +3,7 @@
   "packages": [
     "ghalint@1.5.4",
     "actionlint@1.7.10",
-    "pnpm@10.26.1"
+    "pnpm@10.26.1",
+    "typos@1.40.0"
   ]
 }
