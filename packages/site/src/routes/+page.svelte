@@ -361,17 +361,7 @@
 
 			<div class="mb-6">
 				<div class="grid grid-cols-1 gap-4">
-					{#each basicCards as common (common.id)}
-						<Card
-							card={common}
-							originalIndex={getOriginalIndex(common.id)}
-							onSwipeStart={handleSwipeStart}
-							onSwipeMove={handleSwipeMove}
-							onSwipeEnd={handleSwipeEnd}
-							onSwipeCancel={handleSwipeCancel}
-						/>
-					{/each}
-					{#each farEasternCards as common (common.id)}
+					{#each [...basicCards, ...farEasternCards] as common (common.id)}
 						<Card
 							card={common}
 							originalIndex={getOriginalIndex(common.id)}
