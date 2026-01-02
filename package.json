@@ -9,10 +9,12 @@
   "main": "index.js",
   "scripts": {
     "build": "turbo run build",
-    "check": "turbo run check",
+    "check": "npm-run-all2 check:*",
+    "check:turbo": "turbo run check",
+    "check:typo": "devbox run typos",
     "clean": "turbo run clean",
     "dev": "turbo run dev --filter=@heart-of-crown-randomizer/site",
-    "fmt": "npm-run-all fmt:*",
+    "fmt": "npm-run-all2 fmt:*",
     "fmt:package": "sort-package-json",
     "fmt:turbo": "turbo run fmt",
     "test": "turbo run test"
