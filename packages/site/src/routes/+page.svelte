@@ -359,39 +359,20 @@
 		<div class="bg-white rounded-lg shadow-md p-6 mb-6">
 			<h2 class="text-xl font-semibold mb-4">結果</h2>
 
-			{#if basicCards.length > 0}
-				<div class="mb-6">
-					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-						{#each basicCards as common (common.id)}
-							<Card
-								card={common}
-								originalIndex={getOriginalIndex(common.id)}
-								onSwipeStart={handleSwipeStart}
-								onSwipeMove={handleSwipeMove}
-								onSwipeEnd={handleSwipeEnd}
-								onSwipeCancel={handleSwipeCancel}
-							/>
-						{/each}
-					</div>
+			<div class="mb-6">
+				<div class="grid grid-cols-1 gap-4">
+					{#each [...basicCards, ...farEasternCards] as common (common.id)}
+						<Card
+							card={common}
+							originalIndex={getOriginalIndex(common.id)}
+							onSwipeStart={handleSwipeStart}
+							onSwipeMove={handleSwipeMove}
+							onSwipeEnd={handleSwipeEnd}
+							onSwipeCancel={handleSwipeCancel}
+						/>
+					{/each}
 				</div>
-			{/if}
-
-			{#if farEasternCards.length > 0}
-				<div class="mb-6">
-					<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-						{#each farEasternCards as common (common.id)}
-							<Card
-								card={common}
-								originalIndex={getOriginalIndex(common.id)}
-								onSwipeStart={handleSwipeStart}
-								onSwipeMove={handleSwipeMove}
-								onSwipeEnd={handleSwipeEnd}
-								onSwipeCancel={handleSwipeCancel}
-							/>
-						{/each}
-					</div>
-				</div>
-			{/if}
+			</div>
 
 			<div class="mt-6">
 				<h3 class="text-lg font-semibold mb-2">結果を共有</h3>
