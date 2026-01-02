@@ -16,7 +16,7 @@ export type SubType =
   /** 侍女 */
   | "maid"
   /** 兵力 */
-  | "millitary"
+  | "military"
   /** 魔法 */
   | "magic"
   /** 商人 */
