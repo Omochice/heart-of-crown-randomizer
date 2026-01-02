@@ -81,10 +81,10 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: pnpm
       - run: pnpm install
-      - name: run check
-        run: pnpm check
-      - name: run test
-        run: pnpm test
+      - run: pnpm run check
+      - run: pnpm run test
+      - run: pnpm exec playwright install
+      - run: pnpm --filter ./packages/site run test:e2e
   check-adr:
     name: Check architecture decision record format
     needs: path-filter
