@@ -3,6 +3,7 @@
 	lang="ts"
 >
 	import { defineMeta } from "@storybook/addon-svelte-csf";
+	import { fn } from "@storybook/test";
 	import Card from "./Card.svelte";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { Edition } from "@heart-of-crown-randomizer/card/type";
@@ -19,22 +20,6 @@
 		edition: Edition.BASIC,
 	};
 
-	function handleSwipeStart(e: MouseEvent | TouchEvent, index: number) {
-		console.log("Swipe start", { event: e.type, index });
-	}
-
-	function handleSwipeMove(e: MouseEvent | TouchEvent) {
-		console.log("Swipe move", { event: e.type });
-	}
-
-	function handleSwipeEnd() {
-		console.log("Swipe end");
-	}
-
-	function handleSwipeCancel() {
-		console.log("Swipe cancel");
-	}
-
 	const { Story } = defineMeta({
 		title: "Components/Card",
 		component: Card,
@@ -45,10 +30,10 @@
 	name="Default"
 	args={{
 		card: sampleCard,
-		onSwipeStart: handleSwipeStart,
-		onSwipeMove: handleSwipeMove,
-		onSwipeEnd: handleSwipeEnd,
-		onSwipeCancel: handleSwipeCancel,
+		onSwipeStart: fn(),
+		onSwipeMove: fn(),
+		onSwipeEnd: fn(),
+		onSwipeCancel: fn(),
 		originalIndex: 0,
 	}}
 />
