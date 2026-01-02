@@ -83,6 +83,7 @@ jobs:
       - run: pnpm install
       - run: pnpm run check
       - run: pnpm run test
+      - run: pnpm exec playwright install
       - run: pnpm --filter ./packages/site run test:e2e
   check-adr:
     name: Check architecture decision record format
