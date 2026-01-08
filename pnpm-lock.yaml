@@ -42,8 +42,8 @@ importers:
         specifier: 7.2.4
         version: 7.2.4(@sveltejs/kit@2.49.2(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.46.1)(vite@7.3.0(@types/node@24.10.4)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.6.1)))(svelte@5.46.1)(vite@7.3.0(@types/node@24.10.4)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.6.1)))(wrangler@4.14.1(@cloudflare/workers-types@4.20250507.0))
       '@sveltejs/mcp':
-        specifier: 0.1.16
-        version: 0.1.16(jiti@2.6.1)(typescript@5.9.3)
+        specifier: 0.1.17
+        version: 0.1.17(jiti@2.6.1)(typescript@5.9.3)
       '@textlint-ja/textlint-rule-preset-ai-writing':
         specifier: 1.6.1
         version: 1.6.1
@@ -1294,8 +1294,8 @@ packages:
       '@opentelemetry/api':
         optional: true
 
-  '@sveltejs/mcp@0.1.16':
-    resolution: {integrity: sha512-0PzWUH8e2vOq0pFawaQ1OQR/IBnMKa6GS1x9GMmpllkWh9atMtPEfWqNbIQjAZnKtoNw31VYmXzA2YlukO3IOw==}
+  '@sveltejs/mcp@0.1.17':
+    resolution: {integrity: sha512-9LUdWp7YlIlMqjQdDMi1oyD1+vu3IHUCTIV3ykN3r9tIDmOATAtydM6ctxu77YB8SuTxVTCnpPAwB+viI7aQHw==}
     hasBin: true
 
   '@sveltejs/vite-plugin-svelte-inspector@5.0.0':
@@ -4688,7 +4688,7 @@ snapshots:
       svelte: 5.46.1
       vite: 7.3.0(@types/node@24.10.4)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.6.1)
 
-  '@sveltejs/mcp@0.1.16(jiti@2.6.1)(typescript@5.9.3)':
+  '@sveltejs/mcp@0.1.17(jiti@2.6.1)(typescript@5.9.3)':
     dependencies:
       eslint: 9.39.2(jiti@2.6.1)
       sade: 1.8.1
