@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.16.0/.schema/devbox.schema.json",
   "packages": [
-    "ghalint@1.5.3",
+    "ghalint@1.5.4",
     "actionlint@1.7.10",
     "pnpm@10.26.1"
   ]
