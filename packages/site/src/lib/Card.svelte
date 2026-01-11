@@ -88,27 +88,25 @@
 			<button
 				type="button"
 				onclick={handleTogglePin}
-				class="px-3 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+				class="px-2 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
 				class:bg-blue-500={isPinned}
-				class:text-white={isPinned}
 				class:bg-gray-200={!isPinned}
-				class:text-gray-700={!isPinned}
 				aria-pressed={isPinned}
+				aria-label={isPinned ? "ピン解除" : "ピン"}
 			>
-				{isPinned ? "📌 ピン中" : "📌 ピン"}
+				📌
 			</button>
 
 			<button
 				type="button"
 				onclick={handleToggleExclude}
-				class="px-3 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+				class="px-2 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
 				class:bg-red-500={isExcluded}
-				class:text-white={isExcluded}
 				class:bg-gray-200={!isExcluded}
-				class:text-gray-700={!isExcluded}
 				aria-pressed={isExcluded}
+				aria-label={isExcluded ? "除外解除" : "除外"}
 			>
-				{isExcluded ? "🚫 除外中" : "🚫 除外"}
+				🚫
 			</button>
 		</div>
 	</div>
