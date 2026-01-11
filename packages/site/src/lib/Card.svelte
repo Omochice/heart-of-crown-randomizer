@@ -42,39 +42,44 @@
 	ontouchend={() => onSwipeEnd()}
 	ontouchcancel={() => onSwipeCancel()}
 >
-	<div class="card-content">
-		<h3 class:line-through={isExcluded}>
+	<div class="flex items-center justify-between gap-2">
+		<h3
+			class="flex-1 min-w-0 truncate font-medium"
+			class:line-through={isExcluded}
+		>
 			{card.name}
 		</h3>
-		<p class="text-sm text-gray-600">コスト: {card.cost}</p>
+		<div class="flex gap-2 flex-shrink-0">
+			<button
+				type="button"
+				onclick={handleTogglePin}
+				class="px-3 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+				class:bg-blue-500={isPinned}
+				class:text-white={isPinned}
+				class:bg-gray-200={!isPinned}
+				class:text-gray-700={!isPinned}
+				aria-pressed={isPinned}
+			>
+				{isPinned ? "📌 ピン中" : "📌 ピン"}
+			</button>
+
+			<button
+				type="button"
+				onclick={handleToggleExclude}
+				class="px-3 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
+				class:bg-red-500={isExcluded}
+				class:text-white={isExcluded}
+				class:bg-gray-200={!isExcluded}
+				class:text-gray-700={!isExcluded}
+				aria-pressed={isExcluded}
+			>
+				{isExcluded ? "🚫 除外中" : "🚫 除外"}
+			</button>
+		</div>
 	</div>
 
-	<div class="flex gap-2 mt-2">
-		<button
-			type="button"
-			onclick={handleTogglePin}
-			class="px-3 py-1 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-			class:bg-blue-500={isPinned}
-			class:text-white={isPinned}
-			class:bg-gray-200={!isPinned}
-			class:text-gray-700={!isPinned}
-			aria-pressed={isPinned}
-		>
-			{isPinned ? "📌 ピン中" : "📌 ピン"}
-		</button>
-
-		<button
-			type="button"
-			onclick={handleToggleExclude}
-			class="px-3 py-1 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-			class:bg-red-500={isExcluded}
-			class:text-white={isExcluded}
-			class:bg-gray-200={!isExcluded}
-			class:text-gray-700={!isExcluded}
-			aria-pressed={isExcluded}
-		>
-			{isExcluded ? "🚫 除外中" : "🚫 除外"}
-		</button>
+	<div class="flex gap-4 text-sm text-gray-600 mt-1">
+		<span>コスト:{card.cost}</span>
 	</div>
 </div>
 
