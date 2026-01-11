@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+	import type { CommonCard, UniqueCard } from "@heart-of-crown-randomizer/card/type";
 	import { getCardState, toggleExclude, togglePin } from "$lib/stores/card-state.svelte";
 
 	type Props = {
@@ -17,6 +17,41 @@
 	const state = $derived(getCardState(card.id));
 	const isPinned = $derived(state === "pinned");
 	const isExcluded = $derived(state === "excluded");
+
+	function isUniqueCard(c: CommonCard): c is UniqueCard {
+		return c.hasChild === true;
+	}
+
+	const coinDisplay = $derived.by(() => {
+		if (!isUniqueCard(card)) {
+			return card.coin;
+		}
+		const coins = card.cards.map((c) => c.coin).filter((v): v is number => v !== undefined);
+		if (coins.length === 0) return undefined;
+		const unique = [...new Set(coins)];
+		return unique.length === 1 ? unique[0] : unique;
+	});
+
+	const successionDisplay = $derived.by(() => {
+		if (!isUniqueCard(card)) {
+			return card.succession;
+		}
+		const successions = card.cards
+			.map((c) => c.succession)
+			.filter((v): v is number => v !== undefined);
+		if (successions.length === 0) return undefined;
+		const unique = [...new Set(successions)];
+		return unique.length === 1 ? unique[0] : unique;
+	});
+
+	function formatValue(value: number | number[]): string {
+		if (Array.isArray(value)) {
+			const min = Math.min(...value);
+			const max = Math.max(...value);
+			return min === max ? String(min) : `${min}-${max}`;
+		}
+		return String(value);
+	}
 
 	function handleTogglePin() {
 		togglePin(card.id);
@@ -80,6 +115,12 @@
 
 	<div class="flex gap-4 text-sm text-gray-600 mt-1">
 		<span>コスト:{card.cost}</span>
+		{#if coinDisplay !== undefined}
+			<span>💰{formatValue(coinDisplay)}</span>
+		{/if}
+		{#if successionDisplay !== undefined}
+			<span>継承:{formatValue(successionDisplay)}</span>
+		{/if}
 	</div>
 </div>
 
