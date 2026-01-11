@@ -239,7 +239,7 @@ describe("Card Component Tests", () => {
 		it("should display card cost", () => {
 			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const cardCost = screen.getByText(`コスト: ${mockCard.cost}`);
+			const cardCost = screen.getByText(`コスト:${mockCard.cost}`);
 			expect(cardCost).toBeTruthy();
 		});
 	});
