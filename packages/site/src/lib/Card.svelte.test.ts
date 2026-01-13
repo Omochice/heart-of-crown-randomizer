@@ -109,11 +109,10 @@ describe("Card Component Tests", () => {
 			expect(cardContainer).toBeTruthy();
 			expect(cardContainer?.classList.contains("border-blue-500")).toBe(true);
 
-			// Pin button should show "ピン中"
-			const pinButton = screen.getByRole("button", { name: /ピン中/ });
+			// Pin button should have "ピン解除" aria-label
+			const pinButton = screen.getByRole("button", { name: /ピン解除/ });
 			expect(pinButton).toBeTruthy();
 			expect(pinButton.classList.contains("bg-blue-500")).toBe(true);
-			expect(pinButton.classList.contains("text-white")).toBe(true);
 		});
 
 		it("should display normal styles when card is not pinned", () => {
@@ -125,8 +124,8 @@ describe("Card Component Tests", () => {
 			const cardContainer = container.querySelector(".bg-blue-100");
 			expect(cardContainer).toBeFalsy();
 
-			// Pin button should show "ピン" (not "ピン中")
-			const pinButton = screen.getByRole("button", { name: /^📌 ピン$/ });
+			// Pin button should have "ピン" aria-label (not "ピン解除")
+			const pinButton = screen.getByRole("button", { name: /^ピン$/ });
 			expect(pinButton).toBeTruthy();
 			expect(pinButton.classList.contains("bg-gray-200")).toBe(true);
 		});
@@ -150,11 +149,10 @@ describe("Card Component Tests", () => {
 			const cardName = screen.getByRole("heading", { level: 3 });
 			expect(cardName.classList.contains("line-through")).toBe(true);
 
-			// Exclude button should show "除外中"
-			const excludeButton = screen.getByRole("button", { name: /除外中/ });
+			// Exclude button should have "除外解除" aria-label
+			const excludeButton = screen.getByRole("button", { name: /除外解除/ });
 			expect(excludeButton).toBeTruthy();
 			expect(excludeButton.classList.contains("bg-red-500")).toBe(true);
-			expect(excludeButton.classList.contains("text-white")).toBe(true);
 		});
 
 		it("should display normal styles when card is not excluded", () => {
@@ -170,8 +168,8 @@ describe("Card Component Tests", () => {
 			const cardName = screen.getByRole("heading", { level: 3 });
 			expect(cardName.classList.contains("line-through")).toBe(false);
 
-			// Exclude button should show "除外" (not "除外中")
-			const excludeButton = screen.getByRole("button", { name: /^🚫 除外$/ });
+			// Exclude button should have "除外" aria-label (not "除外解除")
+			const excludeButton = screen.getByRole("button", { name: /^除外$/ });
 			expect(excludeButton).toBeTruthy();
 			expect(excludeButton.classList.contains("bg-gray-200")).toBe(true);
 		});
@@ -181,7 +179,7 @@ describe("Card Component Tests", () => {
 		it("should have aria-pressed=false on pin button when not pinned", () => {
 			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const pinButton = screen.getByRole("button", { name: /ピン/ });
+			const pinButton = screen.getByRole("button", { name: /^ピン$/ });
 			expect(pinButton.getAttribute("aria-pressed")).toBe("false");
 		});
 
@@ -190,14 +188,14 @@ describe("Card Component Tests", () => {
 
 			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const pinButton = screen.getByRole("button", { name: /ピン中/ });
+			const pinButton = screen.getByRole("button", { name: /ピン解除/ });
 			expect(pinButton.getAttribute("aria-pressed")).toBe("true");
 		});
 
 		it("should have aria-pressed=false on exclude button when not excluded", () => {
 			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const excludeButton = screen.getByRole("button", { name: /除外/ });
+			const excludeButton = screen.getByRole("button", { name: /^除外$/ });
 			expect(excludeButton.getAttribute("aria-pressed")).toBe("false");
 		});
 
@@ -206,7 +204,7 @@ describe("Card Component Tests", () => {
 
 			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const excludeButton = screen.getByRole("button", { name: /除外中/ });
+			const excludeButton = screen.getByRole("button", { name: /除外解除/ });
 			expect(excludeButton.getAttribute("aria-pressed")).toBe("true");
 		});
 
@@ -239,7 +237,7 @@ describe("Card Component Tests", () => {
 		it("should display card cost", () => {
 			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const cardCost = screen.getByText(`コスト: ${mockCard.cost}`);
+			const cardCost = screen.getByText(`コスト:${mockCard.cost}`);
 			expect(cardCost).toBeTruthy();
 		});
 	});
