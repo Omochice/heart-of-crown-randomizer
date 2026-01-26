@@ -22,7 +22,7 @@
 		"@heart-of-crown-randomizer/randomizer": "workspace:*"
 	},
 	"devDependencies": {
-		"@playwright/test": "1.57.0",
+		"@playwright/test": "1.58.0",
 		"@storybook/addon-interactions": "8.6.14",
 		"@storybook/addon-svelte-csf": "5.0.10",
 		"@storybook/svelte": "10.2.0",
