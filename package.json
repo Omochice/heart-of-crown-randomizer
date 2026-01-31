@@ -31,7 +31,7 @@
     "rimraf": "catalog:",
     "sort-package-json": "catalog:",
     "textlint": "15.5.1",
-    "turbo": "2.7.6",
+    "turbo": "2.8.0",
     "typescript": "catalog:",
     "vite": "7.3.1",
     "vitest": "catalog:"
