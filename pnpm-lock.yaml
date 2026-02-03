@@ -42,8 +42,8 @@ importers:
         specifier: 7.2.6
         version: 7.2.6(@sveltejs/kit@2.50.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.49.1)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.6.1)))(svelte@5.49.1)(typescript@5.9.3)(vite@7.3.1(@types/node@24.10.9)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.6.1)))(wrangler@4.14.1(@cloudflare/workers-types@4.20250507.0))
       '@sveltejs/mcp':
-        specifier: 0.1.17
-        version: 0.1.17(jiti@2.6.1)(typescript@5.9.3)
+        specifier: 0.1.20
+        version: 0.1.20(jiti@2.6.1)(typescript@5.9.3)
       '@textlint-ja/textlint-rule-preset-ai-writing':
         specifier: 1.6.1
         version: 1.6.1
@@ -1332,8 +1332,8 @@ packages:
       typescript:
         optional: true
 
-  '@sveltejs/mcp@0.1.17':
-    resolution: {integrity: sha512-9LUdWp7YlIlMqjQdDMi1oyD1+vu3IHUCTIV3ykN3r9tIDmOATAtydM6ctxu77YB8SuTxVTCnpPAwB+viI7aQHw==}
+  '@sveltejs/mcp@0.1.20':
+    resolution: {integrity: sha512-ImexBbMgwou/9cX81T0pIOTeU/1MUn6i3j/OukaVRlMz95S7Dfbiw3XLfDLxe2htObHIxQXjKmcryicyjFRObA==}
     hasBin: true
 
   '@sveltejs/vite-plugin-svelte-inspector@5.0.0':
@@ -4723,7 +4723,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  '@sveltejs/mcp@0.1.17(jiti@2.6.1)(typescript@5.9.3)':
+  '@sveltejs/mcp@0.1.20(jiti@2.6.1)(typescript@5.9.3)':
     dependencies:
       eslint: 9.39.2(jiti@2.6.1)
       sade: 1.8.1
