@@ -4,6 +4,6 @@
     "ghalint@1.5.4",
     "actionlint@1.7.10",
     "pnpm@10.28.0",
-    "typos@1.42.1"
+    "typos@1.42.3"
   ]
 }
