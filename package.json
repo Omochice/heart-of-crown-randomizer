@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
-    "@sveltejs/adapter-cloudflare": "7.2.6",
+    "@sveltejs/adapter-cloudflare": "7.2.7",
     "@sveltejs/mcp": "0.1.20",
     "@textlint-ja/textlint-rule-preset-ai-writing": "1.6.1",
     "@vitest/browser": "4.0.18",
