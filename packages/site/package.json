@@ -37,7 +37,7 @@
 		"@types/node": "24.10.13",
 		"jsdom": "27.4.0",
 		"prettier": "3.8.1",
-		"prettier-plugin-svelte": "3.4.1",
+		"prettier-plugin-svelte": "3.5.0",
 		"sort-package-json": "catalog:",
 		"storybook": "10.2.10",
 		"svelte": "5.51.2",
