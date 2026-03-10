@@ -41,7 +41,7 @@
 		"sort-package-json": "catalog:",
 		"storybook": "10.2.16",
 		"svelte": "5.53.7",
-		"svelte-check": "4.4.4",
+		"svelte-check": "4.4.5",
 		"tailwindcss": "4.2.1",
 		"vite": "7.3.1"
 	}
