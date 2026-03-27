@@ -20,7 +20,7 @@
 	import { parseCardIdsFromUrl, buildUrlWithCardState, setsEqual } from "$lib/utils/url-sync";
 	import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
 	import { selectWithConstraints } from "$lib/utils/select-with-constraints";
-	import { Shuffle, Plus, Pin } from "lucide-svelte";
+	import { Shuffle, Plus } from "lucide-svelte";
 
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
@@ -323,7 +323,6 @@
 
 	const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 
-	const pinnedCount = $derived(getPinnedCardIds().size);
 	const excludedCards = $derived(getExcludedCards(allCommons));
 	const missingCount = $derived(numberOfCommons - selectedCommons.length);
 </script>
@@ -367,15 +366,6 @@
 	</div>
 
 	<ExcludeList cards={excludedCards} />
-
-	{#if pinnedCount > 0}
-		<div class="filter-chips">
-			<span class="chip">
-				<Pin size={12} />
-				Pin {pinnedCount}
-			</span>
-		</div>
-	{/if}
 
 	{#if errorMessage}
 		<div
@@ -516,23 +506,6 @@
 		background: var(--bg-primary);
 		color: var(--text-primary);
 		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-	}
-
-	.filter-chips {
-		display: flex;
-		gap: 8px;
-	}
-
-	.chip {
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
-		padding: 6px 12px;
-		border-radius: 10px;
-		background: var(--bg-card);
-		font-size: 12px;
-		font-weight: 600;
-		color: var(--text-secondary);
 	}
 
 	.error-message {
