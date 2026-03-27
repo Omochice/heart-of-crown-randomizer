@@ -140,12 +140,13 @@
 		display: flex;
 		border-radius: 10px;
 		background-color: var(--bg-card);
+		border: 1px solid transparent;
 		overflow: hidden;
 		cursor: grab;
 		user-select: none;
 		touch-action: pan-y;
 		will-change: transform, opacity;
-		transition: box-shadow 0.15s ease;
+		transition: border-color 0.15s ease;
 	}
 
 	.card-row:hover {
@@ -158,7 +159,7 @@
 
 	.card-row--pinned {
 		background-color: #eff6ff;
-		box-shadow: inset 0 0 0 1px var(--accent-indigo);
+		border-color: var(--accent-indigo);
 	}
 
 	.card-row--excluded {
