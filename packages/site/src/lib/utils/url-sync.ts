@@ -40,3 +40,18 @@ export function buildUrlWithCardState(
 
 	return url;
 }
+
+/**
+ * Compare two Sets for value equality
+ *
+ * We need this for URL→State sync to skip updates when the URL
+ * params already match the current state, preventing circular
+ * effect triggers between URL→State and State→URL effects.
+ */
+export function setsEqual(a: Set<number>, b: Set<number>): boolean {
+	if (a.size !== b.size) return false;
+	for (const id of a) {
+		if (!b.has(id)) return false;
+	}
+	return true;
+}

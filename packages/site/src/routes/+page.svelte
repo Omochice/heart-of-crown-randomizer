@@ -8,8 +8,14 @@
 	import Card from "$lib/Card.svelte";
 	import CardDetail from "$lib/CardDetail.svelte";
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
-	import { pinnedCardIds, excludedCardIds, getPinnedCards } from "$lib/stores/card-state.svelte";
-	import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
+	import {
+		getPinnedCardIds,
+		getExcludedCardIds,
+		setPinnedCardIds,
+		setExcludedCardIds,
+		getPinnedCards,
+	} from "$lib/stores/card-state.svelte";
+	import { parseCardIdsFromUrl, buildUrlWithCardState, setsEqual } from "$lib/utils/url-sync";
 	import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
 	import { selectWithConstraints } from "$lib/utils/select-with-constraints";
 	import { Shuffle, Plus, Pin, Ban } from "lucide-svelte";
@@ -41,20 +47,28 @@
 	 *
 	 * We parse on every URL change rather than caching because users
 	 * might manually edit the URL or use browser back/forward buttons.
+	 *
+	 * We skip updates when URL params match current state to prevent
+	 * circular triggers with the State→URL sync effect.
 	 */
 	$effect(() => {
 		const newPinnedIds = parseCardIdsFromUrl($page.url, "pin");
 		const newExcludedIds = parseCardIdsFromUrl($page.url, "exclude");
 
-		pinnedCardIds.clear();
-		excludedCardIds.clear();
+		/**
+		 * We use untrack for state reads to prevent circular dependency:
+		 * togglePin() → version++ → this effect re-runs → URL still old →
+		 * resets state. By untracking, this effect only re-runs on URL change.
+		 */
+		const currentPinned = untrack(() => getPinnedCardIds());
+		const currentExcluded = untrack(() => getExcludedCardIds());
 
-		for (const id of newPinnedIds) {
-			pinnedCardIds.add(id);
+		if (setsEqual(currentPinned, newPinnedIds) && setsEqual(currentExcluded, newExcludedIds)) {
+			return;
 		}
-		for (const id of newExcludedIds) {
-			excludedCardIds.add(id);
-		}
+
+		setPinnedCardIds(newPinnedIds);
+		setExcludedCardIds(newExcludedIds);
 	});
 
 	/**
@@ -68,15 +82,15 @@
 	 * with the URL → State sync effect.
 	 */
 	$effect(() => {
-		const _ = pinnedCardIds.size;
-		const __ = excludedCardIds.size;
+		const pinnedIds = getPinnedCardIds();
+		const excludedIds = getExcludedCardIds();
 
-		const url = buildUrlWithCardState(
-			untrack(() => $page.url),
-			pinnedCardIds,
-			excludedCardIds,
-		);
-		goto(url, { replaceState: true, noScroll: true, keepFocus: true });
+		const currentUrl = untrack(() => $page.url);
+		const newUrl = buildUrlWithCardState(currentUrl, pinnedIds, excludedIds);
+
+		if (newUrl.toString() === currentUrl.toString()) return;
+
+		goto(newUrl, { replaceState: true, noScroll: true, keepFocus: true });
 	});
 
 	function cardsToQuery(cards: CommonCard[]): string {
@@ -98,7 +112,8 @@
 			return;
 		}
 
-		const availableCards = allCommons.filter((card) => !excludedCardIds.has(card.id));
+		const excludedIds = getExcludedCardIds();
+		const availableCards = allCommons.filter((card) => !excludedIds.has(card.id));
 
 		const excludeValidation = validateExcludeConstraints(availableCards.length, numberOfCommons);
 		if (!excludeValidation.ok) {
@@ -109,14 +124,36 @@
 		const randomCards = selectWithConstraints(
 			allCommons,
 			pinnedCards,
-			excludedCardIds,
+			excludedIds,
 			numberOfCommons,
 		);
 		selectedCommons = randomCards.sort((a, b) => a.id - b.id);
 		errorMessage = "";
 
-		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
+		goto(buildCardUrl(selectedCommons), { keepFocus: true, noScroll: true });
 		updateShareUrl();
+	}
+
+	/**
+	 * Build a URL with card selection and pin/exclude state
+	 *
+	 * We include pin/exclude params in every URL transition rather than
+	 * relying on the State→URL effect, because goto() triggers the
+	 * URL→State effect which would clear pin/exclude state if the
+	 * params are absent from the URL.
+	 */
+	function buildCardUrl(cards: CommonCard[]): string {
+		const params = new URLSearchParams();
+		for (const card of cards) {
+			params.append("card", card.id.toString());
+		}
+		for (const id of getPinnedCardIds()) {
+			params.append("pin", String(id));
+		}
+		for (const id of getExcludedCardIds()) {
+			params.append("exclude", String(id));
+		}
+		return `?${params.toString()}`;
 	}
 
 	function updateShareUrl() {
@@ -251,7 +288,7 @@
 	}
 
 	function updateUrlAndShare() {
-		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
+		goto(buildCardUrl(selectedCommons), { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
 
@@ -282,8 +319,8 @@
 		return selectedCommons.findIndex((c) => c.id === cardId);
 	}
 
-	const pinnedCount = $derived(pinnedCardIds.size);
-	const excludedCount = $derived(excludedCardIds.size);
+	const pinnedCount = $derived(getPinnedCardIds().size);
+	const excludedCount = $derived(getExcludedCardIds().size);
 	const missingCount = $derived(numberOfCommons - selectedCommons.length);
 </script>
 
