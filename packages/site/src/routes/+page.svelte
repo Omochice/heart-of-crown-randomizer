@@ -7,6 +7,7 @@
 	import { untrack } from "svelte";
 	import Card from "$lib/Card.svelte";
 	import CardDetail from "$lib/CardDetail.svelte";
+	import ExcludeList from "$lib/ExcludeList.svelte";
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
 	import {
 		getPinnedCardIds,
@@ -14,11 +15,12 @@
 		setPinnedCardIds,
 		setExcludedCardIds,
 		getPinnedCards,
+		getExcludedCards,
 	} from "$lib/stores/card-state.svelte";
 	import { parseCardIdsFromUrl, buildUrlWithCardState, setsEqual } from "$lib/utils/url-sync";
 	import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
 	import { selectWithConstraints } from "$lib/utils/select-with-constraints";
-	import { Shuffle, Plus, Pin, Ban } from "lucide-svelte";
+	import { Shuffle, Plus, Pin } from "lucide-svelte";
 
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
@@ -28,7 +30,6 @@
 
 	$effect(() => {
 		const commonIds = $page.url.searchParams.getAll("card");
-		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 		const newSelectedCommons = commonIds
 			.map((id) => allCommons.find((c) => c.id === Number.parseInt(id)))
 			.filter(Boolean) as CommonCard[];
@@ -103,7 +104,6 @@
 	}
 
 	function drawRandomCards() {
-		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 		const pinnedCards = getPinnedCards(allCommons);
 
 		const pinValidation = validatePinConstraints(pinnedCards.length, numberOfCommons);
@@ -298,7 +298,6 @@
 	function drawMissingCommons() {
 		if (selectedCommons.length >= numberOfCommons) return;
 
-		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 		const excludedIds = selectedCommons.map((c) => c.id);
 		const availableCommons = filterByIds(allCommons, excludedIds);
 
@@ -322,8 +321,10 @@
 		return selectedCommons.findIndex((c) => c.id === cardId);
 	}
 
+	const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
+
 	const pinnedCount = $derived(getPinnedCardIds().size);
-	const excludedCount = $derived(getExcludedCardIds().size);
+	const excludedCards = $derived(getExcludedCards(allCommons));
 	const missingCount = $derived(numberOfCommons - selectedCommons.length);
 </script>
 
@@ -365,20 +366,14 @@
 		</button>
 	</div>
 
-	{#if pinnedCount > 0 || excludedCount > 0}
+	<ExcludeList cards={excludedCards} />
+
+	{#if pinnedCount > 0}
 		<div class="filter-chips">
-			{#if pinnedCount > 0}
-				<span class="chip">
-					<Pin size={12} />
-					Pin {pinnedCount}
-				</span>
-			{/if}
-			{#if excludedCount > 0}
-				<span class="chip">
-					<Ban size={12} />
-					Excluded {excludedCount}
-				</span>
-			{/if}
+			<span class="chip">
+				<Pin size={12} />
+				Pin {pinnedCount}
+			</span>
 		</div>
 	{/if}
 
