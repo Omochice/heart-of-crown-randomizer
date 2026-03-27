@@ -38,8 +38,8 @@ describe("Card Keyboard Accessibility (Task 7.1 - Requirement 6.1)", () => {
 
 	beforeEach(() => {
 		// Reset card state before each test
-		CardState.pinnedCardIds.clear();
-		CardState.excludedCardIds.clear();
+		CardState.setPinnedCardIds(new Set());
+		CardState.setExcludedCardIds(new Set());
 	});
 
 	describe("Keyboard Operation - Tab Navigation", () => {

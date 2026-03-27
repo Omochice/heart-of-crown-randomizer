@@ -26,8 +26,8 @@ const mockSwipeHandlers = {
 
 describe("Card Component Tests", () => {
 	beforeEach(() => {
-		cardState.pinnedCardIds.clear();
-		cardState.excludedCardIds.clear();
+		cardState.setPinnedCardIds(new Set());
+		cardState.setExcludedCardIds(new Set());
 
 		vi.clearAllMocks();
 	});
@@ -90,7 +90,7 @@ describe("Card Component Tests", () => {
 
 	describe("Visual feedback for pinned state", () => {
 		it("should display pinned visual styles when card is pinned", () => {
-			cardState.pinnedCardIds.add(mockCard.id);
+			cardState.setPinnedCardIds(new Set([mockCard.id]));
 
 			const { container } = render(Card, {
 				props: { card: mockCard, ...mockSwipeHandlers },
@@ -120,7 +120,7 @@ describe("Card Component Tests", () => {
 
 	describe("Visual feedback for excluded state", () => {
 		it("should display excluded visual styles when card is excluded", () => {
-			cardState.excludedCardIds.add(mockCard.id);
+			cardState.setExcludedCardIds(new Set([mockCard.id]));
 
 			const { container } = render(Card, {
 				props: { card: mockCard, ...mockSwipeHandlers },
@@ -157,7 +157,7 @@ describe("Card Component Tests", () => {
 		});
 
 		it("should have aria-pressed=true on pin button when pinned", () => {
-			cardState.pinnedCardIds.add(mockCard.id);
+			cardState.setPinnedCardIds(new Set([mockCard.id]));
 
 			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
@@ -173,7 +173,7 @@ describe("Card Component Tests", () => {
 		});
 
 		it("should have aria-pressed=true on exclude button when excluded", () => {
-			cardState.excludedCardIds.add(mockCard.id);
+			cardState.setExcludedCardIds(new Set([mockCard.id]));
 
 			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
@@ -207,7 +207,7 @@ describe("Card Component Tests", () => {
 
 	describe("State mutual exclusivity", () => {
 		it("should unexclude card when pinned", async () => {
-			cardState.excludedCardIds.add(mockCard.id);
+			cardState.setExcludedCardIds(new Set([mockCard.id]));
 			expect(cardState.getCardState(mockCard.id)).toBe("excluded");
 
 			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
@@ -216,11 +216,11 @@ describe("Card Component Tests", () => {
 			await fireEvent.click(pinButton);
 
 			expect(cardState.getCardState(mockCard.id)).toBe("pinned");
-			expect(cardState.excludedCardIds.has(mockCard.id)).toBe(false);
+			expect(cardState.getExcludedCardIds().has(mockCard.id)).toBe(false);
 		});
 
 		it("should unpin card when excluded", async () => {
-			cardState.pinnedCardIds.add(mockCard.id);
+			cardState.setPinnedCardIds(new Set([mockCard.id]));
 			expect(cardState.getCardState(mockCard.id)).toBe("pinned");
 
 			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
@@ -229,7 +229,7 @@ describe("Card Component Tests", () => {
 			await fireEvent.click(excludeButton);
 
 			expect(cardState.getCardState(mockCard.id)).toBe("excluded");
-			expect(cardState.pinnedCardIds.has(mockCard.id)).toBe(false);
+			expect(cardState.getPinnedCardIds().has(mockCard.id)).toBe(false);
 		});
 	});
 });
