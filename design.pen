@@ -4,9 +4,10 @@
     {
       "type": "frame",
       "id": "bi8Au",
-      "x": 0,
-      "y": 0,
+      "x": -24,
+      "y": 16,
       "name": "Frame",
+      "enabled": false,
       "clip": true,
       "width": 800,
       "height": 600,
@@ -245,7 +246,8 @@
                       "content": "コイン+2を獲得する。",
                       "lineHeight": 1.6,
                       "fontFamily": "DM Sans",
-                      "fontSize": 15
+                      "fontSize": 15,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -583,7 +585,8 @@
                       "content": "コイン+2を獲得する。",
                       "lineHeight": 1.6,
                       "fontFamily": "DM Sans",
-                      "fontSize": 15
+                      "fontSize": 15,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -921,7 +924,8 @@
                       "content": "コイン+2を獲得する。",
                       "lineHeight": 1.6,
                       "fontFamily": "DM Sans",
-                      "fontSize": 15
+                      "fontSize": 15,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -1259,7 +1263,8 @@
                       "content": "コイン+2を獲得する。",
                       "lineHeight": 1.6,
                       "fontFamily": "DM Sans",
-                      "fontSize": 15
+                      "fontSize": 15,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -1826,7 +1831,132 @@
                   "type": "ref",
                   "ref": "nPwL2",
                   "width": "fill_container",
-                  "name": "constraintsInstance"
+                  "name": "constraintsInstance",
+                  "height": "fit_content",
+                  "y": 131,
+                  "descendants": {
+                    "mthj8": {
+                      "width": "fill_container",
+                      "height": "fit_content"
+                    },
+                    "jbl7I": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 10,
+                      "y": 7
+                    },
+                    "P9Qm5": {
+                      "y": 1
+                    },
+                    "QASOa": {
+                      "x": 17
+                    },
+                    "lTLex": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 62
+                    },
+                    "kujIw": {
+                      "x": 6,
+                      "y": 1
+                    },
+                    "BoZhB": {
+                      "x": 330,
+                      "y": 7
+                    },
+                    "mfEQr": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 34
+                    },
+                    "He64o": {
+                      "width": "fill_container",
+                      "height": "fit_content"
+                    },
+                    "He64o/SRXu7": {
+                      "x": 10,
+                      "y": 8
+                    },
+                    "Sl3mk": {
+                      "x": 2.5,
+                      "y": 2.5
+                    },
+                    "He64o/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "9dxDm": {
+                      "width": "fill_container",
+                      "y": 30
+                    },
+                    "H0M0C": {
+                      "width": "fill_container",
+                      "height": "fit_content"
+                    },
+                    "H0M0C/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "99rWo": {
+                      "x": 2.5,
+                      "y": 2.5
+                    },
+                    "H0M0C/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "4yjWg": {
+                      "width": "fill_container",
+                      "y": 62
+                    },
+                    "e4Lp5": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 63
+                    },
+                    "e4Lp5/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "e4Lp5/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "pJ1Cy": {
+                      "width": "fill_container",
+                      "y": 94
+                    },
+                    "wMsmO": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 95
+                    },
+                    "wMsmO/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "wMsmO/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "EzYHB": {
+                      "width": "fill_container",
+                      "y": 126
+                    },
+                    "uprZi": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 127
+                    },
+                    "uprZi/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "uprZi/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    }
+                  }
                 }
               ]
             },
@@ -1844,15 +1974,56 @@
                   "ref": "jqSBc",
                   "name": "c1",
                   "y": 0,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
-                      "content": "城壁"
+                      "content": "城壁",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "2"
+                      "content": "2",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
+                    },
+                    "bDR6E": {
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -1862,15 +2033,56 @@
                   "ref": "jqSBc",
                   "name": "c2",
                   "y": 45,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
-                      "content": "斥候"
+                      "content": "斥候",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "2"
+                      "content": "2",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
+                    },
+                    "bDR6E": {
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -1880,12 +2092,30 @@
                   "ref": "jqSBc",
                   "name": "c3",
                   "y": 90,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
-                      "content": "早馬"
+                      "content": "早馬",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "2"
+                      "content": "2",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
                       "type": "frame",
@@ -1911,6 +2141,23 @@
                           "height": 6
                         }
                       ]
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -1920,12 +2167,30 @@
                   "ref": "jqSBc",
                   "name": "c4",
                   "y": 135,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
-                      "content": "交易船"
+                      "content": "交易船",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "3"
+                      "content": "3",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
                       "type": "frame",
@@ -1953,6 +2218,23 @@
                           "fontWeight": "600"
                         }
                       ]
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -1962,25 +2244,60 @@
                   "ref": "jqSBc",
                   "name": "c5",
                   "y": 180,
+                  "height": "fit_content",
                   "descendants": {
                     "dxlat": {
-                      "fill": "#EF4444"
+                      "fill": "#EF4444",
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
                     },
                     "kkEEw": {
                       "content": "攻撃",
-                      "fill": "#EF4444"
+                      "fill": "#EF4444",
+                      "x": 10,
+                      "y": 13.5
                     },
                     "Iny2w": {
-                      "content": "破城槌"
+                      "content": "破城槌",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "3"
+                      "content": "3",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
                     },
                     "bDR6E": {
-                      "fill": "$accent-indigo"
+                      "fill": "$accent-indigo",
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -1990,12 +2307,30 @@
                   "ref": "jqSBc",
                   "name": "c6",
                   "y": 225,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
-                      "content": "星詠みの魔女"
+                      "content": "星詠みの魔女",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "3"
+                      "content": "3",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
                       "type": "frame",
@@ -2021,6 +2356,23 @@
                           "height": 6
                         }
                       ]
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -2030,22 +2382,59 @@
                   "ref": "jqSBc",
                   "name": "c7",
                   "y": 270,
+                  "height": "fit_content",
                   "descendants": {
                     "dxlat": {
-                      "fill": "#EF4444"
+                      "fill": "#EF4444",
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
                     },
                     "kkEEw": {
                       "content": "攻撃",
-                      "fill": "#EF4444"
+                      "fill": "#EF4444",
+                      "x": 10,
+                      "y": 13.5
                     },
                     "Iny2w": {
-                      "content": "追い立てられた魔獣"
+                      "content": "追い立てられた魔獣",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "4"
+                      "content": "4",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
+                    },
+                    "bDR6E": {
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -2055,15 +2444,56 @@
                   "ref": "jqSBc",
                   "name": "c8",
                   "y": 315,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
-                      "content": "図書館"
+                      "content": "図書館",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "4"
+                      "content": "4",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
+                    },
+                    "bDR6E": {
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -2073,19 +2503,33 @@
                   "ref": "jqSBc",
                   "name": "c9",
                   "y": 360,
+                  "height": "fit_content",
                   "descendants": {
                     "dxlat": {
-                      "fill": "#EF4444"
+                      "fill": "#EF4444",
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
                     },
                     "kkEEw": {
                       "content": "攻撃",
-                      "fill": "#EF4444"
+                      "fill": "#EF4444",
+                      "x": 10,
+                      "y": 13.5
                     },
                     "Iny2w": {
-                      "content": "近衛騎士団"
+                      "content": "近衛騎士団",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "5"
+                      "content": "5",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
                       "type": "frame",
@@ -2113,6 +2557,23 @@
                           "fontWeight": "600"
                         }
                       ]
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -2122,15 +2583,56 @@
                   "ref": "jqSBc",
                   "name": "c10",
                   "y": 405,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
-                      "content": "舞踏会"
+                      "content": "舞踏会",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "5"
+                      "content": "5",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
+                    },
+                    "bDR6E": {
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 }
@@ -2681,7 +3183,132 @@
                   "type": "ref",
                   "ref": "nPwL2",
                   "width": "fill_container",
-                  "name": "constraints"
+                  "name": "constraints",
+                  "height": "fit_content",
+                  "y": 131,
+                  "descendants": {
+                    "mthj8": {
+                      "width": "fill_container",
+                      "height": "fit_content"
+                    },
+                    "jbl7I": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 10,
+                      "y": 7
+                    },
+                    "P9Qm5": {
+                      "y": 1
+                    },
+                    "QASOa": {
+                      "x": 17
+                    },
+                    "lTLex": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 62
+                    },
+                    "kujIw": {
+                      "x": 6,
+                      "y": 1
+                    },
+                    "BoZhB": {
+                      "x": 330,
+                      "y": 7
+                    },
+                    "mfEQr": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 34
+                    },
+                    "He64o": {
+                      "width": "fill_container",
+                      "height": "fit_content"
+                    },
+                    "He64o/SRXu7": {
+                      "x": 10,
+                      "y": 8
+                    },
+                    "Sl3mk": {
+                      "x": 2.5,
+                      "y": 2.5
+                    },
+                    "He64o/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "9dxDm": {
+                      "width": "fill_container",
+                      "y": 30
+                    },
+                    "H0M0C": {
+                      "width": "fill_container",
+                      "height": "fit_content"
+                    },
+                    "H0M0C/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "99rWo": {
+                      "x": 2.5,
+                      "y": 2.5
+                    },
+                    "H0M0C/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "4yjWg": {
+                      "width": "fill_container",
+                      "y": 62
+                    },
+                    "e4Lp5": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 63
+                    },
+                    "e4Lp5/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "e4Lp5/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "pJ1Cy": {
+                      "width": "fill_container",
+                      "y": 94
+                    },
+                    "wMsmO": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 95
+                    },
+                    "wMsmO/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "wMsmO/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "EzYHB": {
+                      "width": "fill_container",
+                      "y": 126
+                    },
+                    "uprZi": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 127
+                    },
+                    "uprZi/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "uprZi/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    }
+                  }
                 }
               ]
             },
@@ -2699,15 +3326,56 @@
                   "ref": "jqSBc",
                   "name": "c1",
                   "y": 0,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
-                      "content": "城壁"
+                      "content": "城壁",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "2"
+                      "content": "2",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
+                    },
+                    "bDR6E": {
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -2717,15 +3385,56 @@
                   "ref": "jqSBc",
                   "name": "c2",
                   "y": 45,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
-                      "content": "斥候"
+                      "content": "斥候",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "2"
+                      "content": "2",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
+                    },
+                    "bDR6E": {
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -2938,14 +3647,30 @@
                   "ref": "jqSBc",
                   "name": "c4",
                   "y": 135,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
                       "content": "交易船",
-                      "width": "fill_container"
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
                       "content": "3",
-                      "x": 253
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
                       "type": "frame",
@@ -2973,6 +3698,23 @@
                           "fontWeight": "600"
                         }
                       ]
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -2982,22 +3724,59 @@
                   "ref": "jqSBc",
                   "name": "c5",
                   "y": 180,
+                  "height": "fit_content",
                   "descendants": {
                     "dxlat": {
-                      "fill": "#EF4444"
+                      "fill": "#EF4444",
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
                     },
                     "kkEEw": {
                       "fill": "#EF4444",
-                      "content": "攻撃"
+                      "content": "攻撃",
+                      "x": 10,
+                      "y": 13.5
                     },
                     "Iny2w": {
-                      "content": "破城槌"
+                      "content": "破城槌",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "3"
+                      "content": "3",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
+                    },
+                    "bDR6E": {
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -3007,14 +3786,30 @@
                   "ref": "jqSBc",
                   "name": "c6",
                   "y": 225,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
                       "content": "星詠みの魔女",
-                      "width": "fill_container"
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
                       "content": "3",
-                      "x": 253
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
                       "type": "frame",
@@ -3040,6 +3835,23 @@
                           "height": 6
                         }
                       ]
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -3049,22 +3861,59 @@
                   "ref": "jqSBc",
                   "name": "c7",
                   "y": 270,
+                  "height": "fit_content",
                   "descendants": {
                     "dxlat": {
-                      "fill": "#EF4444"
+                      "fill": "#EF4444",
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
                     },
                     "kkEEw": {
                       "fill": "#EF4444",
-                      "content": "攻撃"
+                      "content": "攻撃",
+                      "x": 10,
+                      "y": 13.5
                     },
                     "Iny2w": {
-                      "content": "追い立てられた魔獣"
+                      "content": "追い立てられた魔獣",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "4"
+                      "content": "4",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
+                    },
+                    "bDR6E": {
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -3074,15 +3923,56 @@
                   "ref": "jqSBc",
                   "name": "c8",
                   "y": 315,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
-                      "content": "図書館"
+                      "content": "図書館",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "4"
+                      "content": "4",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
+                    },
+                    "bDR6E": {
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -3092,19 +3982,33 @@
                   "ref": "jqSBc",
                   "name": "c9",
                   "y": 360,
+                  "height": "fit_content",
                   "descendants": {
                     "dxlat": {
-                      "fill": "#EF4444"
+                      "fill": "#EF4444",
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
                     },
                     "kkEEw": {
                       "fill": "#EF4444",
-                      "content": "攻撃"
+                      "content": "攻撃",
+                      "x": 10,
+                      "y": 13.5
                     },
                     "Iny2w": {
-                      "content": "近衛騎士団"
+                      "content": "近衛騎士団",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "5"
+                      "content": "5",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
                       "type": "frame",
@@ -3132,6 +4036,23 @@
                           "fontWeight": "600"
                         }
                       ]
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 },
@@ -3141,15 +4062,56 @@
                   "ref": "jqSBc",
                   "name": "c10",
                   "y": 405,
+                  "height": "fit_content",
                   "descendants": {
+                    "dxlat": {
+                      "height": "fill_container"
+                    },
+                    "IIdJG": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "x": 4
+                    },
+                    "kkEEw": {
+                      "x": 10,
+                      "y": 13.5
+                    },
                     "Iny2w": {
-                      "content": "舞踏会"
+                      "content": "舞踏会",
+                      "width": "fill_container",
+                      "x": 64,
+                      "y": 11.5
                     },
                     "I9trD": {
-                      "content": "5"
+                      "content": "5",
+                      "x": 253,
+                      "y": 13.5
                     },
                     "PWBXJ": {
-                      "width": 18
+                      "width": 18,
+                      "height": "fit_content",
+                      "x": 269,
+                      "y": 17
+                    },
+                    "bDR6E": {
+                      "x": 6
+                    },
+                    "Thqxj": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 293,
+                      "y": 9
+                    },
+                    "v2eyf": {
+                      "x": 5.5,
+                      "y": 5.5
+                    },
+                    "6PyZA": {
+                      "x": 25
+                    },
+                    "XCZK1": {
+                      "x": 5.5,
+                      "y": 5.5
                     }
                   }
                 }
@@ -3606,7 +4568,132 @@
                   "type": "ref",
                   "ref": "nPwL2",
                   "width": "fill_container",
-                  "name": "constInst"
+                  "name": "constInst",
+                  "height": "fit_content",
+                  "y": 131,
+                  "descendants": {
+                    "mthj8": {
+                      "width": "fill_container",
+                      "height": "fit_content"
+                    },
+                    "jbl7I": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 10,
+                      "y": 7
+                    },
+                    "P9Qm5": {
+                      "y": 1
+                    },
+                    "QASOa": {
+                      "x": 17
+                    },
+                    "lTLex": {
+                      "width": "fit_content",
+                      "height": "fit_content",
+                      "x": 62
+                    },
+                    "kujIw": {
+                      "x": 6,
+                      "y": 1
+                    },
+                    "BoZhB": {
+                      "x": 330,
+                      "y": 7
+                    },
+                    "mfEQr": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 34
+                    },
+                    "He64o": {
+                      "width": "fill_container",
+                      "height": "fit_content"
+                    },
+                    "He64o/SRXu7": {
+                      "x": 10,
+                      "y": 8
+                    },
+                    "Sl3mk": {
+                      "x": 2.5,
+                      "y": 2.5
+                    },
+                    "He64o/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "9dxDm": {
+                      "width": "fill_container",
+                      "y": 30
+                    },
+                    "H0M0C": {
+                      "width": "fill_container",
+                      "height": "fit_content"
+                    },
+                    "H0M0C/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "99rWo": {
+                      "x": 2.5,
+                      "y": 2.5
+                    },
+                    "H0M0C/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "4yjWg": {
+                      "width": "fill_container",
+                      "y": 62
+                    },
+                    "e4Lp5": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 63
+                    },
+                    "e4Lp5/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "e4Lp5/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "pJ1Cy": {
+                      "width": "fill_container",
+                      "y": 94
+                    },
+                    "wMsmO": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 95
+                    },
+                    "wMsmO/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "wMsmO/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    },
+                    "EzYHB": {
+                      "width": "fill_container",
+                      "y": 126
+                    },
+                    "uprZi": {
+                      "width": "fill_container",
+                      "height": "fit_content",
+                      "y": 127
+                    },
+                    "uprZi/SRXu7": {
+                      "x": 10,
+                      "y": 8.5
+                    },
+                    "uprZi/dLGGd": {
+                      "x": 32,
+                      "y": 8
+                    }
+                  }
                 }
               ]
             },
@@ -5247,6 +6334,7 @@
               "name": "CB 1",
               "width": "fill_container",
               "y": 0,
+              "height": "fit_content",
               "descendants": {
                 "SRXu7": {
                   "fill": "$accent-indigo",
@@ -5256,6 +6344,8 @@
                   },
                   "justifyContent": "center",
                   "alignItems": "center",
+                  "x": 10,
+                  "y": 8,
                   "children": [
                     {
                       "type": "icon_font",
@@ -5271,7 +6361,9 @@
                 },
                 "dLGGd": {
                   "content": "攻撃カードを含まない",
-                  "fill": "$text-primary"
+                  "fill": "$text-primary",
+                  "x": 32,
+                  "y": 8
                 }
               }
             },
@@ -5290,6 +6382,7 @@
               "name": "CB 2",
               "width": "fill_container",
               "y": 31,
+              "height": "fit_content",
               "descendants": {
                 "SRXu7": {
                   "fill": "$accent-indigo",
@@ -5299,6 +6392,8 @@
                   },
                   "justifyContent": "center",
                   "alignItems": "center",
+                  "x": 10,
+                  "y": 8.5,
                   "children": [
                     {
                       "type": "icon_font",
@@ -5314,7 +6409,9 @@
                 },
                 "dLGGd": {
                   "content": "リンク0の数 ≧ リンク2の数",
-                  "fill": "$text-primary"
+                  "fill": "$text-primary",
+                  "x": 32,
+                  "y": 8
                 }
               }
             },
@@ -5333,9 +6430,16 @@
               "name": "CB 3",
               "width": "fill_container",
               "y": 63,
+              "height": "fit_content",
               "descendants": {
+                "SRXu7": {
+                  "x": 10,
+                  "y": 8.5
+                },
                 "dLGGd": {
-                  "content": "コスト5以上を2枚以上含む"
+                  "content": "コスト5以上を2枚以上含む",
+                  "x": 32,
+                  "y": 8
                 }
               }
             },
@@ -5354,9 +6458,16 @@
               "name": "CB 4",
               "width": "fill_container",
               "y": 95,
+              "height": "fit_content",
               "descendants": {
+                "SRXu7": {
+                  "x": 10,
+                  "y": 8.5
+                },
                 "dLGGd": {
-                  "content": "災いカードを1枚以上含む"
+                  "content": "災いカードを1枚以上含む",
+                  "x": 32,
+                  "y": 8
                 }
               }
             },
@@ -5375,9 +6486,16 @@
               "name": "CB 5",
               "width": "fill_container",
               "y": 127,
+              "height": "fit_content",
               "descendants": {
+                "SRXu7": {
+                  "x": 10,
+                  "y": 8.5
+                },
                 "dLGGd": {
-                  "content": "リンク2を3枚以上含む"
+                  "content": "リンク2を3枚以上含む",
+                  "x": 32,
+                  "y": 8
                 }
               }
             }
