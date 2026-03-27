@@ -209,6 +209,9 @@
 	});
 
 	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
+		const card = selectedCommons[index];
+		if (card && getPinnedCardIds().has(card.id)) return;
+
 		const clientX = isTouchEvent(event) ? event.touches[0].clientX : event.clientX;
 		const clientY = isTouchEvent(event) ? event.touches[0].clientY : event.clientY;
 
