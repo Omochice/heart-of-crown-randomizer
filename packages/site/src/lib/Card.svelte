@@ -41,7 +41,13 @@
 		card.hasChild ? (card.cards[0]?.mainType ?? ["action"]) : card.mainType,
 	);
 
-	const stripColor = $derived(mainTypes.includes("attack") ? "#EF4444" : "var(--accent-indigo)");
+	const stripColor = $derived(
+		mainTypes.includes("attack")
+			? "#EF4444"
+			: mainTypes.includes("territory")
+				? "var(--accent-green)"
+				: "var(--accent-indigo)",
+	);
 
 	const categoryLabel = $derived(mainTypeLabels[mainTypes[0]]);
 
