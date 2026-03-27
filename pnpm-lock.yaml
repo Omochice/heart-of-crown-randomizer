@@ -189,7 +189,7 @@ importers:
         version: 28.1.0
       lucide-svelte:
         specifier: ^0.577.0
-        version: 0.577.0(svelte@5.53.10)
+        version: 0.577.0(svelte@5.55.0)
       prettier:
         specifier: 3.8.1
         version: 3.8.1
@@ -6165,9 +6165,9 @@ snapshots:
 
   lru_map@0.4.1: {}
 
-  lucide-svelte@0.577.0(svelte@5.53.10):
+  lucide-svelte@0.577.0(svelte@5.55.0):
     dependencies:
-      svelte: 5.53.10
+      svelte: 5.55.0
 
   lz-string@1.5.0: {}
 
