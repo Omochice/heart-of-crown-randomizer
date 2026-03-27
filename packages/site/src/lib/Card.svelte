@@ -37,13 +37,13 @@
 		princess: "姫",
 	};
 
-	const primaryMainType = $derived<MainType>(
-		card.hasChild ? (card.cards[0]?.mainType[0] ?? "action") : card.mainType[0],
+	const mainTypes = $derived<MainType[]>(
+		card.hasChild ? (card.cards[0]?.mainType ?? ["action"]) : card.mainType,
 	);
 
-	const stripColor = $derived(primaryMainType === "attack" ? "#EF4444" : "var(--accent-indigo)");
+	const stripColor = $derived(mainTypes.includes("attack") ? "#EF4444" : "var(--accent-indigo)");
 
-	const categoryLabel = $derived(mainTypeLabels[primaryMainType]);
+	const categoryLabel = $derived(mainTypeLabels[mainTypes[0]]);
 
 	const linkCount = $derived(card.hasChild ? (card.cards[0]?.link ?? 0) : card.link);
 
