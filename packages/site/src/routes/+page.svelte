@@ -6,18 +6,20 @@
 	import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
 	import { untrack } from "svelte";
 	import Card from "$lib/Card.svelte";
+	import CardDetail from "$lib/CardDetail.svelte";
 	import { isTouchEvent } from "$lib/utils/is-touch-event";
 	import { pinnedCardIds, excludedCardIds, getPinnedCards } from "$lib/stores/card-state.svelte";
 	import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
 	import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
 	import { selectWithConstraints } from "$lib/utils/select-with-constraints";
+	import { Shuffle, Plus, Pin, Ban } from "lucide-svelte";
 
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
 	let shareUrl = $state("");
 	let errorMessage = $state("");
+	let detailCard: CommonCard | null = $state(null);
 
-	// This allows browser back/forward to update the displayed cards
 	$effect(() => {
 		const commonIds = $page.url.searchParams.getAll("card");
 		const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
@@ -25,7 +27,6 @@
 			.map((id) => allCommons.find((c) => c.id === Number.parseInt(id)))
 			.filter(Boolean) as CommonCard[];
 
-		// Only update if actually changed to avoid infinite loops
 		if (JSON.stringify(selectedCommons) !== JSON.stringify(newSelectedCommons)) {
 			selectedCommons = newSelectedCommons;
 		}
@@ -45,7 +46,6 @@
 		const newPinnedIds = parseCardIdsFromUrl($page.url, "pin");
 		const newExcludedIds = parseCardIdsFromUrl($page.url, "exclude");
 
-		// Clear and repopulate to ensure sync with URL
 		pinnedCardIds.clear();
 		excludedCardIds.clear();
 
@@ -65,9 +65,7 @@
 	 * each individual pin/exclude operation).
 	 *
 	 * We use untrack() for reading $page.url to avoid circular dependency
-	 * with the URL → State sync effect (otherwise, updating URL would trigger
-	 * URL → State sync, which would trigger State → URL sync, creating an
-	 * infinite loop).
+	 * with the URL → State sync effect.
 	 */
 	$effect(() => {
 		const _ = pinnedCardIds.size;
@@ -115,7 +113,7 @@
 			numberOfCommons,
 		);
 		selectedCommons = randomCards.sort((a, b) => a.id - b.id);
-		errorMessage = ""; // Clear error message on success
+		errorMessage = "";
 
 		goto(`?${cardsToQuery(selectedCommons)}`, { keepFocus: true, noScroll: true });
 		updateShareUrl();
@@ -141,14 +139,13 @@
 			});
 	}
 
-	const VERTICAL_CANCEL_PX = 100; // Vertical movement threshold to cancel horizontal swipe
-	const TRANSITION_MS = 200; // Animation duration in milliseconds
+	const VERTICAL_CANCEL_PX = 100;
+	const TRANSITION_MS = 200;
 
 	function animateCardReset(element: HTMLElement) {
 		element.style.transition = `transform ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`;
 		element.style.transform = "";
 		element.style.opacity = "";
-		// Clear inline transition after animation completes
 		setTimeout(() => {
 			if (element.isConnected) {
 				element.style.transition = "";
@@ -171,7 +168,7 @@
 		isDragging: false,
 		cardElement: null as HTMLElement | null,
 		cardIndex: -1,
-		threshold: 100, // Threshold for swipe deletion (pixels)
+		threshold: 100,
 	});
 
 	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
@@ -185,10 +182,8 @@
 		swipeState.cardElement = event.currentTarget as HTMLElement;
 		swipeState.cardIndex = index;
 
-		// Disable transition at start to avoid conflicts during drag
 		swipeState.cardElement.style.transition = "none";
 
-		// For mouse events, listen at document level
 		if (!isTouchEvent(event)) {
 			document.addEventListener("mousemove", handleSwipeMove);
 			document.addEventListener("mouseup", handleSwipeEnd);
@@ -204,13 +199,11 @@
 			(isTouchEvent(event) ? event.touches[0].clientY : event.clientY) - swipeState.startY,
 		);
 
-		// Cancel swipe if vertical movement is too large (increased threshold for better responsiveness)
 		if (deltaY > VERTICAL_CANCEL_PX) {
 			handleSwipeCancel();
 			return;
 		}
 
-		// Prevent default for touch events only when horizontal movement exceeds threshold and is greater than vertical movement
 		if (
 			isTouchEvent(event) &&
 			event.cancelable &&
@@ -222,7 +215,6 @@
 
 		swipeState.currentX = clientX;
 
-		// Update card position with hardware acceleration
 		swipeState.cardElement.style.transform = `translate3d(${deltaX}px, 0, 0)`;
 		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
 	}
@@ -232,19 +224,15 @@
 
 		const deltaX = swipeState.currentX - swipeState.startX;
 
-		// Delete card if threshold exceeded
 		if (Math.abs(deltaX) > swipeState.threshold) {
-			// Delete immediately (no animation)
 			removeSelectedCommon(swipeState.cardIndex);
 		} else {
-			// Return to original position with smooth transition
 			const el = swipeState.cardElement;
 			if (el) {
 				animateCardReset(el);
 			}
 		}
 
-		// Clean up state and event listeners
 		resetSwipeState();
 	}
 
@@ -254,7 +242,6 @@
 			animateCardReset(el);
 		}
 
-		// Clean up state and event listeners
 		resetSwipeState();
 	}
 
@@ -294,108 +281,294 @@
 	function getOriginalIndex(cardId: number): number {
 		return selectedCommons.findIndex((c) => c.id === cardId);
 	}
+
+	const pinnedCount = $derived(pinnedCardIds.size);
+	const excludedCount = $derived(excludedCardIds.size);
+	const missingCount = $derived(numberOfCommons - selectedCommons.length);
 </script>
 
-<div class="container mx-auto p-4 max-w-3xl">
-	<h1 class="text-3xl font-bold mb-6 text-center">ハートオブクラウンランダマイザー</h1>
-
-	<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-		<h2 class="text-xl font-semibold mb-4">オプション設定</h2>
-
-		<fieldset class="mb-6">
-			<legend class="block mb-2">一般カード枚数:</legend>
-			<div class="flex gap-4">
-				<label class="flex items-center">
-					<input
-						type="radio"
-						name="numberOfCommons"
-						value={10}
-						bind:group={numberOfCommons}
-						class="mr-2"
-					/>
-					10枚
-				</label>
-				<label class="flex items-center">
-					<input
-						type="radio"
-						name="numberOfCommons"
-						value={14}
-						bind:group={numberOfCommons}
-						class="mr-2"
-					/>
-					14枚
-				</label>
-			</div>
-		</fieldset>
-
-		<div class="grid grid-cols-1 gap-4">
-			<button
-				onclick={drawRandomCards}
-				class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-			>
-				一般カードを引く
-			</button>
-
-			<button
-				onclick={drawMissingCommons}
-				class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-				disabled={selectedCommons.length >= numberOfCommons}
-			>
-				一般カードを追加 ({numberOfCommons - selectedCommons.length})
-			</button>
+<div class="page-container">
+	<header class="page-header">
+		<div class="page-title">
+			<span class="title-main">ハートオブクラウン</span>
+			<span class="title-accent">ランダマイザー</span>
 		</div>
-
-		{#if errorMessage}
-			<div
-				class="mt-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded"
-				role="alert"
-			>
-				<p>{errorMessage}</p>
-			</div>
+		{#if selectedCommons.length > 0}
+			<span class="count-badge">{selectedCommons.length}枚</span>
 		{/if}
+	</header>
+
+	<div
+		class="segmented-control"
+		role="radiogroup"
+		aria-label="一般カード枚数"
+	>
+		<button
+			type="button"
+			class="segment"
+			class:segment--active={numberOfCommons === 10}
+			role="radio"
+			aria-checked={numberOfCommons === 10}
+			onclick={() => (numberOfCommons = 10)}
+		>
+			10枚
+		</button>
+		<button
+			type="button"
+			class="segment"
+			class:segment--active={numberOfCommons === 14}
+			role="radio"
+			aria-checked={numberOfCommons === 14}
+			onclick={() => (numberOfCommons = 14)}
+		>
+			14枚
+		</button>
 	</div>
 
-	{#if selectedCommons.length > 0}
-		<div class="bg-white rounded-lg shadow-md p-6 mb-6">
-			<h2 class="text-xl font-semibold mb-4">結果</h2>
-
-			<div class="mb-6">
-				<div class="grid grid-cols-1 gap-4">
-					{#each [...basicCards, ...farEasternCards] as common (common.id)}
-						<Card
-							card={common}
-							originalIndex={getOriginalIndex(common.id)}
-							onSwipeStart={handleSwipeStart}
-							onSwipeMove={handleSwipeMove}
-							onSwipeEnd={handleSwipeEnd}
-							onSwipeCancel={handleSwipeCancel}
-						/>
-					{/each}
-				</div>
-			</div>
-
-			<div class="mt-6">
-				<h3 class="text-lg font-semibold mb-2">結果を共有</h3>
-				<div class="flex flex-wrap gap-2">
-					<button
-						onclick={copyToClipboard}
-						class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300"
-					>
-						URLをコピー
-					</button>
-				</div>
-			</div>
-
-			<div class="mt-4">
-				<p class="text-sm text-gray-600 break-all">共有URL: {shareUrl}</p>
-			</div>
+	{#if pinnedCount > 0 || excludedCount > 0}
+		<div class="filter-chips">
+			{#if pinnedCount > 0}
+				<span class="chip">
+					<Pin size={12} />
+					Pin {pinnedCount}
+				</span>
+			{/if}
+			{#if excludedCount > 0}
+				<span class="chip">
+					<Ban size={12} />
+					Excluded {excludedCount}
+				</span>
+			{/if}
 		</div>
 	{/if}
+
+	{#if errorMessage}
+		<div
+			class="error-message"
+			role="alert"
+		>
+			<p>{errorMessage}</p>
+		</div>
+	{/if}
+
+	<div class="card-grid">
+		{#each [...basicCards, ...farEasternCards] as common (common.id)}
+			<Card
+				card={common}
+				originalIndex={getOriginalIndex(common.id)}
+				onSwipeStart={handleSwipeStart}
+				onSwipeMove={handleSwipeMove}
+				onSwipeEnd={handleSwipeEnd}
+				onSwipeCancel={handleSwipeCancel}
+				onclick={() => (detailCard = common)}
+			/>
+		{/each}
+	</div>
+
+	<div class="action-buttons">
+		<button
+			type="button"
+			class="btn-primary"
+			onclick={drawRandomCards}
+		>
+			<Shuffle size={16} />
+			引き直す
+		</button>
+
+		<button
+			type="button"
+			class="btn-secondary"
+			onclick={drawMissingCommons}
+			disabled={selectedCommons.length >= numberOfCommons}
+		>
+			<Plus size={16} />
+			追加 ({missingCount})
+		</button>
+
+		{#if shareUrl}
+			<button
+				type="button"
+				class="btn-secondary"
+				onclick={copyToClipboard}
+			>
+				共有
+			</button>
+		{/if}
+	</div>
 </div>
+
+{#if detailCard}
+	<CardDetail
+		card={detailCard}
+		onClose={() => (detailCard = null)}
+	/>
+{/if}
 
 <style>
 	:global(body) {
-		background-color: #f5f7fa;
-		font-family: "Helvetica Neue", Arial, sans-serif;
+		background-color: var(--bg-primary);
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+		margin: 0;
+	}
+
+	.page-container {
+		max-width: 48rem;
+		margin: 0 auto;
+		padding: 16px;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.page-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.page-title {
+		display: flex;
+		align-items: baseline;
+		gap: 2px;
+	}
+
+	.title-main {
+		font-size: 18px;
+		font-weight: 700;
+		color: var(--text-primary);
+	}
+
+	.title-accent {
+		font-size: 18px;
+		color: var(--accent-coral);
+	}
+
+	.count-badge {
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--accent-green);
+		background: #f0fdf4;
+		padding: 4px 10px;
+		border-radius: 10px;
+	}
+
+	.segmented-control {
+		display: flex;
+		background: var(--bg-card);
+		border-radius: 18px;
+		padding: 3px;
+		height: 34px;
+	}
+
+	.segment {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border: none;
+		background: transparent;
+		border-radius: 15px;
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--text-secondary);
+		cursor: pointer;
+		transition:
+			background 0.15s,
+			color 0.15s;
+	}
+
+	.segment--active {
+		background: var(--bg-primary);
+		color: var(--text-primary);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+	}
+
+	.filter-chips {
+		display: flex;
+		gap: 8px;
+	}
+
+	.chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		padding: 6px 12px;
+		border-radius: 10px;
+		background: var(--bg-card);
+		font-size: 12px;
+		font-weight: 600;
+		color: var(--text-secondary);
+	}
+
+	.error-message {
+		background: #fef2f2;
+		border: 1px solid #fecaca;
+		color: #dc2626;
+		padding: 10px 14px;
+		border-radius: 10px;
+		font-size: 13px;
+	}
+
+	.error-message p {
+		margin: 0;
+	}
+
+	.card-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	.action-buttons {
+		display: flex;
+		gap: 8px;
+		padding-top: 4px;
+	}
+
+	.btn-primary {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		height: 40px;
+		border: none;
+		border-radius: 20px;
+		background: var(--accent-coral);
+		color: white;
+		font-size: 14px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: opacity 0.15s;
+	}
+
+	.btn-primary:hover {
+		opacity: 0.9;
+	}
+
+	.btn-secondary {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		height: 40px;
+		border: 1px solid var(--border-default);
+		border-radius: 20px;
+		background: var(--bg-primary);
+		color: var(--text-primary);
+		font-size: 14px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background 0.15s;
+	}
+
+	.btn-secondary:hover {
+		background: var(--bg-card);
+	}
+
+	.btn-secondary:disabled {
+		opacity: 0.4;
+		cursor: not-allowed;
 	}
 </style>
