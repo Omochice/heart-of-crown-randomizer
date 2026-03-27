@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-	import type { MainType } from "@heart-of-crown-randomizer/card/type";
 	import { getCardState, toggleExclude, togglePin } from "$lib/stores/card-state.svelte";
+	import { getStripColor, getCategoryLabel } from "$lib/utils/card-display";
 	import { Pin, Ban } from "lucide-svelte";
 
 	type Props = {
@@ -28,29 +28,8 @@
 	const isPinned = $derived(state === "pinned");
 	const isExcluded = $derived(state === "excluded");
 
-	const mainTypeLabels: Record<MainType, string> = {
-		action: "行動",
-		attack: "攻撃",
-		territory: "領地",
-		succession: "継承",
-		disaster: "災い",
-		princess: "姫",
-	};
-
-	const mainTypes = $derived<MainType[]>(
-		card.hasChild ? (card.cards[0]?.mainType ?? ["action"]) : card.mainType,
-	);
-
-	const stripColor = $derived(
-		mainTypes.includes("attack")
-			? "#EF4444"
-			: mainTypes.includes("territory")
-				? "var(--accent-green)"
-				: "var(--accent-indigo)",
-	);
-
-	const categoryLabel = $derived(mainTypeLabels[mainTypes[0]]);
-
+	const stripColor = $derived(getStripColor(card));
+	const categoryLabel = $derived(getCategoryLabel(card));
 	const linkCount = $derived(card.hasChild ? (card.cards[0]?.link ?? 0) : card.link);
 
 	function handleTogglePin(e: MouseEvent) {

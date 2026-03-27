@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { CommonCard, MainType } from "@heart-of-crown-randomizer/card/type";
+	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+	import { getStripColor, getCategoryLabel } from "$lib/utils/card-display";
 	import { X, Layers, Coins } from "lucide-svelte";
 	import { fly, fade } from "svelte/transition";
 
@@ -10,22 +11,8 @@
 
 	let { card, onClose }: Props = $props();
 
-	const mainTypeLabels: Record<MainType, string> = {
-		action: "行動",
-		attack: "攻撃",
-		territory: "領地",
-		succession: "継承",
-		disaster: "災い",
-		princess: "姫",
-	};
-
-	const primaryMainType = $derived<MainType>(
-		card.hasChild ? (card.cards[0]?.mainType[0] ?? "action") : card.mainType[0],
-	);
-
-	const stripColor = $derived(primaryMainType === "attack" ? "#EF4444" : "var(--accent-indigo)");
-
-	const categoryLabel = $derived(mainTypeLabels[primaryMainType]);
+	const stripColor = $derived(getStripColor(card));
+	const categoryLabel = $derived(getCategoryLabel(card));
 
 	const effect = $derived(card.hasChild ? (card.cards[0]?.effect ?? "") : card.effect);
 
