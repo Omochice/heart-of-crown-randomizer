@@ -3,6 +3,7 @@
 	import { getStripColor, getCategoryLabel } from "$lib/utils/card-display";
 	import { X, Layers, Coins } from "lucide-svelte";
 	import { fly, fade } from "svelte/transition";
+	import { onMount } from "svelte";
 
 	type Props = {
 		card: CommonCard;
@@ -23,6 +24,12 @@
 	);
 
 	const coin = $derived(card.hasChild ? (card.cards[0]?.coin ?? undefined) : card.coin);
+
+	let closeButtonRef: HTMLButtonElement;
+
+	onMount(() => {
+		closeButtonRef?.focus();
+	});
 
 	function handleBackdropClick() {
 		onClose();
@@ -46,6 +53,7 @@
 	<div
 		class="detail-sheet"
 		role="dialog"
+		aria-modal="true"
 		tabindex="-1"
 		aria-label="カード詳細: {card.name}"
 		transition:fly={{ y: 400, duration: 300 }}
@@ -63,6 +71,7 @@
 				<button
 					type="button"
 					class="detail-close"
+					bind:this={closeButtonRef}
 					onclick={onClose}
 					aria-label="閉じる"
 				>
@@ -115,7 +124,7 @@
 			{#if card.hasChild && card.cards.length > 1}
 				<div class="detail-section">
 					<h3 class="detail-section-label">バリエーション</h3>
-					{#each card.cards as variant, i}
+					{#each card.cards as variant, i (i)}
 						<div class="detail-variant">
 							<span class="detail-variant-name">{variant.name}</span>
 							<span class="detail-variant-effect">{variant.effect}</span>
