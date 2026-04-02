@@ -15,7 +15,7 @@ export function getMainTypes(card: CommonCard): MainType[] {
 
 export function getStripColor(card: CommonCard): string {
 	const types = getMainTypes(card);
-	if (types.includes("attack")) return "#EF4444";
+	if (types.includes("attack")) return "var(--accent-red)";
 	if (types.includes("territory")) return "var(--accent-green)";
 	return "var(--accent-indigo)";
 }
