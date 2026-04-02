@@ -22,6 +22,8 @@
 		type="button"
 		class="exclude-toggle-header"
 		aria-label="除外 {cards.length}"
+		aria-expanded={expanded}
+		aria-controls="exclude-panel"
 		onclick={() => (expanded = !expanded)}
 	>
 		<span class="exclude-toggle-left">
@@ -39,7 +41,10 @@
 	</button>
 
 	{#if expanded && cards.length > 0}
-		<div class="exclude-card-list">
+		<div
+			class="exclude-card-list"
+			id="exclude-panel"
+		>
 			{#each cards as card, i (card.id)}
 				{#if i > 0}
 					<div class="exclude-divider"></div>
@@ -92,20 +97,20 @@
 		display: flex;
 		align-items: center;
 		gap: 5px;
-		color: #ff6b6b;
+		color: var(--accent-coral);
 	}
 
 	.exclude-label {
 		font-size: 10px;
 		font-weight: 600;
-		color: #ff6b6b;
+		color: var(--accent-coral);
 	}
 
 	.exclude-badge {
 		font-size: 9px;
 		font-weight: 700;
-		color: #ff6b6b;
-		background: #fff0f0;
+		color: var(--accent-coral);
+		background: var(--bg-accent-coral-light);
 		padding: 1px 6px;
 		border-radius: 8px;
 	}
@@ -162,8 +167,8 @@
 		height: 18px;
 		border-radius: 9px;
 		border: none;
-		background: #fff0f0;
-		color: #ff6b6b;
+		background: var(--bg-accent-coral-light);
+		color: var(--accent-coral);
 		display: flex;
 		align-items: center;
 		justify-content: center;
