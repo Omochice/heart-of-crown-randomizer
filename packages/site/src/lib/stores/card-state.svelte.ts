@@ -1,29 +1,42 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 
-/**
- * Card state type definitions
- */
 export type CardStateType = "normal" | "pinned" | "excluded";
 
 /**
- * Internal state: pinned and excluded card IDs
- * WARNING: Module-scoped state can persist across SSR requests.
- * Initialize from URL in +page.svelte $effect to avoid stale data.
- *
- * We use objects with Set properties rather than exporting Sets directly
- * because Svelte 5 runes do not allow reassigning exported state.
+ * We reassign entire Sets rather than mutating them because Svelte 5's
+ * $state proxy does not reliably propagate Set.add()/delete() mutations
+ * to $derived in other modules. Property reassignment guarantees the
+ * proxy detects the change.
  */
 const state = $state({
 	pinnedCardIds: new Set<number>(),
 	excludedCardIds: new Set<number>(),
 });
 
-export const pinnedCardIds = state.pinnedCardIds;
-export const excludedCardIds = state.excludedCardIds;
+export function getPinnedCardIds(): ReadonlySet<number> {
+	return state.pinnedCardIds;
+}
 
-/**
- * Derived state: get card state by ID
- */
+export function getExcludedCardIds(): ReadonlySet<number> {
+	return state.excludedCardIds;
+}
+
+export function setPinnedCardIds(ids: Set<number>): void {
+	const nextPinned = new Set(ids);
+	const nextExcluded = new Set(state.excludedCardIds);
+	for (const id of nextPinned) nextExcluded.delete(id);
+	state.pinnedCardIds = nextPinned;
+	state.excludedCardIds = nextExcluded;
+}
+
+export function setExcludedCardIds(ids: Set<number>): void {
+	const nextExcluded = new Set(ids);
+	const nextPinned = new Set(state.pinnedCardIds);
+	for (const id of nextExcluded) nextPinned.delete(id);
+	state.excludedCardIds = nextExcluded;
+	state.pinnedCardIds = nextPinned;
+}
+
 export function getCardState(cardId: number): CardStateType {
 	if (state.pinnedCardIds.has(cardId)) return "pinned";
 	if (state.excludedCardIds.has(cardId)) return "excluded";
@@ -31,47 +44,49 @@ export function getCardState(cardId: number): CardStateType {
 }
 
 /**
- * Toggle pin state for a card
- *
  * We auto-remove from excludedCardIds rather than requiring the caller
  * to manually unexclude first, because the UI interaction is a single
  * button click and users expect immediate state change.
  */
 export function togglePin(cardId: number): void {
-	if (state.pinnedCardIds.has(cardId)) {
-		state.pinnedCardIds.delete(cardId);
+	const nextPinned = new Set(state.pinnedCardIds);
+	const nextExcluded = new Set(state.excludedCardIds);
+
+	if (nextPinned.has(cardId)) {
+		nextPinned.delete(cardId);
 	} else {
-		state.pinnedCardIds.add(cardId);
-		state.excludedCardIds.delete(cardId); // Cannot be both pinned and excluded
+		nextPinned.add(cardId);
+		nextExcluded.delete(cardId); // Cannot be both pinned and excluded
 	}
+
+	state.pinnedCardIds = nextPinned;
+	state.excludedCardIds = nextExcluded;
 }
 
 /**
- * Toggle exclude state for a card
- *
  * We auto-remove from pinnedCardIds rather than requiring the caller
  * to manually unpin first, because the UI interaction is a single
  * button click and users expect immediate state change.
  */
 export function toggleExclude(cardId: number): void {
-	if (state.excludedCardIds.has(cardId)) {
-		state.excludedCardIds.delete(cardId);
+	const nextPinned = new Set(state.pinnedCardIds);
+	const nextExcluded = new Set(state.excludedCardIds);
+
+	if (nextExcluded.has(cardId)) {
+		nextExcluded.delete(cardId);
 	} else {
-		state.excludedCardIds.add(cardId);
-		state.pinnedCardIds.delete(cardId); // Cannot be both excluded and pinned
+		nextExcluded.add(cardId);
+		nextPinned.delete(cardId); // Cannot be both excluded and pinned
 	}
+
+	state.pinnedCardIds = nextPinned;
+	state.excludedCardIds = nextExcluded;
 }
 
-/**
- * Get pinned cards from a list of cards
- */
 export function getPinnedCards(allCards: CommonCard[]): CommonCard[] {
 	return allCards.filter((card) => state.pinnedCardIds.has(card.id));
 }
 
-/**
- * Get excluded cards from a list of cards
- */
 export function getExcludedCards(allCards: CommonCard[]): CommonCard[] {
 	return allCards.filter((card) => state.excludedCardIds.has(card.id));
 }

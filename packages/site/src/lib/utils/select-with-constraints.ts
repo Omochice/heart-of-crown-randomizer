@@ -11,7 +11,7 @@ import { select } from "@heart-of-crown-randomizer/randomizer";
 export function selectWithConstraints(
 	allCards: CommonCard[],
 	pinnedCards: CommonCard[],
-	excludedIds: Set<number>,
+	excludedIds: ReadonlySet<number>,
 	count: number,
 ): CommonCard[] {
 	return select(allCards, count, {

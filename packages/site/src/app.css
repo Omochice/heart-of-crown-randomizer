@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+:root {
+	--accent-coral: #ff6b6b;
+	--accent-green: #22c55e;
+	--accent-indigo: #6366f1;
+	--accent-red: #ef4444;
+	--bg-accent-coral-light: #fff0f0;
+	--bg-pinned: #eff6ff;
+	--accent-yellow: #fcd34d;
+	--bg-card: #f6f7f8;
+	--bg-highlight: #fffbeb;
+	--bg-primary: #ffffff;
+	--border-default: #e5e7eb;
+	--border-subtle: #f3f4f6;
+	--text-primary: #1a1a1a;
+	--text-secondary: #6b7280;
+	--text-tertiary: #9ca3af;
+}

@@ -1,6 +1,11 @@
 import { describe, expect, it, beforeEach } from "vitest";
 import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
-import { pinnedCardIds, excludedCardIds } from "$lib/stores/card-state.svelte";
+import {
+	getPinnedCardIds,
+	getExcludedCardIds,
+	setPinnedCardIds,
+	setExcludedCardIds,
+} from "$lib/stores/card-state.svelte";
 
 describe("parseCardIdsFromUrl", () => {
 	it("should parse single card ID from URL parameter", () => {
@@ -152,8 +157,8 @@ describe("buildUrlWithCardState", () => {
 describe("URL → State sync (integration)", () => {
 	beforeEach(() => {
 		// Clear state before each test
-		pinnedCardIds.clear();
-		excludedCardIds.clear();
+		setPinnedCardIds(new Set());
+		setExcludedCardIds(new Set());
 	});
 
 	it("should sync pinned card IDs from URL to state", () => {
@@ -161,14 +166,11 @@ describe("URL → State sync (integration)", () => {
 		const pinnedIds = parseCardIdsFromUrl(url, "pin");
 
 		// Simulate the $effect behavior
-		pinnedCardIds.clear();
-		for (const id of pinnedIds) {
-			pinnedCardIds.add(id);
-		}
+		setPinnedCardIds(pinnedIds);
 
-		expect(pinnedCardIds.has(1)).toBe(true);
-		expect(pinnedCardIds.has(5)).toBe(true);
-		expect(pinnedCardIds.size).toBe(2);
+		expect(getPinnedCardIds().has(1)).toBe(true);
+		expect(getPinnedCardIds().has(5)).toBe(true);
+		expect(getPinnedCardIds().size).toBe(2);
 	});
 
 	it("should sync excluded card IDs from URL to state", () => {
@@ -176,14 +178,11 @@ describe("URL → State sync (integration)", () => {
 		const excludedIds = parseCardIdsFromUrl(url, "exclude");
 
 		// Simulate the $effect behavior
-		excludedCardIds.clear();
-		for (const id of excludedIds) {
-			excludedCardIds.add(id);
-		}
+		setExcludedCardIds(excludedIds);
 
-		expect(excludedCardIds.has(7)).toBe(true);
-		expect(excludedCardIds.has(9)).toBe(true);
-		expect(excludedCardIds.size).toBe(2);
+		expect(getExcludedCardIds().has(7)).toBe(true);
+		expect(getExcludedCardIds().has(9)).toBe(true);
+		expect(getExcludedCardIds().size).toBe(2);
 	});
 
 	it("should sync both pinned and excluded card IDs from URL to state", () => {
@@ -192,58 +191,45 @@ describe("URL → State sync (integration)", () => {
 		const excludedIds = parseCardIdsFromUrl(url, "exclude");
 
 		// Simulate the $effect behavior
-		pinnedCardIds.clear();
-		excludedCardIds.clear();
-		for (const id of pinnedIds) {
-			pinnedCardIds.add(id);
-		}
-		for (const id of excludedIds) {
-			excludedCardIds.add(id);
-		}
+		setPinnedCardIds(pinnedIds);
+		setExcludedCardIds(excludedIds);
 
-		expect(pinnedCardIds.has(1)).toBe(true);
-		expect(pinnedCardIds.has(5)).toBe(true);
-		expect(excludedCardIds.has(7)).toBe(true);
+		expect(getPinnedCardIds().has(1)).toBe(true);
+		expect(getPinnedCardIds().has(5)).toBe(true);
+		expect(getExcludedCardIds().has(7)).toBe(true);
 	});
 
 	it("should clear state when URL has no pin/exclude parameters", () => {
 		// Set initial state
-		pinnedCardIds.add(1);
-		excludedCardIds.add(7);
+		setPinnedCardIds(new Set([1]));
+		setExcludedCardIds(new Set([7]));
 
 		const url = new URL("http://example.com");
 		const pinnedIds = parseCardIdsFromUrl(url, "pin");
 		const excludedIds = parseCardIdsFromUrl(url, "exclude");
 
 		// Simulate the $effect behavior
-		pinnedCardIds.clear();
-		excludedCardIds.clear();
-		for (const id of pinnedIds) {
-			pinnedCardIds.add(id);
-		}
-		for (const id of excludedIds) {
-			excludedCardIds.add(id);
-		}
+		setPinnedCardIds(pinnedIds);
+		setExcludedCardIds(excludedIds);
 
-		expect(pinnedCardIds.size).toBe(0);
-		expect(excludedCardIds.size).toBe(0);
+		expect(getPinnedCardIds().size).toBe(0);
+		expect(getExcludedCardIds().size).toBe(0);
 	});
 });
 
 describe("State → URL sync (integration)", () => {
 	beforeEach(() => {
 		// Clear state before each test
-		pinnedCardIds.clear();
-		excludedCardIds.clear();
+		setPinnedCardIds(new Set());
+		setExcludedCardIds(new Set());
 	});
 
 	it("should build URL with current pinned card IDs when state changes", () => {
 		// Set up initial state
-		pinnedCardIds.add(1);
-		pinnedCardIds.add(5);
+		setPinnedCardIds(new Set([1, 5]));
 
 		const currentUrl = new URL("http://example.com");
-		const result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+		const result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
 
 		expect(result.searchParams.getAll("pin")).toContain("1");
 		expect(result.searchParams.getAll("pin")).toContain("5");
@@ -252,11 +238,10 @@ describe("State → URL sync (integration)", () => {
 
 	it("should build URL with current excluded card IDs when state changes", () => {
 		// Set up initial state
-		excludedCardIds.add(7);
-		excludedCardIds.add(9);
+		setExcludedCardIds(new Set([7, 9]));
 
 		const currentUrl = new URL("http://example.com");
-		const result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+		const result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
 
 		expect(result.searchParams.getAll("exclude")).toContain("7");
 		expect(result.searchParams.getAll("exclude")).toContain("9");
@@ -265,12 +250,11 @@ describe("State → URL sync (integration)", () => {
 
 	it("should build URL with both pinned and excluded card IDs", () => {
 		// Set up initial state
-		pinnedCardIds.add(1);
-		pinnedCardIds.add(5);
-		excludedCardIds.add(7);
+		setPinnedCardIds(new Set([1, 5]));
+		setExcludedCardIds(new Set([7]));
 
 		const currentUrl = new URL("http://example.com");
-		const result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+		const result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
 
 		expect(result.searchParams.getAll("pin")).toContain("1");
 		expect(result.searchParams.getAll("pin")).toContain("5");
@@ -282,7 +266,7 @@ describe("State → URL sync (integration)", () => {
 		const currentUrl = new URL("http://example.com?pin=1&exclude=7");
 
 		// State is empty (cleared in beforeEach)
-		const result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+		const result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
 
 		expect(result.searchParams.has("pin")).toBe(false);
 		expect(result.searchParams.has("exclude")).toBe(false);
@@ -290,18 +274,18 @@ describe("State → URL sync (integration)", () => {
 
 	it("should update URL when new card is pinned", () => {
 		// Initial state: card 1 is already pinned
-		pinnedCardIds.add(1);
+		setPinnedCardIds(new Set([1]));
 
 		// Create URL with current state
 		const currentUrl = new URL("http://example.com");
-		let result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+		let result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
 		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
 
 		// Add new pinned card
-		pinnedCardIds.add(5);
+		setPinnedCardIds(new Set([1, 5]));
 
 		// Update URL with new state
-		result = buildUrlWithCardState(result, pinnedCardIds, excludedCardIds);
+		result = buildUrlWithCardState(result, getPinnedCardIds(), getExcludedCardIds());
 
 		expect(result.searchParams.getAll("pin")).toContain("1");
 		expect(result.searchParams.getAll("pin")).toContain("5");
@@ -310,19 +294,18 @@ describe("State → URL sync (integration)", () => {
 
 	it("should update URL when pinned card is removed", () => {
 		// Initial state: cards 1 and 5 are pinned
-		pinnedCardIds.add(1);
-		pinnedCardIds.add(5);
+		setPinnedCardIds(new Set([1, 5]));
 
 		// Create URL with current state
 		const currentUrl = new URL("http://example.com");
-		let result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+		let result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
 		expect(result.searchParams.getAll("pin")).toHaveLength(2);
 
 		// Remove one pinned card
-		pinnedCardIds.delete(5);
+		setPinnedCardIds(new Set([1]));
 
 		// Update URL with new state
-		result = buildUrlWithCardState(result, pinnedCardIds, excludedCardIds);
+		result = buildUrlWithCardState(result, getPinnedCardIds(), getExcludedCardIds());
 
 		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
 		expect(result.searchParams.getAll("pin")).not.toContain("5");
@@ -333,9 +316,9 @@ describe("State → URL sync (integration)", () => {
 		const currentUrl = new URL("http://example.com?card=10&card=11&foo=bar");
 
 		// Add pin state
-		pinnedCardIds.add(1);
+		setPinnedCardIds(new Set([1]));
 
-		const result = buildUrlWithCardState(currentUrl, pinnedCardIds, excludedCardIds);
+		const result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
 
 		// Should preserve existing parameters
 		expect(result.searchParams.getAll("card")).toEqual(["10", "11"]);

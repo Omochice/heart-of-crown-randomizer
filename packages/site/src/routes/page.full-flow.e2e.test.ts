@@ -3,8 +3,10 @@ import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { select } from "@heart-of-crown-randomizer/randomizer";
 import {
-	pinnedCardIds,
-	excludedCardIds,
+	getPinnedCardIds,
+	getExcludedCardIds,
+	setPinnedCardIds,
+	setExcludedCardIds,
 	getPinnedCards,
 	togglePin,
 	toggleExclude,
@@ -18,8 +20,8 @@ describe("Full Flow E2E: Pin → Randomize → Result", () => {
 
 	beforeEach(() => {
 		// Clear state before each test
-		pinnedCardIds.clear();
-		excludedCardIds.clear();
+		setPinnedCardIds(new Set());
+		setExcludedCardIds(new Set());
 	});
 
 	/**
@@ -29,7 +31,7 @@ describe("Full Flow E2E: Pin → Randomize → Result", () => {
 	function selectWithConstraints(
 		allCards: CommonCard[],
 		pinnedCards: CommonCard[],
-		excludedIds: Set<number>,
+		excludedIds: ReadonlySet<number>,
 		count: number,
 	): CommonCard[] {
 		return select(allCards, count, {
@@ -51,16 +53,21 @@ describe("Full Flow E2E: Pin → Randomize → Result", () => {
 		}
 
 		// Verify pin state
-		expect(pinnedCardIds.size).toBe(3);
+		expect(getPinnedCardIds().size).toBe(3);
 		for (const card of cardsToBePinned) {
-			expect(pinnedCardIds.has(card.id)).toBe(true);
+			expect(getPinnedCardIds().has(card.id)).toBe(true);
 		}
 
 		// Step 2: Randomize multiple times
 		// The pinned cards should ALWAYS appear in every result
 		for (let i = 0; i < 10; i++) {
 			const pinnedCards = getPinnedCards(allCommons);
-			const result = selectWithConstraints(allCommons, pinnedCards, excludedCardIds, targetCount);
+			const result = selectWithConstraints(
+				allCommons,
+				pinnedCards,
+				getExcludedCardIds(),
+				targetCount,
+			);
 
 			// All pinned cards must be in the result
 			for (const pinnedCard of cardsToBePinned) {
@@ -82,12 +89,17 @@ describe("Full Flow E2E: Pin → Randomize → Result", () => {
 		}
 
 		// Validation should pass
-		const validation = validatePinConstraints(pinnedCardIds.size, targetCount);
+		const validation = validatePinConstraints(getPinnedCardIds().size, targetCount);
 		expect(validation.ok).toBe(true);
 
 		// Randomization should work
 		const pinnedCards = getPinnedCards(allCommons);
-		const result = selectWithConstraints(allCommons, pinnedCards, excludedCardIds, targetCount);
+		const result = selectWithConstraints(
+			allCommons,
+			pinnedCards,
+			getExcludedCardIds(),
+			targetCount,
+		);
 
 		// Result should contain exactly the pinned cards
 		expect(result.length).toBe(targetCount);
@@ -108,7 +120,7 @@ describe("Full Flow E2E: Pin → Randomize → Result", () => {
 		}
 
 		// Validation should fail
-		const validation = validatePinConstraints(pinnedCardIds.size, targetCount);
+		const validation = validatePinConstraints(getPinnedCardIds().size, targetCount);
 		expect(validation.ok).toBe(false);
 		if (!validation.ok) {
 			expect(validation.message).toContain("ピンされたカードが多すぎます");
@@ -122,14 +134,14 @@ describe("Full Flow E2E: Exclude → Randomize → Result", () => {
 
 	beforeEach(() => {
 		// Clear state before each test
-		pinnedCardIds.clear();
-		excludedCardIds.clear();
+		setPinnedCardIds(new Set());
+		setExcludedCardIds(new Set());
 	});
 
 	function selectWithConstraints(
 		allCards: CommonCard[],
 		pinnedCards: CommonCard[],
-		excludedIds: Set<number>,
+		excludedIds: ReadonlySet<number>,
 		count: number,
 	): CommonCard[] {
 		return select(allCards, count, {
@@ -151,16 +163,21 @@ describe("Full Flow E2E: Exclude → Randomize → Result", () => {
 		}
 
 		// Verify exclude state
-		expect(excludedCardIds.size).toBe(5);
+		expect(getExcludedCardIds().size).toBe(5);
 		for (const card of cardsToBeExcluded) {
-			expect(excludedCardIds.has(card.id)).toBe(true);
+			expect(getExcludedCardIds().has(card.id)).toBe(true);
 		}
 
 		// Step 2: Randomize multiple times
 		// The excluded cards should NEVER appear in any result
 		for (let i = 0; i < 20; i++) {
 			const pinnedCards = getPinnedCards(allCommons);
-			const result = selectWithConstraints(allCommons, pinnedCards, excludedCardIds, targetCount);
+			const result = selectWithConstraints(
+				allCommons,
+				pinnedCards,
+				getExcludedCardIds(),
+				targetCount,
+			);
 
 			// No excluded cards should be in the result
 			for (const excludedCard of cardsToBeExcluded) {
@@ -182,7 +199,7 @@ describe("Full Flow E2E: Exclude → Randomize → Result", () => {
 		}
 
 		// Calculate available cards
-		const availableCards = allCommons.filter((card) => !excludedCardIds.has(card.id));
+		const availableCards = allCommons.filter((card) => !getExcludedCardIds().has(card.id));
 
 		// Validation should fail
 		const validation = validateExcludeConstraints(availableCards.length, targetCount);
@@ -199,14 +216,14 @@ describe("Full Flow E2E: Pin + Exclude → Randomize → Result", () => {
 
 	beforeEach(() => {
 		// Clear state before each test
-		pinnedCardIds.clear();
-		excludedCardIds.clear();
+		setPinnedCardIds(new Set());
+		setExcludedCardIds(new Set());
 	});
 
 	function selectWithConstraints(
 		allCards: CommonCard[],
 		pinnedCards: CommonCard[],
-		excludedIds: Set<number>,
+		excludedIds: ReadonlySet<number>,
 		count: number,
 	): CommonCard[] {
 		return select(allCards, count, {
@@ -236,7 +253,12 @@ describe("Full Flow E2E: Pin + Exclude → Randomize → Result", () => {
 		// Randomize multiple times
 		for (let i = 0; i < 10; i++) {
 			const pinnedCards = getPinnedCards(allCommons);
-			const result = selectWithConstraints(allCommons, pinnedCards, excludedCardIds, targetCount);
+			const result = selectWithConstraints(
+				allCommons,
+				pinnedCards,
+				getExcludedCardIds(),
+				targetCount,
+			);
 
 			// All pinned cards must be included
 			for (const pinnedCard of cardsToBePinned) {
@@ -264,7 +286,7 @@ describe("Full Flow E2E: Pin + Exclude → Randomize → Result", () => {
 
 		// Randomize
 		let pinnedCards = getPinnedCards(allCommons);
-		let result = selectWithConstraints(allCommons, pinnedCards, excludedCardIds, targetCount);
+		let result = selectWithConstraints(allCommons, pinnedCards, getExcludedCardIds(), targetCount);
 
 		// Verify pinned cards are in result
 		for (const card of firstPinnedCards) {
@@ -278,7 +300,7 @@ describe("Full Flow E2E: Pin + Exclude → Randomize → Result", () => {
 
 		// Randomize again
 		pinnedCards = getPinnedCards(allCommons);
-		result = selectWithConstraints(allCommons, pinnedCards, excludedCardIds, targetCount);
+		result = selectWithConstraints(allCommons, pinnedCards, getExcludedCardIds(), targetCount);
 
 		// First card should NOT be guaranteed anymore
 		// (it might still appear randomly, but we can't guarantee it won't)
@@ -292,8 +314,8 @@ describe("Full Flow E2E: Pin + Exclude → Randomize → Result", () => {
 describe("Full Flow E2E: URL Sharing → State Restoration", () => {
 	beforeEach(() => {
 		// Clear state before each test
-		pinnedCardIds.clear();
-		excludedCardIds.clear();
+		setPinnedCardIds(new Set());
+		setExcludedCardIds(new Set());
 	});
 
 	it("should restore pinned cards from URL", () => {
@@ -305,16 +327,13 @@ describe("Full Flow E2E: URL Sharing → State Restoration", () => {
 		const parsedPinnedIds = parseCardIdsFromUrl(url, "pin");
 
 		// Simulate the $effect behavior in +page.svelte
-		pinnedCardIds.clear();
-		for (const id of parsedPinnedIds) {
-			pinnedCardIds.add(id);
-		}
+		setPinnedCardIds(parsedPinnedIds);
 
 		// Verify state is restored
-		expect(pinnedCardIds.has(1)).toBe(true);
-		expect(pinnedCardIds.has(5)).toBe(true);
-		expect(pinnedCardIds.has(12)).toBe(true);
-		expect(pinnedCardIds.size).toBe(3);
+		expect(getPinnedCardIds().has(1)).toBe(true);
+		expect(getPinnedCardIds().has(5)).toBe(true);
+		expect(getPinnedCardIds().has(12)).toBe(true);
+		expect(getPinnedCardIds().size).toBe(3);
 	});
 
 	it("should restore excluded cards from URL", () => {
@@ -326,15 +345,12 @@ describe("Full Flow E2E: URL Sharing → State Restoration", () => {
 		const parsedExcludedIds = parseCardIdsFromUrl(url, "exclude");
 
 		// Simulate the $effect behavior in +page.svelte
-		excludedCardIds.clear();
-		for (const id of parsedExcludedIds) {
-			excludedCardIds.add(id);
-		}
+		setExcludedCardIds(parsedExcludedIds);
 
 		// Verify state is restored
-		expect(excludedCardIds.has(7)).toBe(true);
-		expect(excludedCardIds.has(9)).toBe(true);
-		expect(excludedCardIds.size).toBe(2);
+		expect(getExcludedCardIds().has(7)).toBe(true);
+		expect(getExcludedCardIds().has(9)).toBe(true);
+		expect(getExcludedCardIds().size).toBe(2);
 	});
 
 	it("should restore both pinned and excluded cards from URL", () => {
@@ -347,20 +363,14 @@ describe("Full Flow E2E: URL Sharing → State Restoration", () => {
 		const parsedExcludedIds = parseCardIdsFromUrl(url, "exclude");
 
 		// Simulate the $effect behavior in +page.svelte
-		pinnedCardIds.clear();
-		excludedCardIds.clear();
-		for (const id of parsedPinnedIds) {
-			pinnedCardIds.add(id);
-		}
-		for (const id of parsedExcludedIds) {
-			excludedCardIds.add(id);
-		}
+		setPinnedCardIds(parsedPinnedIds);
+		setExcludedCardIds(parsedExcludedIds);
 
 		// Verify state is restored
-		expect(pinnedCardIds.has(1)).toBe(true);
-		expect(pinnedCardIds.has(5)).toBe(true);
-		expect(excludedCardIds.has(7)).toBe(true);
-		expect(excludedCardIds.has(9)).toBe(true);
+		expect(getPinnedCardIds().has(1)).toBe(true);
+		expect(getPinnedCardIds().has(5)).toBe(true);
+		expect(getExcludedCardIds().has(7)).toBe(true);
+		expect(getExcludedCardIds().has(9)).toBe(true);
 	});
 
 	it("should build URL with complete state for sharing", () => {
@@ -368,15 +378,12 @@ describe("Full Flow E2E: URL Sharing → State Restoration", () => {
 		// WHY: Requirement 1.5 - state must be shareable via URL
 
 		// Set some pin and exclude state
-		pinnedCardIds.add(1);
-		pinnedCardIds.add(5);
-		pinnedCardIds.add(12);
-		excludedCardIds.add(7);
-		excludedCardIds.add(9);
+		setPinnedCardIds(new Set([1, 5, 12]));
+		setExcludedCardIds(new Set([7, 9]));
 
 		// Build URL with current state
 		const baseUrl = new URL("http://localhost/");
-		const resultUrl = buildUrlWithCardState(baseUrl, pinnedCardIds, excludedCardIds);
+		const resultUrl = buildUrlWithCardState(baseUrl, getPinnedCardIds(), getExcludedCardIds());
 
 		// Verify URL contains all state
 		const pinParams = resultUrl.searchParams.getAll("pin");
