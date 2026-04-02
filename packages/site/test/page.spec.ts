@@ -4,21 +4,20 @@ test.describe("Page URL reactivity", () => {
 	test("should render page with heading", async ({ page }) => {
 		await page.goto("/");
 
-		await expect(
-			page.getByRole("heading", { name: /ハートオブクラウンランダマイザー/i }),
-		).toBeVisible();
+		await expect(page.getByText("ハートオブクラウン")).toBeVisible();
+		await expect(page.getByText("ランダマイザー")).toBeVisible();
 	});
 
 	test("should show randomize button", async ({ page }) => {
 		await page.goto("/");
 
-		await expect(page.getByRole("button", { name: /一般カードを引く/i })).toBeVisible();
+		await expect(page.getByRole("button", { name: /引き直す/i })).toBeVisible();
 	});
 
 	test("should display cards after clicking randomize button", async ({ page }) => {
 		await page.goto("/");
 
-		await page.getByRole("button", { name: /一般カードを引く/i }).click();
+		await page.getByRole("button", { name: /引き直す/i }).click();
 
 		const cardLocator = page.getByRole("button", { name: /^カード / });
 		await expect(cardLocator.first()).toBeVisible();
@@ -38,11 +37,11 @@ test.describe("Page URL reactivity", () => {
 
 		const cardLocator = page.getByRole("button", { name: /^カード / });
 
-		await page.getByRole("button", { name: /一般カードを引く/i }).click();
+		await page.getByRole("button", { name: /引き直す/i }).click();
 		await expect(cardLocator.first()).toBeVisible();
 		const firstUrl = page.url();
 
-		await page.getByRole("button", { name: /一般カードを引く/i }).click();
+		await page.getByRole("button", { name: /引き直す/i }).click();
 		await expect(cardLocator.first()).toBeVisible();
 
 		await page.goBack();
@@ -52,10 +51,10 @@ test.describe("Page URL reactivity", () => {
 	test("should generate share URL when cards are selected", async ({ page }) => {
 		await page.goto("/");
 
-		await page.getByRole("button", { name: /一般カードを引く/i }).click();
+		await page.getByRole("button", { name: /引き直す/i }).click();
 		const cardLocator = page.getByRole("button", { name: /^カード / });
 		await expect(cardLocator.first()).toBeVisible();
 
-		await expect(page.getByText(/共有URL:/)).toBeVisible();
+		await expect(page.getByRole("button", { name: /共有/i })).toBeVisible();
 	});
 });
