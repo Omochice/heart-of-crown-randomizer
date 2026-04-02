@@ -24,8 +24,8 @@ export function parseCardIdsFromUrl(url: URL, param: string): Set<number> {
  */
 export function buildUrlWithCardState(
 	baseUrl: URL,
-	pinnedIds: Set<number>,
-	excludedIds: Set<number>,
+	pinnedIds: ReadonlySet<number>,
+	excludedIds: ReadonlySet<number>,
 ): URL {
 	const url = new URL(baseUrl);
 	url.searchParams.delete("pin");
@@ -48,7 +48,7 @@ export function buildUrlWithCardState(
  * params already match the current state, preventing circular
  * effect triggers between URL→State and State→URL effects.
  */
-export function setsEqual(a: Set<number>, b: Set<number>): boolean {
+export function setsEqual(a: ReadonlySet<number>, b: ReadonlySet<number>): boolean {
 	if (a.size !== b.size) return false;
 	for (const id of a) {
 		if (!b.has(id)) return false;

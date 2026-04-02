@@ -21,8 +21,8 @@ export function resolveCardsFromUrl(url: URL, allCommons: CommonCard[]): CommonC
  * URL-to-State and State-to-URL sync effects.
  */
 export function shouldUpdatePinExclude(
-	currentPinned: Set<number>,
-	currentExcluded: Set<number>,
+	currentPinned: ReadonlySet<number>,
+	currentExcluded: ReadonlySet<number>,
 	newPinned: Set<number>,
 	newExcluded: Set<number>,
 ): boolean {

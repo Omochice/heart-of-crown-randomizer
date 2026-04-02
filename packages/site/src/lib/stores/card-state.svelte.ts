@@ -13,20 +13,28 @@ const state = $state({
 	excludedCardIds: new Set<number>(),
 });
 
-export function getPinnedCardIds(): Set<number> {
+export function getPinnedCardIds(): ReadonlySet<number> {
 	return state.pinnedCardIds;
 }
 
-export function getExcludedCardIds(): Set<number> {
+export function getExcludedCardIds(): ReadonlySet<number> {
 	return state.excludedCardIds;
 }
 
 export function setPinnedCardIds(ids: Set<number>): void {
-	state.pinnedCardIds = new Set(ids);
+	const nextPinned = new Set(ids);
+	const nextExcluded = new Set(state.excludedCardIds);
+	for (const id of nextPinned) nextExcluded.delete(id);
+	state.pinnedCardIds = nextPinned;
+	state.excludedCardIds = nextExcluded;
 }
 
 export function setExcludedCardIds(ids: Set<number>): void {
-	state.excludedCardIds = new Set(ids);
+	const nextExcluded = new Set(ids);
+	const nextPinned = new Set(state.pinnedCardIds);
+	for (const id of nextExcluded) nextPinned.delete(id);
+	state.excludedCardIds = nextExcluded;
+	state.pinnedCardIds = nextPinned;
 }
 
 export function getCardState(cardId: number): CardStateType {

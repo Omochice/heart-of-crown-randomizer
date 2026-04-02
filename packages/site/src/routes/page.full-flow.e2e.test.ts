@@ -31,7 +31,7 @@ describe("Full Flow E2E: Pin → Randomize → Result", () => {
 	function selectWithConstraints(
 		allCards: CommonCard[],
 		pinnedCards: CommonCard[],
-		excludedIds: Set<number>,
+		excludedIds: ReadonlySet<number>,
 		count: number,
 	): CommonCard[] {
 		return select(allCards, count, {
@@ -141,7 +141,7 @@ describe("Full Flow E2E: Exclude → Randomize → Result", () => {
 	function selectWithConstraints(
 		allCards: CommonCard[],
 		pinnedCards: CommonCard[],
-		excludedIds: Set<number>,
+		excludedIds: ReadonlySet<number>,
 		count: number,
 	): CommonCard[] {
 		return select(allCards, count, {
@@ -223,7 +223,7 @@ describe("Full Flow E2E: Pin + Exclude → Randomize → Result", () => {
 	function selectWithConstraints(
 		allCards: CommonCard[],
 		pinnedCards: CommonCard[],
-		excludedIds: Set<number>,
+		excludedIds: ReadonlySet<number>,
 		count: number,
 	): CommonCard[] {
 		return select(allCards, count, {

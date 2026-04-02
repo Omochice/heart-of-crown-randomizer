@@ -14,7 +14,7 @@ export function drawRandomCards(
 	allCommons: CommonCard[],
 	numberOfCommons: number,
 	pinnedCards: CommonCard[],
-	excludedIds: Set<number>,
+	excludedIds: ReadonlySet<number>,
 ): DrawResult {
 	const pinValidation = validatePinConstraints(pinnedCards.length, numberOfCommons);
 	if (!pinValidation.ok) {
@@ -71,8 +71,8 @@ export function cardsToQuery(cards: CommonCard[]): string {
  */
 export function buildCardUrl(
 	cards: CommonCard[],
-	pinnedIds: Set<number>,
-	excludedIds: Set<number>,
+	pinnedIds: ReadonlySet<number>,
+	excludedIds: ReadonlySet<number>,
 ): string {
 	const params = new URLSearchParams();
 	for (const card of cards) {
