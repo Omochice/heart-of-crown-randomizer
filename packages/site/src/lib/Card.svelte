@@ -82,13 +82,15 @@
 
 		<span class="card-cost">{card.cost}</span>
 
-		{#if linkCount > 0}
-			<span class="card-links">
+		<span class="card-links">
+			{#if linkCount === 0}
+				<span class="card-link-dot card-link-dot--gray"></span>
+			{:else}
 				{#each Array(linkCount) as _}
 					<span class="card-link-dot"></span>
 				{/each}
-			</span>
-		{/if}
+			{/if}
+		</span>
 
 		<button
 			type="button"
@@ -187,6 +189,9 @@
 		display: flex;
 		gap: 2px;
 		flex-shrink: 0;
+		width: 18px;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.card-link-dot {
@@ -194,6 +199,10 @@
 		height: 6px;
 		border-radius: 50%;
 		background-color: var(--accent-indigo);
+	}
+
+	.card-link-dot--gray {
+		background-color: var(--border-default);
 	}
 
 	.card-icon-btn {
