@@ -173,9 +173,6 @@
 			<span class="title-main">ハートオブクラウン</span>
 			<span class="title-accent">ランダマイザー</span>
 		</div>
-		{#if selectedCommons.length > 0}
-			<span class="count-badge">{selectedCommons.length}枚</span>
-		{/if}
 	</header>
 
 	<div
@@ -288,7 +285,6 @@
 	.page-header {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 	}
 
 	.page-title {
@@ -306,15 +302,6 @@
 	.title-accent {
 		font-size: 18px;
 		color: var(--accent-coral);
-	}
-
-	.count-badge {
-		font-size: 13px;
-		font-weight: 600;
-		color: var(--accent-green);
-		background: #f0fdf4;
-		padding: 4px 10px;
-		border-radius: 10px;
 	}
 
 	.segmented-control {
