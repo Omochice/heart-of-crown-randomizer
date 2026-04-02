@@ -61,7 +61,7 @@
 	ontouchcancel={() => onSwipeCancel()}
 	onclick={handleCardClick}
 	onkeydown={(e) => {
-		if (e.key === "Enter" || e.key === " ") handleCardClick();
+		if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) handleCardClick();
 	}}
 >
 	<div
@@ -95,6 +95,8 @@
 		<button
 			type="button"
 			onclick={handleTogglePin}
+			onmousedown={(e) => e.stopPropagation()}
+			ontouchstart={(e) => e.stopPropagation()}
 			class="card-icon-btn"
 			class:card-icon-btn--active-pin={isPinned}
 			aria-label={isPinned ? "ピン中" : "ピン"}
@@ -106,6 +108,8 @@
 		<button
 			type="button"
 			onclick={handleToggleExclude}
+			onmousedown={(e) => e.stopPropagation()}
+			ontouchstart={(e) => e.stopPropagation()}
 			class="card-icon-btn"
 			class:card-icon-btn--active-exclude={isExcluded}
 			aria-label={isExcluded ? "除外中" : "除外"}
@@ -139,7 +143,7 @@
 	}
 
 	.card-row--pinned {
-		background-color: #eff6ff;
+		background-color: var(--bg-pinned);
 		border-color: var(--accent-indigo);
 	}
 
@@ -232,8 +236,8 @@
 	}
 
 	.card-icon-btn--active-exclude {
-		background: #ef4444;
-		border-color: #ef4444;
+		background: var(--accent-red);
+		border-color: var(--accent-red);
 		color: white;
 	}
 </style>
