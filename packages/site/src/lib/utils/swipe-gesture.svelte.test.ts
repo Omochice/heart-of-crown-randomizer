@@ -1,3 +1,4 @@
+import type { Mock } from "vitest";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { createSwipeHandlers } from "./swipe-gesture.svelte";
 
@@ -30,12 +31,12 @@ function createMockElement(): HTMLElement {
 }
 
 describe("createSwipeHandlers", () => {
-	let isPinned: ReturnType<typeof vi.fn>;
-	let onRemove: ReturnType<typeof vi.fn>;
+	let isPinned: Mock<(index: number) => boolean>;
+	let onRemove: Mock<(index: number) => void>;
 
 	beforeEach(() => {
-		isPinned = vi.fn().mockReturnValue(false);
-		onRemove = vi.fn();
+		isPinned = vi.fn<(index: number) => boolean>().mockReturnValue(false);
+		onRemove = vi.fn<(index: number) => void>();
 	});
 
 	it("should return four handler functions", () => {
