@@ -28,10 +28,17 @@
 
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
+	let shareUrl = $state("");
 	let errorMessage = $state("");
 	let detailCard: CommonCard | null = $state(null);
 
-	const shareUrl = $derived(buildShareUrl(window.location.origin, selectedCommons));
+	/**
+	 * We use $effect instead of $derived because buildShareUrl requires
+	 * window.location.origin, which is unavailable during SSR.
+	 */
+	$effect(() => {
+		shareUrl = buildShareUrl(window.location.origin, selectedCommons);
+	});
 
 	$effect(() => {
 		const newSelectedCommons = resolveCardsFromUrl($page.url, allCommons);
