@@ -1,9 +1,13 @@
 import { fc, test } from "@fast-check/vitest";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import * as rngModule from "./rng";
 import { shuffle } from "./shuffle";
 
 describe("Performance Benchmark", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   test.prop([fc.integer({ min: 2, max: 10000 })])(
     "should perform exactly n-1 RNG calls for array of size n (Fisher-Yates invariant)",
     (size) => {
@@ -19,8 +23,6 @@ describe("Performance Benchmark", () => {
       shuffle(items);
 
       expect(callCount).toBe(size - 1);
-
-      vi.restoreAllMocks();
     },
   );
 
@@ -38,7 +40,5 @@ describe("Performance Benchmark", () => {
 
     shuffle([1]);
     expect(callCount).toBe(0);
-
-    vi.restoreAllMocks();
   });
 });
