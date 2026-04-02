@@ -20,9 +20,9 @@
 	import {
 		drawRandomCards as drawRandomCardsLogic,
 		drawMissingCommons as drawMissingCommonsLogic,
-		cardsToQuery,
 		buildCardUrl,
 	} from "$lib/utils/card-draw";
+	import { buildShareUrl, shareOrCopy } from "$lib/utils/share";
 	import { Shuffle, Plus } from "lucide-svelte";
 
 	let numberOfCommons = $state(10);
@@ -118,23 +118,11 @@
 	}
 
 	function updateShareUrl() {
-		if (selectedCommons.length > 0) {
-			shareUrl = `${window.location.origin}?${cardsToQuery(selectedCommons)}`;
-		}
+		shareUrl = buildShareUrl(window.location.origin, selectedCommons);
 	}
 
 	async function copyToClipboard() {
-		await navigator
-			.share({
-				url: shareUrl,
-				title: "ハートオブクラウンランダマイザー",
-			})
-			.catch(() => {
-				navigator.clipboard.writeText(shareUrl);
-			})
-			.catch((cause) => {
-				console.error("Failed to copy URL", { cause });
-			});
+		await shareOrCopy(shareUrl);
 	}
 
 	function removeSelectedCommon(index: number) {
