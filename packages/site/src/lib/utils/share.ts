@@ -19,7 +19,7 @@ export async function shareOrCopy(url: string): Promise<void> {
 			title: "ハートオブクラウンランダマイザー",
 		})
 		.catch(() => {
-			navigator.clipboard.writeText(url);
+			return navigator.clipboard.writeText(url);
 		})
 		.catch((cause) => {
 			console.error("Failed to copy URL", { cause });
