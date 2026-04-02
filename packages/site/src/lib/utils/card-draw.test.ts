@@ -54,7 +54,7 @@ describe("drawRandomCards", () => {
 	});
 
 	it("should include pinned cards in result", () => {
-		const pinned = [makeCard(1), makeCard(2)];
+		const pinned = allCommons.filter((c) => c.id === 1 || c.id === 2);
 
 		const result = drawRandomCards(allCommons, 5, pinned, new Set());
 
