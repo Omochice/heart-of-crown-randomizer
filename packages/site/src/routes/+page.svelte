@@ -3,7 +3,6 @@
 	import { page } from "$app/stores";
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-	import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
 	import { untrack } from "svelte";
 	import Card from "$lib/Card.svelte";
 	import CardDetail from "$lib/CardDetail.svelte";
@@ -18,8 +17,12 @@
 		getExcludedCards,
 	} from "$lib/stores/card-state.svelte";
 	import { parseCardIdsFromUrl, buildUrlWithCardState, setsEqual } from "$lib/utils/url-sync";
-	import { validatePinConstraints, validateExcludeConstraints } from "$lib/utils/validation";
-	import { selectWithConstraints } from "$lib/utils/select-with-constraints";
+	import {
+		drawRandomCards as drawRandomCardsLogic,
+		drawMissingCommons as drawMissingCommonsLogic,
+		cardsToQuery,
+		buildCardUrl,
+	} from "$lib/utils/card-draw";
 	import { Shuffle, Plus } from "lucide-svelte";
 
 	let numberOfCommons = $state(10);
@@ -94,66 +97,24 @@
 		goto(newUrl, { replaceState: true, noScroll: true, keepFocus: true });
 	});
 
-	function cardsToQuery(cards: CommonCard[]): string {
-		return cards
-			.reduce((query, card) => {
-				query.append("card", card.id.toString());
-				return query;
-			}, new URLSearchParams())
-			.toString();
-	}
-
 	function drawRandomCards() {
 		const pinnedCards = getPinnedCards(allCommons);
-
-		const pinValidation = validatePinConstraints(pinnedCards.length, numberOfCommons);
-		if (!pinValidation.ok) {
-			errorMessage = pinValidation.message;
-			return;
-		}
-
 		const excludedIds = getExcludedCardIds();
-		const availableCards = allCommons.filter((card) => !excludedIds.has(card.id));
 
-		const excludeValidation = validateExcludeConstraints(availableCards.length, numberOfCommons);
-		if (!excludeValidation.ok) {
-			errorMessage = excludeValidation.message;
+		const result = drawRandomCardsLogic(allCommons, numberOfCommons, pinnedCards, excludedIds);
+		if (!result.ok) {
+			errorMessage = result.message;
 			return;
 		}
 
-		const randomCards = selectWithConstraints(
-			allCommons,
-			pinnedCards,
-			excludedIds,
-			numberOfCommons,
-		);
-		selectedCommons = randomCards.sort((a, b) => a.id - b.id);
+		selectedCommons = result.cards;
 		errorMessage = "";
 
-		goto(buildCardUrl(selectedCommons), { keepFocus: true, noScroll: true });
+		goto(buildCardUrl(selectedCommons, getPinnedCardIds(), getExcludedCardIds()), {
+			keepFocus: true,
+			noScroll: true,
+		});
 		updateShareUrl();
-	}
-
-	/**
-	 * Build a URL with card selection and pin/exclude state
-	 *
-	 * We include pin/exclude params in every URL transition rather than
-	 * relying on the State→URL effect, because goto() triggers the
-	 * URL→State effect which would clear pin/exclude state if the
-	 * params are absent from the URL.
-	 */
-	function buildCardUrl(cards: CommonCard[]): string {
-		const params = new URLSearchParams();
-		for (const card of cards) {
-			params.append("card", card.id.toString());
-		}
-		for (const id of getPinnedCardIds()) {
-			params.append("pin", String(id));
-		}
-		for (const id of getExcludedCardIds()) {
-			params.append("exclude", String(id));
-		}
-		return `?${params.toString()}`;
 	}
 
 	function updateShareUrl() {
@@ -182,7 +143,10 @@
 	}
 
 	function updateUrlAndShare() {
-		goto(buildCardUrl(selectedCommons), { keepFocus: true, noScroll: true });
+		goto(buildCardUrl(selectedCommons, getPinnedCardIds(), getExcludedCardIds()), {
+			keepFocus: true,
+			noScroll: true,
+		});
 		updateShareUrl();
 	}
 
@@ -196,15 +160,8 @@
 		});
 
 	function drawMissingCommons() {
-		if (selectedCommons.length >= numberOfCommons) return;
-
-		const excludedIds = selectedCommons.map((c) => c.id);
-		const availableCommons = filterByIds(allCommons, excludedIds);
-
-		if (availableCommons.length === 0) return;
-
-		const cardsToAdd = numberOfCommons - selectedCommons.length;
-		const newCards = select(availableCommons, cardsToAdd);
+		const newCards = drawMissingCommonsLogic(allCommons, selectedCommons, numberOfCommons);
+		if (newCards.length === 0) return;
 
 		selectedCommons = [...selectedCommons, ...newCards];
 		updateUrlAndShare();
