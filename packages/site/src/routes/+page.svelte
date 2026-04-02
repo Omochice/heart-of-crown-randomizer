@@ -65,6 +65,11 @@
 		const newPinnedIds = parseCardIdsFromUrl($page.url, "pin");
 		const newExcludedIds = parseCardIdsFromUrl($page.url, "exclude");
 
+		// Pin takes precedence over exclude for overlapping IDs
+		for (const id of newPinnedIds) {
+			newExcludedIds.delete(id);
+		}
+
 		const currentPinned = untrack(() => getPinnedCardIds());
 		const currentExcluded = untrack(() => getExcludedCardIds());
 
@@ -164,7 +169,7 @@
 	const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 
 	const excludedCards = $derived(getExcludedCards(allCommons));
-	const missingCount = $derived(numberOfCommons - selectedCommons.length);
+	const missingCount = $derived(Math.max(0, numberOfCommons - selectedCommons.length));
 </script>
 
 <div class="page-container">
