@@ -6,8 +6,6 @@ import { selectWithConstraints } from "./select-with-constraints";
 type DrawResult = { ok: true; cards: CommonCard[] } | { ok: false; message: string };
 
 /**
- * Draw a full set of random cards with pin/exclude constraints.
- *
  * We validate constraints before selecting rather than catching errors
  * from select(), because validation produces user-facing Japanese
  * messages while select() would throw generic errors.
@@ -23,8 +21,11 @@ export function drawRandomCards(
 		return { ok: false, message: pinValidation.message };
 	}
 
-	const availableCards = allCommons.filter((card) => !excludedIds.has(card.id));
-	const excludeValidation = validateExcludeConstraints(availableCards.length, numberOfCommons);
+	const availableCount = allCommons.reduce(
+		(count, card) => count + (excludedIds.has(card.id) ? 0 : 1),
+		0,
+	);
+	const excludeValidation = validateExcludeConstraints(availableCount, numberOfCommons);
 	if (!excludeValidation.ok) {
 		return { ok: false, message: excludeValidation.message };
 	}
@@ -34,8 +35,6 @@ export function drawRandomCards(
 }
 
 /**
- * Draw additional cards to fill missing slots in the current selection.
- *
  * We filter out already-selected cards by ID rather than by reference
  * because card objects may differ between renders while IDs are stable.
  */
@@ -65,8 +64,6 @@ export function cardsToQuery(cards: CommonCard[]): string {
 }
 
 /**
- * Build a URL string with card selection and pin/exclude state.
- *
  * We include pin/exclude params in every URL transition rather than
  * relying on the State-to-URL effect, because goto() triggers the
  * URL-to-State effect which would clear pin/exclude state if the

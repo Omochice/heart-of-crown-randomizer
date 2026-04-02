@@ -29,14 +29,18 @@ function animateCardReset(element: HTMLElement): void {
  * into unrelated component changes.
  */
 export function createSwipeHandlers(options: SwipeHandlersOptions) {
-	const swipeState = $state({
+	/**
+	 * Plain object instead of $state because this is ephemeral internal
+	 * state that nothing renders from — reactivity overhead is unnecessary.
+	 */
+	const swipeState = {
 		startX: 0,
 		startY: 0,
 		currentX: 0,
 		isDragging: false,
 		cardElement: null as HTMLElement | null,
 		cardIndex: -1,
-	});
+	};
 
 	function resetSwipeState(): void {
 		document.removeEventListener("mousemove", handleSwipeMove);
@@ -103,10 +107,7 @@ export function createSwipeHandlers(options: SwipeHandlersOptions) {
 		if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
 			options.onRemove(swipeState.cardIndex);
 		} else {
-			const el = swipeState.cardElement;
-			if (el) {
-				animateCardReset(el);
-			}
+			animateCardReset(swipeState.cardElement);
 		}
 
 		resetSwipeState();

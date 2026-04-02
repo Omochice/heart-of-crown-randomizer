@@ -1,22 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { drawRandomCards, drawMissingCommons, cardsToQuery, buildCardUrl } from "./card-draw";
+import { makeCard } from "$lib/test-helpers";
 
-function makeCard(id: number, edition: 0 | 1 = 0): CommonCard {
-	return {
-		id,
-		type: "common",
-		name: `Card ${id}`,
-		mainType: ["action"],
-		cost: id,
-		link: 1,
-		effect: "",
-		hasChild: false,
-		edition,
-	} as CommonCard;
-}
-
-const allCommons: CommonCard[] = Array.from({ length: 20 }, (_, i) => makeCard(i + 1));
+const allCommons = Array.from({ length: 20 }, (_, i) => makeCard(i + 1));
 
 describe("drawRandomCards", () => {
 	it("should return error when pinned count exceeds target", () => {

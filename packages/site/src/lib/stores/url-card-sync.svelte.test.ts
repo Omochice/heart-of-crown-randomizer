@@ -1,22 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { resolveCardsFromUrl, shouldUpdatePinExclude } from "./url-card-sync.svelte";
+import { makeCard } from "$lib/test-helpers";
 
-function makeCard(id: number): CommonCard {
-	return {
-		id,
-		type: "common",
-		name: `Card ${id}`,
-		mainType: ["action"],
-		cost: id,
-		link: 1,
-		effect: "",
-		hasChild: false,
-		edition: 0,
-	} as CommonCard;
-}
-
-const allCommons: CommonCard[] = Array.from({ length: 20 }, (_, i) => makeCard(i + 1));
+const allCommons = Array.from({ length: 20 }, (_, i) => makeCard(i + 1));
 
 describe("resolveCardsFromUrl", () => {
 	it("should resolve cards from URL card parameters", () => {

@@ -1,20 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { buildShareUrl, shareOrCopy } from "./share";
-
-function makeCard(id: number): CommonCard {
-	return {
-		id,
-		type: "common",
-		name: `Card ${id}`,
-		mainType: ["action"],
-		cost: id,
-		link: 1,
-		effect: "",
-		hasChild: false,
-		edition: 0,
-	} as CommonCard;
-}
+import { makeCard } from "$lib/test-helpers";
 
 describe("buildShareUrl", () => {
 	it("should build share URL with origin and card query params", () => {

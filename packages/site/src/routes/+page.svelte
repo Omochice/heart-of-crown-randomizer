@@ -28,20 +28,20 @@
 
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
-	let shareUrl = $state("");
 	let errorMessage = $state("");
 	let detailCard: CommonCard | null = $state(null);
 
+	const shareUrl = $derived(buildShareUrl(window.location.origin, selectedCommons));
+
 	$effect(() => {
 		const newSelectedCommons = resolveCardsFromUrl($page.url, allCommons);
+		const idsMatch =
+			selectedCommons.length === newSelectedCommons.length &&
+			selectedCommons.every((card, i) => card.id === newSelectedCommons[i]?.id);
 
-		if (JSON.stringify(selectedCommons) !== JSON.stringify(newSelectedCommons)) {
+		if (!idsMatch) {
 			selectedCommons = newSelectedCommons;
 		}
-	});
-
-	$effect(() => {
-		updateShareUrl();
 	});
 
 	/**
@@ -108,11 +108,6 @@
 			keepFocus: true,
 			noScroll: true,
 		});
-		updateShareUrl();
-	}
-
-	function updateShareUrl() {
-		shareUrl = buildShareUrl(window.location.origin, selectedCommons);
 	}
 
 	async function copyToClipboard() {
@@ -121,15 +116,14 @@
 
 	function removeSelectedCommon(index: number) {
 		selectedCommons = selectedCommons.filter((_, i) => i !== index);
-		updateUrlAndShare();
+		navigateWithCardState();
 	}
 
-	function updateUrlAndShare() {
+	function navigateWithCardState() {
 		goto(buildCardUrl(selectedCommons, getPinnedCardIds(), getExcludedCardIds()), {
 			keepFocus: true,
 			noScroll: true,
 		});
-		updateShareUrl();
 	}
 
 	const { handleSwipeStart, handleSwipeMove, handleSwipeEnd, handleSwipeCancel } =
@@ -146,7 +140,7 @@
 		if (newCards.length === 0) return;
 
 		selectedCommons = [...selectedCommons, ...newCards];
-		updateUrlAndShare();
+		navigateWithCardState();
 	}
 
 	const basicCards = $derived(
