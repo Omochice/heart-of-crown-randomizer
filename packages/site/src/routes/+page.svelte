@@ -8,7 +8,7 @@
 	import Card from "$lib/Card.svelte";
 	import CardDetail from "$lib/CardDetail.svelte";
 	import ExcludeList from "$lib/ExcludeList.svelte";
-	import { isTouchEvent } from "$lib/utils/is-touch-event";
+	import { createSwipeHandlers } from "$lib/utils/swipe-gesture.svelte";
 	import {
 		getPinnedCardIds,
 		getExcludedCardIds,
@@ -176,115 +176,6 @@
 			});
 	}
 
-	const VERTICAL_CANCEL_PX = 100;
-	const TRANSITION_MS = 200;
-
-	function animateCardReset(element: HTMLElement) {
-		element.style.transition = `transform ${TRANSITION_MS}ms ease-out, opacity ${TRANSITION_MS}ms ease-out`;
-		element.style.transform = "";
-		element.style.opacity = "";
-		setTimeout(() => {
-			if (element.isConnected) {
-				element.style.transition = "";
-			}
-		}, TRANSITION_MS);
-	}
-
-	function resetSwipeState() {
-		document.removeEventListener("mousemove", handleSwipeMove);
-		document.removeEventListener("mouseup", handleSwipeEnd);
-		swipeState.isDragging = false;
-		swipeState.cardElement = null;
-		swipeState.cardIndex = -1;
-	}
-
-	const swipeState = $state({
-		startX: 0,
-		startY: 0,
-		currentX: 0,
-		isDragging: false,
-		cardElement: null as HTMLElement | null,
-		cardIndex: -1,
-		threshold: 100,
-	});
-
-	function handleSwipeStart(event: TouchEvent | MouseEvent, index: number) {
-		const card = selectedCommons[index];
-		if (card && getPinnedCardIds().has(card.id)) return;
-
-		const clientX = isTouchEvent(event) ? event.touches[0].clientX : event.clientX;
-		const clientY = isTouchEvent(event) ? event.touches[0].clientY : event.clientY;
-
-		swipeState.startX = clientX;
-		swipeState.startY = clientY;
-		swipeState.currentX = clientX;
-		swipeState.isDragging = true;
-		swipeState.cardElement = event.currentTarget as HTMLElement;
-		swipeState.cardIndex = index;
-
-		swipeState.cardElement.style.transition = "none";
-
-		if (!isTouchEvent(event)) {
-			document.addEventListener("mousemove", handleSwipeMove);
-			document.addEventListener("mouseup", handleSwipeEnd);
-		}
-	}
-
-	function handleSwipeMove(event: TouchEvent | MouseEvent) {
-		if (!swipeState.isDragging || !swipeState.cardElement) return;
-
-		const clientX = isTouchEvent(event) ? event.touches[0].clientX : event.clientX;
-		const deltaX = clientX - swipeState.startX;
-		const deltaY = Math.abs(
-			(isTouchEvent(event) ? event.touches[0].clientY : event.clientY) - swipeState.startY,
-		);
-
-		if (deltaY > VERTICAL_CANCEL_PX) {
-			handleSwipeCancel();
-			return;
-		}
-
-		if (
-			isTouchEvent(event) &&
-			event.cancelable &&
-			Math.abs(deltaX) > 10 &&
-			Math.abs(deltaX) > deltaY
-		) {
-			event.preventDefault();
-		}
-
-		swipeState.currentX = clientX;
-
-		swipeState.cardElement.style.transform = `translate3d(${deltaX}px, 0, 0)`;
-		swipeState.cardElement.style.opacity = `${Math.max(0.3, 1 - Math.abs(deltaX) / 200)}`;
-	}
-
-	function handleSwipeEnd() {
-		if (!swipeState.isDragging || !swipeState.cardElement) return;
-
-		const deltaX = swipeState.currentX - swipeState.startX;
-
-		if (Math.abs(deltaX) > swipeState.threshold) {
-			removeSelectedCommon(swipeState.cardIndex);
-		} else {
-			const el = swipeState.cardElement;
-			if (el) {
-				animateCardReset(el);
-			}
-		}
-
-		resetSwipeState();
-	}
-
-	function handleSwipeCancel() {
-		const el = swipeState.cardElement;
-		if (el) {
-			animateCardReset(el);
-		}
-
-		resetSwipeState();
-	}
-
 	function removeSelectedCommon(index: number) {
 		selectedCommons = selectedCommons.filter((_, i) => i !== index);
 		updateUrlAndShare();
@@ -294,6 +185,15 @@
 		goto(buildCardUrl(selectedCommons), { keepFocus: true, noScroll: true });
 		updateShareUrl();
 	}
+
+	const { handleSwipeStart, handleSwipeMove, handleSwipeEnd, handleSwipeCancel } =
+		createSwipeHandlers({
+			isPinned: (index: number) => {
+				const card = selectedCommons[index];
+				return card !== undefined && getPinnedCardIds().has(card.id);
+			},
+			onRemove: removeSelectedCommon,
+		});
 
 	function drawMissingCommons() {
 		if (selectedCommons.length >= numberOfCommons) return;
