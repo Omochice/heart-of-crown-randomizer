@@ -41,11 +41,11 @@ describe("+page.svelte URL Reactivity Bug", () => {
 		expect(effectCount).toBeGreaterThanOrEqual(2);
 	});
 
-	it("should use $page store syntax for accessing URL params", () => {
-		// When using reactive page store, should use $page syntax
-		// Expected: $page.url.searchParams instead of page.url.searchParams
+	it("should use $page store syntax for accessing URL", () => {
+		// When using reactive page store, should use $page.url syntax
+		// URL param parsing is delegated to utility functions (resolveCardsFromUrl, parseCardIdsFromUrl)
 		if (pageContent.includes('from "$app/stores"')) {
-			expect(pageContent).toContain("$page.url.searchParams");
+			expect(pageContent).toContain("$page.url");
 		}
 	});
 });

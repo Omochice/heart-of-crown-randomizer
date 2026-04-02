@@ -16,7 +16,8 @@
 		getPinnedCards,
 		getExcludedCards,
 	} from "$lib/stores/card-state.svelte";
-	import { parseCardIdsFromUrl, buildUrlWithCardState, setsEqual } from "$lib/utils/url-sync";
+	import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
+	import { resolveCardsFromUrl, shouldUpdatePinExclude } from "$lib/stores/url-card-sync.svelte";
 	import {
 		drawRandomCards as drawRandomCardsLogic,
 		drawMissingCommons as drawMissingCommonsLogic,
@@ -32,10 +33,7 @@
 	let detailCard: CommonCard | null = $state(null);
 
 	$effect(() => {
-		const commonIds = $page.url.searchParams.getAll("card");
-		const newSelectedCommons = commonIds
-			.map((id) => allCommons.find((c) => c.id === Number.parseInt(id)))
-			.filter(Boolean) as CommonCard[];
+		const newSelectedCommons = resolveCardsFromUrl($page.url, allCommons);
 
 		if (JSON.stringify(selectedCommons) !== JSON.stringify(newSelectedCommons)) {
 			selectedCommons = newSelectedCommons;
@@ -52,22 +50,18 @@
 	 * We parse on every URL change rather than caching because users
 	 * might manually edit the URL or use browser back/forward buttons.
 	 *
-	 * We skip updates when URL params match current state to prevent
-	 * circular triggers with the State→URL sync effect.
+	 * We use untrack for state reads to prevent circular dependency:
+	 * togglePin() would trigger version++ which re-runs this effect while
+	 * the URL still has old values, resetting state incorrectly.
 	 */
 	$effect(() => {
 		const newPinnedIds = parseCardIdsFromUrl($page.url, "pin");
 		const newExcludedIds = parseCardIdsFromUrl($page.url, "exclude");
 
-		/**
-		 * We use untrack for state reads to prevent circular dependency:
-		 * togglePin() → version++ → this effect re-runs → URL still old →
-		 * resets state. By untracking, this effect only re-runs on URL change.
-		 */
 		const currentPinned = untrack(() => getPinnedCardIds());
 		const currentExcluded = untrack(() => getExcludedCardIds());
 
-		if (setsEqual(currentPinned, newPinnedIds) && setsEqual(currentExcluded, newExcludedIds)) {
+		if (!shouldUpdatePinExclude(currentPinned, currentExcluded, newPinnedIds, newExcludedIds)) {
 			return;
 		}
 
