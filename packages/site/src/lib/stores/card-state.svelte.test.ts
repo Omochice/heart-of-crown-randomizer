@@ -49,11 +49,11 @@ describe("CardState", () => {
 			expect(getCardState(1)).toBe("excluded");
 		});
 
-		it("should prioritize pinned over excluded when both exist", () => {
-			// This should not happen in normal usage, but test the precedence
+		it("should enforce mutual exclusivity via setters", () => {
 			setPinnedCardIds(new Set([1]));
 			setExcludedCardIds(new Set([1]));
-			expect(getCardState(1)).toBe("pinned");
+			// setExcludedCardIds removes overlapping IDs from pinned
+			expect(getCardState(1)).toBe("excluded");
 		});
 	});
 
@@ -112,14 +112,15 @@ describe("CardState", () => {
 			expect(result.map((c) => c.id)).toEqual([1, 3]);
 		});
 
-		it("should not include excluded cards", () => {
+		it("should not include cards removed by exclude setter", () => {
 			const allCards = [createMockCard(1), createMockCard(2)];
 			setPinnedCardIds(new Set([1, 2]));
-			setExcludedCardIds(new Set([1])); // Should not happen, but test it
+			setExcludedCardIds(new Set([1]));
 
 			const result = getPinnedCards(allCards);
-			// Should return cards 1 and 2, even though 1 is in excludedCardIds
-			expect(result).toHaveLength(2);
+			// Card 1 was removed from pinned by setExcludedCardIds
+			expect(result).toHaveLength(1);
+			expect(result[0].id).toBe(2);
 		});
 	});
 
@@ -138,14 +139,15 @@ describe("CardState", () => {
 			expect(result.map((c) => c.id)).toEqual([1, 3]);
 		});
 
-		it("should not include pinned cards", () => {
+		it("should not include cards removed by pin setter", () => {
 			const allCards = [createMockCard(1), createMockCard(2)];
 			setExcludedCardIds(new Set([1, 2]));
-			setPinnedCardIds(new Set([1])); // Should not happen, but test it
+			setPinnedCardIds(new Set([1]));
 
 			const result = getExcludedCards(allCards);
-			// Should return cards 1 and 2, even though 1 is in pinnedCardIds
-			expect(result).toHaveLength(2);
+			// Card 1 was removed from excluded by setPinnedCardIds
+			expect(result).toHaveLength(1);
+			expect(result[0].id).toBe(2);
 		});
 	});
 });
