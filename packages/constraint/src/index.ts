@@ -6,3 +6,4 @@ export {
   noAttack,
 } from "./presets.js";
 export type { Constraint, SelectionContext } from "./type.js";
+export { validateCombination } from "./validate-combination.js";
