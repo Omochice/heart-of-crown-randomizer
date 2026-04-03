@@ -207,3 +207,37 @@ export const highCostGte2: Constraint = {
     return pickFromPool(context, isHighCost, deficit);
   },
 };
+
+function isDisaster(card: CommonCard): boolean {
+  return hasMainType(card, "disaster");
+}
+
+/**
+ * Constraint that requires at least 1 disaster card in the selection.
+ *
+ * When applied, if no disaster card is already in required, one is
+ * picked from the pool using Fisher-Yates partial shuffle.
+ */
+export const disasterGte1: Constraint = {
+  id: "disaster-gte-1",
+  label: "災いカードを1枚以上含む",
+
+  isSatisfied(cards: readonly CommonCard[]): boolean {
+    return cards.some((card) => isDisaster(card));
+  },
+
+  canApply(context: Readonly<SelectionContext>): boolean {
+    const totalDisaster =
+      countInCards(context.pool, isDisaster) +
+      countInCards(context.required, isDisaster);
+    return totalDisaster >= 1;
+  },
+
+  apply(context: SelectionContext): SelectionContext {
+    const alreadyHave = countInCards(context.required, isDisaster);
+    if (alreadyHave >= 1) {
+      return context;
+    }
+    return pickFromPool(context, isDisaster, 1);
+  },
+};
