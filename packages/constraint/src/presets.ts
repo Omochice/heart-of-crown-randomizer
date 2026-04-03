@@ -51,6 +51,48 @@ function hasMainType(
   return card.mainType.includes(type);
 }
 
+function isHighCost(card: CommonCard): boolean {
+  return card.cost >= 5;
+}
+
+/**
+ * Pick n cards matching predicate from pool using Fisher-Yates partial shuffle.
+ *
+ * Fisher-Yates is used instead of sort-based shuffling because it provides
+ * uniform distribution with O(n) swaps and avoids sort comparison bias.
+ */
+function pickFromPool(
+  context: SelectionContext,
+  predicate: (card: CommonCard) => boolean,
+  n: number,
+): SelectionContext {
+  const candidates: { index: number; card: CommonCard }[] = [];
+  for (let i = 0; i < context.pool.length; i++) {
+    if (predicate(context.pool[i])) {
+      candidates.push({ index: i, card: context.pool[i] });
+    }
+  }
+
+  const pickCount = Math.min(n, candidates.length);
+  for (
+    let i = candidates.length - 1;
+    i > candidates.length - 1 - pickCount;
+    i--
+  ) {
+    const j = Math.floor(context.rng() * (i + 1));
+    [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+  }
+
+  const picked = candidates.slice(candidates.length - pickCount);
+  const pickedIndices = new Set(picked.map((p) => p.index));
+
+  return {
+    ...context,
+    pool: context.pool.filter((_, i) => !pickedIndices.has(i)),
+    required: [...context.required, ...picked.map((p) => p.card)],
+  };
+}
+
 /**
  * Constraint that excludes all attack cards from the selection.
  *
@@ -130,5 +172,38 @@ export const link0GteLink2: Constraint = {
     });
 
     return { ...context, pool };
+  },
+};
+
+/**
+ * Constraint that requires at least 2 high-cost (cost >= 5) cards in the selection.
+ *
+ * When applied, if fewer than 2 high-cost cards are already in required,
+ * the deficit is filled by picking from the pool using Fisher-Yates
+ * partial shuffle for unbiased random selection.
+ */
+export const highCostGte2: Constraint = {
+  id: "high-cost-gte-2",
+  label: "コスト5以上を2枚以上含む",
+
+  isSatisfied(cards: readonly CommonCard[]): boolean {
+    return countInCards(cards, isHighCost) >= 2;
+  },
+
+  canApply(context: Readonly<SelectionContext>): boolean {
+    const totalHighCost =
+      countInCards(context.pool, isHighCost) +
+      countInCards(context.required, isHighCost);
+    const totalCards = context.pool.length + context.required.length;
+    return totalHighCost >= 2 && totalCards >= context.count;
+  },
+
+  apply(context: SelectionContext): SelectionContext {
+    const alreadyHave = countInCards(context.required, isHighCost);
+    const deficit = 2 - alreadyHave;
+    if (deficit <= 0) {
+      return context;
+    }
+    return pickFromPool(context, isHighCost, deficit);
   },
 };
