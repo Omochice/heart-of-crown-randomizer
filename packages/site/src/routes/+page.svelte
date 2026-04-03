@@ -24,6 +24,9 @@
 		buildCardUrl,
 	} from "$lib/utils/card-draw";
 	import { buildShareUrl, shareOrCopy } from "$lib/utils/share";
+	import { presets } from "@heart-of-crown-randomizer/constraint";
+	import ConstraintPanel from "$lib/ConstraintPanel.svelte";
+	import { getEnabledConstraints } from "$lib/stores/constraint-state.svelte";
 	import { Shuffle, Plus } from "lucide-svelte";
 
 	let numberOfCommons = $state(10);
@@ -107,7 +110,15 @@
 		const pinnedCards = getPinnedCards(allCommons);
 		const excludedIds = getExcludedCardIds();
 
-		const result = drawRandomCardsLogic(allCommons, numberOfCommons, pinnedCards, excludedIds);
+		const activeConstraints = getEnabledConstraints(presets);
+
+		const result = drawRandomCardsLogic(
+			allCommons,
+			numberOfCommons,
+			pinnedCards,
+			excludedIds,
+			activeConstraints,
+		);
 		if (!result.ok) {
 			errorMessage = result.message;
 			return;
@@ -208,6 +219,13 @@
 	</div>
 
 	<ExcludeList cards={excludedCards} />
+
+	<ConstraintPanel
+		constraints={presets}
+		allCards={allCommons}
+		excludedIds={getExcludedCardIds()}
+		count={numberOfCommons}
+	/>
 
 	{#if errorMessage}
 		<div
