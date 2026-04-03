@@ -1,4 +1,5 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+import type { Constraint } from "@heart-of-crown-randomizer/constraint";
 import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
 import { validatePinConstraints, validateExcludeConstraints } from "./validation";
 import { selectWithConstraints } from "./select-with-constraints";
@@ -15,6 +16,7 @@ export function drawRandomCards(
 	numberOfCommons: number,
 	pinnedCards: CommonCard[],
 	excludedIds: ReadonlySet<number>,
+	constraints?: readonly Constraint[],
 ): DrawResult {
 	const pinValidation = validatePinConstraints(pinnedCards.length, numberOfCommons);
 	if (!pinValidation.ok) {
@@ -30,7 +32,13 @@ export function drawRandomCards(
 		return { ok: false, message: excludeValidation.message };
 	}
 
-	const cards = selectWithConstraints(allCommons, pinnedCards, excludedIds, numberOfCommons);
+	const cards = selectWithConstraints(
+		allCommons,
+		pinnedCards,
+		excludedIds,
+		numberOfCommons,
+		constraints,
+	);
 	return { ok: true, cards: cards.sort((a, b) => a.id - b.id) };
 }
 
