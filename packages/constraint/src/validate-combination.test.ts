@@ -1,7 +1,7 @@
 import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { describe, expect, it } from "vitest";
-import { disasterGte1, highCostGte2, link2Gte3, noAttack } from "./presets.js";
+import { highCostGte2, link2Gte3, noAttack } from "./presets.js";
 import type { SelectionContext } from "./type.js";
 import { validateCombination } from "./validate-combination.js";
 
@@ -21,9 +21,9 @@ describe("validateCombination", () => {
   });
 
   it("returns false for a single constraint that cannot be applied", () => {
-    // Basic.commons contains no disaster cards, so disasterGte1 cannot apply
-    const context = makeContext([...Basic.commons], 10);
-    expect(validateCombination([disasterGte1], context)).toBe(false);
+    // An empty pool cannot satisfy link2Gte3 which requires 3 link=2 cards
+    const context = makeContext([], 10);
+    expect(validateCombination([link2Gte3], context)).toBe(false);
   });
 
   it("returns true when multiple compatible constraints are combined", () => {

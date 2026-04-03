@@ -69,10 +69,6 @@ function isLink2(card: CommonCard): boolean {
   return card.link === 2;
 }
 
-function isDisaster(card: CommonCard): boolean {
-  return hasMainType(card, "disaster");
-}
-
 /**
  * Pick n cards matching predicate from pool using Fisher-Yates partial shuffle.
  *
@@ -227,36 +223,6 @@ export const highCostGte2: Constraint = {
 };
 
 /**
- * Constraint that requires at least 1 disaster card in the selection.
- *
- * When applied, if no disaster card is already in required, one is
- * picked from the pool using Fisher-Yates partial shuffle.
- */
-export const disasterGte1: Constraint = {
-  id: "disaster-gte-1",
-  label: "災いカードを1枚以上含む",
-
-  isSatisfied(cards: readonly CommonCard[]): boolean {
-    return cards.some((card) => isDisaster(card));
-  },
-
-  canApply(context: Readonly<SelectionContext>): boolean {
-    const totalDisaster =
-      countInCards(context.pool, isDisaster) +
-      countInCards(context.required, isDisaster);
-    return totalDisaster >= 1;
-  },
-
-  apply(context: SelectionContext): SelectionContext {
-    const alreadyHave = countInCards(context.required, isDisaster);
-    if (alreadyHave >= 1) {
-      return context;
-    }
-    return pickFromPool(context, isDisaster, 1);
-  },
-};
-
-/**
  * Constraint that requires at least 3 cards with link=2 in the selection.
  *
  * When applied, link=2 DuplicateCards are moved from the pool to
@@ -296,6 +262,5 @@ export const presets: readonly Constraint[] = [
   noAttack,
   link0GteLink2,
   highCostGte2,
-  disasterGte1,
   link2Gte3,
 ] as const;
