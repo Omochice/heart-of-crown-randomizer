@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
 import { drawRandomCards, drawMissingCommons, cardsToQuery, buildCardUrl } from "./card-draw";
 import { makeCard } from "$lib/test-helpers";
 
@@ -64,6 +65,46 @@ describe("drawRandomCards", () => {
 			expect(ids).not.toContain(2);
 			expect(ids).not.toContain(3);
 		}
+	});
+});
+
+describe("drawRandomCards with constraints", () => {
+	it("should pass constraints to selectWithConstraints", () => {
+		const filterConstraint: Constraint = {
+			id: "test-filter",
+			label: "test",
+			canApply: () => true,
+			isSatisfied: () => true,
+			apply: (ctx: SelectionContext) => ({
+				...ctx,
+				pool: ctx.pool.filter((c) => c.id <= 5),
+			}),
+		};
+
+		const result = drawRandomCards(allCommons, 3, [], new Set(), [filterConstraint]);
+
+		expect(result.ok).toBe(true);
+		if (result.ok) {
+			expect(result.cards).toHaveLength(3);
+			for (const card of result.cards) {
+				expect(card.id).toBeLessThanOrEqual(5);
+			}
+		}
+	});
+
+	it("should still validate pin constraints before applying constraints", () => {
+		const dummyConstraint: Constraint = {
+			id: "test",
+			label: "test",
+			canApply: () => true,
+			isSatisfied: () => true,
+			apply: (ctx: SelectionContext) => ctx,
+		};
+		const pinned = [makeCard(1), makeCard(2), makeCard(3)];
+
+		const result = drawRandomCards(allCommons, 2, pinned, new Set(), [dummyConstraint]);
+
+		expect(result.ok).toBe(false);
 	});
 });
 
