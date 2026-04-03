@@ -4,7 +4,12 @@ import type {
   UniqueCard,
 } from "@heart-of-crown-randomizer/card/type";
 import { describe, expect, it } from "vitest";
-import { highCostGte2, link0GteLink2, noAttack } from "./presets.js";
+import {
+  disasterGte1,
+  highCostGte2,
+  link0GteLink2,
+  noAttack,
+} from "./presets.js";
 import type { SelectionContext } from "./type.js";
 
 function makeDuplicateCard(
@@ -416,6 +421,129 @@ describe("highCostGte2", () => {
       });
 
       expect(highCostGte2.canApply(context)).toBe(false);
+    });
+  });
+});
+
+describe("disasterGte1", () => {
+  describe("isSatisfied", () => {
+    it("returns true when a card has disaster type", () => {
+      const cards: CommonCard[] = [
+        makeDuplicateCard({ id: 1, mainType: ["action"] }),
+        makeDuplicateCard({ id: 2, mainType: ["disaster"] }),
+      ];
+      expect(disasterGte1.isSatisfied(cards)).toBe(true);
+    });
+
+    it("returns false when no card has disaster type", () => {
+      const cards: CommonCard[] = [
+        makeDuplicateCard({ id: 1, mainType: ["action"] }),
+        makeDuplicateCard({ id: 2, mainType: ["territory"] }),
+      ];
+      expect(disasterGte1.isSatisfied(cards)).toBe(false);
+    });
+
+    it("detects disaster in UniqueCard sub-cards", () => {
+      const cards: CommonCard[] = [
+        makeUniqueCard({
+          id: 100,
+          cards: [
+            {
+              name: "Sub A",
+              mainType: ["disaster"],
+              cost: 2,
+              link: 1,
+              effect: "effect",
+            },
+            {
+              name: "Sub B",
+              mainType: ["action"],
+              cost: 3,
+              link: 0,
+              effect: "effect",
+            },
+          ],
+        }),
+      ];
+      expect(disasterGte1.isSatisfied(cards)).toBe(true);
+    });
+
+    it("returns false for empty array", () => {
+      expect(disasterGte1.isSatisfied([])).toBe(false);
+    });
+  });
+
+  describe("apply", () => {
+    it("moves a disaster card from pool to required", () => {
+      const actionCard = makeDuplicateCard({ id: 1, mainType: ["action"] });
+      const disasterCard = makeDuplicateCard({
+        id: 2,
+        mainType: ["disaster"],
+      });
+      const context = makeContext({
+        pool: [actionCard, disasterCard],
+        required: [],
+        count: 10,
+        rng: seededRng(),
+      });
+
+      const result = disasterGte1.apply(context);
+
+      expect(result.required).toHaveLength(1);
+      expect(result.required[0].id).toBe(2);
+      expect(result.pool).toEqual([actionCard]);
+    });
+
+    it("skips if required already has a disaster card", () => {
+      const disasterCard = makeDuplicateCard({
+        id: 1,
+        mainType: ["disaster"],
+      });
+      const poolDisaster = makeDuplicateCard({
+        id: 2,
+        mainType: ["disaster"],
+      });
+      const context = makeContext({
+        pool: [poolDisaster],
+        required: [disasterCard],
+        count: 10,
+        rng: seededRng(),
+      });
+
+      const result = disasterGte1.apply(context);
+
+      expect(result.required).toEqual([disasterCard]);
+      expect(result.pool).toEqual([poolDisaster]);
+    });
+  });
+
+  describe("canApply", () => {
+    it("returns false when no disaster cards are available", () => {
+      const pool = [
+        makeDuplicateCard({ id: 1, mainType: ["action"] }),
+        makeDuplicateCard({ id: 2, mainType: ["territory"] }),
+      ];
+      const context = makeContext({
+        pool,
+        required: [],
+        count: 2,
+      });
+
+      expect(disasterGte1.canApply(context)).toBe(false);
+    });
+
+    it("returns true when disaster cards exist in pool or required", () => {
+      const pool = [
+        makeDuplicateCard({ id: 1, mainType: ["action"] }),
+        makeDuplicateCard({ id: 2, mainType: ["disaster"] }),
+      ];
+      const context = makeContext({
+        pool,
+        required: [],
+        count: 2,
+      });
+
+      expect(disasterGte1.canApply(context)).toBe(true);
     });
   });
 });
