@@ -290,3 +290,12 @@ export const link2Gte3: Constraint = {
     return pickFromPool(context, isLink2, deficit);
   },
 };
+
+/** All available preset constraints. */
+export const presets: readonly Constraint[] = [
+  noAttack,
+  link0GteLink2,
+  highCostGte2,
+  disasterGte1,
+  link2Gte3,
+] as const;
