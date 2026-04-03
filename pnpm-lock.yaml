@@ -102,6 +102,37 @@ importers:
         specifier: 'catalog:'
         version: 6.0.2
 
+  packages/constraint:
+    dependencies:
+      '@heart-of-crown-randomizer/card':
+        specifier: workspace:*
+        version: link:../card
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 'catalog:'
+        version: 2.4.10
+      '@fast-check/vitest':
+        specifier: 'catalog:'
+        version: 0.3.0(vitest@4.1.2)
+      npm-run-all2:
+        specifier: 'catalog:'
+        version: 8.0.4
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.1.3
+      sort-package-json:
+        specifier: 'catalog:'
+        version: 3.6.1
+      tsdown:
+        specifier: 'catalog:'
+        version: 0.21.7(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(typescript@6.0.2)
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.2
+      vitest:
+        specifier: 'catalog:'
+        version: 4.1.2(@types/node@24.12.0)(@vitest/browser-playwright@4.1.2)(jsdom@29.0.1)(vite@7.3.1(@types/node@24.12.0)(jiti@2.6.1)(lightningcss@1.32.0))
+
   packages/randomizer:
     dependencies:
       seedrandom:
