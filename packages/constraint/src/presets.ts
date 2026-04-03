@@ -56,6 +56,24 @@ function isHighCost(card: CommonCard): boolean {
 }
 
 /**
+ * Check whether a card has link=2.
+ *
+ * Only DuplicateCards have a top-level `link` property.
+ * UniqueCards have sub-cards with individual link values but no
+ * top-level link, so they are never considered link=2 cards.
+ */
+function isLink2(card: CommonCard): boolean {
+  if (card.hasChild) {
+    return false;
+  }
+  return card.link === 2;
+}
+
+function isDisaster(card: CommonCard): boolean {
+  return hasMainType(card, "disaster");
+}
+
+/**
  * Pick n cards matching predicate from pool using Fisher-Yates partial shuffle.
  *
  * Fisher-Yates is used instead of sort-based shuffling because it provides
@@ -208,10 +226,6 @@ export const highCostGte2: Constraint = {
   },
 };
 
-function isDisaster(card: CommonCard): boolean {
-  return hasMainType(card, "disaster");
-}
-
 /**
  * Constraint that requires at least 1 disaster card in the selection.
  *
@@ -239,5 +253,40 @@ export const disasterGte1: Constraint = {
       return context;
     }
     return pickFromPool(context, isDisaster, 1);
+  },
+};
+
+/**
+ * Constraint that requires at least 3 cards with link=2 in the selection.
+ *
+ * When applied, link=2 DuplicateCards are moved from the pool to
+ * required until 3 link=2 cards are guaranteed. UniqueCards are
+ * ignored because they lack a top-level link property.
+ */
+export const link2Gte3: Constraint = {
+  id: "link2-gte-3",
+  label: "リンク2を3枚以上含む",
+
+  isSatisfied(cards: readonly CommonCard[]): boolean {
+    return countInCards(cards, isLink2) >= 3;
+  },
+
+  canApply(context: Readonly<SelectionContext>): boolean {
+    const totalLink2 =
+      countInCards(context.pool, isLink2) +
+      countInCards(context.required, isLink2);
+    const totalCards = context.pool.length + context.required.length;
+    return totalLink2 >= 3 && totalCards >= context.count;
+  },
+
+  apply(context: SelectionContext): SelectionContext {
+    const alreadyRequired = countInCards(context.required, isLink2);
+    const deficit = 3 - alreadyRequired;
+
+    if (deficit <= 0) {
+      return context;
+    }
+
+    return pickFromPool(context, isLink2, deficit);
   },
 };
