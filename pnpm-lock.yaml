@@ -188,7 +188,7 @@ importers:
         specifier: 28.1.0
         version: 28.1.0
       lucide-svelte:
-        specifier: ^0.577.0
+        specifier: 0.577.0
         version: 0.577.0(svelte@5.55.1)
       prettier:
         specifier: 3.8.1
