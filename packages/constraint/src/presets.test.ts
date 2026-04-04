@@ -4,7 +4,13 @@ import type {
   UniqueCard,
 } from "@heart-of-crown-randomizer/card/type";
 import { describe, expect, it } from "vitest";
-import { highCostGte2, link2Gte3, link2GteLink0, noAttack } from "./presets.js";
+import {
+  eachCost2to5,
+  highCostGte2,
+  link2Gte3,
+  link2GteLink0,
+  noAttack,
+} from "./presets.js";
 import type { SelectionContext } from "./type.js";
 
 function makeDuplicateCard(
@@ -532,6 +538,99 @@ describe("link2Gte3", () => {
       });
 
       expect(link2Gte3.canApply(context)).toBe(false);
+    });
+  });
+});
+
+describe("eachCost2to5", () => {
+  describe("isSatisfied", () => {
+    it("returns true when all costs 2-5 are present", () => {
+      const cards: CommonCard[] = [
+        makeDuplicateCard({ id: 1, cost: 2 }),
+        makeDuplicateCard({ id: 2, cost: 3 }),
+        makeDuplicateCard({ id: 3, cost: 4 }),
+        makeDuplicateCard({ id: 4, cost: 5 }),
+      ];
+      expect(eachCost2to5.isSatisfied(cards)).toBe(true);
+    });
+
+    it("returns false when cost 3 is missing", () => {
+      const cards: CommonCard[] = [
+        makeDuplicateCard({ id: 1, cost: 2 }),
+        makeDuplicateCard({ id: 2, cost: 4 }),
+        makeDuplicateCard({ id: 3, cost: 5 }),
+      ];
+      expect(eachCost2to5.isSatisfied(cards)).toBe(false);
+    });
+
+    it("returns false for empty array", () => {
+      expect(eachCost2to5.isSatisfied([])).toBe(false);
+    });
+  });
+
+  describe("apply", () => {
+    it("picks one card for each missing cost", () => {
+      const context = makeContext({
+        pool: [
+          makeDuplicateCard({ id: 1, cost: 2 }),
+          makeDuplicateCard({ id: 2, cost: 3 }),
+          makeDuplicateCard({ id: 3, cost: 4 }),
+          makeDuplicateCard({ id: 4, cost: 5 }),
+          makeDuplicateCard({ id: 5, cost: 1 }),
+        ],
+        required: [],
+        count: 10,
+        rng: seededRng(),
+      });
+
+      const result = eachCost2to5.apply(context);
+
+      expect(result.required).toHaveLength(4);
+      const costs = result.required.map((c) => c.cost);
+      expect(costs).toContain(2);
+      expect(costs).toContain(3);
+      expect(costs).toContain(4);
+      expect(costs).toContain(5);
+    });
+
+    it("skips costs already in required", () => {
+      const context = makeContext({
+        pool: [
+          makeDuplicateCard({ id: 2, cost: 3 }),
+          makeDuplicateCard({ id: 3, cost: 4 }),
+          makeDuplicateCard({ id: 4, cost: 5 }),
+        ],
+        required: [makeDuplicateCard({ id: 1, cost: 2 })],
+        count: 10,
+        rng: seededRng(),
+      });
+
+      const result = eachCost2to5.apply(context);
+
+      expect(result.required).toHaveLength(4);
+    });
+  });
+
+  describe("canApply", () => {
+    it("returns false when a cost is completely missing", () => {
+      const pool = [
+        makeDuplicateCard({ id: 1, cost: 2 }),
+        makeDuplicateCard({ id: 2, cost: 4 }),
+        makeDuplicateCard({ id: 3, cost: 5 }),
+      ];
+      const context = makeContext({ pool, required: [], count: 3 });
+      expect(eachCost2to5.canApply(context)).toBe(false);
+    });
+
+    it("returns true when all costs 2-5 are available", () => {
+      const pool = [
+        makeDuplicateCard({ id: 1, cost: 2 }),
+        makeDuplicateCard({ id: 2, cost: 3 }),
+        makeDuplicateCard({ id: 3, cost: 4 }),
+        makeDuplicateCard({ id: 4, cost: 5 }),
+      ];
+      const context = makeContext({ pool, required: [], count: 4 });
+      expect(eachCost2to5.canApply(context)).toBe(true);
     });
   });
 });
