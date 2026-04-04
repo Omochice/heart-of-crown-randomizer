@@ -1,4 +1,5 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+import { encodeCardIds } from "@heart-of-crown-randomizer/card-codec";
 import type { Constraint } from "@heart-of-crown-randomizer/constraint";
 import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
 import { validatePinConstraints, validateExcludeConstraints } from "./validation";
@@ -62,15 +63,6 @@ export function drawMissingCommons(
 	return select(availableCommons, cardsToAdd);
 }
 
-export function cardsToQuery(cards: CommonCard[]): string {
-	return cards
-		.reduce((query, card) => {
-			query.append("card", card.id.toString());
-			return query;
-		}, new URLSearchParams())
-		.toString();
-}
-
 /**
  * We include pin/exclude params in every URL transition rather than
  * relying on the State-to-URL effect, because goto() triggers the
@@ -83,8 +75,8 @@ export function buildCardUrl(
 	excludedIds: ReadonlySet<number>,
 ): string {
 	const params = new URLSearchParams();
-	for (const card of cards) {
-		params.append("card", card.id.toString());
+	if (cards.length > 0) {
+		params.set("s", encodeCardIds(cards.map((c) => c.id)));
 	}
 	for (const id of pinnedIds) {
 		params.append("pin", String(id));

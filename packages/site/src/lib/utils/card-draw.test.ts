@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
-import { drawRandomCards, drawMissingCommons, cardsToQuery, buildCardUrl } from "./card-draw";
+import { decodeCardIds } from "@heart-of-crown-randomizer/card-codec";
+import { drawRandomCards, drawMissingCommons, buildCardUrl } from "./card-draw";
 import { makeCard } from "$lib/test-helpers";
 
 const allCommons = Array.from({ length: 20 }, (_, i) => makeCard(i + 1));
@@ -143,35 +144,19 @@ describe("drawMissingCommons", () => {
 	});
 });
 
-describe("cardsToQuery", () => {
-	it("should build query string from cards", () => {
-		const cards = [makeCard(1), makeCard(5), makeCard(12)];
-
-		const result = cardsToQuery(cards);
-
-		expect(result).toBe("card=1&card=5&card=12");
-	});
-
-	it("should return empty string for no cards", () => {
-		const result = cardsToQuery([]);
-
-		expect(result).toBe("");
-	});
-});
-
 describe("buildCardUrl", () => {
-	it("should include card, pin, and exclude params", () => {
+	it("should include compressed card IDs and pin/exclude params", () => {
 		const cards = [makeCard(1), makeCard(5)];
 		const pinnedIds = new Set([1]);
 		const excludedIds = new Set([10]);
 
 		const result = buildCardUrl(cards, pinnedIds, excludedIds);
 
-		expect(result).toContain("card=1");
-		expect(result).toContain("card=5");
+		expect(result).toMatch(/^\?s=.+/);
 		expect(result).toContain("pin=1");
 		expect(result).toContain("exclude=10");
-		expect(result).toMatch(/^\?/);
+		const sParam = new URLSearchParams(result.slice(1)).get("s")!;
+		expect(decodeCardIds(sParam)).toEqual([1, 5]);
 	});
 
 	it("should work with empty pin/exclude sets", () => {
@@ -179,6 +164,8 @@ describe("buildCardUrl", () => {
 
 		const result = buildCardUrl(cards, new Set(), new Set());
 
-		expect(result).toBe("?card=3");
+		expect(result).toMatch(/^\?s=.+/);
+		const sParam = new URLSearchParams(result.slice(1)).get("s")!;
+		expect(decodeCardIds(sParam)).toEqual([3]);
 	});
 });
