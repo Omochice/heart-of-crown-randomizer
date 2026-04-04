@@ -3,7 +3,8 @@ export function encodeCardIds(ids: number[]): string {
     return "";
   }
 
-  const byteCount = Math.ceil((Math.max(...ids) + 1) / 8);
+  const maxId = ids.reduce((max, id) => Math.max(max, id), 0);
+  const byteCount = Math.ceil((maxId + 1) / 8);
   const bytes = new Uint8Array(byteCount);
   for (const id of ids) {
     bytes[id >> 3] |= 1 << (id & 7);
