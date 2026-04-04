@@ -10,7 +10,7 @@ export function decodeCardIds(encoded: string): number[] {
   }
 
   // Convert base64url to standard base64
-  base64 = base64.replace(/-/g, "+").replace(/_/g, "/");
+  base64 = base64.replaceAll("-", "+").replaceAll("_", "/");
 
   // Decode base64 to bytes
   const binaryString = atob(base64);

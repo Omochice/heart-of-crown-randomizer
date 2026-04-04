@@ -17,7 +17,7 @@ export function encodeCardIds(ids: number[]): string {
   const trimmed = bytes.subarray(0, end);
 
   return btoa(String.fromCharCode(...trimmed))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
+    .replaceAll("+", "-")
+    .replaceAll("/", "_")
+    .replaceAll("=", "");
 }
