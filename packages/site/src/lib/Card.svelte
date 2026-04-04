@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { getCardState, toggleExclude, togglePin } from "$lib/stores/card-state.svelte";
-	import { getStripColor, getCategoryLabel } from "$lib/utils/card-display";
+	import { getStripColor, getCategoryLabel, getSubTypeLabel } from "$lib/utils/card-display";
 	import { Pin, Ban } from "lucide-svelte";
 
 	type Props = {
@@ -31,6 +31,7 @@
 	const stripColor = $derived(getStripColor(card));
 	const categoryLabel = $derived(getCategoryLabel(card));
 	const linkCount = $derived(card.hasChild ? (card.cards[0]?.link ?? 0) : card.link);
+	const subTypeLabel = $derived(getSubTypeLabel(card));
 
 	function handleTogglePin(e: MouseEvent) {
 		e.stopPropagation();
@@ -79,6 +80,10 @@
 			class="card-name"
 			class:line-through={isExcluded}>{card.name}</span
 		>
+
+		{#if subTypeLabel}
+			<span class="card-subtype">{subTypeLabel}</span>
+		{/if}
 
 		<span class="card-cost">{card.cost}</span>
 
@@ -181,6 +186,12 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+
+	.card-subtype {
+		font-size: 9px;
+		color: var(--text-secondary);
+		flex-shrink: 0;
 	}
 
 	.card-cost {
