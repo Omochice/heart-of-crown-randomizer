@@ -142,7 +142,10 @@
 	}
 
 	async function copyToClipboard() {
-		await shareOrCopy(shareUrl);
+		await shareOrCopy(
+			shareUrl,
+			[...basicCards, ...farEasternCards].map((c) => c.name),
+		);
 	}
 
 	function removeSelectedCommon(index: number) {
