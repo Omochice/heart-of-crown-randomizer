@@ -35,7 +35,7 @@
 		if (enabledIds.has(constraint.id)) return true;
 
 		const hypothetical = constraints.filter((c) => enabledIds.has(c.id) || c.id === constraint.id);
-		return validateCombination(hypothetical, selectionContext);
+		return validateCombination(hypothetical, { ...selectionContext, rng: () => 0.5 });
 	}
 
 	function handleToggle(constraint: Constraint) {
