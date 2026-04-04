@@ -22,4 +22,5 @@ A card randomizer tool for the Heart of Crown deck-building game. Provides deter
 Transforms manual card shuffling into deterministic, shareable, and testable process. Separation of randomizer logic from card data enables independent evolution of game mechanics and card pool content.
 
 ---
+
 _Focus on patterns and purpose, not exhaustive feature lists_
