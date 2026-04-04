@@ -32,22 +32,27 @@ describe("buildShareText", () => {
 });
 
 describe("shareOrCopy", () => {
-	it("should call navigator.share when available", async () => {
+	const cardNames = ["願いの泉", "寄付"];
+	const url = "https://example.com?card=1";
+	const expectedText = buildShareText(cardNames, url);
+
+	it("should call navigator.share with text containing card names", async () => {
 		const shareMock = vi.fn().mockResolvedValue(undefined);
 		Object.defineProperty(globalThis, "navigator", {
 			value: { share: shareMock, clipboard: { writeText: vi.fn() } },
 			writable: true,
 		});
 
-		await shareOrCopy("https://example.com?card=1");
+		await shareOrCopy(url, cardNames);
 
 		expect(shareMock).toHaveBeenCalledWith({
-			url: "https://example.com?card=1",
+			url,
 			title: "ハートオブクラウンランダマイザー",
+			text: expectedText,
 		});
 	});
 
-	it("should fall back to clipboard when share fails", async () => {
+	it("should fall back to clipboard with share text when share fails", async () => {
 		const clipboardMock = vi.fn().mockResolvedValue(undefined);
 		Object.defineProperty(globalThis, "navigator", {
 			value: {
@@ -57,8 +62,8 @@ describe("shareOrCopy", () => {
 			writable: true,
 		});
 
-		await shareOrCopy("https://example.com?card=1");
+		await shareOrCopy(url, cardNames);
 
-		expect(clipboardMock).toHaveBeenCalledWith("https://example.com?card=1");
+		expect(clipboardMock).toHaveBeenCalledWith(expectedText);
 	});
 });

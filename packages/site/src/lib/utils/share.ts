@@ -19,14 +19,16 @@ export function buildShareText(cardNames: readonly string[], url: string): strin
 	return `ハトクラなう。今回のサプライ: ${cardNames.join(", ")} ${url}`;
 }
 
-export async function shareOrCopy(url: string): Promise<void> {
+export async function shareOrCopy(url: string, cardNames: readonly string[]): Promise<void> {
+	const text = buildShareText(cardNames, url);
 	await navigator
 		.share({
 			url,
 			title: "ハートオブクラウンランダマイザー",
+			text,
 		})
 		.catch(() => {
-			return navigator.clipboard.writeText(url);
+			return navigator.clipboard.writeText(text);
 		})
 		.catch((cause) => {
 			console.error("Failed to copy URL", { cause });
