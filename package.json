@@ -11,7 +11,6 @@
     "build": "turbo run build",
     "check": "npm-run-all2 check:*",
     "check:turbo": "turbo run check",
-    "check:typo": "devbox run typos",
     "clean": "turbo run clean",
     "dev": "turbo run dev --filter=@heart-of-crown-randomizer/site",
     "fmt": "npm-run-all2 fmt:*",

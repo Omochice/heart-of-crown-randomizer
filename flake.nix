@@ -69,6 +69,7 @@
               keep-sorted.enable = true;
               nixfmt.enable = true;
               toml-sort.enable = true;
+              typos.enable = true;
               yamlfmt = {
                 enable = true;
                 excludes = [ "pnpm-lock.yaml" ];
