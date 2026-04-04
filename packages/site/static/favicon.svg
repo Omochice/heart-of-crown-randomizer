@@ -1,0 +1,93 @@
+<svg width="512" height="512" viewBox="0 0 512 512"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Crown dome gradient: light blue -->
+    <radialGradient id="crownBlue" cx="50%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#9ED8F0" />
+      <stop offset="100%" stop-color="#5BA8D0" />
+    </radialGradient>
+    <!-- Crown dome shadow/depth -->
+    <radialGradient id="crownShadow" cx="50%" cy="80%" r="60%">
+      <stop offset="0%" stop-color="#4A90B0" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#4A90B0" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background (dark navy) -->
+  <rect width="512" height="512" rx="64" ry="64" fill="#141028" />
+
+  <!-- Faint outer glow ring -->
+  <rect x="8" y="8" width="496" height="496" rx="58" ry="58"
+        fill="none" stroke="#9ED8F0" stroke-opacity="0.12" stroke-width="2" />
+
+  <!-- Centered icon group -->
+  <g transform="translate(256,268) scale(1.5)">
+
+    <!-- Crown dome (light blue) -->
+    <path id="dome"
+      d="M-120 68
+         C-120 68 -160 -10 -110 -60
+         C-60 -110 -15 -124 0 -124
+         C15 -124 60 -110 110 -60
+         C160 -10 120 68 120 68 Z"
+      fill="url(#crownBlue)"
+    />
+
+    <!-- Crown dome depth shading -->
+    <use href="#dome" fill="url(#crownShadow)" />
+
+    <!-- Crown ribs (white arches) -->
+    <path d="M-108 64 C-78 -36 -20 -96 0 -118" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-opacity="0.45" stroke-linecap="round" />
+    <path d="M108 64 C78 -36 20 -96 0 -118" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-opacity="0.45" stroke-linecap="round" />
+    <path d="M0 64 C0 -10 0 -76 0 -118" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-opacity="0.35" stroke-linecap="round" />
+
+    <!-- Gold base band -->
+    <rect x="-126" y="56" width="252" height="20"
+          rx="6" ry="6"
+          fill="#E2B34A" />
+
+    <!-- White frill layer 1 (top, large scallops) -->
+    <path
+      d="M-140 70
+         C-130 48 -114 70 -104 48
+         C-94 70 -78 48 -68 70
+         C-58 48 -42 70 -32 48
+         C-22 70 -6 48 4 70
+         C14 48 30 70 40 48
+         C50 70 66 48 76 70
+         C86 48 102 70 112 48
+         C122 70 138 48 140 70 Z"
+      fill="#FFFFFF" opacity="0.9"
+    />
+    <!-- White frill layer 2 (middle) -->
+    <path
+      d="M-144 82
+         C-134 62 -120 82 -110 62
+         C-100 82 -86 62 -76 82
+         C-66 62 -52 82 -42 62
+         C-32 82 -18 62 -8 82
+         C2 62 16 82 26 62
+         C36 82 50 62 60 82
+         C70 62 84 82 94 62
+         C104 82 118 62 128 82
+         C138 62 144 82 144 82 Z"
+      fill="#FFFFFF" opacity="0.75"
+    />
+
+    <!-- Gold diamond on top -->
+    <polygon points="0,-160 14,-138 0,-116 -14,-138" fill="#E2B34A" />
+
+    <!-- Heart emblem with gold outline -->
+    <path
+      d="M0 -36
+         C-14 -54 -44 -56 -54 -40
+         C-66 -20 -62 14 -42 32
+         L0 68
+         L42 32
+         C62 14 66 -20 54 -40
+         C44 -56 14 -54 0 -36 Z"
+      fill="#C54B5C"
+      stroke="#E2B34A" stroke-width="4" stroke-linejoin="round"
+    />
+  </g>
+</svg>
