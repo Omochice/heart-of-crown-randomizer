@@ -1,27 +1,30 @@
 import { describe, expect, it } from "vitest";
 import { resolveCardsFromUrl, shouldUpdatePinExclude } from "./url-card-sync.svelte";
 import { makeCard } from "$lib/test-helpers";
+import { encodeCardIds } from "@heart-of-crown-randomizer/card-codec";
 
 const allCommons = Array.from({ length: 20 }, (_, i) => makeCard(i + 1));
 
 describe("resolveCardsFromUrl", () => {
-	it("should resolve cards from URL card parameters", () => {
-		const url = new URL("https://example.com?card=1&card=5&card=12");
+	it("should resolve cards from encoded s parameter", () => {
+		const encoded = encodeCardIds([1, 5, 12]);
+		const url = new URL(`https://example.com?s=${encoded}`);
 
 		const result = resolveCardsFromUrl(url, allCommons);
 
 		expect(result.map((c) => c.id)).toEqual([1, 5, 12]);
 	});
 
-	it("should filter out invalid card IDs", () => {
-		const url = new URL("https://example.com?card=1&card=abc&card=999");
+	it("should filter out unknown card IDs", () => {
+		const encoded = encodeCardIds([1, 999]);
+		const url = new URL(`https://example.com?s=${encoded}`);
 
 		const result = resolveCardsFromUrl(url, allCommons);
 
 		expect(result.map((c) => c.id)).toEqual([1]);
 	});
 
-	it("should return empty array when no card params", () => {
+	it("should return empty array when no s param", () => {
 		const url = new URL("https://example.com");
 
 		const result = resolveCardsFromUrl(url, allCommons);
@@ -29,12 +32,13 @@ describe("resolveCardsFromUrl", () => {
 		expect(result).toEqual([]);
 	});
 
-	it("should preserve URL parameter order", () => {
-		const url = new URL("https://example.com?card=5&card=1&card=3");
+	it("should return sorted card IDs", () => {
+		const encoded = encodeCardIds([5, 1, 3]);
+		const url = new URL(`https://example.com?s=${encoded}`);
 
 		const result = resolveCardsFromUrl(url, allCommons);
 
-		expect(result.map((c) => c.id)).toEqual([5, 1, 3]);
+		expect(result.map((c) => c.id)).toEqual([1, 3, 5]);
 	});
 });
 
