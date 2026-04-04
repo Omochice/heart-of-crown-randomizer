@@ -17,7 +17,10 @@ export function encodeCardIds(ids: number[]): string {
   }
   const trimmed = bytes.subarray(0, end);
 
-  return btoa(String.fromCharCode(...trimmed))
+  const binaryString = Array.from(trimmed, (byte) =>
+    String.fromCharCode(byte),
+  ).join("");
+  return btoa(binaryString)
     .replaceAll("+", "-")
     .replaceAll("/", "_")
     .replaceAll("=", "");
