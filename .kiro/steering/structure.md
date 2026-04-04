@@ -7,10 +7,12 @@ Package-first monorepo separating concerns by responsibility: data (card definit
 ## Directory Patterns
 
 ### Packages (`/packages/*`)
+
 **Purpose**: Independent npm packages with isolated responsibilities
 **Convention**: Each package has own `package.json`, `tsconfig.json`, build config
 **Example**:
-```
+
+```text
 packages/
   card/         # Type definitions + card data exports
   randomizer/   # Pure functions for selection/shuffling
@@ -18,10 +20,12 @@ packages/
 ```
 
 ### Package Internal Structure
+
 **Location**: `packages/{package}/src/`
 **Purpose**: Source files with co-located tests
 **Pattern**:
-```
+
+```text
 src/
   index.ts            # Main export barrel
   {feature}.ts        # Implementation
@@ -29,10 +33,12 @@ src/
 ```
 
 ### SvelteKit Routes (`packages/site/src/routes/`)
+
 **Location**: `packages/site/src/routes/`
 **Purpose**: File-based routing with split test concerns
 **Pattern**:
-```
+
+```text
 routes/
   +page.svelte               # Route component
   page.{concern}.test.ts     # Tests split by concern
@@ -40,10 +46,12 @@ routes/
 ```
 
 ### Card Data Organization (`packages/card/src/`)
+
 **Location**: Organized by edition/rarity
 **Purpose**: Typed card definitions grouped by game expansion
 **Pattern**:
-```
+
+```text
 card/src/
   type.ts                     # Shared type definitions
   basic/
@@ -65,6 +73,7 @@ card/src/
 ## Import Organization
 
 ### Workspace Imports
+
 ```typescript
 // Cross-package imports via workspace namespace
 import { select } from "@heart-of-crown-randomizer/randomizer";
@@ -72,6 +81,7 @@ import { Princess } from "@heart-of-crown-randomizer/card/type";
 ```
 
 ### Relative Imports
+
 ```typescript
 // Within package, relative paths
 import { createRNG } from "./rng";
@@ -83,22 +93,27 @@ import type { Identifiable } from "./types";
 ## Code Organization Principles
 
 ### Separation of Concerns
+
 - **card**: Pure data + types (no logic)
 - **randomizer**: Pure functions (no DOM, no state)
 - **site**: All UI state, effects, and rendering
 
 ### Test Collocation
+
 - Tests live next to implementation (`feature.ts` + `feature.test.ts`)
 - Site splits tests by concern to avoid massive test files
 
 ### Barrel Exports
+
 - Each package/directory uses `index.ts` to re-export public API
 - Fine-grained exports allow tree-shaking (e.g., `/basic/princess` subpath)
 
 ### Type-Driven Development
+
 - Types defined before implementation
 - Discriminated unions for card categories (`type` field as discriminator)
 - Generic functions constrained by `Identifiable` interface
 
 ---
+
 _Document patterns, not file trees. New files following patterns shouldn't require updates_

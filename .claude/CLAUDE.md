@@ -5,6 +5,7 @@ Kiro-style Spec Driven Development implementation on AI-DLC (AI Development Life
 ## Project Context
 
 ### Paths
+
 - Steering: `.kiro/steering/`
 - Specs: `.kiro/specs/`
 
@@ -14,51 +15,58 @@ Kiro-style Spec Driven Development implementation on AI-DLC (AI Development Life
 **Specs** (`.kiro/specs/`) - Formalize development process for individual features
 
 ### Active Specifications
+
 - Check `.kiro/specs/` for active specifications
 - Use `/kiro:spec-status [feature-name]` to check progress
 
 ## Development Guidelines
+
 - User interaction language MUST match the user's input language
 - Code and code comments MUST be written in English
 - All Markdown content written to project files (e.g., requirements.md, design.md, tasks.md, research.md, validation reports) MUST be written in the target language configured for this specification (see spec.json.language)
 
 ## Minimal Workflow
+
 - Phase 0 (optional): `/kiro:steering`, `/kiro:steering-custom`
 - Phase 1 (Specification):
-  - `/kiro:spec-init "description"`
-  - `/kiro:spec-requirements {feature}`
-  - `/kiro:validate-gap {feature}` (optional: for existing codebase)
-  - `/kiro:spec-design {feature} [-y]`
-  - `/kiro:validate-design {feature}` (optional: design review)
-  - `/kiro:spec-tasks {feature} [-y]`
+    - `/kiro:spec-init "description"`
+    - `/kiro:spec-requirements {feature}`
+    - `/kiro:validate-gap {feature}` (optional: for existing codebase)
+    - `/kiro:spec-design {feature} [-y]`
+    - `/kiro:validate-design {feature}` (optional: design review)
+    - `/kiro:spec-tasks {feature} [-y]`
 - Phase 2 (Implementation): `/kiro:spec-impl {feature} [tasks]`
-  - `/kiro:validate-impl {feature}` (optional: after implementation)
+    - `/kiro:validate-impl {feature}` (optional: after implementation)
 - Progress check: `/kiro:spec-status {feature}` (use anytime)
 
 ## Development Rules
+
 - 3-phase approval workflow: Requirements → Design → Tasks → Implementation
 - Human review required each phase; use `-y` only for intentional fast-track
 - Keep steering current and verify alignment with `/kiro:spec-status`
 - Follow the user's instructions precisely, and within that scope act autonomously: gather the necessary context and complete the requested work end-to-end in this run, asking questions only when essential information is missing or the instructions are critically ambiguous.
 
 ## TDD Process
+
 - Each task MUST follow the Red-Green-Refactor cycle:
-  - **Red**: Write a failing test first
-  - **Green**: Write minimal code to make the test pass
-  - **Refactor**: Improve code quality while keeping tests green
+    - **Red**: Write a failing test first
+    - **Green**: Write minimal code to make the test pass
+    - **Refactor**: Improve code quality while keeping tests green
 - Each step (Red, Green, Refactor) MUST have its own commit
 - All commits MUST follow conventional commit format
 - Commit type MUST be decided based on how users (randomizer users) are affected by the change
 - Specification updates MUST use `chore(spec):` prefix
 
 ## Code Documentation
+
 - Code comments SHOULD explain WHY NOT an alternative approach was chosen, rather than WHAT or HOW
 - Test code SHOULD clearly describe WHAT is being tested
 - Commit body MUST include:
-  - WHY the change was made
-  - How to verify the change (verification method)
+    - WHY the change was made
+    - How to verify the change (verification method)
 
 ## Steering Configuration
+
 - Load entire `.kiro/steering/` as project memory
 - Default files: `product.md`, `tech.md`, `structure.md`
 - Custom files are supported (managed via `/kiro:steering-custom`)

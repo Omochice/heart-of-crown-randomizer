@@ -54,42 +54,42 @@ Heart of Crownランダマイザーにおいて、ユーザーが特定のカー
 ### 採用した Pros
 
 1. 保守性向上: 単一責任原則（SRP）に準拠
-   - 各モジュールが単一の責任を持つ（card-state.svelte.ts: 状態管理、Card.svelte: UI表示）
-   - 変更が局所化され、影響範囲が明確
+    - 各モジュールが単一の責任を持つ（card-state.svelte.ts: 状態管理、Card.svelte: UI表示）
+    - 変更が局所化され、影響範囲が明確
 
 1. テスト性向上: モジュール単位でテスト可能
-   - card-state.svelte.ts: 純粋な状態ロジックとしてunit test
-   - Card.svelte: UI統合としてintegration test
-   - +page.svelte: フルフローとしてE2E test
+    - card-state.svelte.ts: 純粋な状態ロジックとしてunit test
+    - Card.svelte: UI統合としてintegration test
+    - +page.svelte: フルフローとしてE2E test
 
 1. 再利用性: 将来の拡張が容易
-   - card-state.svelte.tsの関数群は他の機能（例: お気に入り管理）からも参照可能
+    - card-state.svelte.tsの関数群は他の機能（例: お気に入り管理）からも参照可能
 
 1. プロジェクト方針準拠:
-   - URL-based state sharing（設定の共有性を重視）
-   - Separation of Concerns（card/randomizer/siteのパッケージ境界を維持）
-   - TypeScript strict mode（型安全性、`any`の使用禁止）
+    - URL-based state sharing（設定の共有性を重視）
+    - Separation of Concerns（card/randomizer/siteのパッケージ境界を維持）
+    - TypeScript strict mode（型安全性、`any`の使用禁止）
 
 1. 既存パターンとの一貫性:
-   - URL同期: 既存の`selectedCommons`と同じ`$effect`パターンを踏襲
-   - カンマ区切り形式: 既存の`card` parameterと一貫した可読性の高いURL
-   - 制約API: 既存の`select()`関数を再利用（新規ロジック不要）
+    - URL同期: 既存の`selectedCommons`と同じ`$effect`パターンを踏襲
+    - カンマ区切り形式: 既存の`card` parameterと一貫した可読性の高いURL
+    - 制約API: 既存の`select()`関数を再利用（新規ロジック不要）
 
 ### 採用した Cons
 
 1. 初期実装コストが高い:
-   - 新規モジュール2つ（stores/card-state.svelte.ts, Card.svelte）を作成
-   - 既存コンポーネントの変更（+page.svelte）
-   - 約200行のlocalStorageコード削除 + 新規実装
+    - 新規モジュール2つ（stores/card-state.svelte.ts, Card.svelte）を作成
+    - 既存コンポーネントの変更（+page.svelte）
+    - 約200行のlocalStorageコード削除 + 新規実装
 
 1. モジュール間の依存関係:
-   - Card.svelte → stores/card-state.svelte.ts への依存
-   - +page.svelte → stores/card-state.svelte.ts, select() への依存
-   - 依存関係の変更時に複数ファイルの修正が必要
+    - Card.svelte → stores/card-state.svelte.ts への依存
+    - +page.svelte → stores/card-state.svelte.ts, select() への依存
+    - 依存関係の変更時に複数ファイルの修正が必要
 
 1. 学習コスト:
-   - Svelte 5 runesの`.svelte.ts`パターン（stores/card-state.svelte.ts）に不慣れな開発者向け
-   - URL同期の双方向バインディング（URL ↔ State）の理解が必要
+    - Svelte 5 runesの`.svelte.ts`パターン（stores/card-state.svelte.ts）に不慣れな開発者向け
+    - URL同期の双方向バインディング（URL ↔ State）の理解が必要
 
 ## 他の検討案
 
@@ -164,8 +164,8 @@ sequenceDiagram
 
 ### エラー処理
 
-| エラー | 条件 | メッセージ例 |
-|--------|------|--------------|
-| ピン数超過 | ピン数 > 選択枠 | "ピンされたカードが多すぎます（12/10）。ピンを2枚解除してください。" |
-| 除外不足 | 利用可能カード < 選択枠 | "除外により選択可能なカードが不足しています（8/10）。除外を2枚解除してください。" |
-| 無効なID | URL内の非数値ID | 無視（エラー表示なし、コンソールwarning） |
+| エラー     | 条件                    | メッセージ例                                                                      |
+| ---------- | ----------------------- | --------------------------------------------------------------------------------- |
+| ピン数超過 | ピン数 > 選択枠         | "ピンされたカードが多すぎます（12/10）。ピンを2枚解除してください。"              |
+| 除外不足   | 利用可能カード < 選択枠 | "除外により選択可能なカードが不足しています（8/10）。除外を2枚解除してください。" |
+| 無効なID   | URL内の非数値ID         | 無視（エラー表示なし、コンソールwarning）                                         |

@@ -11,32 +11,34 @@ allowed-tools: Bash, Read, Write, Edit, MultiEdit, Glob, Grep, LS
 **Mission**: Help users create domain-specific project memory for specialized areas.
 
 **Success Criteria**:
+
 - Custom steering captures specialized patterns
 - Follows same granularity principles as core steering
 - Provides clear value for specific domain
 </background_information>
 
 <instructions>
+
 ## Workflow
 
 1. **Ask user** for custom steering needs:
-   - Domain/topic (e.g., "API standards", "testing approach")
-   - Specific requirements or patterns to document
+    - Domain/topic (e.g., "API standards", "testing approach")
+    - Specific requirements or patterns to document
 
 2. **Check if template exists**:
-   - Load from `.kiro/settings/templates/steering-custom/{name}.md` if available
-   - Use as starting point, customize based on project
+    - Load from `.kiro/settings/templates/steering-custom/{name}.md` if available
+    - Use as starting point, customize based on project
 
 3. **Analyze codebase** (JIT) for relevant patterns:
-   - **Glob** for related files
-   - **Read** for existing implementations
-   - **Grep** for specific patterns
+    - **Glob** for related files
+    - **Read** for existing implementations
+    - **Grep** for specific patterns
 
 4. **Generate custom steering**:
-   - Follow template structure if available
-   - Apply principles from `.kiro/settings/rules/steering-principles.md`
-   - Focus on patterns, not exhaustive lists
-   - Keep to 100-200 lines (2-3 minute read)
+    - Follow template structure if available
+    - Apply principles from `.kiro/settings/rules/steering-principles.md`
+    - Focus on patterns, not exhaustive lists
+    - Keep to 100-200 lines (2-3 minute read)
 
 5. **Create file** in `.kiro/steering/{name}.md`
 
@@ -79,7 +81,7 @@ From `.kiro/settings/rules/steering-principles.md`:
 
 Chat summary with file location (file created directly).
 
-```
+```text
 ✅ Custom Steering Created
 
 ## Created:
@@ -102,11 +104,13 @@ Review and customize as needed.
 ## Examples
 
 ### Success: API Standards
+
 **Input**: "Create API standards steering"  
 **Action**: Load template, analyze src/api/, extract patterns  
 **Output**: api-standards.md with project-specific REST conventions
 
 ### Success: Testing Strategy
+
 **Input**: "Document our testing approach"  
 **Action**: Load template, analyze test files, extract patterns  
 **Output**: testing.md with test organization and mocking strategies
