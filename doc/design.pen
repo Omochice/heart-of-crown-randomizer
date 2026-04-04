@@ -184,6 +184,30 @@
                         },
                         {
                           "type": "frame",
+                          "id": "hyYnY",
+                          "name": "subTypeBadge",
+                          "fill": "#F6F7F8",
+                          "cornerRadius": 12,
+                          "padding": [
+                            4,
+                            10
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "knRiS",
+                              "name": "subTypeText",
+                              "fill": "#6B7280",
+                              "content": "兵力",
+                              "fontFamily": "DM Sans",
+                              "fontSize": 11,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
                           "id": "UIFdI",
                           "name": "costBadge",
                           "fill": "$bg-card",
@@ -515,6 +539,30 @@
                               "name": "catText",
                               "fill": "$accent-coral",
                               "content": "アクション",
+                              "fontFamily": "DM Sans",
+                              "fontSize": 11,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "CoszA",
+                          "name": "subTypeBadge",
+                          "fill": "#F6F7F8",
+                          "cornerRadius": 12,
+                          "padding": [
+                            4,
+                            10
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "4QrZe",
+                              "name": "subTypeText",
+                              "fill": "#6B7280",
+                              "content": "兵力",
                               "fontFamily": "DM Sans",
                               "fontSize": 11,
                               "fontWeight": "600"
@@ -862,6 +910,30 @@
                         },
                         {
                           "type": "frame",
+                          "id": "q6miU",
+                          "name": "subTypeBadge",
+                          "fill": "#F6F7F8",
+                          "cornerRadius": 12,
+                          "padding": [
+                            4,
+                            10
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "pEjQA",
+                              "name": "subTypeText",
+                              "fill": "#6B7280",
+                              "content": "兵力",
+                              "fontFamily": "DM Sans",
+                              "fontSize": 11,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
                           "id": "g1EhT",
                           "name": "costBadge",
                           "fill": "$bg-card",
@@ -1193,6 +1265,30 @@
                               "name": "catText",
                               "fill": "$accent-coral",
                               "content": "アクション",
+                              "fontFamily": "DM Sans",
+                              "fontSize": 11,
+                              "fontWeight": "600"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "cIGBC",
+                          "name": "subTypeBadge",
+                          "fill": "#F6F7F8",
+                          "cornerRadius": 12,
+                          "padding": [
+                            4,
+                            10
+                          ],
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "11Usb",
+                              "name": "subTypeText",
+                              "fill": "#6B7280",
+                              "content": "兵力",
                               "fontFamily": "DM Sans",
                               "fontSize": 11,
                               "fontWeight": "600"
@@ -4273,6 +4369,16 @@
                         },
                         {
                           "type": "text",
+                          "id": "Frsq3",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "兵力",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
                           "id": "VlVz4",
                           "name": "cost",
                           "fill": "$text-secondary",
@@ -4624,6 +4730,16 @@
                         },
                         {
                           "type": "text",
+                          "id": "kzGb5",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "商人",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
                           "id": "CQCTg",
                           "name": "cost",
                           "fill": "$text-secondary",
@@ -4923,6 +5039,16 @@
                         },
                         {
                           "type": "text",
+                          "id": "fXLA2",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "魔法",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
                           "id": "H87TF",
                           "name": "cost",
                           "fill": "$text-secondary",
@@ -5076,6 +5202,16 @@
                           "fontFamily": "DM Sans",
                           "fontSize": 12,
                           "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "rXI95",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "計略",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
                         },
                         {
                           "type": "text",
@@ -5376,6 +5512,16 @@
                           "fontFamily": "DM Sans",
                           "fontSize": 12,
                           "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "qHMIi",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "兵力",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
                         },
                         {
                           "type": "text",
@@ -6354,6 +6500,16 @@
                         },
                         {
                           "type": "text",
+                          "id": "kPe0M",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "兵力",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
                           "id": "HjmjF",
                           "name": "c1c",
                           "fill": "$text-secondary",
@@ -6503,6 +6659,16 @@
                           "fontFamily": "DM Sans",
                           "fontSize": 12,
                           "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "cXy98",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "商人",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
                         },
                         {
                           "type": "text",
@@ -6810,6 +6976,16 @@
                         },
                         {
                           "type": "text",
+                          "id": "scrWG",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "魔法",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
                           "id": "MphS9",
                           "name": "c1c",
                           "fill": "$text-secondary",
@@ -6967,6 +7143,16 @@
                           "fontFamily": "DM Sans",
                           "fontSize": 12,
                           "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "ecPVp",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "計略",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
                         },
                         {
                           "type": "text",
@@ -7271,6 +7457,16 @@
                           "fontFamily": "DM Sans",
                           "fontSize": 12,
                           "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "urrPZ",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "兵力",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
                         },
                         {
                           "type": "text",
@@ -8856,6 +9052,16 @@
                         },
                         {
                           "type": "text",
+                          "id": "Hm2xl",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "兵力",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
                           "id": "UYNJQ",
                           "name": "cost",
                           "fill": "$text-secondary",
@@ -9162,6 +9368,16 @@
                         },
                         {
                           "type": "text",
+                          "id": "1QfIW",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "商人",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
                           "id": "lACvh",
                           "name": "cost",
                           "fill": "$text-secondary",
@@ -9461,6 +9677,16 @@
                         },
                         {
                           "type": "text",
+                          "id": "IftYg",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "魔法",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
                           "id": "yCGih",
                           "name": "cost",
                           "fill": "$text-secondary",
@@ -9614,6 +9840,16 @@
                           "fontFamily": "DM Sans",
                           "fontSize": 12,
                           "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "KFwKP",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "計略",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
                         },
                         {
                           "type": "text",
@@ -9914,6 +10150,16 @@
                           "fontFamily": "DM Sans",
                           "fontSize": 12,
                           "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "vH3DN",
+                          "name": "subType",
+                          "fill": "#6B7280",
+                          "content": "兵力",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
                         },
                         {
                           "type": "text",
@@ -10248,7 +10494,7 @@
     },
     {
       "type": "frame",
-      "id": "eIJaN",
+      "id": "ZGXEh",
       "x": 402,
       "y": 2050,
       "name": "CardRow Link Variants",
@@ -10747,6 +10993,368 @@
                       ]
                     }
                   ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "YaIUu",
+      "x": 806,
+      "y": 2050,
+      "name": "CardRow Subtype Variants",
+      "width": 354,
+      "layout": "vertical",
+      "gap": 8,
+      "children": [
+        {
+          "type": "text",
+          "id": "X0yLn",
+          "name": "lblSt0",
+          "fill": "#6B7280",
+          "content": "Without SubType",
+          "fontFamily": "DM Sans",
+          "fontSize": 11,
+          "fontWeight": "600"
+        },
+        {
+          "type": "frame",
+          "id": "uQkmu",
+          "name": "CardRow - Link 0 + SubType",
+          "clip": true,
+          "width": "fill_container",
+          "fill": "$bg-card",
+          "cornerRadius": 10,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "dlJmF",
+              "name": "strip",
+              "width": 4,
+              "height": "fill_container",
+              "fill": "$accent-indigo"
+            },
+            {
+              "type": "frame",
+              "id": "jJIwx",
+              "name": "body",
+              "width": "fill_container",
+              "gap": 6,
+              "padding": [
+                9,
+                10
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "W0DFe",
+                  "name": "category",
+                  "fill": "$accent-indigo",
+                  "textGrowth": "fixed-width",
+                  "width": 48,
+                  "content": "行動",
+                  "fontFamily": "DM Sans",
+                  "fontSize": 9,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "VFKOY",
+                  "name": "cardName",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "カード名",
+                  "fontFamily": "DM Sans",
+                  "fontSize": 12,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "V0hr4",
+                  "name": "cost",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 10,
+                  "content": "2",
+                  "textAlign": "right",
+                  "fontFamily": "DM Sans",
+                  "fontSize": 10,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "8GXph",
+                  "name": "links",
+                  "width": 18,
+                  "gap": 2,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "OM4eH",
+                      "name": "links",
+                      "width": 18,
+                      "gap": 2,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "ellipse",
+                          "id": "0A41h",
+                          "fill": "$border-default",
+                          "width": 6,
+                          "height": 6
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "Hoy8F",
+                  "name": "actions",
+                  "gap": 3,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "5ic1V",
+                      "name": "pinBtn",
+                      "width": 22,
+                      "height": 22,
+                      "cornerRadius": 11,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border-default"
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "LRn1K",
+                          "name": "pinIcon",
+                          "width": 11,
+                          "height": 11,
+                          "iconFontName": "pin",
+                          "iconFontFamily": "lucide",
+                          "fill": "$text-tertiary"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "JGf5D",
+                      "name": "excludeBtn",
+                      "width": 22,
+                      "height": 22,
+                      "cornerRadius": 11,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border-default"
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "xfjCV",
+                          "name": "excludeIcon",
+                          "width": 11,
+                          "height": 11,
+                          "iconFontName": "ban",
+                          "iconFontFamily": "lucide",
+                          "fill": "$text-tertiary"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "tttbV",
+          "name": "lblSt1",
+          "fill": "#6B7280",
+          "content": "With SubType",
+          "fontFamily": "DM Sans",
+          "fontSize": 11,
+          "fontWeight": "600"
+        },
+        {
+          "type": "frame",
+          "id": "LJ5k2",
+          "name": "CardRow - Link 1 + SubType",
+          "clip": true,
+          "width": "fill_container",
+          "fill": "$bg-card",
+          "cornerRadius": 10,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "xBtRj",
+              "name": "strip",
+              "width": 4,
+              "height": "fill_container",
+              "fill": "$accent-indigo"
+            },
+            {
+              "type": "frame",
+              "id": "euO90",
+              "name": "body",
+              "width": "fill_container",
+              "gap": 6,
+              "padding": [
+                9,
+                10
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "4U9Cf",
+                  "name": "category",
+                  "fill": "$accent-indigo",
+                  "textGrowth": "fixed-width",
+                  "width": 48,
+                  "content": "行動",
+                  "fontFamily": "DM Sans",
+                  "fontSize": 9,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "8TDex",
+                  "name": "cardName",
+                  "fill": "$text-primary",
+                  "textGrowth": "fixed-width",
+                  "width": "fill_container",
+                  "content": "カード名",
+                  "fontFamily": "DM Sans",
+                  "fontSize": 12,
+                  "fontWeight": "700"
+                },
+                {
+                  "type": "text",
+                  "id": "spzW2",
+                  "name": "subType",
+                  "fill": "#6B7280",
+                  "content": "サブタイプ",
+                  "fontFamily": "DM Sans",
+                  "fontSize": 9,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "ehqW9",
+                  "name": "cost",
+                  "fill": "$text-secondary",
+                  "textGrowth": "fixed-width",
+                  "width": 10,
+                  "content": "2",
+                  "textAlign": "right",
+                  "fontFamily": "DM Sans",
+                  "fontSize": 10,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "iQ4xl",
+                  "name": "links",
+                  "width": 18,
+                  "gap": 2,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "ellipse",
+                      "id": "zGTZd",
+                      "name": "linkDot1",
+                      "fill": "$accent-indigo",
+                      "width": 6,
+                      "height": 6
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "KjQUt",
+                  "name": "actions",
+                  "gap": 3,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "AVqAP",
+                      "name": "pinBtn",
+                      "width": 22,
+                      "height": 22,
+                      "cornerRadius": 11,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border-default"
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "HGD8U",
+                          "name": "pinIcon",
+                          "width": 11,
+                          "height": 11,
+                          "iconFontName": "pin",
+                          "iconFontFamily": "lucide",
+                          "fill": "$text-tertiary"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "93Ysb",
+                      "name": "excludeBtn",
+                      "width": 22,
+                      "height": 22,
+                      "cornerRadius": 11,
+                      "stroke": {
+                        "thickness": 1,
+                        "fill": "$border-default"
+                      },
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon_font",
+                          "id": "PwivD",
+                          "name": "excludeIcon",
+                          "width": 11,
+                          "height": 11,
+                          "iconFontName": "ban",
+                          "iconFontFamily": "lucide",
+                          "fill": "$text-tertiary"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "EwWcB",
+                  "name": "Frame 1",
+                  "clip": true,
+                  "width": 1,
+                  "height": 2,
+                  "fill": "#FFFFFF",
+                  "layout": "none"
                 }
               ]
             }
