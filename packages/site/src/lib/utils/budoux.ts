@@ -1,6 +1,10 @@
-import { loadDefaultJapaneseParser } from "budoux";
+// Import Parser and model directly to avoid jsdom dependency
+// that loadDefaultJapaneseParser() pulls in via HTMLProcessingParser.
+// This is necessary for Cloudflare Workers compatibility.
+import { Parser } from "budoux/module/parser.js";
+import { model } from "budoux/module/data/models/ja.js";
 
-const parser = loadDefaultJapaneseParser();
+const parser = new Parser(model);
 
 /**
  * Apply BudouX phrase-based segmentation to Japanese text.

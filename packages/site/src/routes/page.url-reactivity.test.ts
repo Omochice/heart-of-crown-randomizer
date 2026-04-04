@@ -29,9 +29,8 @@ describe("+page.svelte URL Reactivity Bug", () => {
 
 	it("should search in both Basic and FarEasternBorder commons", () => {
 		// The bug: Only searches Basic.commons
-		// Expected: Should search both card sets
-		const allCommonsPattern = /\[\.\.\.Basic\.commons,\s*\.\.\.FarEasternBorder\.commons\]/;
-		expect(pageContent).toMatch(allCommonsPattern);
+		// Expected: Should search both card sets via centralized data module
+		expect(pageContent).toContain('import { allCommons } from "$lib/data/cards"');
 	});
 
 	it("should have separate $effect blocks for different concerns", () => {
