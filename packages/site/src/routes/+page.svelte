@@ -144,7 +144,7 @@
 	async function copyToClipboard() {
 		await shareOrCopy(
 			shareUrl,
-			selectedCommons.map((c) => c.name),
+			[...basicCards, ...farEasternCards].map((c) => c.name),
 		);
 	}
 
