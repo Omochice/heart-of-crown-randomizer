@@ -82,6 +82,9 @@
 					type="button"
 					class="constraint-item"
 					class:constraint-item--disabled={disabled}
+					role="checkbox"
+					aria-checked={checked}
+					aria-disabled={disabled}
 					{disabled}
 					onclick={() => handleToggle(constraint)}
 				>
