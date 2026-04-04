@@ -10,8 +10,8 @@ import {
   link2Gte3,
   link2GteLink0,
   noAttack,
-} from "./presets.js";
-import type { SelectionContext } from "./type.js";
+} from "./presets";
+import type { SelectionContext } from "./type";
 
 function makeDuplicateCard(
   overrides: Partial<DuplicateCard> = {},

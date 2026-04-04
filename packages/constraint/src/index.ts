@@ -5,6 +5,6 @@ export {
   link2GteLink0,
   noAttack,
   presets,
-} from "./presets.js";
-export type { Constraint, SelectionContext } from "./type.js";
-export { validateCombination } from "./validate-combination.js";
+} from "./presets";
+export type { Constraint, SelectionContext } from "./type";
+export { validateCombination } from "./validate-combination";

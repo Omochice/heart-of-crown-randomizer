@@ -2,7 +2,7 @@ import type {
   CommonCard,
   DuplicateCard,
 } from "@heart-of-crown-randomizer/card/type";
-import type { Constraint, SelectionContext } from "./type.js";
+import type { Constraint, SelectionContext } from "./type";
 
 /**
  * Extract the link value from a card.

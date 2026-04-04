@@ -1,4 +1,4 @@
-import type { Constraint, SelectionContext } from "./type.js";
+import type { Constraint, SelectionContext } from "./type";
 
 /**
  * Validates whether a set of constraints can all be applied together.

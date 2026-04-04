@@ -1,9 +1,9 @@
 import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { describe, expect, it } from "vitest";
-import { highCostGte2, link2Gte3, noAttack } from "./presets.js";
-import type { SelectionContext } from "./type.js";
-import { validateCombination } from "./validate-combination.js";
+import { highCostGte2, link2Gte3, noAttack } from "./presets";
+import type { SelectionContext } from "./type";
+import { validateCombination } from "./validate-combination";
 
 function makeContext(pool: CommonCard[], count: number): SelectionContext {
   return { pool, required: [], count, rng: () => 0.5 };
