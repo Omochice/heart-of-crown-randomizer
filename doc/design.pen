@@ -2107,6 +2107,17 @@
                         },
                         {
                           "type": "text",
+                          "id": "stC2a",
+                          "name": "subType",
+                          "fill": "$text-tertiary",
+                          "opacity": 0.6,
+                          "content": "兵力",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
                           "id": "dVmuz",
                           "name": "cost",
                           "fill": "$text-secondary",
@@ -2413,6 +2424,17 @@
                         },
                         {
                           "type": "text",
+                          "id": "stC4a",
+                          "name": "subType",
+                          "fill": "$text-tertiary",
+                          "opacity": 0.6,
+                          "content": "商人",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
                           "id": "HQkbv",
                           "name": "cost",
                           "fill": "$text-secondary",
@@ -2712,6 +2734,17 @@
                         },
                         {
                           "type": "text",
+                          "id": "stC6a",
+                          "name": "subType",
+                          "fill": "$text-tertiary",
+                          "opacity": 0.6,
+                          "content": "魔法",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
                           "id": "uIv98",
                           "name": "cost",
                           "fill": "$text-secondary",
@@ -2865,6 +2898,17 @@
                           "fontFamily": "DM Sans",
                           "fontSize": 12,
                           "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "stC7a",
+                          "name": "subType",
+                          "fill": "$text-tertiary",
+                          "opacity": 0.6,
+                          "content": "計略",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
                         },
                         {
                           "type": "text",
@@ -3165,6 +3209,17 @@
                           "fontFamily": "DM Sans",
                           "fontSize": 12,
                           "fontWeight": "700"
+                        },
+                        {
+                          "type": "text",
+                          "id": "stC9a",
+                          "name": "subType",
+                          "fill": "$text-tertiary",
+                          "opacity": 0.6,
+                          "content": "兵力",
+                          "fontFamily": "DM Sans",
+                          "fontSize": 9,
+                          "fontWeight": "500"
                         },
                         {
                           "type": "text",
