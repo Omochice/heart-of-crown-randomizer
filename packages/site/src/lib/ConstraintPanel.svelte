@@ -24,8 +24,9 @@
 	const enabledCount = $derived(enabledIds.size);
 	const enabledConstraintsList = $derived(getEnabledConstraints(constraints));
 	const selectionContext = $derived.by(() => {
-		const pool = allCards.filter((c) => !excludedIds.has(c.id));
 		const pinnedCards = getPinnedCards(allCards);
+		const pinnedIds = new Set(pinnedCards.map((c) => c.id));
+		const pool = allCards.filter((c) => !excludedIds.has(c.id) && !pinnedIds.has(c.id));
 		return { pool, required: [...pinnedCards], count, rng: Math.random } satisfies SelectionContext;
 	});
 
