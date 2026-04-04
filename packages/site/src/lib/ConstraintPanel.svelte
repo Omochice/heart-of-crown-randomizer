@@ -2,11 +2,7 @@
 	import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
 	import { validateCombination } from "@heart-of-crown-randomizer/constraint";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-	import {
-		getEnabledConstraintIds,
-		toggleConstraint,
-		getEnabledConstraints,
-	} from "$lib/stores/constraint-state.svelte";
+	import { getEnabledConstraintIds, toggleConstraint } from "$lib/stores/constraint-state.svelte";
 	import { getPinnedCards } from "$lib/stores/card-state.svelte";
 	import { SlidersHorizontal, ChevronUp, ChevronDown, Check } from "lucide-svelte";
 
@@ -22,7 +18,6 @@
 
 	const enabledIds = $derived(getEnabledConstraintIds());
 	const enabledCount = $derived(enabledIds.size);
-	const enabledConstraintsList = $derived(getEnabledConstraints(constraints));
 	const selectionContext = $derived.by(() => {
 		const pinnedCards = getPinnedCards(allCards);
 		const pinnedIds = new Set(pinnedCards.map((c) => c.id));
@@ -39,7 +34,7 @@
 	function canToggle(constraint: Constraint): boolean {
 		if (enabledIds.has(constraint.id)) return true;
 
-		const hypothetical = [...enabledConstraintsList, constraint];
+		const hypothetical = constraints.filter((c) => enabledIds.has(c.id) || c.id === constraint.id);
 		return validateCombination(hypothetical, selectionContext);
 	}
 
