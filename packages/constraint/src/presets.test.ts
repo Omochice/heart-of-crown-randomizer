@@ -4,7 +4,7 @@ import type {
   UniqueCard,
 } from "@heart-of-crown-randomizer/card/type";
 import { describe, expect, it } from "vitest";
-import { highCostGte2, link0GteLink2, link2Gte3, noAttack } from "./presets.js";
+import { highCostGte2, link2Gte3, link2GteLink0, noAttack } from "./presets.js";
 import type { SelectionContext } from "./type.js";
 
 function makeDuplicateCard(
@@ -204,66 +204,66 @@ describe("noAttack", () => {
   });
 });
 
-describe("link0GteLink2", () => {
+describe("link2GteLink0", () => {
   describe("isSatisfied", () => {
-    it("returns true when link0 count >= link2 count", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, link: 0 }),
-        makeDuplicateCard({ id: 2, link: 2 }),
-        makeDuplicateCard({ id: 3, link: 1 }),
-      ];
-      expect(link0GteLink2.isSatisfied(cards)).toBe(true);
-    });
-
-    it("returns false when link0 count < link2 count", () => {
+    it("returns true when link2 count >= link0 count", () => {
       const cards: CommonCard[] = [
         makeDuplicateCard({ id: 1, link: 2 }),
-        makeDuplicateCard({ id: 2, link: 2 }),
-        makeDuplicateCard({ id: 3, link: 0 }),
+        makeDuplicateCard({ id: 2, link: 0 }),
+        makeDuplicateCard({ id: 3, link: 1 }),
       ];
-      expect(link0GteLink2.isSatisfied(cards)).toBe(false);
+      expect(link2GteLink0.isSatisfied(cards)).toBe(true);
+    });
+
+    it("returns false when link2 count < link0 count", () => {
+      const cards: CommonCard[] = [
+        makeDuplicateCard({ id: 1, link: 0 }),
+        makeDuplicateCard({ id: 2, link: 0 }),
+        makeDuplicateCard({ id: 3, link: 2 }),
+      ];
+      expect(link2GteLink0.isSatisfied(cards)).toBe(false);
     });
 
     it("ignores UniqueCards for link counting", () => {
       const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, link: 2 }),
+        makeDuplicateCard({ id: 1, link: 0 }),
         makeUniqueCard({ id: 100 }),
       ];
-      expect(link0GteLink2.isSatisfied(cards)).toBe(false);
+      expect(link2GteLink0.isSatisfied(cards)).toBe(false);
     });
 
     it("returns true for empty array", () => {
-      expect(link0GteLink2.isSatisfied([])).toBe(true);
+      expect(link2GteLink0.isSatisfied([])).toBe(true);
     });
   });
 
   describe("apply", () => {
-    it("limits link2 cards in pool to prevent exceeding available link0 count", () => {
-      const link0Card = makeDuplicateCard({ id: 1, link: 0 });
-      const link2CardA = makeDuplicateCard({ id: 2, link: 2 });
-      const link2CardB = makeDuplicateCard({ id: 3, link: 2 });
-      const link2CardC = makeDuplicateCard({ id: 4, link: 2 });
+    it("limits link0 cards in pool to prevent exceeding available link2 count", () => {
+      const link2Card = makeDuplicateCard({ id: 1, link: 2 });
+      const link0CardA = makeDuplicateCard({ id: 2, link: 0 });
+      const link0CardB = makeDuplicateCard({ id: 3, link: 0 });
+      const link0CardC = makeDuplicateCard({ id: 4, link: 0 });
       const link1Card = makeDuplicateCard({ id: 5, link: 1 });
       const context = makeContext({
-        pool: [link0Card, link2CardA, link2CardB, link2CardC, link1Card],
+        pool: [link2Card, link0CardA, link0CardB, link0CardC, link1Card],
         required: [],
         count: 4,
       });
 
-      const result = link0GteLink2.apply(context);
+      const result = link2GteLink0.apply(context);
 
-      const link2InPool = result.pool.filter(
-        (c) => !c.hasChild && c.link === 2,
+      const link0InPool = result.pool.filter(
+        (c) => !c.hasChild && c.link === 0,
       );
-      expect(link2InPool.length).toBeLessThanOrEqual(2);
+      expect(link0InPool.length).toBeLessThanOrEqual(2);
     });
   });
 
   describe("canApply", () => {
-    it("returns true when total link0 cards >= total link2 cards", () => {
+    it("returns true when total link2 cards >= total link0 cards", () => {
       const pool = [
-        makeDuplicateCard({ id: 1, link: 0 }),
-        makeDuplicateCard({ id: 2, link: 2 }),
+        makeDuplicateCard({ id: 1, link: 2 }),
+        makeDuplicateCard({ id: 2, link: 0 }),
         makeDuplicateCard({ id: 3, link: 1 }),
       ];
       const context = makeContext({
@@ -272,13 +272,13 @@ describe("link0GteLink2", () => {
         count: 3,
       });
 
-      expect(link0GteLink2.canApply(context)).toBe(true);
+      expect(link2GteLink0.canApply(context)).toBe(true);
     });
 
-    it("returns false when total link0 cards < total link2 cards", () => {
+    it("returns false when total link2 cards < total link0 cards", () => {
       const pool = [
-        makeDuplicateCard({ id: 1, link: 2 }),
-        makeDuplicateCard({ id: 2, link: 2 }),
+        makeDuplicateCard({ id: 1, link: 0 }),
+        makeDuplicateCard({ id: 2, link: 0 }),
       ];
       const context = makeContext({
         pool,
@@ -286,7 +286,7 @@ describe("link0GteLink2", () => {
         count: 2,
       });
 
-      expect(link0GteLink2.canApply(context)).toBe(false);
+      expect(link2GteLink0.canApply(context)).toBe(false);
     });
   });
 });

@@ -139,28 +139,28 @@ export const noAttack: Constraint = {
 };
 
 /**
- * Constraint ensuring the number of link-0 cards is at least as large
- * as the number of link-2 cards in the final selection.
+ * Constraint ensuring the number of link-2 cards is at least as large
+ * as the number of link-0 cards in the final selection.
  *
- * This promotes balanced link distributions. When applied, it trims
- * link-2 cards from the pool so the random selection cannot violate
+ * This promotes higher-link distributions. When applied, it trims
+ * link-0 cards from the pool so the random selection cannot violate
  * the invariant.
  */
-export const link0GteLink2: Constraint = {
-  id: "link0-gte-link2",
-  label: "リンク0の数 ≧ リンク2の数",
+export const link2GteLink0: Constraint = {
+  id: "link2-gte-link0",
+  label: "リンク2の数 ≧ リンク0の数",
 
   isSatisfied(cards: readonly CommonCard[]): boolean {
     const link0Count = countInCards(cards, (c) => getLink(c) === 0);
     const link2Count = countInCards(cards, (c) => getLink(c) === 2);
-    return link0Count >= link2Count;
+    return link2Count >= link0Count;
   },
 
   canApply(context: Readonly<SelectionContext>): boolean {
     const allCards = [...context.pool, ...context.required];
     const totalLink0 = countInCards(allCards, (c) => getLink(c) === 0);
     const totalLink2 = countInCards(allCards, (c) => getLink(c) === 2);
-    return totalLink0 >= totalLink2;
+    return totalLink2 >= totalLink0;
   },
 
   apply(context: SelectionContext): SelectionContext {
@@ -173,16 +173,16 @@ export const link0GteLink2: Constraint = {
       context.required,
       (c) => getLink(c) === 2,
     );
-    const maxLink2InResult = Math.floor(remainingSlots / 2) + requiredLink0;
-    const allowedLink2InPool = Math.max(0, maxLink2InResult - requiredLink2);
+    const maxLink0InResult = Math.floor(remainingSlots / 2) + requiredLink2;
+    const allowedLink0InPool = Math.max(0, maxLink0InResult - requiredLink0);
 
-    let link2Seen = 0;
+    let link0Seen = 0;
     const pool = context.pool.filter((card) => {
-      if (getLink(card) !== 2) {
+      if (getLink(card) !== 0) {
         return true;
       }
-      link2Seen++;
-      return link2Seen <= allowedLink2InPool;
+      link0Seen++;
+      return link0Seen <= allowedLink0InPool;
     });
 
     return { ...context, pool };
@@ -260,7 +260,7 @@ export const link2Gte3: Constraint = {
 /** All available preset constraints. */
 export const presets: readonly Constraint[] = [
   noAttack,
-  link0GteLink2,
+  link2GteLink0,
   highCostGte2,
   link2Gte3,
 ] as const;

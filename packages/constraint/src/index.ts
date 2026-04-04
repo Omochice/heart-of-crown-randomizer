@@ -1,7 +1,7 @@
 export {
   highCostGte2,
-  link0GteLink2,
   link2Gte3,
+  link2GteLink0,
   noAttack,
   presets,
 } from "./presets.js";
