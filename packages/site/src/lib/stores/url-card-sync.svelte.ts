@@ -1,17 +1,18 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+import { decodeCardIds } from "@heart-of-crown-randomizer/card-codec";
 import { setsEqual } from "$lib/utils/url-sync";
 
 /**
- * Resolve card objects from URL "card" parameters.
+ * Resolve card objects from URL "s" parameter (bitfield-encoded card IDs).
  *
  * We filter with Boolean rather than throwing on invalid IDs because
- * users might bookmark or manually edit URLs containing stale card IDs.
+ * future card sets may produce IDs not present in the current allCommons list.
  */
 export function resolveCardsFromUrl(url: URL, allCommons: CommonCard[]): CommonCard[] {
-	return url.searchParams
-		.getAll("card")
-		.map((id) => allCommons.find((c) => c.id === Number.parseInt(id)))
-		.filter(Boolean) as CommonCard[];
+	const encoded = url.searchParams.get("s");
+	if (encoded === null) return [];
+	const ids = decodeCardIds(encoded);
+	return ids.map((id) => allCommons.find((c) => c.id === id)).filter(Boolean) as CommonCard[];
 }
 
 /**

@@ -1,5 +1,5 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-import { cardsToQuery } from "./card-draw";
+import { encodeCardIds } from "@heart-of-crown-randomizer/card-codec";
 
 /**
  * Build a shareable URL containing only card selection (no pin/exclude).
@@ -9,7 +9,7 @@ import { cardsToQuery } from "./card-draw";
  */
 export function buildShareUrl(origin: string, cards: CommonCard[]): string {
 	if (cards.length === 0) return "";
-	return `${origin}?${cardsToQuery(cards)}`;
+	return `${origin}?s=${encodeCardIds(cards.map((c) => c.id))}`;
 }
 
 export async function shareOrCopy(url: string): Promise<void> {
