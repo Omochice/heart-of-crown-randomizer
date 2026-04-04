@@ -196,6 +196,9 @@ importers:
       '@heart-of-crown-randomizer/card':
         specifier: workspace:*
         version: link:../card
+      '@heart-of-crown-randomizer/card-codec':
+        specifier: workspace:*
+        version: link:../card-codec
       '@heart-of-crown-randomizer/constraint':
         specifier: workspace:*
         version: link:../constraint
