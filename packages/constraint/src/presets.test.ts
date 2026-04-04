@@ -258,24 +258,56 @@ describe("link2GteLink0", () => {
   });
 
   describe("apply", () => {
-    it("limits link0 cards in pool to prevent exceeding available link2 count", () => {
-      const link2Card = makeDuplicateCard({ id: 1, link: 2 });
+    it("forces link-2 into required and limits link-0 in pool", () => {
+      const link2CardA = makeDuplicateCard({ id: 1, link: 2 });
+      const link2CardB = makeDuplicateCard({ id: 6, link: 2 });
       const link0CardA = makeDuplicateCard({ id: 2, link: 0 });
       const link0CardB = makeDuplicateCard({ id: 3, link: 0 });
       const link0CardC = makeDuplicateCard({ id: 4, link: 0 });
       const link1Card = makeDuplicateCard({ id: 5, link: 1 });
       const context = makeContext({
-        pool: [link2Card, link0CardA, link0CardB, link0CardC, link1Card],
+        pool: [
+          link2CardA,
+          link2CardB,
+          link0CardA,
+          link0CardB,
+          link0CardC,
+          link1Card,
+        ],
         required: [],
         count: 4,
       });
 
       const result = link2GteLink0.apply(context);
 
+      const link2InRequired = result.required.filter(
+        (c) => !c.hasChild && c.link === 2,
+      );
+      expect(link2InRequired.length).toBeGreaterThanOrEqual(1);
+
       const link0InPool = result.pool.filter(
         (c) => !c.hasChild && c.link === 0,
       );
-      expect(link0InPool.length).toBeLessThanOrEqual(2);
+      expect(link0InPool.length).toBeLessThanOrEqual(link2InRequired.length);
+    });
+
+    it("does not force link-2 when required already has enough", () => {
+      const link2InReq = makeDuplicateCard({ id: 1, link: 2 });
+      const link0CardA = makeDuplicateCard({ id: 2, link: 0 });
+      const link1Card = makeDuplicateCard({ id: 3, link: 1 });
+      const context = makeContext({
+        pool: [link0CardA, link1Card],
+        required: [link2InReq],
+        count: 3,
+      });
+
+      const result = link2GteLink0.apply(context);
+
+      expect(result.required).toEqual([link2InReq]);
+      const link0InPool = result.pool.filter(
+        (c) => !c.hasChild && c.link === 0,
+      );
+      expect(link0InPool.length).toBeLessThanOrEqual(1);
     });
   });
 
@@ -309,7 +341,7 @@ describe("link2GteLink0", () => {
       expect(link2GteLink0.canApply(context)).toBe(false);
     });
 
-    it("returns false when not enough non-link0 cards for count", () => {
+    it("returns true when link-2 exists even if many link-0 cards present", () => {
       const pool = [
         makeDuplicateCard({ id: 1, link: 2 }),
         makeDuplicateCard({ id: 2, link: 0 }),
@@ -321,7 +353,7 @@ describe("link2GteLink0", () => {
         count: 3,
       });
 
-      expect(link2GteLink0.canApply(context)).toBe(false);
+      expect(link2GteLink0.canApply(context)).toBe(true);
     });
   });
 });

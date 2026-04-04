@@ -149,9 +149,13 @@ export const noAttack: Constraint = {
  * Constraint ensuring the number of link-2 cards is at least as large
  * as the number of link-0 cards in the final selection.
  *
- * This promotes higher-link distributions. When applied, it trims
- * link-0 cards from the pool so the random selection cannot violate
- * the invariant.
+ * When applied, link-2 cards are moved from pool to required via
+ * pickFromPool, then link-0 cards in pool are trimmed so that the
+ * worst-case random selection still satisfies link2 >= link0.
+ *
+ * Pool trimming alone (without forcing link-2 into required) cannot
+ * guarantee the constraint because random selection may pick fewer
+ * link-2 cards than link-0 cards from the remaining pool.
  */
 export const link2GteLink0: Constraint = {
   id: "link2-gte-link0",
@@ -164,28 +168,32 @@ export const link2GteLink0: Constraint = {
   },
 
   canApply(context: Readonly<SelectionContext>): boolean {
-    const allCards = [...context.pool, ...context.required];
-    const totalLink2 = countInCards(allCards, (c) => getLink(c) === 2);
-    const nonLink0Count = countInCards(allCards, (c) => getLink(c) !== 0);
-    // Need at least 1 link=2 card and enough non-link0 cards to fill the selection
-    return totalLink2 >= 1 && nonLink0Count >= context.count;
+    const poolLink2 = countInCards(context.pool, isLink2);
+    const requiredLink2 = countInCards(context.required, isLink2);
+    return poolLink2 + requiredLink2 >= 1;
   },
 
   apply(context: SelectionContext): SelectionContext {
-    const remainingSlots = context.count - context.required.length;
     const requiredLink0 = countInCards(
       context.required,
       (c) => getLink(c) === 0,
     );
-    const requiredLink2 = countInCards(
-      context.required,
-      (c) => getLink(c) === 2,
-    );
-    const maxLink0InResult = Math.floor(remainingSlots / 2) + requiredLink2;
-    const allowedLink0InPool = Math.max(0, maxLink0InResult - requiredLink0);
+    const requiredLink2 = countInCards(context.required, isLink2);
+
+    // Force link-2 into required so we can allow some link-0 in pool.
+    // Each guaranteed link-2 covers one possible link-0 in the result.
+    const link2Deficit = Math.max(0, requiredLink0 + 1 - requiredLink2);
+    const current =
+      link2Deficit > 0 ? pickFromPool(context, isLink2, link2Deficit) : context;
+
+    // Trim link-0 in pool: allow at most (guaranteed link-2) - (guaranteed link-0).
+    // In the worst case all allowed link-0 are selected and no additional
+    // link-2 comes from pool, so this cap ensures link2 >= link0.
+    const guaranteedLink2 = countInCards(current.required, isLink2);
+    const allowedLink0InPool = Math.max(0, guaranteedLink2 - requiredLink0);
 
     let link0Seen = 0;
-    const pool = context.pool.filter((card) => {
+    const pool = current.pool.filter((card) => {
       if (getLink(card) !== 0) {
         return true;
       }
@@ -193,7 +201,7 @@ export const link2GteLink0: Constraint = {
       return link0Seen <= allowedLink0InPool;
     });
 
-    return { ...context, pool };
+    return { ...current, pool };
   },
 };
 
