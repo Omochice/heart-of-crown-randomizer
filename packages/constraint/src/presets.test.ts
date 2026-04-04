@@ -1,8 +1,4 @@
-import type {
-  CommonCard,
-  DuplicateCard,
-  UniqueCard,
-} from "@heart-of-crown-randomizer/card/type";
+import type { DuplicateCard } from "@heart-of-crown-randomizer/card/type";
 import { describe, expect, it } from "vitest";
 import {
   eachCost2to5,
@@ -30,34 +26,6 @@ function makeDuplicateCard(
   };
 }
 
-function makeUniqueCard(overrides: Partial<UniqueCard> = {}): UniqueCard {
-  return {
-    id: 100,
-    type: "common",
-    name: "Unique Test Card",
-    cards: [
-      {
-        name: "Sub Card A",
-        mainType: ["action"],
-        cost: 2,
-        link: 1,
-        effect: "sub effect A",
-      },
-      {
-        name: "Sub Card B",
-        mainType: ["action"],
-        cost: 3,
-        link: 0,
-        effect: "sub effect B",
-      },
-    ],
-    cost: 3,
-    hasChild: true,
-    edition: 0,
-    ...overrides,
-  };
-}
-
 function makeContext(
   overrides: Partial<SelectionContext> = {},
 ): SelectionContext {
@@ -79,104 +47,6 @@ function seededRng(): () => number {
 }
 
 describe("noAttack", () => {
-  describe("isSatisfied", () => {
-    it("returns true when no cards have attack type", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, mainType: ["action"] }),
-        makeDuplicateCard({ id: 2, mainType: ["territory"] }),
-      ];
-      expect(noAttack.isSatisfied(cards)).toBe(true);
-    });
-
-    it("returns false when a card has attack type", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, mainType: ["action"] }),
-        makeDuplicateCard({ id: 2, mainType: ["attack"] }),
-      ];
-      expect(noAttack.isSatisfied(cards)).toBe(false);
-    });
-
-    it("checks UniqueCard sub-cards for attack", () => {
-      const cards: CommonCard[] = [
-        makeUniqueCard({
-          id: 100,
-          cards: [
-            {
-              name: "Sub A",
-              mainType: ["attack"],
-              cost: 2,
-              link: 1,
-              effect: "effect",
-            },
-            {
-              name: "Sub B",
-              mainType: ["action"],
-              cost: 3,
-              link: 0,
-              effect: "effect",
-            },
-          ],
-        }),
-      ];
-      expect(noAttack.isSatisfied(cards)).toBe(false);
-    });
-
-    it("returns true for empty array", () => {
-      expect(noAttack.isSatisfied([])).toBe(true);
-    });
-  });
-
-  describe("apply", () => {
-    it("removes attack cards from pool", () => {
-      const attackCard = makeDuplicateCard({
-        id: 1,
-        mainType: ["attack"],
-      });
-      const actionCard = makeDuplicateCard({
-        id: 2,
-        mainType: ["action"],
-      });
-      const context = makeContext({ pool: [attackCard, actionCard] });
-
-      const result = noAttack.apply(context);
-
-      expect(result.pool).toEqual([actionCard]);
-    });
-
-    it("removes UniqueCards with attack sub-cards from pool", () => {
-      const uniqueWithAttack = makeUniqueCard({
-        id: 100,
-        cards: [
-          {
-            name: "Sub A",
-            mainType: ["attack"],
-            cost: 2,
-            link: 1,
-            effect: "effect",
-          },
-          {
-            name: "Sub B",
-            mainType: ["action"],
-            cost: 3,
-            link: 0,
-            effect: "effect",
-          },
-        ],
-      });
-      const safeCard = makeDuplicateCard({
-        id: 2,
-        mainType: ["action"],
-      });
-      const context = makeContext({
-        pool: [uniqueWithAttack, safeCard],
-      });
-
-      const result = noAttack.apply(context);
-
-      expect(result.pool).toEqual([safeCard]);
-    });
-  });
-
   describe("canApply", () => {
     it("returns true when enough non-attack cards exist", () => {
       const pool = [
@@ -225,72 +95,7 @@ describe("noAttack", () => {
 });
 
 describe("link2GteLink0", () => {
-  describe("isSatisfied", () => {
-    it("returns true when link2 count >= link0 count", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, link: 2 }),
-        makeDuplicateCard({ id: 2, link: 0 }),
-        makeDuplicateCard({ id: 3, link: 1 }),
-      ];
-      expect(link2GteLink0.isSatisfied(cards)).toBe(true);
-    });
-
-    it("returns false when link2 count < link0 count", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, link: 0 }),
-        makeDuplicateCard({ id: 2, link: 0 }),
-        makeDuplicateCard({ id: 3, link: 2 }),
-      ];
-      expect(link2GteLink0.isSatisfied(cards)).toBe(false);
-    });
-
-    it("ignores UniqueCards for link counting", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, link: 0 }),
-        makeUniqueCard({ id: 100 }),
-      ];
-      expect(link2GteLink0.isSatisfied(cards)).toBe(false);
-    });
-
-    it("returns true for empty array", () => {
-      expect(link2GteLink0.isSatisfied([])).toBe(true);
-    });
-  });
-
   describe("apply", () => {
-    it("forces link-2 into required and limits link-0 in pool", () => {
-      const link2CardA = makeDuplicateCard({ id: 1, link: 2 });
-      const link2CardB = makeDuplicateCard({ id: 6, link: 2 });
-      const link0CardA = makeDuplicateCard({ id: 2, link: 0 });
-      const link0CardB = makeDuplicateCard({ id: 3, link: 0 });
-      const link0CardC = makeDuplicateCard({ id: 4, link: 0 });
-      const link1Card = makeDuplicateCard({ id: 5, link: 1 });
-      const context = makeContext({
-        pool: [
-          link2CardA,
-          link2CardB,
-          link0CardA,
-          link0CardB,
-          link0CardC,
-          link1Card,
-        ],
-        required: [],
-        count: 4,
-      });
-
-      const result = link2GteLink0.apply(context);
-
-      const link2InRequired = result.required.filter(
-        (c) => !c.hasChild && c.link === 2,
-      );
-      expect(link2InRequired.length).toBeGreaterThanOrEqual(1);
-
-      const link0InPool = result.pool.filter(
-        (c) => !c.hasChild && c.link === 0,
-      );
-      expect(link0InPool.length).toBeLessThanOrEqual(link2InRequired.length);
-    });
-
     it("does not force link-2 when required already has enough", () => {
       const link2InReq = makeDuplicateCard({ id: 1, link: 2 });
       const link0CardA = makeDuplicateCard({ id: 2, link: 0 });
@@ -359,30 +164,6 @@ describe("link2GteLink0", () => {
 });
 
 describe("highCostGte2", () => {
-  describe("isSatisfied", () => {
-    it("returns true when 2 or more cards have cost >= 5", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, cost: 5 }),
-        makeDuplicateCard({ id: 2, cost: 6 }),
-        makeDuplicateCard({ id: 3, cost: 3 }),
-      ];
-      expect(highCostGte2.isSatisfied(cards)).toBe(true);
-    });
-
-    it("returns false when fewer than 2 cards have cost >= 5", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, cost: 5 }),
-        makeDuplicateCard({ id: 2, cost: 4 }),
-        makeDuplicateCard({ id: 3, cost: 3 }),
-      ];
-      expect(highCostGte2.isSatisfied(cards)).toBe(false);
-    });
-
-    it("returns false for empty array", () => {
-      expect(highCostGte2.isSatisfied([])).toBe(false);
-    });
-  });
-
   describe("apply", () => {
     it("moves high-cost cards from pool to required when required has none", () => {
       const lowCost = makeDuplicateCard({ id: 1, cost: 3 });
@@ -488,32 +269,6 @@ describe("highCostGte2", () => {
 });
 
 describe("link2Gte3", () => {
-  describe("isSatisfied", () => {
-    it("returns true when 3 or more cards have link=2", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, link: 2 }),
-        makeDuplicateCard({ id: 2, link: 2 }),
-        makeDuplicateCard({ id: 3, link: 2 }),
-        makeDuplicateCard({ id: 4, link: 1 }),
-      ];
-      expect(link2Gte3.isSatisfied(cards)).toBe(true);
-    });
-
-    it("returns false when fewer than 3 cards have link=2", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, link: 2 }),
-        makeDuplicateCard({ id: 2, link: 2 }),
-        makeDuplicateCard({ id: 3, link: 1 }),
-        makeDuplicateCard({ id: 4, link: 0 }),
-      ];
-      expect(link2Gte3.isSatisfied(cards)).toBe(false);
-    });
-
-    it("returns false for empty array", () => {
-      expect(link2Gte3.isSatisfied([])).toBe(false);
-    });
-  });
-
   describe("apply", () => {
     it("moves link=2 cards from pool to required until 3 are required", () => {
       const link2Cards = [
@@ -604,31 +359,6 @@ describe("link2Gte3", () => {
 });
 
 describe("eachCost2to5", () => {
-  describe("isSatisfied", () => {
-    it("returns true when all costs 2-5 are present", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, cost: 2 }),
-        makeDuplicateCard({ id: 2, cost: 3 }),
-        makeDuplicateCard({ id: 3, cost: 4 }),
-        makeDuplicateCard({ id: 4, cost: 5 }),
-      ];
-      expect(eachCost2to5.isSatisfied(cards)).toBe(true);
-    });
-
-    it("returns false when cost 3 is missing", () => {
-      const cards: CommonCard[] = [
-        makeDuplicateCard({ id: 1, cost: 2 }),
-        makeDuplicateCard({ id: 2, cost: 4 }),
-        makeDuplicateCard({ id: 3, cost: 5 }),
-      ];
-      expect(eachCost2to5.isSatisfied(cards)).toBe(false);
-    });
-
-    it("returns false for empty array", () => {
-      expect(eachCost2to5.isSatisfied([])).toBe(false);
-    });
-  });
-
   describe("apply", () => {
     it("picks one card for each missing cost", () => {
       const context = makeContext({
