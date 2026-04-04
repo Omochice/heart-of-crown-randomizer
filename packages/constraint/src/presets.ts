@@ -158,9 +158,10 @@ export const link2GteLink0: Constraint = {
 
   canApply(context: Readonly<SelectionContext>): boolean {
     const allCards = [...context.pool, ...context.required];
-    const totalLink0 = countInCards(allCards, (c) => getLink(c) === 0);
     const totalLink2 = countInCards(allCards, (c) => getLink(c) === 2);
-    return totalLink2 >= totalLink0;
+    const nonLink0Count = countInCards(allCards, (c) => getLink(c) !== 0);
+    // Need at least 1 link=2 card and enough non-link0 cards to fill the selection
+    return totalLink2 >= 1 && nonLink0Count >= context.count;
   },
 
   apply(context: SelectionContext): SelectionContext {

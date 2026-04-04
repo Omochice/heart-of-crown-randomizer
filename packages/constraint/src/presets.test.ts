@@ -266,7 +266,7 @@ describe("link2GteLink0", () => {
   });
 
   describe("canApply", () => {
-    it("returns true when total link2 cards >= total link0 cards", () => {
+    it("returns true when link2 cards exist and enough non-link0 cards for count", () => {
       const pool = [
         makeDuplicateCard({ id: 1, link: 2 }),
         makeDuplicateCard({ id: 2, link: 0 }),
@@ -275,21 +275,36 @@ describe("link2GteLink0", () => {
       const context = makeContext({
         pool,
         required: [],
-        count: 3,
+        count: 2,
       });
 
       expect(link2GteLink0.canApply(context)).toBe(true);
     });
 
-    it("returns false when total link2 cards < total link0 cards", () => {
+    it("returns false when no link2 cards exist", () => {
       const pool = [
         makeDuplicateCard({ id: 1, link: 0 }),
-        makeDuplicateCard({ id: 2, link: 0 }),
+        makeDuplicateCard({ id: 2, link: 1 }),
       ];
       const context = makeContext({
         pool,
         required: [],
         count: 2,
+      });
+
+      expect(link2GteLink0.canApply(context)).toBe(false);
+    });
+
+    it("returns false when not enough non-link0 cards for count", () => {
+      const pool = [
+        makeDuplicateCard({ id: 1, link: 2 }),
+        makeDuplicateCard({ id: 2, link: 0 }),
+        makeDuplicateCard({ id: 3, link: 0 }),
+      ];
+      const context = makeContext({
+        pool,
+        required: [],
+        count: 3,
       });
 
       expect(link2GteLink0.canApply(context)).toBe(false);
