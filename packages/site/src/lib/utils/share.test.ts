@@ -25,7 +25,7 @@ describe("buildShareText", () => {
 	it("should include card names without URL", () => {
 		const result = buildShareText(["願いの泉", "寄付", "交易船"]);
 
-		expect(result).toBe("ハトクラなう。今回のサプライ: 願いの泉, 寄付, 交易船");
+		expect(result).toBe("ハトクラなう。今回のサプライ: 願いの泉, 寄付, 交易船 #hatokura #ハトクラ");
 	});
 });
 

@@ -19,7 +19,7 @@ export function buildShareUrl(origin: string, cards: CommonCard[]): string {
  * so embedding it in `text` would cause duplication on most user agents.
  */
 export function buildShareText(cardNames: readonly string[]): string {
-	return `ハトクラなう。今回のサプライ: ${cardNames.join(", ")}`;
+	return `ハトクラなう。今回のサプライ: ${cardNames.join(", ")} #hatokura #ハトクラ`;
 }
 
 export async function shareOrCopy(url: string, cardNames: readonly string[]): Promise<void> {
