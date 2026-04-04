@@ -1,4 +1,5 @@
 export {
+  eachCost2to5,
   highCostGte2,
   link2Gte3,
   link2GteLink0,
