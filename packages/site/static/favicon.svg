@@ -23,16 +23,17 @@
   <!-- Centered icon group -->
   <g transform="translate(256,268) scale(1.5)">
 
-    <!-- Crown dome (light blue) -->
+    <!-- Crown dome shape definition -->
     <path id="dome"
       d="M-120 68
          C-120 68 -160 -10 -110 -60
          C-60 -110 -15 -124 0 -124
          C15 -124 60 -110 110 -60
          C160 -10 120 68 120 68 Z"
-      fill="url(#crownBlue)"
     />
 
+    <!-- Crown dome (blue gradient) -->
+    <use href="#dome" fill="url(#crownBlue)" />
     <!-- Crown dome depth shading -->
     <use href="#dome" fill="url(#crownShadow)" />
 
