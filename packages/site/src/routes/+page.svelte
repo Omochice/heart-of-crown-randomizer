@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
 	import { page } from "$app/stores";
-	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+	import { allCommons } from "$lib/data/cards";
 	import { untrack } from "svelte";
 	import Card from "$lib/Card.svelte";
 	import CardDetail from "$lib/CardDetail.svelte";
@@ -187,8 +187,6 @@
 	function getOriginalIndex(cardId: number): number {
 		return selectedCommons.findIndex((c) => c.id === cardId);
 	}
-
-	const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 
 	const excludedCards = $derived(getExcludedCards(allCommons));
 	const missingCount = $derived(Math.max(0, numberOfCommons - selectedCommons.length));

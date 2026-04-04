@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { getStripColor, getCategoryLabel } from "$lib/utils/card-display";
+	import { getEffectHtml, getVariantEffectsHtml } from "$lib/data/cards";
 	import { X, Layers, Coins } from "lucide-svelte";
 	import { fly, fade } from "svelte/transition";
 	import { onMount } from "svelte";
@@ -15,7 +16,8 @@
 	const stripColor = $derived(getStripColor(card));
 	const categoryLabel = $derived(getCategoryLabel(card));
 
-	const effect = $derived(card.hasChild ? (card.cards[0]?.effect ?? "") : card.effect);
+	const effectHtml = $derived(getEffectHtml(card));
+	const variantEffectsHtml = $derived(getVariantEffectsHtml(card));
 
 	const linkCount = $derived(card.hasChild ? (card.cards[0]?.link ?? 0) : card.link);
 
@@ -114,10 +116,10 @@
 
 			<div class="detail-divider"></div>
 
-			{#if effect}
+			{#if effectHtml}
 				<div class="detail-section">
 					<h3 class="detail-section-label">カード説明</h3>
-					<p class="detail-effect">{effect}</p>
+					<p class="detail-effect">{@html effectHtml}</p>
 				</div>
 			{/if}
 
@@ -127,7 +129,7 @@
 					{#each card.cards as variant, i (i)}
 						<div class="detail-variant">
 							<span class="detail-variant-name">{variant.name}</span>
-							<span class="detail-variant-effect">{variant.effect}</span>
+							<span class="detail-variant-effect">{@html variantEffectsHtml[i] ?? ""}</span>
 						</div>
 					{/each}
 				</div>
