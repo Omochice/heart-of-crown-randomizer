@@ -60,7 +60,7 @@ export type SelectOptions<T> = {
 export function validateConstraints<T>(
   constraint: Constraint<T> | undefined,
 ): void {
-  if (!constraint || !constraint.require || !constraint.exclude) {
+  if (!constraint?.require || !constraint.exclude) {
     return;
   }
 
