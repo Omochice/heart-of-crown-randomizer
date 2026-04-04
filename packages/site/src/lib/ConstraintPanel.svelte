@@ -22,12 +22,12 @@
 
 	const enabledIds = $derived(getEnabledConstraintIds());
 	const enabledCount = $derived(enabledIds.size);
-
-	function buildContext(): SelectionContext {
+	const enabledConstraintsList = $derived(getEnabledConstraints(constraints));
+	const selectionContext = $derived.by(() => {
 		const pool = allCards.filter((c) => !excludedIds.has(c.id));
 		const pinnedCards = getPinnedCards(allCards);
-		return { pool, required: [...pinnedCards], count, rng: Math.random };
-	}
+		return { pool, required: [...pinnedCards], count, rng: Math.random } satisfies SelectionContext;
+	});
 
 	/**
 	 * We always allow disabling an already-enabled constraint. For enabling,
@@ -38,9 +38,8 @@
 	function canToggle(constraint: Constraint): boolean {
 		if (enabledIds.has(constraint.id)) return true;
 
-		const currentEnabled = getEnabledConstraints(constraints);
-		const hypothetical = [...currentEnabled, constraint];
-		return validateCombination(hypothetical, buildContext());
+		const hypothetical = [...enabledConstraintsList, constraint];
+		return validateCombination(hypothetical, selectionContext);
 	}
 
 	function handleToggle(constraint: Constraint) {
