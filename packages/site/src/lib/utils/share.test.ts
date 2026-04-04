@@ -11,7 +11,7 @@ describe("buildShareUrl", () => {
 
 		expect(result).toMatch(/^https:\/\/example\.com\?s=.+$/);
 		const sParam = new URL(result).searchParams.get("s")!;
-		expect(decodeCardIds(sParam).sort((a, b) => a - b)).toEqual([1, 5, 12]);
+		expect(decodeCardIds(sParam)).toEqual([1, 5, 12]);
 	});
 
 	it("should return empty string for empty cards", () => {
