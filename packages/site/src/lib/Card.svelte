@@ -190,9 +190,8 @@
 
 	.card-subtype {
 		font-size: 9px;
-		color: var(--text-tertiary);
+		color: var(--text-secondary);
 		flex-shrink: 0;
-		opacity: 0.6;
 	}
 
 	.card-cost {
