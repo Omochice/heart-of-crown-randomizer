@@ -16,7 +16,10 @@ export function selectWithConstraints(
 	count: number,
 	constraints?: readonly Constraint[],
 ): CommonCard[] {
-	const filteredPool = allCards.filter((card) => !excludedIds.has(card.id));
+	const pinnedIds = new Set(pinnedCards.map((c) => c.id));
+	const filteredPool = allCards.filter(
+		(card) => !excludedIds.has(card.id) && !pinnedIds.has(card.id),
+	);
 
 	let context: SelectionContext = {
 		pool: filteredPool,
