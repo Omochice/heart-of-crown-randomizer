@@ -13,14 +13,17 @@ export function buildShareUrl(origin: string, cards: CommonCard[]): string {
 }
 
 /**
- * Build the text for sharing, including card names and the URL.
+ * Build the text portion for sharing (without URL).
+ *
+ * The URL is passed separately to navigator.share via its `url` parameter,
+ * so embedding it in `text` would cause duplication on most user agents.
  */
-export function buildShareText(cardNames: readonly string[], url: string): string {
-	return `ハトクラなう。今回のサプライ: ${cardNames.join(", ")} ${url}`;
+export function buildShareText(cardNames: readonly string[]): string {
+	return `ハトクラなう。今回のサプライ: ${cardNames.join(", ")}`;
 }
 
 export async function shareOrCopy(url: string, cardNames: readonly string[]): Promise<void> {
-	const text = buildShareText(cardNames, url);
+	const text = buildShareText(cardNames);
 	await navigator
 		.share({
 			url,
@@ -28,7 +31,7 @@ export async function shareOrCopy(url: string, cardNames: readonly string[]): Pr
 			text,
 		})
 		.catch(() => {
-			return navigator.clipboard.writeText(text);
+			return navigator.clipboard.writeText(`${text} ${url}`);
 		})
 		.catch((cause) => {
 			console.error("Failed to copy URL", { cause });

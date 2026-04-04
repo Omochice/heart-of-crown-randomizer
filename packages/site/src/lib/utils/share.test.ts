@@ -22,19 +22,17 @@ describe("buildShareUrl", () => {
 });
 
 describe("buildShareText", () => {
-	it("should include card names and URL", () => {
-		const result = buildShareText(["願いの泉", "寄付", "交易船"], "https://example.com?s=abc");
+	it("should include card names without URL", () => {
+		const result = buildShareText(["願いの泉", "寄付", "交易船"]);
 
-		expect(result).toBe(
-			"ハトクラなう。今回のサプライ: 願いの泉, 寄付, 交易船 https://example.com?s=abc",
-		);
+		expect(result).toBe("ハトクラなう。今回のサプライ: 願いの泉, 寄付, 交易船");
 	});
 });
 
 describe("shareOrCopy", () => {
 	const cardNames = ["願いの泉", "寄付"];
 	const url = "https://example.com?card=1";
-	const expectedText = buildShareText(cardNames, url);
+	const expectedText = buildShareText(cardNames);
 
 	it("should call navigator.share with text containing card names", async () => {
 		const shareMock = vi.fn().mockResolvedValue(undefined);
@@ -64,6 +62,6 @@ describe("shareOrCopy", () => {
 
 		await shareOrCopy(url, cardNames);
 
-		expect(clipboardMock).toHaveBeenCalledWith(expectedText);
+		expect(clipboardMock).toHaveBeenCalledWith(`${expectedText} ${url}`);
 	});
 });
