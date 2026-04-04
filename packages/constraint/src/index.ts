@@ -4,7 +4,6 @@ export {
   link2Gte3,
   link2GteLink0,
   noAttack,
-  presets,
 } from "./presets";
 export type { Constraint, SelectionContext } from "./type";
 export { validateCombination } from "./validate-combination";

@@ -295,12 +295,3 @@ export const eachCost2to5: Constraint = {
     return current;
   },
 };
-
-/** All available preset constraints. */
-export const presets: readonly Constraint[] = [
-  noAttack,
-  link2GteLink0,
-  highCostGte2,
-  link2Gte3,
-  eachCost2to5,
-] as const;
