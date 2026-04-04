@@ -207,6 +207,20 @@ describe("noAttack", () => {
 
       expect(noAttack.canApply(context)).toBe(false);
     });
+
+    it("returns false when required contains an attack card", () => {
+      const pool = [
+        makeDuplicateCard({ id: 1, mainType: ["action"] }),
+        makeDuplicateCard({ id: 2, mainType: ["action"] }),
+      ];
+      const context = makeContext({
+        pool,
+        required: [makeDuplicateCard({ id: 3, mainType: ["attack"] })],
+        count: 2,
+      });
+
+      expect(noAttack.canApply(context)).toBe(false);
+    });
   });
 });
 

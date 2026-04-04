@@ -127,6 +127,9 @@ export const noAttack: Constraint = {
   },
 
   canApply(context: Readonly<SelectionContext>): boolean {
+    if (context.required.some((card) => hasMainType(card, "attack"))) {
+      return false;
+    }
     const nonAttackPool = context.pool.filter(
       (card) => !hasMainType(card, "attack"),
     );
