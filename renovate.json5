@@ -8,7 +8,23 @@
         "version:\\s+(?<currentValue>\\d+\\.\\d+.\\d+)  # renovate: depName=(?<depName>\\S+)",
       ],
       datasourceTemplate: "npm"
-    }
+    },
+    {
+      customType: "jsonata",
+      fileFormat: "json",
+      managerFilePatterns: ["package.json"],
+      matchStrings: [
+        '{"depName": "node", "currentValue": engines.node, "datasource": "node-version", "versioning": "node"}',
+      ],
+    },
+    {
+      customType: "jsonata",
+      fileFormat: "yaml",
+      managerFilePatterns: [".github/workflows/*.{yml,yaml}"],
+      matchStrings: [
+        'jobs."check-typescript".strategy.matrix.node[0].({"depName": "node", "currentValue": $, "datasource": "node-version", "versioning": "node"})',
+      ],
+    },
   ],
   extends: [
     "github>Omochice/personal-renovate-config#v1.11.3",
