@@ -16,9 +16,8 @@ describe("encodeCardIds", () => {
     // ID 23: byte[2] |= 1<<7 = 0x80 -> byte[2] = 0x82
     // ID 35: byte[4] |= 1<<3 = 0x08
     // bytes = [0x00, 0x00, 0x82, 0x00, 0x08]
-    const result = encodeCardIds([17, 23, 35]);
-    expect(result).toBeTruthy();
-    expect(typeof result).toBe("string");
+    // bytes = [0x00, 0x00, 0x82, 0x00, 0x08] -> base64url "AACCAAg"
+    expect(encodeCardIds([17, 23, 35])).toBe("AACCAAg");
   });
 
   test("output contains only URL-safe characters", () => {
