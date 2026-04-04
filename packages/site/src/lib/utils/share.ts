@@ -12,6 +12,13 @@ export function buildShareUrl(origin: string, cards: CommonCard[]): string {
 	return `${origin}?s=${encodeCardIds(cards.map((c) => c.id))}`;
 }
 
+/**
+ * Build the text for sharing, including card names and the URL.
+ */
+export function buildShareText(cardNames: readonly string[], url: string): string {
+	return `ハトクラなう。今回のサプライ: ${cardNames.join(", ")} ${url}`;
+}
+
 export async function shareOrCopy(url: string): Promise<void> {
 	await navigator
 		.share({

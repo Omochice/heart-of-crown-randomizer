@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { buildShareUrl, shareOrCopy } from "./share";
+import { buildShareText, buildShareUrl, shareOrCopy } from "./share";
 import { makeCard } from "$lib/test-helpers";
 import { decodeCardIds } from "@heart-of-crown-randomizer/card-codec";
 
@@ -18,6 +18,16 @@ describe("buildShareUrl", () => {
 		const result = buildShareUrl("https://example.com", []);
 
 		expect(result).toBe("");
+	});
+});
+
+describe("buildShareText", () => {
+	it("should include card names and URL", () => {
+		const result = buildShareText(["願いの泉", "寄付", "交易船"], "https://example.com?s=abc");
+
+		expect(result).toBe(
+			"ハトクラなう。今回のサプライ: 願いの泉, 寄付, 交易船 https://example.com?s=abc",
+		);
 	});
 });
 
