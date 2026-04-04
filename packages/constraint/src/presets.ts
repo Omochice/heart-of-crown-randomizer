@@ -25,7 +25,11 @@ function countInCards(
   cards: readonly CommonCard[],
   predicate: (card: CommonCard) => boolean,
 ): number {
-  return cards.filter(predicate).length;
+  let count = 0;
+  for (const card of cards) {
+    if (predicate(card)) count++;
+  }
+  return count;
 }
 
 /**
