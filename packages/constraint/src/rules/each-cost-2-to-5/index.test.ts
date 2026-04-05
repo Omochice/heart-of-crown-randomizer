@@ -43,6 +43,11 @@ describe("eachCost2to5", () => {
       const result = eachCost2to5.apply(context);
 
       expect(result.required).toHaveLength(4);
+      const costs = result.required.map((c) => c.cost);
+      expect(costs).toContain(2);
+      expect(costs).toContain(3);
+      expect(costs).toContain(4);
+      expect(costs).toContain(5);
     });
   });
 
