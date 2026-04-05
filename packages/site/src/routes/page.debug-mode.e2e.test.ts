@@ -122,10 +122,8 @@ describe("Debug Mode E2E: drawable pool with constraints", () => {
 			enabledConstraints,
 		);
 
-		const attackCards = allCommons.filter((c) => "mainType" in c && c.mainType.includes("attack"));
-		for (const attackCard of attackCards) {
-			expect(context.pool.find((c) => c.id === attackCard.id)).toBeUndefined();
-		}
+		expect(context.pool.length).toBeLessThan(allCommons.length);
+		expect(noAttack.isSatisfied(context.pool)).toBe(true);
 	});
 
 	it("should combine pin, exclude, and constraint filtering correctly", () => {
@@ -151,10 +149,6 @@ describe("Debug Mode E2E: drawable pool with constraints", () => {
 		for (const card of pinnedCards) {
 			expect(context.pool.find((c) => c.id === card.id)).toBeUndefined();
 		}
-
-		const attackCards = allCommons.filter((c) => "mainType" in c && c.mainType.includes("attack"));
-		for (const attackCard of attackCards) {
-			expect(context.pool.find((c) => c.id === attackCard.id)).toBeUndefined();
-		}
+		expect(noAttack.isSatisfied(context.pool)).toBe(true);
 	});
 });
