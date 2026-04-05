@@ -4,6 +4,10 @@ import { allConstraints } from "./index";
 describe("constraint ID uniqueness", () => {
   it("has no duplicate ids", () => {
     const ids = allConstraints.map((c) => c.id);
-    expect(new Set(ids).size).toBe(ids.length);
+    const duplicates = ids.filter((id, i) => ids.indexOf(id) !== i);
+    expect(
+      duplicates,
+      `Duplicate constraint IDs: ${duplicates.join(", ")}`,
+    ).toHaveLength(0);
   });
 });
