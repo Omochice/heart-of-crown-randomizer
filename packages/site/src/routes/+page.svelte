@@ -24,19 +24,11 @@
 		buildCardUrl,
 	} from "$lib/utils/card-draw";
 	import { buildShareUrl, shareOrCopy } from "$lib/utils/share";
-	import {
-		noAttack,
-		link2GteLink0,
-		highCostGte2,
-		link2Gte3,
-		eachCost2to5,
-	} from "@heart-of-crown-randomizer/constraint";
+	import { allConstraints } from "@heart-of-crown-randomizer/constraint";
 	import ConstraintPanel from "$lib/ConstraintPanel.svelte";
 	import DebugPanel from "$lib/DebugPanel.svelte";
 	import { getEnabledConstraints } from "$lib/stores/constraint-state.svelte";
 	import { Shuffle, Plus } from "lucide-svelte";
-
-	const allConstraints = [noAttack, link2GteLink0, highCostGte2, link2Gte3, eachCost2to5] as const;
 	const isDebugMode = $derived($page.url.searchParams.get("debug") === "true");
 
 	let numberOfCommons = $state(10);
