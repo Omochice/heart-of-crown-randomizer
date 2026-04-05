@@ -119,7 +119,7 @@ function pickFromPool(
  * entire UniqueCard is excluded.
  */
 export const noAttack: Constraint = {
-  id: "no-attack",
+  id: 1,
   label: "攻撃カードを含まない",
 
   isSatisfied(cards: readonly CommonCard[]): boolean {
@@ -158,7 +158,7 @@ export const noAttack: Constraint = {
  * link-2 cards than link-0 cards from the remaining pool.
  */
 export const link2GteLink0: Constraint = {
-  id: "link2-gte-link0",
+  id: 2,
   label: "リンク2の数 ≧ リンク0の数",
 
   isSatisfied(cards: readonly CommonCard[]): boolean {
@@ -213,7 +213,7 @@ export const link2GteLink0: Constraint = {
  * partial shuffle for unbiased random selection.
  */
 export const highCostGte2: Constraint = {
-  id: "high-cost-gte-2",
+  id: 4,
   label: "コスト5以上を2枚以上含む",
 
   isSatisfied(cards: readonly CommonCard[]): boolean {
@@ -246,7 +246,7 @@ export const highCostGte2: Constraint = {
  * ignored because they lack a top-level link property.
  */
 export const link2Gte3: Constraint = {
-  id: "link2-gte-3",
+  id: 3,
   label: "リンク2を3枚以上含む",
 
   isSatisfied(cards: readonly CommonCard[]): boolean {
@@ -280,7 +280,7 @@ export const link2Gte3: Constraint = {
  * with that cost is picked from the pool using Fisher-Yates partial shuffle.
  */
 export const eachCost2to5: Constraint = {
-  id: "each-cost-2-to-5",
+  id: 5,
   label: "コスト2〜5を各1枚以上含む",
 
   isSatisfied(cards: readonly CommonCard[]): boolean {

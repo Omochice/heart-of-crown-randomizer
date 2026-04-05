@@ -6,16 +6,16 @@ import type { Constraint } from "@heart-of-crown-randomizer/constraint";
  * in other modules.
  */
 const state = $state({
-	enabledIds: new Set<string>(),
+	enabledIds: new Set<number>(),
 });
 
 /** Get the set of currently enabled constraint IDs. */
-export function getEnabledConstraintIds(): ReadonlySet<string> {
+export function getEnabledConstraintIds(): ReadonlySet<number> {
 	return state.enabledIds;
 }
 
 /** Toggle a constraint on/off by ID. */
-export function toggleConstraint(id: string): void {
+export function toggleConstraint(id: number): void {
 	const next = new Set(state.enabledIds);
 	if (next.has(id)) {
 		next.delete(id);
