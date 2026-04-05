@@ -38,9 +38,6 @@ importers:
       '@biomejs/biome':
         specifier: 'catalog:'
         version: 2.4.10
-      '@sveltejs/mcp':
-        specifier: 0.1.22
-        version: 0.1.22(jiti@2.6.1)(typescript@6.0.2)
       '@textlint-ja/textlint-rule-preset-ai-writing':
         specifier: 1.6.1
         version: 1.6.1
@@ -212,6 +209,9 @@ importers:
       '@sveltejs/kit':
         specifier: 2.56.1
         version: 2.56.1(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.55.1)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.0)(esbuild@0.27.7)(jiti@2.6.1)))(svelte@5.55.1)(typescript@6.0.2)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.0)(esbuild@0.27.7)(jiti@2.6.1))
+      '@sveltejs/mcp':
+        specifier: 0.1.22
+        version: 0.1.22(jiti@2.6.1)(typescript@6.0.2)
       '@sveltejs/vite-plugin-svelte':
         specifier: 7.0.0
         version: 7.0.0(svelte@5.55.1)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.0)(esbuild@0.27.7)(jiti@2.6.1))
