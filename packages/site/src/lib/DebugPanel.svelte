@@ -295,7 +295,7 @@
 
 	.debug-badge--pass {
 		color: var(--accent-green);
-		background: #dcfce7;
+		background: var(--bg-accent-green-light);
 	}
 
 	.debug-badge--fail {
