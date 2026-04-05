@@ -32,10 +32,12 @@
 		eachCost2to5,
 	} from "@heart-of-crown-randomizer/constraint";
 	import ConstraintPanel from "$lib/ConstraintPanel.svelte";
+	import DebugPanel from "$lib/DebugPanel.svelte";
 	import { getEnabledConstraints } from "$lib/stores/constraint-state.svelte";
 	import { Shuffle, Plus } from "lucide-svelte";
 
 	const allConstraints = [noAttack, link2GteLink0, highCostGte2, link2Gte3, eachCost2to5] as const;
+	const isDebugMode = $derived($page.url.searchParams.get("debug") === "true");
 
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
@@ -135,10 +137,18 @@
 		selectedCommons = result.cards;
 		errorMessage = "";
 
-		goto(buildCardUrl(selectedCommons, getPinnedCardIds(), getExcludedCardIds()), {
-			keepFocus: true,
-			noScroll: true,
-		});
+		goto(
+			buildCardUrl(
+				selectedCommons,
+				getPinnedCardIds(),
+				getExcludedCardIds(),
+				$page.url.searchParams,
+			),
+			{
+				keepFocus: true,
+				noScroll: true,
+			},
+		);
 	}
 
 	async function copyToClipboard() {
@@ -154,10 +164,18 @@
 	}
 
 	function navigateWithCardState() {
-		goto(buildCardUrl(selectedCommons, getPinnedCardIds(), getExcludedCardIds()), {
-			keepFocus: true,
-			noScroll: true,
-		});
+		goto(
+			buildCardUrl(
+				selectedCommons,
+				getPinnedCardIds(),
+				getExcludedCardIds(),
+				$page.url.searchParams,
+			),
+			{
+				keepFocus: true,
+				noScroll: true,
+			},
+		);
 	}
 
 	const { handleSwipeStart, handleSwipeMove, handleSwipeEnd, handleSwipeCancel } =
@@ -297,6 +315,17 @@
 	<CardDetail
 		card={detailCard}
 		onClose={() => (detailCard = null)}
+	/>
+{/if}
+
+{#if isDebugMode}
+	<DebugPanel
+		constraints={allConstraints}
+		selectedCards={selectedCommons}
+		allCards={allCommons}
+		pinnedCards={getPinnedCards(allCommons)}
+		excludedIds={getExcludedCardIds()}
+		count={numberOfCommons}
 	/>
 {/if}
 

@@ -168,4 +168,33 @@ describe("buildCardUrl", () => {
 		const sParam = new URLSearchParams(result.slice(1)).get("s")!;
 		expect(decodeCardIds(sParam)).toEqual([3]);
 	});
+
+	it("should preserve debug param from currentSearchParams", () => {
+		const cards = [makeCard(1)];
+		const searchParams = new URLSearchParams("debug=true");
+
+		const result = buildCardUrl(cards, new Set(), new Set(), searchParams);
+
+		const params = new URLSearchParams(result.slice(1));
+		expect(params.get("debug")).toBe("true");
+	});
+
+	it("should not include debug param when currentSearchParams lacks it", () => {
+		const cards = [makeCard(1)];
+		const searchParams = new URLSearchParams();
+
+		const result = buildCardUrl(cards, new Set(), new Set(), searchParams);
+
+		const params = new URLSearchParams(result.slice(1));
+		expect(params.get("debug")).toBeNull();
+	});
+
+	it("should not include debug param when currentSearchParams is omitted", () => {
+		const cards = [makeCard(1)];
+
+		const result = buildCardUrl(cards, new Set(), new Set());
+
+		const params = new URLSearchParams(result.slice(1));
+		expect(params.get("debug")).toBeNull();
+	});
 });

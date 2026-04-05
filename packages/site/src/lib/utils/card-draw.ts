@@ -73,6 +73,7 @@ export function buildCardUrl(
 	cards: CommonCard[],
 	pinnedIds: ReadonlySet<number>,
 	excludedIds: ReadonlySet<number>,
+	currentSearchParams?: URLSearchParams,
 ): string {
 	const params = new URLSearchParams();
 	if (cards.length > 0) {
@@ -83,6 +84,10 @@ export function buildCardUrl(
 	}
 	for (const id of excludedIds) {
 		params.append("exclude", String(id));
+	}
+	const debug = currentSearchParams?.get("debug");
+	if (debug != null) {
+		params.set("debug", debug);
 	}
 	return `?${params.toString()}`;
 }
