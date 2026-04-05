@@ -1,6 +1,6 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import type { Constraint, SelectionContext } from "../../type";
-import { hasMainType } from "../_utils";
+import { hasMainType } from "../shared/card-properties";
 
 /**
  * For UniqueCards, if any sub-card has "attack", the entire card is

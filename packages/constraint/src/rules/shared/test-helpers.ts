@@ -6,7 +6,7 @@ import type {
   UniqueCard,
 } from "@heart-of-crown-randomizer/card/type";
 import { describe, expect } from "vitest";
-import type { Constraint, SelectionContext } from "../type";
+import type { Constraint, SelectionContext } from "../../type";
 
 // -- Unit test helpers --
 

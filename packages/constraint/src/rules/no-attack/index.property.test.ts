@@ -4,7 +4,7 @@ import {
   commonCardArb,
   contextArb,
   describeApplyInvariants,
-} from "../_test-helpers";
+} from "../shared/test-helpers";
 import { noAttack } from "./index";
 
 describe("noAttack", () => {

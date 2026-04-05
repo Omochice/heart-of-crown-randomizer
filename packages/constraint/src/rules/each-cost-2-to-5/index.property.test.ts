@@ -4,7 +4,7 @@ import {
   commonCardArb,
   contextArb,
   describeApplyInvariants,
-} from "../_test-helpers";
+} from "../shared/test-helpers";
 import { eachCost2to5 } from "./index";
 
 describe("eachCost2to5", () => {

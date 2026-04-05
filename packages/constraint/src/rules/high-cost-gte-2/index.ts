@@ -1,6 +1,7 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import type { Constraint, SelectionContext } from "../../type";
-import { countInCards, isHighCost, pickFromPool } from "../_utils";
+import { countInCards, isHighCost } from "../shared/card-properties";
+import { pickFromPool } from "../shared/pick-from-pool";
 
 /**
  * Uses Fisher-Yates partial shuffle via {@link pickFromPool} to fill

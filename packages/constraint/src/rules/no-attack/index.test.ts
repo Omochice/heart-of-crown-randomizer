@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { makeContext, makeDuplicateCard } from "../_test-helpers";
+import { makeContext, makeDuplicateCard } from "../shared/test-helpers";
 import { noAttack } from "./index";
 
 describe("noAttack", () => {

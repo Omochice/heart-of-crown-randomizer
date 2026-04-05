@@ -1,6 +1,6 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import type { Constraint, SelectionContext } from "../../type";
-import { pickFromPool } from "../_utils";
+import { pickFromPool } from "../shared/pick-from-pool";
 
 /**
  * Costs are filled sequentially (2, 3, 4, 5) rather than all at once

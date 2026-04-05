@@ -1,6 +1,7 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import type { Constraint, SelectionContext } from "../../type";
-import { countInCards, isLink2, pickFromPool } from "../_utils";
+import { countInCards, isLink2 } from "../shared/card-properties";
+import { pickFromPool } from "../shared/pick-from-pool";
 
 /**
  * Only DuplicateCards are counted because UniqueCards lack a top-level

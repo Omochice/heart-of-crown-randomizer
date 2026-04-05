@@ -1,6 +1,7 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import type { Constraint, SelectionContext } from "../../type";
-import { countInCards, getLink, isLink2, pickFromPool } from "../_utils";
+import { countInCards, getLink, isLink2 } from "../shared/card-properties";
+import { pickFromPool } from "../shared/pick-from-pool";
 
 /**
  * Constraint ensuring the number of link-2 cards is at least as large

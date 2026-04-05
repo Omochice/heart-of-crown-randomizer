@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { makeContext, makeDuplicateCard, seededRng } from "../_test-helpers";
+import {
+  makeContext,
+  makeDuplicateCard,
+  seededRng,
+} from "../shared/test-helpers";
 import { highCostGte2 } from "./index";
 
 describe("highCostGte2", () => {

@@ -4,7 +4,7 @@ import {
   commonCardArb,
   contextArb,
   describeApplyInvariants,
-} from "../_test-helpers";
+} from "../shared/test-helpers";
 import { link2GteLink0 } from "./index";
 
 describe("link2GteLink0", () => {
