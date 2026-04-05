@@ -4,7 +4,7 @@
       "type": "stdio",
       "command": "pnpm",
       "env": {},
-      "args": ["exec", "svelte-mcp"]
+      "args": ["--filter=@heart-of-crown-randomizer/site", "exec", "svelte-mcp"]
     }
   }
 }

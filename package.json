@@ -20,18 +20,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
-    "@sveltejs/adapter-cloudflare": "7.2.8",
-    "@sveltejs/mcp": "0.1.22",
     "@textlint-ja/textlint-rule-preset-ai-writing": "1.6.1",
-    "@vitest/browser": "4.1.2",
-    "@vitest/browser-playwright": "4.1.2",
     "npm-run-all2": "catalog:",
-    "playwright": "1.59.1",
     "rimraf": "catalog:",
     "sort-package-json": "catalog:",
     "textlint": "15.5.2",
     "turbo": "2.9.3",
-    "vite": "8.0.3",
     "vitest": "catalog:"
   },
   "packageManager": "pnpm@10.33.0",
