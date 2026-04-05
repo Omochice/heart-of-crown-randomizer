@@ -1,11 +1,9 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
-import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
+import type { SelectionContext } from "@heart-of-crown-randomizer/constraint";
 import {
 	setPinnedCardIds,
 	setExcludedCardIds,
-	getPinnedCardIds,
-	getExcludedCardIds,
 	getPinnedCards,
 } from "$lib/stores/card-state.svelte";
 import {
@@ -26,16 +24,34 @@ import {
 const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 const allConstraints = [noAttack, link2GteLink0, highCostGte2, link2Gte3, eachCost2to5] as const;
 
-describe("Debug Mode E2E: debug param preservation", () => {
-	beforeEach(() => {
-		setPinnedCardIds(new Set());
-		setExcludedCardIds(new Set());
-		for (const c of allConstraints) {
-			if (getEnabledConstraintIds().has(c.id)) {
-				toggleConstraint(c.id);
-			}
+function applyConstraints(
+	context: SelectionContext,
+	constraints: readonly {
+		canApply(ctx: SelectionContext): boolean;
+		apply(ctx: SelectionContext): SelectionContext;
+	}[],
+): SelectionContext {
+	let result = context;
+	for (const constraint of constraints) {
+		if (constraint.canApply(result)) {
+			result = constraint.apply(result);
 		}
-	});
+	}
+	return result;
+}
+
+function resetState() {
+	setPinnedCardIds(new Set());
+	setExcludedCardIds(new Set());
+	for (const c of allConstraints) {
+		if (getEnabledConstraintIds().has(c.id)) {
+			toggleConstraint(c.id);
+		}
+	}
+}
+
+describe("Debug Mode E2E: debug param preservation", () => {
+	beforeEach(resetState);
 
 	it("should preserve debug=true in buildCardUrl when searchParams contains it", () => {
 		const result = drawRandomCards(allCommons, 10, [], new Set());
@@ -77,15 +93,7 @@ describe("Debug Mode E2E: debug param preservation", () => {
 });
 
 describe("Debug Mode E2E: drawable pool with constraints", () => {
-	beforeEach(() => {
-		setPinnedCardIds(new Set());
-		setExcludedCardIds(new Set());
-		for (const c of allConstraints) {
-			if (getEnabledConstraintIds().has(c.id)) {
-				toggleConstraint(c.id);
-			}
-		}
-	});
+	beforeEach(resetState);
 
 	it("should compute drawable pool that excludes pinned and excluded cards", () => {
 		const pinnedCards = allCommons.slice(0, 2);
@@ -104,24 +112,15 @@ describe("Debug Mode E2E: drawable pool with constraints", () => {
 	});
 
 	it("should reflect constraint filtering in drawable pool", () => {
-		toggleConstraint("no-attack");
+		toggleConstraint(noAttack.id);
 
 		const enabledConstraints = getEnabledConstraints(allConstraints);
 		expect(enabledConstraints).toHaveLength(1);
 
-		const pool = allCommons.filter((card) => !new Set<number>().has(card.id));
-		let context: SelectionContext = {
-			pool,
-			required: [],
-			count: 10,
-			rng: () => 0.5,
-		};
-
-		for (const constraint of enabledConstraints) {
-			if (constraint.canApply(context)) {
-				context = constraint.apply(context);
-			}
-		}
+		const context = applyConstraints(
+			{ pool: [...allCommons], required: [], count: 10, rng: () => 0.5 },
+			enabledConstraints,
+		);
 
 		const attackCards = allCommons.filter((c) => "mainType" in c && c.mainType.includes("attack"));
 		for (const attackCard of attackCards) {
@@ -134,25 +133,17 @@ describe("Debug Mode E2E: drawable pool with constraints", () => {
 		const pinnedIds = new Set(pinnedCards.map((c) => c.id));
 		const excludedIds = new Set([allCommons[5].id]);
 
-		toggleConstraint("no-attack");
+		toggleConstraint(noAttack.id);
 		const enabledConstraints = getEnabledConstraints(allConstraints);
 
 		const filteredPool = allCommons.filter(
 			(card) => !excludedIds.has(card.id) && !pinnedIds.has(card.id),
 		);
 
-		let context: SelectionContext = {
-			pool: filteredPool,
-			required: [...pinnedCards],
-			count: 10,
-			rng: () => 0.5,
-		};
-
-		for (const constraint of enabledConstraints) {
-			if (constraint.canApply(context)) {
-				context = constraint.apply(context);
-			}
-		}
+		const context = applyConstraints(
+			{ pool: filteredPool, required: [...pinnedCards], count: 10, rng: () => 0.5 },
+			enabledConstraints,
+		);
 
 		for (const id of excludedIds) {
 			expect(context.pool.find((c) => c.id === id)).toBeUndefined();
