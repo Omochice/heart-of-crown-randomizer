@@ -1,6 +1,10 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
-import type { SelectionContext } from "@heart-of-crown-randomizer/constraint";
+import {
+	type SelectionContext,
+	allConstraints,
+	noAttack,
+} from "@heart-of-crown-randomizer/constraint";
 import {
 	setPinnedCardIds,
 	setExcludedCardIds,
@@ -13,16 +17,8 @@ import {
 } from "$lib/stores/constraint-state.svelte";
 import { buildCardUrl, drawRandomCards } from "$lib/utils/card-draw";
 import { buildShareUrl } from "$lib/utils/share";
-import {
-	noAttack,
-	link2GteLink0,
-	highCostGte2,
-	link2Gte3,
-	eachCost2to5,
-} from "@heart-of-crown-randomizer/constraint";
 
 const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
-const allConstraints = [noAttack, link2GteLink0, highCostGte2, link2Gte3, eachCost2to5] as const;
 
 function applyConstraints(
 	context: SelectionContext,

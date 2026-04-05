@@ -72,7 +72,7 @@ describe("drawRandomCards", () => {
 describe("drawRandomCards with constraints", () => {
 	it("should pass constraints to selectWithConstraints", () => {
 		const filterConstraint: Constraint = {
-			id: "test-filter",
+			id: 901,
 			label: "test",
 			canApply: () => true,
 			isSatisfied: () => true,
@@ -95,7 +95,7 @@ describe("drawRandomCards with constraints", () => {
 
 	it("should still validate pin constraints before applying constraints", () => {
 		const dummyConstraint: Constraint = {
-			id: "test",
+			id: 902,
 			label: "test",
 			canApply: () => true,
 			isSatisfied: () => true,

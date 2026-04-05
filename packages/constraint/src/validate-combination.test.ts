@@ -7,7 +7,7 @@ import {
   link2Gte3,
   link2GteLink0,
   noAttack,
-} from "./presets";
+} from "./rules";
 import type { SelectionContext } from "./type";
 import { validateCombination } from "./validate-combination";
 

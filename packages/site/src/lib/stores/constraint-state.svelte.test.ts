@@ -8,14 +8,14 @@ import type { Constraint } from "@heart-of-crown-randomizer/constraint";
 
 const mockConstraints: Constraint[] = [
 	{
-		id: "test-a",
+		id: 100,
 		label: "Test A",
 		canApply: () => true,
 		isSatisfied: () => true,
 		apply: (ctx) => ctx,
 	},
 	{
-		id: "test-b",
+		id: 200,
 		label: "Test B",
 		canApply: () => true,
 		isSatisfied: () => true,
@@ -36,32 +36,32 @@ describe("constraint-state", () => {
 	});
 
 	it("should enable a constraint when toggled", () => {
-		toggleConstraint("test-a");
-		expect(getEnabledConstraintIds().has("test-a")).toBe(true);
+		toggleConstraint(100);
+		expect(getEnabledConstraintIds().has(100)).toBe(true);
 	});
 
 	it("should disable a constraint when toggled twice", () => {
-		toggleConstraint("test-a");
-		toggleConstraint("test-a");
-		expect(getEnabledConstraintIds().has("test-a")).toBe(false);
+		toggleConstraint(100);
+		toggleConstraint(100);
+		expect(getEnabledConstraintIds().has(100)).toBe(false);
 	});
 
 	it("should return enabled constraint objects", () => {
-		toggleConstraint("test-a");
+		toggleConstraint(100);
 		const enabled = getEnabledConstraints(mockConstraints);
 		expect(enabled).toHaveLength(1);
-		expect(enabled[0].id).toBe("test-a");
+		expect(enabled[0].id).toBe(100);
 	});
 
 	it("should handle multiple enabled constraints", () => {
-		toggleConstraint("test-a");
-		toggleConstraint("test-b");
+		toggleConstraint(100);
+		toggleConstraint(200);
 		const enabled = getEnabledConstraints(mockConstraints);
 		expect(enabled).toHaveLength(2);
 	});
 
 	it("should return empty array when no constraints match", () => {
-		toggleConstraint("nonexistent");
+		toggleConstraint(999);
 		const enabled = getEnabledConstraints(mockConstraints);
 		expect(enabled).toHaveLength(0);
 	});

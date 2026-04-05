@@ -24,8 +24,8 @@ export type SelectionContext = {
  * - `isSatisfied` validates whether a final selection meets the constraint
  */
 export type Constraint = {
-  /** Unique identifier for this constraint. */
-  readonly id: string;
+  /** Unique numeric identifier for this constraint, used for rendering order. */
+  readonly id: number;
   /** Human-readable label for display in the UI. */
   readonly label: string;
   /** Determine whether this constraint can be applied to the given context. */

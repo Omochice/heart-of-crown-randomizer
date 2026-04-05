@@ -5,7 +5,7 @@ import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/co
 import { makeCard } from "$lib/test-helpers";
 import * as constraintState from "$lib/stores/constraint-state.svelte";
 
-function makeConstraint(id: string, label: string, isSatisfied = true): Constraint {
+function makeConstraint(id: number, label: string, isSatisfied = true): Constraint {
 	return {
 		id,
 		label,
@@ -16,10 +16,7 @@ function makeConstraint(id: string, label: string, isSatisfied = true): Constrai
 }
 
 const allCards = Array.from({ length: 10 }, (_, i) => makeCard(i + 1));
-const constraints = [
-	makeConstraint("c1", "Constraint 1"),
-	makeConstraint("c2", "Constraint 2", false),
-];
+const constraints = [makeConstraint(1, "Constraint 1"), makeConstraint(2, "Constraint 2", false)];
 
 const defaultProps = {
 	constraints,
@@ -82,7 +79,7 @@ describe("DebugPanel", () => {
 		});
 
 		it("should show ON badge for enabled constraints", async () => {
-			constraintState.toggleConstraint("c1");
+			constraintState.toggleConstraint(1);
 
 			render(DebugPanel, { props: defaultProps });
 			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
@@ -101,7 +98,7 @@ describe("DebugPanel", () => {
 		});
 
 		it("should show N/A when constraint is enabled but no cards selected", async () => {
-			constraintState.toggleConstraint("c1");
+			constraintState.toggleConstraint(1);
 
 			render(DebugPanel, { props: defaultProps });
 			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
@@ -110,7 +107,7 @@ describe("DebugPanel", () => {
 		});
 
 		it("should show PASS for satisfied constraint with selected cards", async () => {
-			constraintState.toggleConstraint("c1");
+			constraintState.toggleConstraint(1);
 			const selected = allCards.slice(0, 3);
 
 			render(DebugPanel, { props: { ...defaultProps, selectedCards: selected } });
@@ -120,7 +117,7 @@ describe("DebugPanel", () => {
 		});
 
 		it("should show FAIL for unsatisfied constraint with selected cards", async () => {
-			constraintState.toggleConstraint("c2");
+			constraintState.toggleConstraint(2);
 			const selected = allCards.slice(0, 3);
 
 			render(DebugPanel, { props: { ...defaultProps, selectedCards: selected } });

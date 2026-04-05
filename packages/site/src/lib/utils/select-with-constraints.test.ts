@@ -13,7 +13,7 @@ describe("selectWithConstraints", () => {
 
 	it("should apply constraint that filters pool", () => {
 		const filterConstraint: Constraint = {
-			id: "test-filter",
+			id: 901,
 			label: "test",
 			canApply: () => true,
 			isSatisfied: () => true,
@@ -32,7 +32,7 @@ describe("selectWithConstraints", () => {
 
 	it("should apply constraint that adds required cards", () => {
 		const requireConstraint: Constraint = {
-			id: "test-require",
+			id: 902,
 			label: "test",
 			canApply: () => true,
 			isSatisfied: (cards) => cards.some((c) => c.id === 1),
@@ -55,7 +55,7 @@ describe("selectWithConstraints", () => {
 	it("should respect both pinned cards and constraints", () => {
 		const pinned = [pool[0]]; // card id=1
 		const filterConstraint: Constraint = {
-			id: "test-filter",
+			id: 901,
 			label: "test",
 			canApply: () => true,
 			isSatisfied: () => true,
@@ -76,7 +76,7 @@ describe("selectWithConstraints", () => {
 	it("should respect excluded IDs with constraints", () => {
 		const excludedIds = new Set([1, 2, 3]);
 		const filterConstraint: Constraint = {
-			id: "test-filter",
+			id: 901,
 			label: "test",
 			canApply: () => true,
 			isSatisfied: () => true,
