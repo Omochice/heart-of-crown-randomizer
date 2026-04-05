@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-	import { getEnabledConstraintIds } from "$lib/stores/constraint-state.svelte";
+	import {
+		getEnabledConstraintIds,
+		getEnabledConstraints,
+	} from "$lib/stores/constraint-state.svelte";
 	import { Bug, X } from "lucide-svelte";
 
 	type Props = {
@@ -53,7 +56,7 @@
 			rng: () => 0.5,
 		};
 
-		const enabledConstraints = constraints.filter((c) => enabledIds.has(c.id));
+		const enabledConstraints = getEnabledConstraints(constraints);
 		for (const constraint of enabledConstraints) {
 			if (constraint.canApply(context)) {
 				context = constraint.apply(context);
@@ -139,11 +142,10 @@
 			{/if}
 		</section>
 
-		<section class="debug-section">
-			<h3 class="debug-section-title">Pinned ({pinnedCards.length})</h3>
-			{#if pinnedCards.length > 0}
+		{#snippet cardList(cards: CommonCard[])}
+			{#if cards.length > 0}
 				<ul class="debug-pool-list">
-					{#each pinnedCards as card (card.id)}
+					{#each cards as card (card.id)}
 						<li class="debug-pool-item">
 							<span class="debug-pool-cost">{card.cost}</span>
 							<span class="debug-pool-name">{card.name}</span>
@@ -151,32 +153,21 @@
 					{/each}
 				</ul>
 			{/if}
+		{/snippet}
+
+		<section class="debug-section">
+			<h3 class="debug-section-title">Pinned ({pinnedCards.length})</h3>
+			{@render cardList(pinnedCards)}
 		</section>
 
 		<section class="debug-section">
 			<h3 class="debug-section-title">Excluded ({excludedCards.length})</h3>
-			{#if excludedCards.length > 0}
-				<ul class="debug-pool-list">
-					{#each excludedCards as card (card.id)}
-						<li class="debug-pool-item">
-							<span class="debug-pool-cost">{card.cost}</span>
-							<span class="debug-pool-name">{card.name}</span>
-						</li>
-					{/each}
-				</ul>
-			{/if}
+			{@render cardList(excludedCards)}
 		</section>
 
 		<section class="debug-section">
 			<h3 class="debug-section-title">Drawable Pool ({drawablePool.length})</h3>
-			<ul class="debug-pool-list">
-				{#each drawablePool as card (card.id)}
-					<li class="debug-pool-item">
-						<span class="debug-pool-cost">{card.cost}</span>
-						<span class="debug-pool-name">{card.name}</span>
-					</li>
-				{/each}
-			</ul>
+			{@render cardList(drawablePool)}
 		</section>
 	</div>
 {/if}
