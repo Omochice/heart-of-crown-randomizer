@@ -36,6 +36,10 @@
 			}));
 	});
 
+	const excludedCards = $derived(
+		allCards.filter((c) => excludedIds.has(c.id)).sort((a, b) => a.id - b.id),
+	);
+
 	const drawablePool = $derived.by(() => {
 		const pinnedIds = new Set(pinnedCards.map((c) => c.id));
 		const filteredPool = allCards.filter(
@@ -129,6 +133,34 @@
 									FAIL
 								{/if}
 							</span>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</section>
+
+		<section class="debug-section">
+			<h3 class="debug-section-title">Pinned ({pinnedCards.length})</h3>
+			{#if pinnedCards.length > 0}
+				<ul class="debug-pool-list">
+					{#each pinnedCards as card (card.id)}
+						<li class="debug-pool-item">
+							<span class="debug-pool-cost">{card.cost}</span>
+							<span class="debug-pool-name">{card.name}</span>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</section>
+
+		<section class="debug-section">
+			<h3 class="debug-section-title">Excluded ({excludedCards.length})</h3>
+			{#if excludedCards.length > 0}
+				<ul class="debug-pool-list">
+					{#each excludedCards as card (card.id)}
+						<li class="debug-pool-item">
+							<span class="debug-pool-cost">{card.cost}</span>
+							<span class="debug-pool-name">{card.name}</span>
 						</li>
 					{/each}
 				</ul>
