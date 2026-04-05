@@ -17,6 +17,4 @@ export const allConstraints: readonly Constraint[] = [
   link2Gte3,
   highCostGte2,
   eachCost2to5,
-]
-  .slice()
-  .sort((a, b) => a.id - b.id);
+].sort((a, b) => a.id - b.id);
