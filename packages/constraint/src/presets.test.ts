@@ -1,4 +1,3 @@
-import type { DuplicateCard } from "@heart-of-crown-randomizer/card/type";
 import { describe, expect, it } from "vitest";
 import {
   eachCost2to5,
@@ -7,7 +6,12 @@ import {
   link2GteLink0,
   noAttack,
 } from "./presets";
-import type { Constraint, SelectionContext } from "./type";
+import {
+  makeContext,
+  makeDuplicateCard,
+  seededRng,
+} from "./rules/_test-helpers";
+import type { Constraint } from "./type";
 
 describe("Constraint type", () => {
   it("has a numeric id", () => {
@@ -15,43 +19,6 @@ describe("Constraint type", () => {
     expect(typeof constraint.id).toBe("number");
   });
 });
-
-function makeDuplicateCard(
-  overrides: Partial<DuplicateCard> = {},
-): DuplicateCard {
-  return {
-    id: 1,
-    type: "common",
-    name: "Test Card",
-    mainType: ["action"],
-    cost: 3,
-    link: 1,
-    effect: "test",
-    hasChild: false,
-    edition: 0,
-    ...overrides,
-  };
-}
-
-function makeContext(
-  overrides: Partial<SelectionContext> = {},
-): SelectionContext {
-  return {
-    pool: [],
-    required: [],
-    count: 10,
-    rng: Math.random,
-    ...overrides,
-  };
-}
-
-function seededRng(): () => number {
-  let seed = 42;
-  return () => {
-    seed = (seed * 16807) % 2147483647;
-    return (seed - 1) / 2147483646;
-  };
-}
 
 describe("noAttack", () => {
   describe("canApply", () => {
