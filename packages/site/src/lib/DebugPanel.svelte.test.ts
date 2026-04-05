@@ -130,6 +130,46 @@ describe("DebugPanel", () => {
 		});
 	});
 
+	describe("Pinned cards section", () => {
+		it("should show pinned cards with their names", async () => {
+			const pinnedCards = [allCards[0], allCards[2]];
+
+			render(DebugPanel, { props: { ...defaultProps, pinnedCards } });
+			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+
+			expect(screen.getByText("Pinned (2)")).toBeDefined();
+			expect(screen.getByText("Card 1")).toBeDefined();
+			expect(screen.getByText("Card 3")).toBeDefined();
+		});
+
+		it("should show empty message when no cards are pinned", async () => {
+			render(DebugPanel, { props: defaultProps });
+			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+
+			expect(screen.getByText("Pinned (0)")).toBeDefined();
+		});
+	});
+
+	describe("Excluded cards section", () => {
+		it("should show excluded cards with their names", async () => {
+			const excludedIds = new Set([2, 4]);
+
+			render(DebugPanel, { props: { ...defaultProps, excludedIds } });
+			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+
+			expect(screen.getByText("Excluded (2)")).toBeDefined();
+			expect(screen.getByText("Card 2")).toBeDefined();
+			expect(screen.getByText("Card 4")).toBeDefined();
+		});
+
+		it("should show empty message when no cards are excluded", async () => {
+			render(DebugPanel, { props: defaultProps });
+			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+
+			expect(screen.getByText("Excluded (0)")).toBeDefined();
+		});
+	});
+
 	describe("Drawable pool section", () => {
 		it("should show all cards in pool when no exclusions or pins", async () => {
 			render(DebugPanel, { props: defaultProps });
