@@ -10,6 +10,9 @@ export default defineConfig({
 		tailwindcss(),
 		sveltekit(),
 		svelteTesting(),
+		// TODO: Remove when @sveltejs/adapter-cloudflare integrates esmExternalRequirePlugin internally.
+		// Rolldown generates `createRequire(import.meta.url)` for CJS require() calls in SSR builds,
+		// but Cloudflare Workers does not provide `import.meta.url`.
 		esmExternalRequirePlugin({
 			external: [/^node:/, "crypto"],
 			skipDuplicateCheck: true,
