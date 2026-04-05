@@ -3,10 +3,9 @@ import type { Constraint, SelectionContext } from "../../type";
 import { pickFromPool } from "../_utils";
 
 /**
- * Constraint that requires at least 1 card for each cost value 2, 3, 4, and 5.
- *
- * When applied, for each missing cost in the required set, one card
- * with that cost is picked from the pool using Fisher-Yates partial shuffle.
+ * Costs are filled sequentially (2, 3, 4, 5) rather than all at once
+ * so that each {@link pickFromPool} call sees the updated pool after
+ * previous picks, preventing the same card from being selected twice.
  */
 export const eachCost2to5: Constraint = {
   id: 5,

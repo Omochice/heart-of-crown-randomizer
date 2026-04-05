@@ -3,11 +3,8 @@ import type { Constraint, SelectionContext } from "../../type";
 import { countInCards, isLink2, pickFromPool } from "../_utils";
 
 /**
- * Constraint that requires at least 3 cards with link=2 in the selection.
- *
- * When applied, link=2 DuplicateCards are moved from the pool to
- * required until 3 link=2 cards are guaranteed. UniqueCards are
- * ignored because they lack a top-level link property.
+ * Only DuplicateCards are counted because UniqueCards lack a top-level
+ * link property and cannot contribute to link-based constraints.
  */
 export const link2Gte3: Constraint = {
   id: 3,

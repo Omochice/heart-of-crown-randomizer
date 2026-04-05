@@ -3,11 +3,8 @@ import type { Constraint, SelectionContext } from "../../type";
 import { countInCards, isHighCost, pickFromPool } from "../_utils";
 
 /**
- * Constraint that requires at least 2 high-cost (cost >= 5) cards in the selection.
- *
- * When applied, if fewer than 2 high-cost cards are already in required,
- * the deficit is filled by picking from the pool using Fisher-Yates
- * partial shuffle for unbiased random selection.
+ * Uses Fisher-Yates partial shuffle via {@link pickFromPool} to fill
+ * the deficit, avoiding full-array shuffles for better performance.
  */
 export const highCostGte2: Constraint = {
   id: 4,

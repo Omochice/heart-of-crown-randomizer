@@ -3,11 +3,8 @@ import type { Constraint, SelectionContext } from "../../type";
 import { hasMainType } from "../_utils";
 
 /**
- * Constraint that excludes all attack cards from the selection.
- *
- * When applied, cards containing the "attack" main type are removed
- * from the pool. For UniqueCards, if any sub-card has "attack", the
- * entire UniqueCard is excluded.
+ * For UniqueCards, if any sub-card has "attack", the entire card is
+ * excluded because a UniqueCard is played as a single unit.
  */
 export const noAttack: Constraint = {
   id: 1,
