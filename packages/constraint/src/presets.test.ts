@@ -7,7 +7,14 @@ import {
   link2GteLink0,
   noAttack,
 } from "./presets";
-import type { SelectionContext } from "./type";
+import type { Constraint, SelectionContext } from "./type";
+
+describe("Constraint type", () => {
+  it("has a numeric id", () => {
+    const constraint: Constraint = noAttack;
+    expect(typeof constraint.id).toBe("number");
+  });
+});
 
 function makeDuplicateCard(
   overrides: Partial<DuplicateCard> = {},
