@@ -7,9 +7,10 @@ describe("link2GteLink0", () => {
     it("does not force link-2 when required already has enough", () => {
       const link2InReq = makeDuplicateCard({ id: 1, link: 2 });
       const link0CardA = makeDuplicateCard({ id: 2, link: 0 });
-      const link1Card = makeDuplicateCard({ id: 3, link: 1 });
+      const link0CardB = makeDuplicateCard({ id: 3, link: 0 });
+      const link1Card = makeDuplicateCard({ id: 4, link: 1 });
       const context = makeContext({
-        pool: [link0CardA, link1Card],
+        pool: [link0CardA, link0CardB, link1Card],
         required: [link2InReq],
         count: 3,
       });
@@ -20,7 +21,7 @@ describe("link2GteLink0", () => {
       const link0InPool = result.pool.filter(
         (c) => !c.hasChild && c.link === 0,
       );
-      expect(link0InPool.length).toBeLessThanOrEqual(1);
+      expect(link0InPool).toHaveLength(1);
     });
   });
 
