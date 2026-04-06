@@ -1,4 +1,4 @@
-import { decodeCardIds, encodeCardIds } from "@heart-of-crown-randomizer/card-codec";
+import { decodeIds, encodeIds } from "@heart-of-crown-randomizer/card-codec";
 
 /**
  * Parse compressed IDs from a single URL parameter.
@@ -9,7 +9,7 @@ import { decodeCardIds, encodeCardIds } from "@heart-of-crown-randomizer/card-co
 export function parseCompressedIds(url: URL, param: string): Set<number> {
 	const encoded = url.searchParams.get(param);
 	if (encoded === null || encoded === "") return new Set();
-	return new Set(decodeCardIds(encoded));
+	return new Set(decodeIds(encoded));
 }
 
 /**
@@ -33,9 +33,9 @@ export function buildUrlWithCardState(
 	url.searchParams.delete("e");
 	url.searchParams.delete("c");
 
-	const pEncoded = encodeCardIds([...pinnedIds]);
-	const eEncoded = encodeCardIds([...excludedIds]);
-	const cEncoded = encodeCardIds([...constraintIds]);
+	const pEncoded = encodeIds([...pinnedIds]);
+	const eEncoded = encodeIds([...excludedIds]);
+	const cEncoded = encodeIds([...constraintIds]);
 
 	if (pEncoded) url.searchParams.set("p", pEncoded);
 	if (eEncoded) url.searchParams.set("e", eEncoded);

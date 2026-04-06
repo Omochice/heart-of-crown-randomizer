@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { encodeCardIds, decodeCardIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds, decodeIds } from "@heart-of-crown-randomizer/card-codec";
 import { buildUrlWithCardState, parseCompressedIds, setsEqual } from "./url-sync";
 
 describe("parseCompressedIds", () => {
 	it("should decode compressed pinned card IDs from 'p' parameter", () => {
-		const encoded = encodeCardIds([1, 5, 12]);
+		const encoded = encodeIds([1, 5, 12]);
 		const url = new URL(`https://example.com?p=${encoded}`);
 
 		const result = parseCompressedIds(url, "p");
@@ -13,7 +13,7 @@ describe("parseCompressedIds", () => {
 	});
 
 	it("should decode compressed excluded card IDs from 'e' parameter", () => {
-		const encoded = encodeCardIds([7, 9]);
+		const encoded = encodeIds([7, 9]);
 		const url = new URL(`https://example.com?e=${encoded}`);
 
 		const result = parseCompressedIds(url, "e");
@@ -22,7 +22,7 @@ describe("parseCompressedIds", () => {
 	});
 
 	it("should decode compressed constraint IDs from 'c' parameter", () => {
-		const encoded = encodeCardIds([1, 3, 5]);
+		const encoded = encodeIds([1, 3, 5]);
 		const url = new URL(`https://example.com?c=${encoded}`);
 
 		const result = parseCompressedIds(url, "c");
@@ -47,7 +47,7 @@ describe("parseCompressedIds", () => {
 	});
 
 	it("should handle zero as a valid ID", () => {
-		const encoded = encodeCardIds([0, 1]);
+		const encoded = encodeIds([0, 1]);
 		const url = new URL(`https://example.com?p=${encoded}`);
 
 		const result = parseCompressedIds(url, "p");
@@ -64,7 +64,7 @@ describe("buildUrlWithCardState", () => {
 		const result = buildUrlWithCardState(baseUrl, pinnedIds, new Set(), new Set());
 
 		const pParam = result.searchParams.get("p")!;
-		expect(new Set(decodeCardIds(pParam))).toEqual(pinnedIds);
+		expect(new Set(decodeIds(pParam))).toEqual(pinnedIds);
 		expect(result.searchParams.has("e")).toBe(false);
 		expect(result.searchParams.has("c")).toBe(false);
 	});
@@ -76,7 +76,7 @@ describe("buildUrlWithCardState", () => {
 		const result = buildUrlWithCardState(baseUrl, new Set(), excludedIds, new Set());
 
 		const eParam = result.searchParams.get("e")!;
-		expect(new Set(decodeCardIds(eParam))).toEqual(excludedIds);
+		expect(new Set(decodeIds(eParam))).toEqual(excludedIds);
 		expect(result.searchParams.has("p")).toBe(false);
 	});
 
@@ -87,7 +87,7 @@ describe("buildUrlWithCardState", () => {
 		const result = buildUrlWithCardState(baseUrl, new Set(), new Set(), constraintIds);
 
 		const cParam = result.searchParams.get("c")!;
-		expect(new Set(decodeCardIds(cParam))).toEqual(constraintIds);
+		expect(new Set(decodeIds(cParam))).toEqual(constraintIds);
 	});
 
 	it("should build URL with all three state types", () => {
@@ -98,9 +98,9 @@ describe("buildUrlWithCardState", () => {
 
 		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds, constraintIds);
 
-		expect(new Set(decodeCardIds(result.searchParams.get("p")!))).toEqual(pinnedIds);
-		expect(new Set(decodeCardIds(result.searchParams.get("e")!))).toEqual(excludedIds);
-		expect(new Set(decodeCardIds(result.searchParams.get("c")!))).toEqual(constraintIds);
+		expect(new Set(decodeIds(result.searchParams.get("p")!))).toEqual(pinnedIds);
+		expect(new Set(decodeIds(result.searchParams.get("e")!))).toEqual(excludedIds);
+		expect(new Set(decodeIds(result.searchParams.get("c")!))).toEqual(constraintIds);
 	});
 
 	it("should preserve existing URL parameters other than p/e/c", () => {

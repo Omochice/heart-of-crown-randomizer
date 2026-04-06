@@ -1,4 +1,4 @@
-export function encodeCardIds(ids: number[]): string {
+export function encodeIds(ids: number[]): string {
   if (ids.length === 0) {
     return "";
   }

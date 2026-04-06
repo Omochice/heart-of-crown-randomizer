@@ -1,4 +1,4 @@
-export function decodeCardIds(encoded: string): number[] {
+export function decodeIds(encoded: string): number[] {
   if (encoded === "") {
     return [];
   }
