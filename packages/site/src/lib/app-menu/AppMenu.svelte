@@ -76,6 +76,7 @@
 				href={issueUrl}
 				target="_blank"
 				rel="noopener noreferrer"
+				onclick={() => (isOpen = false)}
 			>
 				<Bug size={16} />
 				<span>バグを報告</span>
