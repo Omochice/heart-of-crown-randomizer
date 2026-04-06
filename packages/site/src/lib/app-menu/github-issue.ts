@@ -1,4 +1,5 @@
 import { encodeIds } from "@heart-of-crown-randomizer/id-codec";
+import { buildUrlWithCardState } from "$lib/utils/url-sync";
 
 const GITHUB_ISSUE_URL = "https://github.com/Omochice/heart-of-crown-randomizer/issues/new";
 
@@ -26,21 +27,18 @@ export function buildGitHubIssueUrl(state: BugReportState): string {
 }
 
 function buildReproductionUrl(state: BugReportState): string {
-	const params = new URLSearchParams();
+	const baseUrl = new URL(state.origin);
 
 	const s = encodeIds([...state.selectedCardIds]);
-	if (s) params.set("s", s);
+	if (s) baseUrl.searchParams.set("s", s);
 
-	const p = encodeIds([...state.pinnedIds]);
-	if (p) params.set("p", p);
+	const url = buildUrlWithCardState(
+		baseUrl,
+		state.pinnedIds,
+		state.excludedIds,
+		state.constraintIds,
+	);
+	url.searchParams.set("debug", "true");
 
-	const e = encodeIds([...state.excludedIds]);
-	if (e) params.set("e", e);
-
-	const c = encodeIds([...state.constraintIds]);
-	if (c) params.set("c", c);
-
-	params.set("debug", "true");
-
-	return `${state.origin}?${params.toString()}`;
+	return url.toString();
 }
