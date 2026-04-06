@@ -25,6 +25,11 @@ export function toggleConstraint(id: number): void {
 	state.enabledIds = next;
 }
 
+/** Bulk-set the enabled constraint IDs (for URL restore). */
+export function setEnabledConstraintIds(ids: ReadonlySet<number>): void {
+	state.enabledIds = new Set(ids);
+}
+
 /** Get the enabled Constraint objects from a list of all available constraints. */
 export function getEnabledConstraints(allConstraints: readonly Constraint[]): Constraint[] {
 	return allConstraints.filter((c) => state.enabledIds.has(c.id));

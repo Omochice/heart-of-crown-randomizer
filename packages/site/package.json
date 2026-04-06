@@ -19,8 +19,8 @@
 	},
 	"dependencies": {
 		"@heart-of-crown-randomizer/card": "workspace:*",
-		"@heart-of-crown-randomizer/card-codec": "workspace:*",
 		"@heart-of-crown-randomizer/constraint": "workspace:*",
+		"@heart-of-crown-randomizer/id-codec": "workspace:*",
 		"@heart-of-crown-randomizer/randomizer": "workspace:*"
 	},
 	"devDependencies": {

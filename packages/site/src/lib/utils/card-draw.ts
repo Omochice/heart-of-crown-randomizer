@@ -1,5 +1,5 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-import { encodeCardIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds } from "@heart-of-crown-randomizer/id-codec";
 import type { Constraint } from "@heart-of-crown-randomizer/constraint";
 import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
 import { validatePinConstraints, validateExcludeConstraints } from "./validation";
@@ -64,26 +64,16 @@ export function drawMissingCommons(
 }
 
 /**
- * We include pin/exclude params in every URL transition rather than
- * relying on the State-to-URL effect, because goto() triggers the
- * URL-to-State effect which would clear pin/exclude state if the
- * params are absent from the URL.
+ * Build a navigation URL containing only the card selection and debug flag.
+ *
+ * Pin/exclude/constraint state (p/e/c params) are intentionally omitted
+ * because they serve as one-shot restore hints on direct page access, not
+ * as continuously-synced state. Any navigation clears them from the URL.
  */
-export function buildCardUrl(
-	cards: CommonCard[],
-	pinnedIds: ReadonlySet<number>,
-	excludedIds: ReadonlySet<number>,
-	currentSearchParams?: URLSearchParams,
-): string {
+export function buildCardUrl(cards: CommonCard[], currentSearchParams?: URLSearchParams): string {
 	const params = new URLSearchParams();
 	if (cards.length > 0) {
-		params.set("s", encodeCardIds(cards.map((c) => c.id)));
-	}
-	for (const id of pinnedIds) {
-		params.append("pin", String(id));
-	}
-	for (const id of excludedIds) {
-		params.append("exclude", String(id));
+		params.set("s", encodeIds(cards.map((c) => c.id)));
 	}
 	const debug = currentSearchParams?.get("debug");
 	if (debug != null) {

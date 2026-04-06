@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
-import { decodeCardIds } from "@heart-of-crown-randomizer/card-codec";
+import { decodeIds } from "@heart-of-crown-randomizer/id-codec";
 import { drawRandomCards, drawMissingCommons, buildCardUrl } from "./card-draw";
 import { makeCard } from "$lib/test-helpers";
 
@@ -145,35 +145,23 @@ describe("drawMissingCommons", () => {
 });
 
 describe("buildCardUrl", () => {
-	it("should include compressed card IDs and pin/exclude params", () => {
+	it("should include only compressed card IDs without p/e/c params", () => {
 		const cards = [makeCard(1), makeCard(5)];
-		const pinnedIds = new Set([1]);
-		const excludedIds = new Set([10]);
 
-		const result = buildCardUrl(cards, pinnedIds, excludedIds);
+		const result = buildCardUrl(cards);
 
-		expect(result).toMatch(/^\?s=.+/);
-		expect(result).toContain("pin=1");
-		expect(result).toContain("exclude=10");
-		const sParam = new URLSearchParams(result.slice(1)).get("s")!;
-		expect(decodeCardIds(sParam)).toEqual([1, 5]);
-	});
-
-	it("should work with empty pin/exclude sets", () => {
-		const cards = [makeCard(3)];
-
-		const result = buildCardUrl(cards, new Set(), new Set());
-
-		expect(result).toMatch(/^\?s=.+/);
-		const sParam = new URLSearchParams(result.slice(1)).get("s")!;
-		expect(decodeCardIds(sParam)).toEqual([3]);
+		const params = new URLSearchParams(result.slice(1));
+		expect(new Set(decodeIds(params.get("s")!))).toEqual(new Set([1, 5]));
+		expect(params.has("p")).toBe(false);
+		expect(params.has("e")).toBe(false);
+		expect(params.has("c")).toBe(false);
 	});
 
 	it("should preserve debug param from currentSearchParams", () => {
 		const cards = [makeCard(1)];
 		const searchParams = new URLSearchParams("debug=true");
 
-		const result = buildCardUrl(cards, new Set(), new Set(), searchParams);
+		const result = buildCardUrl(cards, searchParams);
 
 		const params = new URLSearchParams(result.slice(1));
 		expect(params.get("debug")).toBe("true");
@@ -183,7 +171,7 @@ describe("buildCardUrl", () => {
 		const cards = [makeCard(1)];
 		const searchParams = new URLSearchParams();
 
-		const result = buildCardUrl(cards, new Set(), new Set(), searchParams);
+		const result = buildCardUrl(cards, searchParams);
 
 		const params = new URLSearchParams(result.slice(1));
 		expect(params.get("debug")).toBeNull();
@@ -192,7 +180,7 @@ describe("buildCardUrl", () => {
 	it("should not include debug param when currentSearchParams is omitted", () => {
 		const cards = [makeCard(1)];
 
-		const result = buildCardUrl(cards, new Set(), new Set());
+		const result = buildCardUrl(cards);
 
 		const params = new URLSearchParams(result.slice(1));
 		expect(params.get("debug")).toBeNull();

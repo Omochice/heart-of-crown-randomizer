@@ -8,7 +8,7 @@
       "persistent": true,
       "dependsOn": [
         "@heart-of-crown-randomizer/card#build",
-        "@heart-of-crown-randomizer/card-codec#build",
+        "@heart-of-crown-randomizer/id-codec#build",
         "@heart-of-crown-randomizer/constraint#build",
         "@heart-of-crown-randomizer/randomizer#build"
       ]
@@ -16,7 +16,7 @@
     "check": {
       "dependsOn": [
         "@heart-of-crown-randomizer/card#build",
-        "@heart-of-crown-randomizer/card-codec#build",
+        "@heart-of-crown-randomizer/id-codec#build",
         "@heart-of-crown-randomizer/constraint#build",
         "@heart-of-crown-randomizer/randomizer#build"
       ]

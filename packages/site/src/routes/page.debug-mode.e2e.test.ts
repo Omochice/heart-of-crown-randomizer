@@ -54,7 +54,7 @@ describe("Debug Mode E2E: debug param preservation", () => {
 		if (!result.ok) throw new Error("draw failed");
 
 		const searchParams = new URLSearchParams("debug=true");
-		const url = buildCardUrl(result.cards, new Set(), new Set(), searchParams);
+		const url = buildCardUrl(result.cards, searchParams);
 
 		const params = new URLSearchParams(url.slice(1));
 		expect(params.get("debug")).toBe("true");
@@ -70,21 +70,20 @@ describe("Debug Mode E2E: debug param preservation", () => {
 		expect(url.searchParams.get("debug")).toBeNull();
 	});
 
-	it("should preserve debug=true alongside pin and exclude params", () => {
-		const pinnedIds = new Set([allCommons[0].id]);
-		const excludedIds = new Set([allCommons[10].id]);
+	it("should preserve debug=true and not include p/e/c params", () => {
 		const searchParams = new URLSearchParams("debug=true");
 
-		const result = drawRandomCards(allCommons, 10, getPinnedCards(allCommons), excludedIds);
+		const result = drawRandomCards(allCommons, 10, [], new Set());
 		if (!result.ok) throw new Error("draw failed");
 
-		const url = buildCardUrl(result.cards, pinnedIds, excludedIds, searchParams);
+		const url = buildCardUrl(result.cards, searchParams);
 		const params = new URLSearchParams(url.slice(1));
 
 		expect(params.get("debug")).toBe("true");
-		expect(params.getAll("pin")).toContain(String(allCommons[0].id));
-		expect(params.getAll("exclude")).toContain(String(allCommons[10].id));
 		expect(params.get("s")).not.toBeNull();
+		expect(params.has("p")).toBe(false);
+		expect(params.has("e")).toBe(false);
+		expect(params.has("c")).toBe(false);
 	});
 });
 

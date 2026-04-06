@@ -43,7 +43,7 @@ describe("+page.svelte URL Reactivity Bug", () => {
 
 	it("should use $page store syntax for accessing URL", () => {
 		// When using reactive page store, should use $page.url syntax
-		// URL param parsing is delegated to utility functions (resolveCardsFromUrl, parseCardIdsFromUrl)
+		// URL param parsing is delegated to utility functions (resolveCardsFromUrl, parseCompressedIds)
 		if (pageContent.includes('from "$app/stores"')) {
 			expect(pageContent).toContain("$page.url");
 		}

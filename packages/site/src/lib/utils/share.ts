@@ -1,5 +1,5 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-import { encodeCardIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds } from "@heart-of-crown-randomizer/id-codec";
 
 /**
  * Build a shareable URL containing only card selection (no pin/exclude).
@@ -9,7 +9,7 @@ import { encodeCardIds } from "@heart-of-crown-randomizer/card-codec";
  */
 export function buildShareUrl(origin: string, cards: CommonCard[]): string {
 	if (cards.length === 0) return "";
-	return `${origin}?s=${encodeCardIds(cards.map((c) => c.id))}`;
+	return `${origin}?s=${encodeIds(cards.map((c) => c.id))}`;
 }
 
 /**

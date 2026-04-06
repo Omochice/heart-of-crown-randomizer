@@ -1,52 +1,55 @@
+import { decodeIds, encodeIds } from "@heart-of-crown-randomizer/id-codec";
+
 /**
- * Parse card IDs from URL parameter
+ * Parse compressed IDs from a single URL parameter.
  *
- * We filter invalid values rather than throwing errors because invalid
- * URLs (e.g., ?pin=abc, ?pin=1.5) should not crash the app, just be ignored.
- *
- * Card IDs must be non-negative integers.
+ * We use the same bitfield+base64url encoding as the card selection
+ * parameter (`s`), keeping all ID sets compact and consistent.
  */
-export function parseCardIdsFromUrl(url: URL, param: string): Set<number> {
-	return new Set(
-		url.searchParams
-			.getAll(param)
-			.map(Number)
-			.filter((id) => Number.isInteger(id) && id >= 0),
-	);
+export function parseCompressedIds(url: URL, param: string): Set<number> {
+	const encoded = url.searchParams.get(param);
+	if (encoded === null || encoded === "") return new Set();
+	return new Set(decodeIds(encoded));
 }
 
 /**
- * Build URL with card state
+ * Build URL with card state using compressed encoding.
  *
- * We delete params before appending rather than using set() because
- * URLSearchParams doesn't support setting multiple values with one
- * call, and we need to support multiple IDs per parameter.
+ * We delete both old-format (`pin`/`exclude`) and new-format (`p`/`e`/`c`)
+ * params before writing, so stale bookmarks with old params get cleaned up
+ * on the first state-to-URL sync.
  */
 export function buildUrlWithCardState(
 	baseUrl: URL,
 	pinnedIds: ReadonlySet<number>,
 	excludedIds: ReadonlySet<number>,
+	constraintIds: ReadonlySet<number>,
 ): URL {
 	const url = new URL(baseUrl);
+
 	url.searchParams.delete("pin");
 	url.searchParams.delete("exclude");
+	url.searchParams.delete("p");
+	url.searchParams.delete("e");
+	url.searchParams.delete("c");
 
-	for (const id of pinnedIds) {
-		url.searchParams.append("pin", String(id));
-	}
-	for (const id of excludedIds) {
-		url.searchParams.append("exclude", String(id));
-	}
+	const pEncoded = encodeIds([...pinnedIds]);
+	const eEncoded = encodeIds([...excludedIds]);
+	const cEncoded = encodeIds([...constraintIds]);
+
+	if (pEncoded) url.searchParams.set("p", pEncoded);
+	if (eEncoded) url.searchParams.set("e", eEncoded);
+	if (cEncoded) url.searchParams.set("c", cEncoded);
 
 	return url;
 }
 
 /**
- * Compare two Sets for value equality
+ * Compare two Sets for value equality.
  *
- * We need this for URL→State sync to skip updates when the URL
+ * We need this for URL-State sync to skip updates when the URL
  * params already match the current state, preventing circular
- * effect triggers between URL→State and State→URL effects.
+ * effect triggers between URL-to-State and State-to-URL effects.
  */
 export function setsEqual(a: ReadonlySet<number>, b: ReadonlySet<number>): boolean {
 	if (a.size !== b.size) return false;

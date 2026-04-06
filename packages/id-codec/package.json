@@ -1,9 +1,9 @@
 {
-  "name": "@heart-of-crown-randomizer/card-codec",
+  "name": "@heart-of-crown-randomizer/id-codec",
   "version": "1.0.0",
-  "description": "Bitfield-based encode/decode for card ID sets",
+  "description": "Bitfield-based encode/decode for ID sets",
   "keywords": [
-    "card",
+    "id",
     "codec",
     "heart-of-crown",
     "randomizer"
