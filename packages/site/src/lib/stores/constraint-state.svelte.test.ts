@@ -3,6 +3,7 @@ import {
 	getEnabledConstraintIds,
 	toggleConstraint,
 	getEnabledConstraints,
+	setEnabledConstraintIds,
 } from "./constraint-state.svelte";
 import type { Constraint } from "@heart-of-crown-randomizer/constraint";
 
@@ -64,5 +65,28 @@ describe("constraint-state", () => {
 		toggleConstraint(999);
 		const enabled = getEnabledConstraints(mockConstraints);
 		expect(enabled).toHaveLength(0);
+	});
+
+	describe("setEnabledConstraintIds", () => {
+		it("should replace all enabled IDs with the given set", () => {
+			toggleConstraint(100);
+			setEnabledConstraintIds(new Set([200]));
+			expect(getEnabledConstraintIds().has(100)).toBe(false);
+			expect(getEnabledConstraintIds().has(200)).toBe(true);
+		});
+
+		it("should clear all enabled IDs when given an empty set", () => {
+			toggleConstraint(100);
+			toggleConstraint(200);
+			setEnabledConstraintIds(new Set());
+			expect(getEnabledConstraintIds().size).toBe(0);
+		});
+
+		it("should not alias the input set", () => {
+			const input = new Set([100]);
+			setEnabledConstraintIds(input);
+			input.add(200);
+			expect(getEnabledConstraintIds().has(200)).toBe(false);
+		});
 	});
 });
