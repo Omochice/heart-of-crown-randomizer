@@ -19,7 +19,7 @@ export type BugReportState = {
  */
 export function buildGitHubIssueUrl(state: BugReportState): string {
 	const reproUrl = buildReproductionUrl(state);
-	const body = `## Reproduction URL\n\n${reproUrl}\n\n## Description\n\n<!-- Please describe the bug -->\n\n## Expected Behavior\n\n<!-- What did you expect? -->\n\n## Actual Behavior\n\n<!-- What actually happened? -->`;
+	const body = `## Reproduction URL\n\n<${reproUrl}>\n\n## Description\n\n<!-- Please describe the bug -->\n\n## Expected Behavior\n\n<!-- What did you expect? -->\n\n## Actual Behavior\n\n<!-- What actually happened? -->`;
 
 	const url = new URL(GITHUB_ISSUE_URL);
 	url.searchParams.set("body", body);

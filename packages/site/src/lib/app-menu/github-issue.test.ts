@@ -78,8 +78,7 @@ describe("buildGitHubIssueUrl", () => {
 });
 
 function extractReproductionUrl(body: string): string {
-	const lines = body.split("\n");
-	const urlLine = lines.find((line) => line.startsWith("http"));
-	if (!urlLine) throw new Error("No reproduction URL found in body");
-	return urlLine;
+	const match = body.match(/<(https?:\/\/[^>]+)>/);
+	if (!match) throw new Error("No reproduction URL found in body");
+	return match[1];
 }
