@@ -164,6 +164,7 @@
 
 	const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 
+	const selectedCardIds = $derived(selectedCommons.map((c) => c.id));
 	const excludedCards = $derived(getExcludedCards(allCommons));
 	const missingCount = $derived(Math.max(0, numberOfCommons - selectedCommons.length));
 </script>
@@ -175,7 +176,7 @@
 			<span class="title-accent">ランダマイザー</span>
 		</div>
 		<AppMenu
-			selectedCardIds={selectedCommons.map((c) => c.id)}
+			{selectedCardIds}
 			pinnedIds={getPinnedCardIds()}
 			excludedIds={getExcludedCardIds()}
 			constraintIds={getEnabledConstraintIds()}
