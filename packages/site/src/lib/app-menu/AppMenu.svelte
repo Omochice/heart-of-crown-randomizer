@@ -16,7 +16,7 @@
 	const issueUrl = $derived(
 		isOpen
 			? buildGitHubIssueUrl({
-					origin: window.location.origin,
+					origin: window.location.origin + window.location.pathname,
 					selectedCardIds,
 					pinnedIds,
 					excludedIds,
