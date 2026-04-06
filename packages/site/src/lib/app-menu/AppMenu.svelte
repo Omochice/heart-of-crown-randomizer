@@ -11,19 +11,21 @@
 
 	let { selectedCardIds, pinnedIds, excludedIds, constraintIds }: Props = $props();
 	let isOpen = $state(false);
-	let issueUrl = $state("");
+
+	const issueUrl = $derived(
+		isOpen
+			? buildGitHubIssueUrl({
+					origin: window.location.origin,
+					selectedCardIds,
+					pinnedIds,
+					excludedIds,
+					constraintIds,
+				})
+			: "",
+	);
 
 	function toggle() {
 		isOpen = !isOpen;
-		if (isOpen) {
-			issueUrl = buildGitHubIssueUrl({
-				origin: window.location.origin,
-				selectedCardIds,
-				pinnedIds,
-				excludedIds,
-				constraintIds,
-			});
-		}
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
