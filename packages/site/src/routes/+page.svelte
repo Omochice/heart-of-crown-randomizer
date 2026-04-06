@@ -3,7 +3,7 @@
 	import { page } from "$app/stores";
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-	import { untrack } from "svelte";
+	import { onMount } from "svelte";
 	import Card from "$lib/Card.svelte";
 	import CardDetail from "$lib/CardDetail.svelte";
 	import ExcludeList from "$lib/ExcludeList.svelte";
@@ -16,8 +16,8 @@
 		getPinnedCards,
 		getExcludedCards,
 	} from "$lib/stores/card-state.svelte";
-	import { parseCompressedIds, buildUrlWithCardState, setsEqual } from "$lib/utils/url-sync";
-	import { resolveCardsFromUrl, shouldUpdatePinExclude } from "$lib/stores/url-card-sync.svelte";
+	import { parseCompressedIds } from "$lib/utils/url-sync";
+	import { resolveCardsFromUrl } from "$lib/stores/url-card-sync.svelte";
 	import {
 		drawRandomCards as drawRandomCardsLogic,
 		drawMissingCommons as drawMissingCommonsLogic,
@@ -29,7 +29,6 @@
 	import DebugPanel from "$lib/DebugPanel.svelte";
 	import {
 		getEnabledConstraints,
-		getEnabledConstraintIds,
 		setEnabledConstraintIds,
 	} from "$lib/stores/constraint-state.svelte";
 	import { Shuffle, Plus } from "lucide-svelte";
@@ -61,69 +60,30 @@
 	});
 
 	/**
-	 * Sync pin/exclude/constraint state from URL parameters
+	 * Restore pin/exclude/constraint state from URL on initial page load.
 	 *
-	 * We parse on every URL change rather than caching because users
-	 * might manually edit the URL or use browser back/forward buttons.
-	 *
-	 * We use untrack for state reads to prevent circular dependency:
-	 * togglePin() would trigger version++ which re-runs this effect while
-	 * the URL still has old values, resetting state incorrectly.
+	 * These params are one-shot hints: consumed once on direct access,
+	 * then cleared from the URL on the next navigation (card draw,
+	 * pin change, etc.) because buildCardUrl does not include them.
 	 */
-	$effect(() => {
-		const newPinnedIds = parseCompressedIds($page.url, "p");
-		const newExcludedIds = parseCompressedIds($page.url, "e");
-		const newConstraintIds = parseCompressedIds($page.url, "c");
+	onMount(() => {
+		const url = $page.url;
+		const pinnedIds = parseCompressedIds(url, "p");
+		const excludedIds = parseCompressedIds(url, "e");
+		const constraintIds = parseCompressedIds(url, "c");
 
 		// Pin takes precedence over exclude for overlapping IDs
-		for (const id of newPinnedIds) {
-			newExcludedIds.delete(id);
+		for (const id of pinnedIds) {
+			excludedIds.delete(id);
 		}
 
-		const currentPinned = untrack(() => getPinnedCardIds());
-		const currentExcluded = untrack(() => getExcludedCardIds());
-		const currentConstraints = untrack(() => getEnabledConstraintIds());
-
-		const pinExcludeChanged = shouldUpdatePinExclude(
-			currentPinned,
-			currentExcluded,
-			newPinnedIds,
-			newExcludedIds,
-		);
-		const constraintsChanged = !setsEqual(currentConstraints, newConstraintIds);
-
-		if (!pinExcludeChanged && !constraintsChanged) return;
-
-		if (pinExcludeChanged) {
-			setPinnedCardIds(newPinnedIds);
-			setExcludedCardIds(newExcludedIds);
+		if (pinnedIds.size > 0 || excludedIds.size > 0) {
+			setPinnedCardIds(pinnedIds);
+			setExcludedCardIds(excludedIds);
 		}
-		if (constraintsChanged) {
-			setEnabledConstraintIds(newConstraintIds);
+		if (constraintIds.size > 0) {
+			setEnabledConstraintIds(constraintIds);
 		}
-	});
-
-	/**
-	 * Sync pin/exclude state to URL parameters
-	 *
-	 * We use replaceState rather than pushState to avoid polluting browser
-	 * history with every state change (users don't want back button to undo
-	 * each individual pin/exclude operation).
-	 *
-	 * We use untrack() for reading $page.url to avoid circular dependency
-	 * with the URL → State sync effect.
-	 */
-	$effect(() => {
-		const pinnedIds = getPinnedCardIds();
-		const excludedIds = getExcludedCardIds();
-		const constraintIds = getEnabledConstraintIds();
-
-		const currentUrl = untrack(() => $page.url);
-		const newUrl = buildUrlWithCardState(currentUrl, pinnedIds, excludedIds, constraintIds);
-
-		if (newUrl.toString() === currentUrl.toString()) return;
-
-		goto(newUrl, { replaceState: true, noScroll: true, keepFocus: true });
 	});
 
 	function drawRandomCards() {
@@ -147,19 +107,10 @@
 		selectedCommons = result.cards;
 		errorMessage = "";
 
-		goto(
-			buildCardUrl(
-				selectedCommons,
-				getPinnedCardIds(),
-				getExcludedCardIds(),
-				getEnabledConstraintIds(),
-				$page.url.searchParams,
-			),
-			{
-				keepFocus: true,
-				noScroll: true,
-			},
-		);
+		goto(buildCardUrl(selectedCommons, $page.url.searchParams), {
+			keepFocus: true,
+			noScroll: true,
+		});
 	}
 
 	async function copyToClipboard() {
@@ -175,19 +126,10 @@
 	}
 
 	function navigateWithCardState() {
-		goto(
-			buildCardUrl(
-				selectedCommons,
-				getPinnedCardIds(),
-				getExcludedCardIds(),
-				getEnabledConstraintIds(),
-				$page.url.searchParams,
-			),
-			{
-				keepFocus: true,
-				noScroll: true,
-			},
-		);
+		goto(buildCardUrl(selectedCommons, $page.url.searchParams), {
+			keepFocus: true,
+			noScroll: true,
+		});
 	}
 
 	const { handleSwipeStart, handleSwipeMove, handleSwipeEnd, handleSwipeCancel } =
