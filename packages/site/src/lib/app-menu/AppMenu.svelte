@@ -12,6 +12,8 @@
 	let { selectedCardIds, pinnedIds, excludedIds, constraintIds }: Props = $props();
 	let isOpen = $state(false);
 	let menuElement: HTMLDivElement | undefined = $state();
+	let dropdownElement: HTMLDivElement | undefined = $state();
+	const dropdownId = "app-menu-dropdown";
 
 	const issueUrl = $derived(
 		isOpen
@@ -34,6 +36,12 @@
 			isOpen = false;
 		}
 	}
+
+	$effect(() => {
+		if (!isOpen || !dropdownElement) return;
+		const firstItem = dropdownElement.querySelector<HTMLElement>("[role=menuitem]");
+		firstItem?.focus();
+	});
 
 	$effect(() => {
 		if (!isOpen) return;
@@ -60,6 +68,7 @@
 		aria-label="メニュー"
 		aria-haspopup="menu"
 		aria-expanded={isOpen}
+		aria-controls={dropdownId}
 		onclick={toggle}
 	>
 		<EllipsisVertical size={18} />
@@ -68,7 +77,9 @@
 	{#if isOpen}
 		<div
 			class="app-menu-dropdown"
+			id={dropdownId}
 			role="menu"
+			bind:this={dropdownElement}
 		>
 			<a
 				class="app-menu-item"
