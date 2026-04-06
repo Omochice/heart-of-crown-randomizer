@@ -64,27 +64,28 @@ export function drawMissingCommons(
 }
 
 /**
- * We include pin/exclude params in every URL transition rather than
- * relying on the State-to-URL effect, because goto() triggers the
- * URL-to-State effect which would clear pin/exclude state if the
- * params are absent from the URL.
+ * We include pin/exclude/constraint params in every URL transition rather
+ * than relying on the State-to-URL effect, because goto() triggers the
+ * URL-to-State effect which would clear state if the params are absent
+ * from the URL.
  */
 export function buildCardUrl(
 	cards: CommonCard[],
 	pinnedIds: ReadonlySet<number>,
 	excludedIds: ReadonlySet<number>,
+	constraintIds: ReadonlySet<number>,
 	currentSearchParams?: URLSearchParams,
 ): string {
 	const params = new URLSearchParams();
 	if (cards.length > 0) {
 		params.set("s", encodeCardIds(cards.map((c) => c.id)));
 	}
-	for (const id of pinnedIds) {
-		params.append("pin", String(id));
-	}
-	for (const id of excludedIds) {
-		params.append("exclude", String(id));
-	}
+	const pEncoded = encodeCardIds([...pinnedIds]);
+	const eEncoded = encodeCardIds([...excludedIds]);
+	const cEncoded = encodeCardIds([...constraintIds]);
+	if (pEncoded) params.set("p", pEncoded);
+	if (eEncoded) params.set("e", eEncoded);
+	if (cEncoded) params.set("c", cEncoded);
 	const debug = currentSearchParams?.get("debug");
 	if (debug != null) {
 		params.set("debug", debug);
