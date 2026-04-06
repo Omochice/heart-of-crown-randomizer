@@ -145,28 +145,13 @@ describe("drawMissingCommons", () => {
 });
 
 describe("buildCardUrl", () => {
-	it("should include compressed card IDs and pin/exclude/constraint params", () => {
+	it("should include only compressed card IDs without p/e/c params", () => {
 		const cards = [makeCard(1), makeCard(5)];
-		const pinnedIds = new Set([1]);
-		const excludedIds = new Set([10]);
-		const constraintIds = new Set([2, 4]);
 
-		const result = buildCardUrl(cards, pinnedIds, excludedIds, constraintIds);
+		const result = buildCardUrl(cards);
 
 		const params = new URLSearchParams(result.slice(1));
 		expect(new Set(decodeCardIds(params.get("s")!))).toEqual(new Set([1, 5]));
-		expect(new Set(decodeCardIds(params.get("p")!))).toEqual(pinnedIds);
-		expect(new Set(decodeCardIds(params.get("e")!))).toEqual(excludedIds);
-		expect(new Set(decodeCardIds(params.get("c")!))).toEqual(constraintIds);
-	});
-
-	it("should work with empty pin/exclude/constraint sets", () => {
-		const cards = [makeCard(3)];
-
-		const result = buildCardUrl(cards, new Set(), new Set(), new Set());
-
-		const params = new URLSearchParams(result.slice(1));
-		expect(new Set(decodeCardIds(params.get("s")!))).toEqual(new Set([3]));
 		expect(params.has("p")).toBe(false);
 		expect(params.has("e")).toBe(false);
 		expect(params.has("c")).toBe(false);
@@ -176,7 +161,7 @@ describe("buildCardUrl", () => {
 		const cards = [makeCard(1)];
 		const searchParams = new URLSearchParams("debug=true");
 
-		const result = buildCardUrl(cards, new Set(), new Set(), new Set(), searchParams);
+		const result = buildCardUrl(cards, searchParams);
 
 		const params = new URLSearchParams(result.slice(1));
 		expect(params.get("debug")).toBe("true");
@@ -186,7 +171,7 @@ describe("buildCardUrl", () => {
 		const cards = [makeCard(1)];
 		const searchParams = new URLSearchParams();
 
-		const result = buildCardUrl(cards, new Set(), new Set(), new Set(), searchParams);
+		const result = buildCardUrl(cards, searchParams);
 
 		const params = new URLSearchParams(result.slice(1));
 		expect(params.get("debug")).toBeNull();
@@ -195,7 +180,7 @@ describe("buildCardUrl", () => {
 	it("should not include debug param when currentSearchParams is omitted", () => {
 		const cards = [makeCard(1)];
 
-		const result = buildCardUrl(cards, new Set(), new Set(), new Set());
+		const result = buildCardUrl(cards);
 
 		const params = new URLSearchParams(result.slice(1));
 		expect(params.get("debug")).toBeNull();
