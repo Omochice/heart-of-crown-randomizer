@@ -1,4 +1,4 @@
-import { decodeIds, encodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { decodeIds, encodeIds } from "@heart-of-crown-randomizer/id-codec";
 
 /**
  * Parse compressed IDs from a single URL parameter.

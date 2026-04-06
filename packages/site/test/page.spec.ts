@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { encodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds } from "@heart-of-crown-randomizer/id-codec";
 
 test.describe("Page URL reactivity", () => {
 	test("should render page with heading", async ({ page }) => {

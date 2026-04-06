@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
-import { decodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { decodeIds } from "@heart-of-crown-randomizer/id-codec";
 import { drawRandomCards, drawMissingCommons, buildCardUrl } from "./card-draw";
 import { makeCard } from "$lib/test-helpers";
 

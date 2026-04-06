@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { resolveCardsFromUrl, shouldUpdatePinExclude } from "./url-card-sync.svelte";
 import { makeCard } from "$lib/test-helpers";
-import { encodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds } from "@heart-of-crown-randomizer/id-codec";
 
 const allCommons = Array.from({ length: 20 }, (_, i) => makeCard(i + 1));
 

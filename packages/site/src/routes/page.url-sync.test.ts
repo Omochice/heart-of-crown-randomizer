@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import { encodeIds, decodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds, decodeIds } from "@heart-of-crown-randomizer/id-codec";
 import { parseCompressedIds, buildUrlWithCardState } from "$lib/utils/url-sync";
 import {
 	getPinnedCardIds,

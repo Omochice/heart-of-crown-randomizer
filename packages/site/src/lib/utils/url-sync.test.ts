@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { encodeIds, decodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds, decodeIds } from "@heart-of-crown-randomizer/id-codec";
 import { buildUrlWithCardState, parseCompressedIds, setsEqual } from "./url-sync";
 
 describe("parseCompressedIds", () => {

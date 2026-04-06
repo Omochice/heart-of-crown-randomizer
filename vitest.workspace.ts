@@ -1,7 +1,7 @@
 import { defineWorkspace } from "vitest/config";
 
 export default defineWorkspace([
-	"packages/card-codec",
+	"packages/id-codec",
 	"packages/randomizer",
 	"packages/site",
 ]);

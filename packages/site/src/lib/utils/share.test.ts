@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { buildShareText, buildShareUrl, shareOrCopy } from "./share";
 import { makeCard } from "$lib/test-helpers";
-import { decodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { decodeIds } from "@heart-of-crown-randomizer/id-codec";
 
 describe("buildShareUrl", () => {
 	it("should build share URL with compressed 's' parameter that round-trips back to original card IDs", () => {

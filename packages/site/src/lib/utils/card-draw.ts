@@ -1,5 +1,5 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-import { encodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds } from "@heart-of-crown-randomizer/id-codec";
 import type { Constraint } from "@heart-of-crown-randomizer/constraint";
 import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
 import { validatePinConstraints, validateExcludeConstraints } from "./validation";

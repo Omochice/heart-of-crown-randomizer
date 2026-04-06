@@ -2,7 +2,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { render, waitFor } from "@testing-library/svelte";
 import type { Page } from "@sveltejs/kit";
 import type { Writable } from "svelte/store";
-import { encodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds } from "@heart-of-crown-randomizer/id-codec";
 import PageComponent from "./+page.svelte";
 
 vi.mock("$app/stores", async () => {

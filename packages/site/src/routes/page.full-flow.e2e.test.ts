@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { select } from "@heart-of-crown-randomizer/randomizer";
-import { encodeIds, decodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds, decodeIds } from "@heart-of-crown-randomizer/id-codec";
 import {
 	getPinnedCardIds,
 	getExcludedCardIds,

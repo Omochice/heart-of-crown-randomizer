@@ -1,5 +1,5 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-import { decodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { decodeIds } from "@heart-of-crown-randomizer/id-codec";
 import { setsEqual } from "$lib/utils/url-sync";
 
 /**
