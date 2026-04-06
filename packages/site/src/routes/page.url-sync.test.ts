@@ -1,171 +1,141 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
+import { encodeCardIds, decodeCardIds } from "@heart-of-crown-randomizer/card-codec";
+import { parseCompressedIds, buildUrlWithCardState } from "$lib/utils/url-sync";
 import {
 	getPinnedCardIds,
 	getExcludedCardIds,
 	setPinnedCardIds,
 	setExcludedCardIds,
 } from "$lib/stores/card-state.svelte";
+import {
+	getEnabledConstraintIds,
+	setEnabledConstraintIds,
+} from "$lib/stores/constraint-state.svelte";
 
-describe("parseCardIdsFromUrl", () => {
-	it("should parse single card ID from URL parameter", () => {
-		const url = new URL("http://example.com?pin=1");
-		const result = parseCardIdsFromUrl(url, "pin");
-		expect(result).toEqual(new Set([1]));
-	});
+describe("parseCompressedIds (page integration)", () => {
+	it("should parse compressed pinned IDs from 'p' parameter", () => {
+		const encoded = encodeCardIds([1, 5, 12]);
+		const url = new URL(`http://example.com?p=${encoded}`);
 
-	it("should parse multiple card IDs from URL parameter", () => {
-		const url = new URL("http://example.com?pin=1&pin=5&pin=12");
-		const result = parseCardIdsFromUrl(url, "pin");
+		const result = parseCompressedIds(url, "p");
+
 		expect(result).toEqual(new Set([1, 5, 12]));
 	});
 
-	it("should filter out NaN values from invalid IDs", () => {
-		const url = new URL("http://example.com?pin=1&pin=abc&pin=5");
-		const result = parseCardIdsFromUrl(url, "pin");
-		expect(result).toEqual(new Set([1, 5]));
+	it("should parse compressed excluded IDs from 'e' parameter", () => {
+		const encoded = encodeCardIds([7, 9]);
+		const url = new URL(`http://example.com?e=${encoded}`);
+
+		const result = parseCompressedIds(url, "e");
+
+		expect(result).toEqual(new Set([7, 9]));
+	});
+
+	it("should parse compressed constraint IDs from 'c' parameter", () => {
+		const encoded = encodeCardIds([1, 3, 5]);
+		const url = new URL(`http://example.com?c=${encoded}`);
+
+		const result = parseCompressedIds(url, "c");
+
+		expect(result).toEqual(new Set([1, 3, 5]));
 	});
 
 	it("should return empty Set when parameter does not exist", () => {
 		const url = new URL("http://example.com");
-		const result = parseCardIdsFromUrl(url, "pin");
+
+		const result = parseCompressedIds(url, "p");
+
 		expect(result).toEqual(new Set());
-	});
-
-	it("should handle exclude parameter", () => {
-		const url = new URL("http://example.com?exclude=7&exclude=9");
-		const result = parseCardIdsFromUrl(url, "exclude");
-		expect(result).toEqual(new Set([7, 9]));
-	});
-
-	it("should ignore duplicate IDs (Set deduplication)", () => {
-		const url = new URL("http://example.com?pin=1&pin=1&pin=5");
-		const result = parseCardIdsFromUrl(url, "pin");
-		expect(result).toEqual(new Set([1, 5]));
 	});
 });
 
-describe("buildUrlWithCardState", () => {
-	it("should build URL with single pinned card", () => {
-		const baseUrl = new URL("http://example.com");
-		const pinnedIds = new Set([1]);
-		const excludedIds = new Set<number>();
-		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds);
-
-		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
-		expect(result.searchParams.getAll("exclude")).toEqual([]);
-	});
-
-	it("should build URL with multiple pinned cards", () => {
+describe("buildUrlWithCardState (page integration)", () => {
+	it("should build URL with compressed pinned card IDs", () => {
 		const baseUrl = new URL("http://example.com");
 		const pinnedIds = new Set([1, 5, 12]);
-		const excludedIds = new Set<number>();
-		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds);
 
-		expect(result.searchParams.getAll("pin")).toContain("1");
-		expect(result.searchParams.getAll("pin")).toContain("5");
-		expect(result.searchParams.getAll("pin")).toContain("12");
-		expect(result.searchParams.getAll("pin")).toHaveLength(3);
+		const result = buildUrlWithCardState(baseUrl, pinnedIds, new Set(), new Set());
+
+		expect(new Set(decodeCardIds(result.searchParams.get("p")!))).toEqual(pinnedIds);
+		expect(result.searchParams.has("e")).toBe(false);
+		expect(result.searchParams.has("c")).toBe(false);
 	});
 
-	it("should build URL with single excluded card", () => {
+	it("should build URL with compressed excluded card IDs", () => {
 		const baseUrl = new URL("http://example.com");
-		const pinnedIds = new Set<number>();
-		const excludedIds = new Set([7]);
-		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds);
+		const excludedIds = new Set([7, 9]);
 
-		expect(result.searchParams.getAll("pin")).toEqual([]);
-		expect(result.searchParams.getAll("exclude")).toEqual(["7"]);
+		const result = buildUrlWithCardState(baseUrl, new Set(), excludedIds, new Set());
+
+		expect(new Set(decodeCardIds(result.searchParams.get("e")!))).toEqual(excludedIds);
+		expect(result.searchParams.has("p")).toBe(false);
 	});
 
-	it("should build URL with multiple excluded cards", () => {
-		const baseUrl = new URL("http://example.com");
-		const pinnedIds = new Set<number>();
-		const excludedIds = new Set([7, 9, 11]);
-		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds);
-
-		expect(result.searchParams.getAll("exclude")).toContain("7");
-		expect(result.searchParams.getAll("exclude")).toContain("9");
-		expect(result.searchParams.getAll("exclude")).toContain("11");
-		expect(result.searchParams.getAll("exclude")).toHaveLength(3);
-	});
-
-	it("should build URL with both pinned and excluded cards", () => {
+	it("should build URL with all state types", () => {
 		const baseUrl = new URL("http://example.com");
 		const pinnedIds = new Set([1, 5]);
-		const excludedIds = new Set([7, 9]);
-		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds);
+		const excludedIds = new Set([7]);
+		const constraintIds = new Set([2, 4]);
 
-		expect(result.searchParams.getAll("pin")).toContain("1");
-		expect(result.searchParams.getAll("pin")).toContain("5");
-		expect(result.searchParams.getAll("exclude")).toContain("7");
-		expect(result.searchParams.getAll("exclude")).toContain("9");
+		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds, constraintIds);
+
+		expect(new Set(decodeCardIds(result.searchParams.get("p")!))).toEqual(pinnedIds);
+		expect(new Set(decodeCardIds(result.searchParams.get("e")!))).toEqual(excludedIds);
+		expect(new Set(decodeCardIds(result.searchParams.get("c")!))).toEqual(constraintIds);
 	});
 
-	it("should preserve existing query parameters not related to pin/exclude", () => {
+	it("should preserve existing non-state query parameters", () => {
 		const baseUrl = new URL("http://example.com?foo=bar&baz=qux");
-		const pinnedIds = new Set([1]);
-		const excludedIds = new Set([7]);
-		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds);
+
+		const result = buildUrlWithCardState(baseUrl, new Set([1]), new Set(), new Set());
 
 		expect(result.searchParams.get("foo")).toBe("bar");
 		expect(result.searchParams.get("baz")).toBe("qux");
-		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
-		expect(result.searchParams.getAll("exclude")).toEqual(["7"]);
 	});
 
-	it("should delete existing pin/exclude parameters before appending new ones", () => {
+	it("should remove old-format pin/exclude params", () => {
 		const baseUrl = new URL("http://example.com?pin=99&exclude=88");
-		const pinnedIds = new Set([1, 5]);
-		const excludedIds = new Set([7]);
-		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds);
 
-		// Should not contain old values
-		expect(result.searchParams.getAll("pin")).not.toContain("99");
-		expect(result.searchParams.getAll("exclude")).not.toContain("88");
-
-		// Should only contain new values
-		expect(result.searchParams.getAll("pin")).toContain("1");
-		expect(result.searchParams.getAll("pin")).toContain("5");
-		expect(result.searchParams.getAll("exclude")).toEqual(["7"]);
-	});
-
-	it("should handle empty sets by removing parameters", () => {
-		const baseUrl = new URL("http://example.com?pin=1&exclude=7");
-		const pinnedIds = new Set<number>();
-		const excludedIds = new Set<number>();
-		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds);
+		const result = buildUrlWithCardState(baseUrl, new Set([1]), new Set([7]), new Set());
 
 		expect(result.searchParams.has("pin")).toBe(false);
 		expect(result.searchParams.has("exclude")).toBe(false);
 	});
 
-	it("should return a new URL object without mutating the base URL", () => {
+	it("should handle empty sets by removing parameters", () => {
+		const pEncoded = encodeCardIds([1]);
+		const eEncoded = encodeCardIds([7]);
+		const baseUrl = new URL(`http://example.com?p=${pEncoded}&e=${eEncoded}`);
+
+		const result = buildUrlWithCardState(baseUrl, new Set(), new Set(), new Set());
+
+		expect(result.searchParams.has("p")).toBe(false);
+		expect(result.searchParams.has("e")).toBe(false);
+		expect(result.searchParams.has("c")).toBe(false);
+	});
+
+	it("should not mutate the base URL", () => {
 		const baseUrl = new URL("http://example.com?foo=bar");
-		const pinnedIds = new Set([1]);
-		const excludedIds = new Set<number>();
-		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds);
+		const originalHref = baseUrl.href;
 
-		// Base URL should not be mutated
-		expect(baseUrl.searchParams.has("pin")).toBe(false);
+		buildUrlWithCardState(baseUrl, new Set([1]), new Set(), new Set());
 
-		// Result should have pin parameter
-		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
+		expect(baseUrl.href).toBe(originalHref);
 	});
 });
 
-describe("URL → State sync (integration)", () => {
+describe("URL -> State sync (integration)", () => {
 	beforeEach(() => {
-		// Clear state before each test
 		setPinnedCardIds(new Set());
 		setExcludedCardIds(new Set());
+		setEnabledConstraintIds(new Set());
 	});
 
-	it("should sync pinned card IDs from URL to state", () => {
-		const url = new URL("http://example.com?pin=1&pin=5");
-		const pinnedIds = parseCardIdsFromUrl(url, "pin");
+	it("should sync pinned card IDs from compressed URL to state", () => {
+		const encoded = encodeCardIds([1, 5]);
+		const url = new URL(`http://example.com?p=${encoded}`);
+		const pinnedIds = parseCompressedIds(url, "p");
 
-		// Simulate the $effect behavior
 		setPinnedCardIds(pinnedIds);
 
 		expect(getPinnedCardIds().has(1)).toBe(true);
@@ -173,11 +143,11 @@ describe("URL → State sync (integration)", () => {
 		expect(getPinnedCardIds().size).toBe(2);
 	});
 
-	it("should sync excluded card IDs from URL to state", () => {
-		const url = new URL("http://example.com?exclude=7&exclude=9");
-		const excludedIds = parseCardIdsFromUrl(url, "exclude");
+	it("should sync excluded card IDs from compressed URL to state", () => {
+		const encoded = encodeCardIds([7, 9]);
+		const url = new URL(`http://example.com?e=${encoded}`);
+		const excludedIds = parseCompressedIds(url, "e");
 
-		// Simulate the $effect behavior
 		setExcludedCardIds(excludedIds);
 
 		expect(getExcludedCardIds().has(7)).toBe(true);
@@ -185,145 +155,148 @@ describe("URL → State sync (integration)", () => {
 		expect(getExcludedCardIds().size).toBe(2);
 	});
 
-	it("should sync both pinned and excluded card IDs from URL to state", () => {
-		const url = new URL("http://example.com?pin=1&pin=5&exclude=7");
-		const pinnedIds = parseCardIdsFromUrl(url, "pin");
-		const excludedIds = parseCardIdsFromUrl(url, "exclude");
+	it("should sync constraint IDs from compressed URL to state", () => {
+		const encoded = encodeCardIds([2, 4]);
+		const url = new URL(`http://example.com?c=${encoded}`);
+		const constraintIds = parseCompressedIds(url, "c");
 
-		// Simulate the $effect behavior
-		setPinnedCardIds(pinnedIds);
-		setExcludedCardIds(excludedIds);
+		setEnabledConstraintIds(constraintIds);
 
-		expect(getPinnedCardIds().has(1)).toBe(true);
-		expect(getPinnedCardIds().has(5)).toBe(true);
-		expect(getExcludedCardIds().has(7)).toBe(true);
+		expect(getEnabledConstraintIds().has(2)).toBe(true);
+		expect(getEnabledConstraintIds().has(4)).toBe(true);
+		expect(getEnabledConstraintIds().size).toBe(2);
 	});
 
-	it("should clear state when URL has no pin/exclude parameters", () => {
-		// Set initial state
+	it("should sync all state types from compressed URL", () => {
+		const pEncoded = encodeCardIds([1, 5]);
+		const eEncoded = encodeCardIds([7]);
+		const cEncoded = encodeCardIds([3]);
+		const url = new URL(`http://example.com?p=${pEncoded}&e=${eEncoded}&c=${cEncoded}`);
+
+		setPinnedCardIds(parseCompressedIds(url, "p"));
+		setExcludedCardIds(parseCompressedIds(url, "e"));
+		setEnabledConstraintIds(parseCompressedIds(url, "c"));
+
+		expect(getPinnedCardIds()).toEqual(new Set([1, 5]));
+		expect(getExcludedCardIds()).toEqual(new Set([7]));
+		expect(getEnabledConstraintIds()).toEqual(new Set([3]));
+	});
+
+	it("should clear state when URL has no state parameters", () => {
 		setPinnedCardIds(new Set([1]));
 		setExcludedCardIds(new Set([7]));
+		setEnabledConstraintIds(new Set([3]));
 
 		const url = new URL("http://example.com");
-		const pinnedIds = parseCardIdsFromUrl(url, "pin");
-		const excludedIds = parseCardIdsFromUrl(url, "exclude");
-
-		// Simulate the $effect behavior
-		setPinnedCardIds(pinnedIds);
-		setExcludedCardIds(excludedIds);
+		setPinnedCardIds(parseCompressedIds(url, "p"));
+		setExcludedCardIds(parseCompressedIds(url, "e"));
+		setEnabledConstraintIds(parseCompressedIds(url, "c"));
 
 		expect(getPinnedCardIds().size).toBe(0);
 		expect(getExcludedCardIds().size).toBe(0);
+		expect(getEnabledConstraintIds().size).toBe(0);
 	});
 });
 
-describe("State → URL sync (integration)", () => {
+describe("State -> URL sync (integration)", () => {
 	beforeEach(() => {
-		// Clear state before each test
 		setPinnedCardIds(new Set());
 		setExcludedCardIds(new Set());
+		setEnabledConstraintIds(new Set());
 	});
 
-	it("should build URL with current pinned card IDs when state changes", () => {
-		// Set up initial state
+	it("should build URL with current pinned state", () => {
 		setPinnedCardIds(new Set([1, 5]));
 
 		const currentUrl = new URL("http://example.com");
-		const result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
+		const result = buildUrlWithCardState(
+			currentUrl,
+			getPinnedCardIds(),
+			getExcludedCardIds(),
+			getEnabledConstraintIds(),
+		);
 
-		expect(result.searchParams.getAll("pin")).toContain("1");
-		expect(result.searchParams.getAll("pin")).toContain("5");
-		expect(result.searchParams.getAll("pin")).toHaveLength(2);
+		expect(new Set(decodeCardIds(result.searchParams.get("p")!))).toEqual(new Set([1, 5]));
 	});
 
-	it("should build URL with current excluded card IDs when state changes", () => {
-		// Set up initial state
+	it("should build URL with current excluded state", () => {
 		setExcludedCardIds(new Set([7, 9]));
 
 		const currentUrl = new URL("http://example.com");
-		const result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
+		const result = buildUrlWithCardState(
+			currentUrl,
+			getPinnedCardIds(),
+			getExcludedCardIds(),
+			getEnabledConstraintIds(),
+		);
 
-		expect(result.searchParams.getAll("exclude")).toContain("7");
-		expect(result.searchParams.getAll("exclude")).toContain("9");
-		expect(result.searchParams.getAll("exclude")).toHaveLength(2);
+		expect(new Set(decodeCardIds(result.searchParams.get("e")!))).toEqual(new Set([7, 9]));
 	});
 
-	it("should build URL with both pinned and excluded card IDs", () => {
-		// Set up initial state
-		setPinnedCardIds(new Set([1, 5]));
-		setExcludedCardIds(new Set([7]));
+	it("should build URL with current constraint state", () => {
+		setEnabledConstraintIds(new Set([2, 4]));
 
 		const currentUrl = new URL("http://example.com");
-		const result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
+		const result = buildUrlWithCardState(
+			currentUrl,
+			getPinnedCardIds(),
+			getExcludedCardIds(),
+			getEnabledConstraintIds(),
+		);
 
-		expect(result.searchParams.getAll("pin")).toContain("1");
-		expect(result.searchParams.getAll("pin")).toContain("5");
-		expect(result.searchParams.getAll("exclude")).toContain("7");
+		expect(new Set(decodeCardIds(result.searchParams.get("c")!))).toEqual(new Set([2, 4]));
 	});
 
-	it("should remove pin/exclude parameters when state is empty", () => {
-		// Start with URL that has parameters
-		const currentUrl = new URL("http://example.com?pin=1&exclude=7");
+	it("should remove state parameters when state is empty", () => {
+		const pEncoded = encodeCardIds([1]);
+		const eEncoded = encodeCardIds([7]);
+		const currentUrl = new URL(`http://example.com?p=${pEncoded}&e=${eEncoded}`);
 
-		// State is empty (cleared in beforeEach)
-		const result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
+		const result = buildUrlWithCardState(
+			currentUrl,
+			getPinnedCardIds(),
+			getExcludedCardIds(),
+			getEnabledConstraintIds(),
+		);
 
-		expect(result.searchParams.has("pin")).toBe(false);
-		expect(result.searchParams.has("exclude")).toBe(false);
+		expect(result.searchParams.has("p")).toBe(false);
+		expect(result.searchParams.has("e")).toBe(false);
+		expect(result.searchParams.has("c")).toBe(false);
 	});
 
-	it("should update URL when new card is pinned", () => {
-		// Initial state: card 1 is already pinned
+	it("should preserve non-state parameters when state changes", () => {
+		const currentUrl = new URL("http://example.com?card=10&foo=bar");
 		setPinnedCardIds(new Set([1]));
 
-		// Create URL with current state
-		const currentUrl = new URL("http://example.com");
-		let result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
-		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
+		const result = buildUrlWithCardState(
+			currentUrl,
+			getPinnedCardIds(),
+			getExcludedCardIds(),
+			getEnabledConstraintIds(),
+		);
 
-		// Add new pinned card
-		setPinnedCardIds(new Set([1, 5]));
-
-		// Update URL with new state
-		result = buildUrlWithCardState(result, getPinnedCardIds(), getExcludedCardIds());
-
-		expect(result.searchParams.getAll("pin")).toContain("1");
-		expect(result.searchParams.getAll("pin")).toContain("5");
-		expect(result.searchParams.getAll("pin")).toHaveLength(2);
-	});
-
-	it("should update URL when pinned card is removed", () => {
-		// Initial state: cards 1 and 5 are pinned
-		setPinnedCardIds(new Set([1, 5]));
-
-		// Create URL with current state
-		const currentUrl = new URL("http://example.com");
-		let result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
-		expect(result.searchParams.getAll("pin")).toHaveLength(2);
-
-		// Remove one pinned card
-		setPinnedCardIds(new Set([1]));
-
-		// Update URL with new state
-		result = buildUrlWithCardState(result, getPinnedCardIds(), getExcludedCardIds());
-
-		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
-		expect(result.searchParams.getAll("pin")).not.toContain("5");
-	});
-
-	it("should preserve existing non-pin/exclude parameters when state changes", () => {
-		// Start with URL that has other parameters
-		const currentUrl = new URL("http://example.com?card=10&card=11&foo=bar");
-
-		// Add pin state
-		setPinnedCardIds(new Set([1]));
-
-		const result = buildUrlWithCardState(currentUrl, getPinnedCardIds(), getExcludedCardIds());
-
-		// Should preserve existing parameters
-		expect(result.searchParams.getAll("card")).toEqual(["10", "11"]);
+		expect(result.searchParams.getAll("card")).toEqual(["10"]);
 		expect(result.searchParams.get("foo")).toBe("bar");
-		// Should add pin parameter
-		expect(result.searchParams.getAll("pin")).toEqual(["1"]);
+	});
+
+	it("should round-trip all state through URL", () => {
+		const originalPinned = new Set([1, 5, 12]);
+		const originalExcluded = new Set([7, 9]);
+		const originalConstraints = new Set([2, 4]);
+
+		setPinnedCardIds(originalPinned);
+		setExcludedCardIds(originalExcluded);
+		setEnabledConstraintIds(originalConstraints);
+
+		const url = buildUrlWithCardState(
+			new URL("http://example.com"),
+			getPinnedCardIds(),
+			getExcludedCardIds(),
+			getEnabledConstraintIds(),
+		);
+
+		expect(parseCompressedIds(url, "p")).toEqual(originalPinned);
+		expect(parseCompressedIds(url, "e")).toEqual(originalExcluded);
+		expect(parseCompressedIds(url, "c")).toEqual(originalConstraints);
 	});
 });
