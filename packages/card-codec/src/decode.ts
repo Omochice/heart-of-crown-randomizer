@@ -1,4 +1,4 @@
-export function decodeIds(encoded: string): number[] {
+export function decodeId(encoded: string): number[] {
   if (encoded === "") {
     return [];
   }

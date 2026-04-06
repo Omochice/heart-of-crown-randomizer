@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
-import { decodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { decodeId } from "@heart-of-crown-randomizer/card-codec";
 import { drawRandomCards, drawMissingCommons, buildCardUrl } from "./card-draw";
 import { makeCard } from "$lib/test-helpers";
 
@@ -151,7 +151,7 @@ describe("buildCardUrl", () => {
 		const result = buildCardUrl(cards);
 
 		const params = new URLSearchParams(result.slice(1));
-		expect(new Set(decodeIds(params.get("s")!))).toEqual(new Set([1, 5]));
+		expect(new Set(decodeId(params.get("s")!))).toEqual(new Set([1, 5]));
 		expect(params.has("p")).toBe(false);
 		expect(params.has("e")).toBe(false);
 		expect(params.has("c")).toBe(false);

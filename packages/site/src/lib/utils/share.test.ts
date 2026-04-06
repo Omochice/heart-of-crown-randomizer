@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { buildShareText, buildShareUrl, shareOrCopy } from "./share";
 import { makeCard } from "$lib/test-helpers";
-import { decodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { decodeId } from "@heart-of-crown-randomizer/card-codec";
 
 describe("buildShareUrl", () => {
 	it("should build share URL with compressed 's' parameter that round-trips back to original card IDs", () => {
@@ -11,7 +11,7 @@ describe("buildShareUrl", () => {
 
 		expect(result).toMatch(/^https:\/\/example\.com\?s=.+$/);
 		const sParam = new URL(result).searchParams.get("s")!;
-		expect(decodeIds(sParam)).toEqual([1, 5, 12]);
+		expect(decodeId(sParam)).toEqual([1, 5, 12]);
 	});
 
 	it("should return empty string for empty cards", () => {

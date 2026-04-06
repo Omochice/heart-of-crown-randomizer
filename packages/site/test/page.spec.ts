@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { encodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeId } from "@heart-of-crown-randomizer/card-codec";
 
 test.describe("Page URL reactivity", () => {
 	test("should render page with heading", async ({ page }) => {
@@ -27,7 +27,7 @@ test.describe("Page URL reactivity", () => {
 	});
 
 	test("should restore cards from URL parameters", async ({ page }) => {
-		await page.goto(`/?s=${encodeIds([17, 18, 19])}`);
+		await page.goto(`/?s=${encodeId([17, 18, 19])}`);
 
 		const cardLocator = page.getByRole("button", { name: /^カード / });
 		await expect(cardLocator).toHaveCount(3);

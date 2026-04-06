@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { select } from "@heart-of-crown-randomizer/randomizer";
-import { encodeIds, decodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeId, decodeId } from "@heart-of-crown-randomizer/card-codec";
 import {
 	getPinnedCardIds,
 	getExcludedCardIds,
@@ -263,7 +263,7 @@ describe("Full Flow E2E: URL Sharing → State Restoration", () => {
 	});
 
 	it("should restore pinned cards from compressed URL", () => {
-		const encoded = encodeIds([1, 5, 12]);
+		const encoded = encodeId([1, 5, 12]);
 		const url = new URL(`http://localhost/?p=${encoded}`);
 		const parsedPinnedIds = parseCompressedIds(url, "p");
 
@@ -276,7 +276,7 @@ describe("Full Flow E2E: URL Sharing → State Restoration", () => {
 	});
 
 	it("should restore excluded cards from compressed URL", () => {
-		const encoded = encodeIds([7, 9]);
+		const encoded = encodeId([7, 9]);
 		const url = new URL(`http://localhost/?e=${encoded}`);
 		const parsedExcludedIds = parseCompressedIds(url, "e");
 
@@ -288,7 +288,7 @@ describe("Full Flow E2E: URL Sharing → State Restoration", () => {
 	});
 
 	it("should restore constraint state from compressed URL", () => {
-		const encoded = encodeIds([2, 4]);
+		const encoded = encodeId([2, 4]);
 		const url = new URL(`http://localhost/?c=${encoded}`);
 		const parsedConstraintIds = parseCompressedIds(url, "c");
 
@@ -300,9 +300,9 @@ describe("Full Flow E2E: URL Sharing → State Restoration", () => {
 	});
 
 	it("should restore all state types from compressed URL", () => {
-		const pEncoded = encodeIds([1, 5]);
-		const eEncoded = encodeIds([7]);
-		const cEncoded = encodeIds([3]);
+		const pEncoded = encodeId([1, 5]);
+		const eEncoded = encodeId([7]);
+		const cEncoded = encodeId([3]);
 		const url = new URL(`http://localhost/?p=${pEncoded}&e=${eEncoded}&c=${cEncoded}`);
 
 		setPinnedCardIds(parseCompressedIds(url, "p"));
@@ -327,9 +327,9 @@ describe("Full Flow E2E: URL Sharing → State Restoration", () => {
 			getEnabledConstraintIds(),
 		);
 
-		expect(new Set(decodeIds(resultUrl.searchParams.get("p")!))).toEqual(new Set([1, 5, 12]));
-		expect(new Set(decodeIds(resultUrl.searchParams.get("e")!))).toEqual(new Set([7, 9]));
-		expect(new Set(decodeIds(resultUrl.searchParams.get("c")!))).toEqual(new Set([2, 4]));
+		expect(new Set(decodeId(resultUrl.searchParams.get("p")!))).toEqual(new Set([1, 5, 12]));
+		expect(new Set(decodeId(resultUrl.searchParams.get("e")!))).toEqual(new Set([7, 9]));
+		expect(new Set(decodeId(resultUrl.searchParams.get("c")!))).toEqual(new Set([2, 4]));
 	});
 
 	it("should support round-trip URL encoding and decoding", () => {

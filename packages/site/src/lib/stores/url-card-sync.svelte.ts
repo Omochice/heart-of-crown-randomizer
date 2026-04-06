@@ -1,5 +1,5 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-import { decodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { decodeId } from "@heart-of-crown-randomizer/card-codec";
 import { setsEqual } from "$lib/utils/url-sync";
 
 /**
@@ -11,7 +11,7 @@ import { setsEqual } from "$lib/utils/url-sync";
 export function resolveCardsFromUrl(url: URL, allCommons: CommonCard[]): CommonCard[] {
 	const encoded = url.searchParams.get("s");
 	if (encoded === null) return [];
-	const ids = decodeIds(encoded);
+	const ids = decodeId(encoded);
 	return ids.map((id) => allCommons.find((c) => c.id === id)).filter(Boolean) as CommonCard[];
 }
 

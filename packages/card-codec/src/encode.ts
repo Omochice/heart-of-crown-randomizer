@@ -1,4 +1,4 @@
-export function encodeIds(ids: number[]): string {
+export function encodeId(ids: number[]): string {
   if (ids.length === 0) {
     return "";
   }

@@ -2,7 +2,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { render, waitFor } from "@testing-library/svelte";
 import type { Page } from "@sveltejs/kit";
 import type { Writable } from "svelte/store";
-import { encodeIds } from "@heart-of-crown-randomizer/card-codec";
+import { encodeId } from "@heart-of-crown-randomizer/card-codec";
 import PageComponent from "./+page.svelte";
 
 vi.mock("$app/stores", async () => {
@@ -46,7 +46,7 @@ describe("+page.svelte URL parameter card restoration", () => {
 		const stores = await import("$app/stores");
 		const pageStore = stores.page as unknown as Writable<Page>;
 
-		const testUrl = new URL(`http://localhost?s=${encodeIds([17, 18, 19])}`);
+		const testUrl = new URL(`http://localhost?s=${encodeId([17, 18, 19])}`);
 		pageStore.set({
 			url: testUrl as Page["url"],
 			params: {},
@@ -72,7 +72,7 @@ describe("+page.svelte URL parameter card restoration", () => {
 		const stores = await import("$app/stores");
 		const pageStore = stores.page as unknown as Writable<Page>;
 
-		const testUrl = new URL(`http://localhost?s=${encodeIds([49, 50, 51])}`);
+		const testUrl = new URL(`http://localhost?s=${encodeId([49, 50, 51])}`);
 		pageStore.set({
 			url: testUrl as Page["url"],
 			params: {},
@@ -98,7 +98,7 @@ describe("+page.svelte URL parameter card restoration", () => {
 		const stores = await import("$app/stores");
 		const pageStore = stores.page as unknown as Writable<Page>;
 
-		const testUrl = new URL(`http://localhost?s=${encodeIds([17, 18, 49, 50])}`);
+		const testUrl = new URL(`http://localhost?s=${encodeId([17, 18, 49, 50])}`);
 		pageStore.set({
 			url: testUrl as Page["url"],
 			params: {},
