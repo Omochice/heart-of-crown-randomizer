@@ -4,6 +4,7 @@
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { onMount } from "svelte";
+	import AppMenu from "$lib/app-menu/AppMenu.svelte";
 	import Card from "$lib/Card.svelte";
 	import CardDetail from "$lib/CardDetail.svelte";
 	import ExcludeList from "$lib/ExcludeList.svelte";
@@ -29,6 +30,7 @@
 	import DebugPanel from "$lib/DebugPanel.svelte";
 	import {
 		getEnabledConstraints,
+		getEnabledConstraintIds,
 		setEnabledConstraintIds,
 	} from "$lib/stores/constraint-state.svelte";
 	import { Shuffle, Plus } from "lucide-svelte";
@@ -172,6 +174,12 @@
 			<span class="title-main">ハートオブクラウン</span>
 			<span class="title-accent">ランダマイザー</span>
 		</div>
+		<AppMenu
+			selectedCardIds={selectedCommons.map((c) => c.id)}
+			pinnedIds={getPinnedCardIds()}
+			excludedIds={getExcludedCardIds()}
+			constraintIds={getEnabledConstraintIds()}
+		/>
 	</header>
 
 	<div
@@ -302,6 +310,7 @@
 	.page-header {
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 	}
 
 	.page-title {
