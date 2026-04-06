@@ -1,5 +1,5 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-import { encodeId } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds } from "@heart-of-crown-randomizer/card-codec";
 import type { Constraint } from "@heart-of-crown-randomizer/constraint";
 import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
 import { validatePinConstraints, validateExcludeConstraints } from "./validation";
@@ -73,7 +73,7 @@ export function drawMissingCommons(
 export function buildCardUrl(cards: CommonCard[], currentSearchParams?: URLSearchParams): string {
 	const params = new URLSearchParams();
 	if (cards.length > 0) {
-		params.set("s", encodeId(cards.map((c) => c.id)));
+		params.set("s", encodeIds(cards.map((c) => c.id)));
 	}
 	const debug = currentSearchParams?.get("debug");
 	if (debug != null) {

@@ -1,2 +1,2 @@
-export { decodeId } from "./decode";
-export { encodeId } from "./encode";
+export { decodeIds } from "./decode";
+export { encodeIds } from "./encode";

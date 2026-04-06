@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from "vitest";
-import { encodeId, decodeId } from "@heart-of-crown-randomizer/card-codec";
+import { encodeIds, decodeIds } from "@heart-of-crown-randomizer/card-codec";
 import { parseCompressedIds, buildUrlWithCardState } from "$lib/utils/url-sync";
 import {
 	getPinnedCardIds,
@@ -14,7 +14,7 @@ import {
 
 describe("parseCompressedIds (page integration)", () => {
 	it("should parse compressed pinned IDs from 'p' parameter", () => {
-		const encoded = encodeId([1, 5, 12]);
+		const encoded = encodeIds([1, 5, 12]);
 		const url = new URL(`http://example.com?p=${encoded}`);
 
 		const result = parseCompressedIds(url, "p");
@@ -23,7 +23,7 @@ describe("parseCompressedIds (page integration)", () => {
 	});
 
 	it("should parse compressed excluded IDs from 'e' parameter", () => {
-		const encoded = encodeId([7, 9]);
+		const encoded = encodeIds([7, 9]);
 		const url = new URL(`http://example.com?e=${encoded}`);
 
 		const result = parseCompressedIds(url, "e");
@@ -32,7 +32,7 @@ describe("parseCompressedIds (page integration)", () => {
 	});
 
 	it("should parse compressed constraint IDs from 'c' parameter", () => {
-		const encoded = encodeId([1, 3, 5]);
+		const encoded = encodeIds([1, 3, 5]);
 		const url = new URL(`http://example.com?c=${encoded}`);
 
 		const result = parseCompressedIds(url, "c");
@@ -56,7 +56,7 @@ describe("buildUrlWithCardState (page integration)", () => {
 
 		const result = buildUrlWithCardState(baseUrl, pinnedIds, new Set(), new Set());
 
-		expect(new Set(decodeId(result.searchParams.get("p")!))).toEqual(pinnedIds);
+		expect(new Set(decodeIds(result.searchParams.get("p")!))).toEqual(pinnedIds);
 		expect(result.searchParams.has("e")).toBe(false);
 		expect(result.searchParams.has("c")).toBe(false);
 	});
@@ -67,7 +67,7 @@ describe("buildUrlWithCardState (page integration)", () => {
 
 		const result = buildUrlWithCardState(baseUrl, new Set(), excludedIds, new Set());
 
-		expect(new Set(decodeId(result.searchParams.get("e")!))).toEqual(excludedIds);
+		expect(new Set(decodeIds(result.searchParams.get("e")!))).toEqual(excludedIds);
 		expect(result.searchParams.has("p")).toBe(false);
 	});
 
@@ -79,9 +79,9 @@ describe("buildUrlWithCardState (page integration)", () => {
 
 		const result = buildUrlWithCardState(baseUrl, pinnedIds, excludedIds, constraintIds);
 
-		expect(new Set(decodeId(result.searchParams.get("p")!))).toEqual(pinnedIds);
-		expect(new Set(decodeId(result.searchParams.get("e")!))).toEqual(excludedIds);
-		expect(new Set(decodeId(result.searchParams.get("c")!))).toEqual(constraintIds);
+		expect(new Set(decodeIds(result.searchParams.get("p")!))).toEqual(pinnedIds);
+		expect(new Set(decodeIds(result.searchParams.get("e")!))).toEqual(excludedIds);
+		expect(new Set(decodeIds(result.searchParams.get("c")!))).toEqual(constraintIds);
 	});
 
 	it("should preserve existing non-state query parameters", () => {
@@ -103,8 +103,8 @@ describe("buildUrlWithCardState (page integration)", () => {
 	});
 
 	it("should handle empty sets by removing parameters", () => {
-		const pEncoded = encodeId([1]);
-		const eEncoded = encodeId([7]);
+		const pEncoded = encodeIds([1]);
+		const eEncoded = encodeIds([7]);
 		const baseUrl = new URL(`http://example.com?p=${pEncoded}&e=${eEncoded}`);
 
 		const result = buildUrlWithCardState(baseUrl, new Set(), new Set(), new Set());
@@ -132,7 +132,7 @@ describe("URL -> State sync (integration)", () => {
 	});
 
 	it("should sync pinned card IDs from compressed URL to state", () => {
-		const encoded = encodeId([1, 5]);
+		const encoded = encodeIds([1, 5]);
 		const url = new URL(`http://example.com?p=${encoded}`);
 		const pinnedIds = parseCompressedIds(url, "p");
 
@@ -144,7 +144,7 @@ describe("URL -> State sync (integration)", () => {
 	});
 
 	it("should sync excluded card IDs from compressed URL to state", () => {
-		const encoded = encodeId([7, 9]);
+		const encoded = encodeIds([7, 9]);
 		const url = new URL(`http://example.com?e=${encoded}`);
 		const excludedIds = parseCompressedIds(url, "e");
 
@@ -156,7 +156,7 @@ describe("URL -> State sync (integration)", () => {
 	});
 
 	it("should sync constraint IDs from compressed URL to state", () => {
-		const encoded = encodeId([2, 4]);
+		const encoded = encodeIds([2, 4]);
 		const url = new URL(`http://example.com?c=${encoded}`);
 		const constraintIds = parseCompressedIds(url, "c");
 
@@ -168,9 +168,9 @@ describe("URL -> State sync (integration)", () => {
 	});
 
 	it("should sync all state types from compressed URL", () => {
-		const pEncoded = encodeId([1, 5]);
-		const eEncoded = encodeId([7]);
-		const cEncoded = encodeId([3]);
+		const pEncoded = encodeIds([1, 5]);
+		const eEncoded = encodeIds([7]);
+		const cEncoded = encodeIds([3]);
 		const url = new URL(`http://example.com?p=${pEncoded}&e=${eEncoded}&c=${cEncoded}`);
 
 		setPinnedCardIds(parseCompressedIds(url, "p"));
@@ -216,7 +216,7 @@ describe("State -> URL sync (integration)", () => {
 			getEnabledConstraintIds(),
 		);
 
-		expect(new Set(decodeId(result.searchParams.get("p")!))).toEqual(new Set([1, 5]));
+		expect(new Set(decodeIds(result.searchParams.get("p")!))).toEqual(new Set([1, 5]));
 	});
 
 	it("should build URL with current excluded state", () => {
@@ -230,7 +230,7 @@ describe("State -> URL sync (integration)", () => {
 			getEnabledConstraintIds(),
 		);
 
-		expect(new Set(decodeId(result.searchParams.get("e")!))).toEqual(new Set([7, 9]));
+		expect(new Set(decodeIds(result.searchParams.get("e")!))).toEqual(new Set([7, 9]));
 	});
 
 	it("should build URL with current constraint state", () => {
@@ -244,12 +244,12 @@ describe("State -> URL sync (integration)", () => {
 			getEnabledConstraintIds(),
 		);
 
-		expect(new Set(decodeId(result.searchParams.get("c")!))).toEqual(new Set([2, 4]));
+		expect(new Set(decodeIds(result.searchParams.get("c")!))).toEqual(new Set([2, 4]));
 	});
 
 	it("should remove state parameters when state is empty", () => {
-		const pEncoded = encodeId([1]);
-		const eEncoded = encodeId([7]);
+		const pEncoded = encodeIds([1]);
+		const eEncoded = encodeIds([7]);
 		const currentUrl = new URL(`http://example.com?p=${pEncoded}&e=${eEncoded}`);
 
 		const result = buildUrlWithCardState(
