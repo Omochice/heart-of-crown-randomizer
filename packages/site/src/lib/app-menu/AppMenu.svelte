@@ -11,6 +11,7 @@
 
 	let { selectedCardIds, pinnedIds, excludedIds, constraintIds }: Props = $props();
 	let isOpen = $state(false);
+	let menuElement: HTMLDivElement | undefined = $state();
 
 	const issueUrl = $derived(
 		isOpen
@@ -38,8 +39,7 @@
 		if (!isOpen) return;
 
 		function handleClickOutside(event: MouseEvent) {
-			const target = event.target as HTMLElement;
-			if (!target.closest(".app-menu")) {
+			if (menuElement && !menuElement.contains(event.target as Node)) {
 				isOpen = false;
 			}
 		}
@@ -51,8 +51,10 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-<!-- svelte-ignore a11y_no_static_element_interactions -->
-<div class="app-menu">
+<div
+	class="app-menu"
+	bind:this={menuElement}
+>
 	<button
 		class="app-menu-trigger"
 		aria-label="メニュー"
