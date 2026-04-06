@@ -4,40 +4,33 @@ import { buildGitHubIssueUrl } from "./github-issue";
 
 const GITHUB_ISSUE_BASE = "https://github.com/Omochice/heart-of-crown-randomizer/issues/new";
 
+function makeState(overrides: Partial<Parameters<typeof buildGitHubIssueUrl>[0]> = {}) {
+	return {
+		origin: "https://example.com",
+		selectedCardIds: [] as number[],
+		pinnedIds: new Set<number>(),
+		excludedIds: new Set<number>(),
+		constraintIds: new Set<number>(),
+		...overrides,
+	};
+}
+
 describe("buildGitHubIssueUrl", () => {
 	it("should return a URL pointing to the GitHub issues/new endpoint", () => {
-		const result = buildGitHubIssueUrl({
-			origin: "https://example.com",
-			selectedCardIds: [],
-			pinnedIds: new Set(),
-			excludedIds: new Set(),
-			constraintIds: new Set(),
-		});
+		const result = buildGitHubIssueUrl(makeState());
 
 		expect(result).toContain(GITHUB_ISSUE_BASE);
 	});
 
 	it("should include debug=true in the reproduction URL", () => {
-		const result = buildGitHubIssueUrl({
-			origin: "https://example.com",
-			selectedCardIds: [],
-			pinnedIds: new Set(),
-			excludedIds: new Set(),
-			constraintIds: new Set(),
-		});
+		const result = buildGitHubIssueUrl(makeState());
 
 		const body = new URL(result).searchParams.get("body")!;
 		expect(body).toContain("debug=true");
 	});
 
 	it("should encode selected card IDs into the reproduction URL", () => {
-		const result = buildGitHubIssueUrl({
-			origin: "https://example.com",
-			selectedCardIds: [1, 5, 10],
-			pinnedIds: new Set(),
-			excludedIds: new Set(),
-			constraintIds: new Set(),
-		});
+		const result = buildGitHubIssueUrl(makeState({ selectedCardIds: [1, 5, 10] }));
 
 		const body = new URL(result).searchParams.get("body")!;
 		const reproUrl = extractReproductionUrl(body);
@@ -46,13 +39,14 @@ describe("buildGitHubIssueUrl", () => {
 	});
 
 	it("should encode pinned, excluded, and constraint IDs", () => {
-		const result = buildGitHubIssueUrl({
-			origin: "https://example.com",
-			selectedCardIds: [1],
-			pinnedIds: new Set([1]),
-			excludedIds: new Set([3, 7]),
-			constraintIds: new Set([2]),
-		});
+		const result = buildGitHubIssueUrl(
+			makeState({
+				selectedCardIds: [1],
+				pinnedIds: new Set([1]),
+				excludedIds: new Set([3, 7]),
+				constraintIds: new Set([2]),
+			}),
+		);
 
 		const body = new URL(result).searchParams.get("body")!;
 		const reproUrl = extractReproductionUrl(body);
@@ -64,13 +58,7 @@ describe("buildGitHubIssueUrl", () => {
 	});
 
 	it("should omit empty state params from the reproduction URL", () => {
-		const result = buildGitHubIssueUrl({
-			origin: "https://example.com",
-			selectedCardIds: [1],
-			pinnedIds: new Set(),
-			excludedIds: new Set(),
-			constraintIds: new Set(),
-		});
+		const result = buildGitHubIssueUrl(makeState({ selectedCardIds: [1] }));
 
 		const body = new URL(result).searchParams.get("body")!;
 		const reproUrl = extractReproductionUrl(body);
@@ -82,13 +70,7 @@ describe("buildGitHubIssueUrl", () => {
 	});
 
 	it("should use the provided origin in the reproduction URL", () => {
-		const result = buildGitHubIssueUrl({
-			origin: "https://my-app.example.com",
-			selectedCardIds: [],
-			pinnedIds: new Set(),
-			excludedIds: new Set(),
-			constraintIds: new Set(),
-		});
+		const result = buildGitHubIssueUrl(makeState({ origin: "https://my-app.example.com" }));
 
 		const body = new URL(result).searchParams.get("body")!;
 		expect(body).toContain("https://my-app.example.com");
