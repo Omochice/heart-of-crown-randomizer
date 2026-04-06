@@ -16,7 +16,7 @@
 		getPinnedCards,
 		getExcludedCards,
 	} from "$lib/stores/card-state.svelte";
-	import { parseCardIdsFromUrl, buildUrlWithCardState } from "$lib/utils/url-sync";
+	import { parseCompressedIds, buildUrlWithCardState, setsEqual } from "$lib/utils/url-sync";
 	import { resolveCardsFromUrl, shouldUpdatePinExclude } from "$lib/stores/url-card-sync.svelte";
 	import {
 		drawRandomCards as drawRandomCardsLogic,
@@ -27,7 +27,11 @@
 	import { allConstraints } from "@heart-of-crown-randomizer/constraint";
 	import ConstraintPanel from "$lib/ConstraintPanel.svelte";
 	import DebugPanel from "$lib/DebugPanel.svelte";
-	import { getEnabledConstraints } from "$lib/stores/constraint-state.svelte";
+	import {
+		getEnabledConstraints,
+		getEnabledConstraintIds,
+		setEnabledConstraintIds,
+	} from "$lib/stores/constraint-state.svelte";
 	import { Shuffle, Plus } from "lucide-svelte";
 	const isDebugMode = $derived($page.url.searchParams.get("debug") === "true");
 
@@ -57,7 +61,7 @@
 	});
 
 	/**
-	 * Sync pin/exclude state from URL parameters
+	 * Sync pin/exclude/constraint state from URL parameters
 	 *
 	 * We parse on every URL change rather than caching because users
 	 * might manually edit the URL or use browser back/forward buttons.
@@ -67,8 +71,9 @@
 	 * the URL still has old values, resetting state incorrectly.
 	 */
 	$effect(() => {
-		const newPinnedIds = parseCardIdsFromUrl($page.url, "pin");
-		const newExcludedIds = parseCardIdsFromUrl($page.url, "exclude");
+		const newPinnedIds = parseCompressedIds($page.url, "p");
+		const newExcludedIds = parseCompressedIds($page.url, "e");
+		const newConstraintIds = parseCompressedIds($page.url, "c");
 
 		// Pin takes precedence over exclude for overlapping IDs
 		for (const id of newPinnedIds) {
@@ -77,13 +82,25 @@
 
 		const currentPinned = untrack(() => getPinnedCardIds());
 		const currentExcluded = untrack(() => getExcludedCardIds());
+		const currentConstraints = untrack(() => getEnabledConstraintIds());
 
-		if (!shouldUpdatePinExclude(currentPinned, currentExcluded, newPinnedIds, newExcludedIds)) {
-			return;
+		const pinExcludeChanged = shouldUpdatePinExclude(
+			currentPinned,
+			currentExcluded,
+			newPinnedIds,
+			newExcludedIds,
+		);
+		const constraintsChanged = !setsEqual(currentConstraints, newConstraintIds);
+
+		if (!pinExcludeChanged && !constraintsChanged) return;
+
+		if (pinExcludeChanged) {
+			setPinnedCardIds(newPinnedIds);
+			setExcludedCardIds(newExcludedIds);
 		}
-
-		setPinnedCardIds(newPinnedIds);
-		setExcludedCardIds(newExcludedIds);
+		if (constraintsChanged) {
+			setEnabledConstraintIds(newConstraintIds);
+		}
 	});
 
 	/**
@@ -99,9 +116,10 @@
 	$effect(() => {
 		const pinnedIds = getPinnedCardIds();
 		const excludedIds = getExcludedCardIds();
+		const constraintIds = getEnabledConstraintIds();
 
 		const currentUrl = untrack(() => $page.url);
-		const newUrl = buildUrlWithCardState(currentUrl, pinnedIds, excludedIds);
+		const newUrl = buildUrlWithCardState(currentUrl, pinnedIds, excludedIds, constraintIds);
 
 		if (newUrl.toString() === currentUrl.toString()) return;
 
@@ -134,6 +152,7 @@
 				selectedCommons,
 				getPinnedCardIds(),
 				getExcludedCardIds(),
+				getEnabledConstraintIds(),
 				$page.url.searchParams,
 			),
 			{
@@ -161,6 +180,7 @@
 				selectedCommons,
 				getPinnedCardIds(),
 				getExcludedCardIds(),
+				getEnabledConstraintIds(),
 				$page.url.searchParams,
 			),
 			{
