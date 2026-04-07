@@ -59,5 +59,5 @@ export type Constraint = {
    * picks. If not implemented, the constraint does not need dynamic pool
    * filtering and relies solely on `apply`.
    */
-  filterPoolForNextPick?(context: Readonly<PickContext>): CommonCard[];
+  filterPoolForNextPick?(context: Readonly<PickContext>): readonly CommonCard[];
 };

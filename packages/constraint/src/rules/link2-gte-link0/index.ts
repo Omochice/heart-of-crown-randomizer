@@ -44,13 +44,13 @@ export const link2GteLink0: Constraint = {
     return pickFromPool(context, isLink2, link2Deficit);
   },
 
-  filterPoolForNextPick(context: Readonly<PickContext>): CommonCard[] {
+  filterPoolForNextPick(context: Readonly<PickContext>): readonly CommonCard[] {
     const budget =
       countInCards(context.picked, isLink2) -
       countInCards(context.picked, (c) => getLink(c) === 0);
     const slack = budget + context.remainingCount;
 
-    if (slack >= 2) return [...context.pool];
+    if (slack >= 2) return context.pool;
     if (slack >= 1) return context.pool.filter((c) => getLink(c) !== 0);
     return context.pool.filter(isLink2);
   },

@@ -21,7 +21,7 @@ function iterativeSelect(
 	while (picked.length < context.count && pool.length > 0) {
 		const remaining = context.count - picked.length;
 
-		let available = pool;
+		let available: readonly CommonCard[] = pool;
 		for (const constraint of dynamicConstraints) {
 			available = constraint.filterPoolForNextPick!({
 				picked,
