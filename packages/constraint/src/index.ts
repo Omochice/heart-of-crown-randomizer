@@ -6,5 +6,5 @@ export {
   link2GteLink0,
   noAttack,
 } from "./rules";
-export type { Constraint, SelectionContext } from "./type";
+export type { Constraint, PickContext, SelectionContext } from "./type";
 export { validateCombination } from "./validate-combination";
