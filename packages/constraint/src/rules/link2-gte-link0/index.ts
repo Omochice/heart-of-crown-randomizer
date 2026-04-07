@@ -1,6 +1,6 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import type { Constraint, PickContext, SelectionContext } from "../../type";
-import { countInCards, getLink, isLink2 } from "../shared/card-properties";
+import { countInCards, isLink0, isLink2 } from "../shared/card-properties";
 import { pickFromPool } from "../shared/pick-from-pool";
 
 /**
@@ -19,8 +19,8 @@ export const link2GteLink0: Constraint = {
   label: "リンク2の数 ≧ リンク0の数",
 
   isSatisfied(cards: readonly CommonCard[]): boolean {
-    const link0Count = countInCards(cards, (c) => getLink(c) === 0);
-    const link2Count = countInCards(cards, (c) => getLink(c) === 2);
+    const link0Count = countInCards(cards, isLink0);
+    const link2Count = countInCards(cards, isLink2);
     return link2Count >= link0Count;
   },
 
@@ -31,10 +31,7 @@ export const link2GteLink0: Constraint = {
   },
 
   apply(context: SelectionContext): SelectionContext {
-    const requiredLink0 = countInCards(
-      context.required,
-      (c) => getLink(c) === 0,
-    );
+    const requiredLink0 = countInCards(context.required, isLink0);
     const requiredLink2 = countInCards(context.required, isLink2);
 
     const link2Deficit = Math.max(0, requiredLink0 - requiredLink2);
@@ -47,11 +44,11 @@ export const link2GteLink0: Constraint = {
   filterPoolForNextPick(context: Readonly<PickContext>): readonly CommonCard[] {
     const budget =
       countInCards(context.picked, isLink2) -
-      countInCards(context.picked, (c) => getLink(c) === 0);
+      countInCards(context.picked, isLink0);
     const slack = budget + context.remainingCount;
 
     if (slack >= 2) return context.pool;
-    if (slack >= 1) return context.pool.filter((c) => getLink(c) !== 0);
+    if (slack >= 1) return context.pool.filter((c) => !isLink0(c));
     return context.pool.filter(isLink2);
   },
 };

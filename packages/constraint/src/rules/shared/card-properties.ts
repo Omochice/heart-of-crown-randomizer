@@ -59,6 +59,20 @@ export function isHighCost(card: CommonCard): boolean {
 }
 
 /**
+ * Check whether a card has link=0.
+ *
+ * Only DuplicateCards have a top-level `link` property.
+ * UniqueCards have sub-cards with individual link values but no
+ * top-level link, so they are never considered link=0 cards.
+ */
+export function isLink0(card: CommonCard): boolean {
+  if (card.hasChild) {
+    return false;
+  }
+  return card.link === 0;
+}
+
+/**
  * Check whether a card has link=2.
  *
  * Only DuplicateCards have a top-level `link` property.
