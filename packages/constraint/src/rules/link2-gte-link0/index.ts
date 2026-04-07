@@ -35,10 +35,12 @@ export const link2GteLink0: Constraint = {
     const requiredLink2 = countInCards(context.required, isLink2);
 
     const link2Deficit = Math.max(0, requiredLink0 - requiredLink2);
-    if (link2Deficit <= 0) {
+    const remainingSlots = Math.max(0, context.count - context.required.length);
+    const forcedLink2 = Math.min(link2Deficit, remainingSlots);
+    if (forcedLink2 <= 0) {
       return context;
     }
-    return pickFromPool(context, isLink2, link2Deficit);
+    return pickFromPool(context, isLink2, forcedLink2);
   },
 
   filterPoolForNextPick(context: Readonly<PickContext>): readonly CommonCard[] {
