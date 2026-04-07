@@ -13,7 +13,9 @@ import { link2GteLink0 } from "./index";
 function uniqueById(cards: CommonCard[]): CommonCard[] {
   const seen = new Set<number>();
   return cards.filter((c) => {
-    if (seen.has(c.id)) return false;
+    if (seen.has(c.id)) {
+      return false;
+    }
     seen.add(c.id);
     return true;
   });
@@ -65,7 +67,9 @@ const link2SufficientContextArb = contextArb({
   maxLength: 30,
   cardArb: duplicateCardArb,
 }).filter((ctx) => {
-  if (!link2GteLink0.canApply(ctx)) return false;
+  if (!link2GteLink0.canApply(ctx)) {
+    return false;
+  }
   const poolLink2 = ctx.pool.filter(isLink2).length;
   return poolLink2 >= Math.ceil(ctx.count / 2);
 });
@@ -83,7 +87,9 @@ function simulateIterativeSelect(ctx: SelectionContext): CommonCard[] {
         pool,
         remainingCount: remaining,
       }) ?? [];
-    if (available.length === 0) break;
+    if (available.length === 0) {
+      break;
+    }
     const card = available[Math.floor(applied.rng() * available.length)];
     picked.push(card);
     pool = pool.filter((c) => c !== card);

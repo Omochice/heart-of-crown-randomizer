@@ -26,7 +26,9 @@ export function countInCards(
 ): number {
   let count = 0;
   for (const card of cards) {
-    if (predicate(card)) count++;
+    if (predicate(card)) {
+      count++;
+    }
   }
   return count;
 }

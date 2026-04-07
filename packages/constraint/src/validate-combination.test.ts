@@ -99,7 +99,9 @@ describe("validateCombination", () => {
     const poolWithOnlyAttackLink2 = [...FarEasternBorder.commons].filter(
       (c) => {
         // Keep 密偵 as the sole link-2 card; exclude other link-2 cards
-        if (!c.hasChild && c.link === 2 && c.id !== 56) return false;
+        if (!c.hasChild && c.link === 2 && c.id !== 56) {
+          return false;
+        }
         return true;
       },
     );
