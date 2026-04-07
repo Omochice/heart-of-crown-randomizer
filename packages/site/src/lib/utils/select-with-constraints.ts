@@ -30,6 +30,10 @@ function iterativeSelect(
 			});
 		}
 
+		// Fallback: when every constraint filters the pool to empty, pick
+		// from the unfiltered pool so the caller always receives count cards.
+		// This prefers a partial constraint violation over returning fewer
+		// cards than requested, which would break UI expectations.
 		if (available.length === 0) {
 			available = pool;
 		}
