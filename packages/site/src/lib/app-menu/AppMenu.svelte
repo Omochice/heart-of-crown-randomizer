@@ -38,13 +38,13 @@
 	}
 
 	$effect(() => {
-		if (!isOpen || !dropdownElement) return;
+		if (!isOpen || !dropdownElement) { return; }
 		const firstItem = dropdownElement.querySelector<HTMLElement>("[role=menuitem]");
 		firstItem?.focus();
 	});
 
 	$effect(() => {
-		if (!isOpen) return;
+		if (!isOpen) { return; }
 
 		function handleClickOutside(event: MouseEvent) {
 			if (menuElement && !menuElement.contains(event.target as Node)) {

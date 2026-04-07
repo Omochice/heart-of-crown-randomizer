@@ -32,14 +32,14 @@
 	 * with each other even when individually applicable.
 	 */
 	function canToggle(constraint: Constraint): boolean {
-		if (enabledIds.has(constraint.id)) return true;
+		if (enabledIds.has(constraint.id)) { return true; }
 
 		const hypothetical = constraints.filter((c) => enabledIds.has(c.id) || c.id === constraint.id);
 		return validateCombination(hypothetical, { ...selectionContext, rng: () => 0.5 });
 	}
 
 	function handleToggle(constraint: Constraint) {
-		if (!canToggle(constraint)) return;
+		if (!canToggle(constraint)) { return; }
 		toggleConstraint(constraint.id);
 	}
 </script>

@@ -145,7 +145,7 @@
 
 	function drawMissingCommons() {
 		const newCards = drawMissingCommonsLogic(allCommons, selectedCommons, numberOfCommons);
-		if (newCards.length === 0) return;
+		if (newCards.length === 0) { return; }
 
 		selectedCommons = [...selectedCommons, ...newCards];
 		navigateWithCardState();
