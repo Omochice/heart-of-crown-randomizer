@@ -6,6 +6,23 @@ import { link2GteLink0 } from "./index";
 
 describe("link2GteLink0", () => {
   describe("apply", () => {
+    it("does not force additional link-2 when link-2 count equals link-0 count", () => {
+      const link2InReq = makeDuplicateCard({ id: 1, link: 2 });
+      const link0InReq = makeDuplicateCard({ id: 2, link: 0 });
+      const link1Card = makeDuplicateCard({ id: 3, link: 1 });
+      const extraLink2 = makeDuplicateCard({ id: 4, link: 2 });
+      const context = makeContext({
+        pool: [link1Card, extraLink2],
+        required: [link2InReq, link0InReq],
+        count: 3,
+      });
+
+      const result = link2GteLink0.apply(context);
+
+      expect(result.required).toEqual([link2InReq, link0InReq]);
+      expect(result.pool).toEqual([link1Card, extraLink2]);
+    });
+
     it("does not force link-2 when required already has enough", () => {
       const link2InReq = makeDuplicateCard({ id: 1, link: 2 });
       const link0CardA = makeDuplicateCard({ id: 2, link: 0 });
