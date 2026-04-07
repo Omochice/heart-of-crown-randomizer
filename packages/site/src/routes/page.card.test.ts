@@ -1,42 +1,50 @@
-import { describe, expect, it } from "vitest";
 import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { Edition } from "@heart-of-crown-randomizer/card/type";
+import { describe, expect, it } from "vitest";
 
 describe("+page.svelte Card integration preparation", () => {
-	const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
+  const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 
-	it("should have cards available for Card to render", () => {
-		const selectedCommons: CommonCard[] = [allCommons[0], allCommons[1], allCommons[2]];
+  it("should have cards available for Card to render", () => {
+    const selectedCommons: CommonCard[] = [
+      allCommons[0],
+      allCommons[1],
+      allCommons[2],
+    ];
 
-		expect(selectedCommons.length).toBe(3);
-		expect(selectedCommons[0]).toBeDefined();
-		expect(selectedCommons[0].id).toBeDefined();
-		expect(selectedCommons[0].name).toBeDefined();
-	});
+    expect(selectedCommons.length).toBe(3);
+    expect(selectedCommons[0]).toBeDefined();
+    expect(selectedCommons[0].id).toBeDefined();
+    expect(selectedCommons[0].name).toBeDefined();
+  });
 
-	it("should be able to separate cards by edition (for grid rendering)", () => {
-		const selectedCommons: CommonCard[] = [
-			Basic.commons[0], // Basic edition
-			FarEasternBorder.commons[0], // Far Eastern Border edition
-			Basic.commons[1], // Basic edition
-		];
+  it("should be able to separate cards by edition (for grid rendering)", () => {
+    const selectedCommons: CommonCard[] = [
+      Basic.commons[0], // Basic edition
+      FarEasternBorder.commons[0], // Far Eastern Border edition
+      Basic.commons[1], // Basic edition
+    ];
 
-		const basicCards = selectedCommons.filter((c) => c.edition === Edition.BASIC);
-		const farEasternCards = selectedCommons.filter((c) => c.edition === Edition.FAR_EASTERN_BORDER);
+    const basicCards = selectedCommons.filter(
+      (c) => c.edition === Edition.BASIC,
+    );
+    const farEasternCards = selectedCommons.filter(
+      (c) => c.edition === Edition.FAR_EASTERN_BORDER,
+    );
 
-		expect(basicCards.length).toBe(2);
-		expect(farEasternCards.length).toBe(1);
-	});
+    expect(basicCards.length).toBe(2);
+    expect(farEasternCards.length).toBe(1);
+  });
 
-	it("should provide card data needed for Card component", () => {
-		const card = allCommons[0];
+  it("should provide card data needed for Card component", () => {
+    const card = allCommons[0];
 
-		expect(card.id).toBeDefined();
-		expect(card.name).toBeDefined();
-		expect(card.cost).toBeDefined();
-		expect(typeof card.id).toBe("number");
-		expect(typeof card.name).toBe("string");
-		expect(typeof card.cost).toBe("number");
-	});
+    expect(card.id).toBeDefined();
+    expect(card.name).toBeDefined();
+    expect(card.cost).toBeDefined();
+    expect(typeof card.id).toBe("number");
+    expect(typeof card.name).toBe("string");
+    expect(typeof card.cost).toBe("number");
+  });
 });

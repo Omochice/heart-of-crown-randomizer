@@ -8,8 +8,10 @@ import { encodeIds } from "@heart-of-crown-randomizer/id-codec";
  * links represent a specific card set, not the author's editing state.
  */
 export function buildShareUrl(origin: string, cards: CommonCard[]): string {
-	if (cards.length === 0) return "";
-	return `${origin}?s=${encodeIds(cards.map((c) => c.id))}`;
+  if (cards.length === 0) {
+    return "";
+  }
+  return `${origin}?s=${encodeIds(cards.map((c) => c.id))}`;
 }
 
 /**
@@ -19,21 +21,24 @@ export function buildShareUrl(origin: string, cards: CommonCard[]): string {
  * so embedding it in `text` would cause duplication on most user agents.
  */
 export function buildShareText(cardNames: readonly string[]): string {
-	return `ハトクラなう。今回のサプライ: ${cardNames.join(", ")} #hatokura #ハトクラ`;
+  return `ハトクラなう。今回のサプライ: ${cardNames.join(", ")} #hatokura #ハトクラ`;
 }
 
-export async function shareOrCopy(url: string, cardNames: readonly string[]): Promise<void> {
-	const text = buildShareText(cardNames);
-	await navigator
-		.share({
-			url,
-			title: "ハートオブクラウンランダマイザー",
-			text,
-		})
-		.catch(() => {
-			return navigator.clipboard.writeText(`${text} ${url}`);
-		})
-		.catch((cause) => {
-			console.error("Failed to copy URL", { cause });
-		});
+export async function shareOrCopy(
+  url: string,
+  cardNames: readonly string[],
+): Promise<void> {
+  const text = buildShareText(cardNames);
+  await navigator
+    .share({
+      url,
+      title: "ハートオブクラウンランダマイザー",
+      text,
+    })
+    .catch(() => {
+      return navigator.clipboard.writeText(`${text} ${url}`);
+    })
+    .catch((cause) => {
+      console.error("Failed to copy URL", { cause });
+    });
 }

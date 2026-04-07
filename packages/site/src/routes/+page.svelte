@@ -1,39 +1,40 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
-	import { page } from "$app/stores";
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+	import { allConstraints } from "@heart-of-crown-randomizer/constraint";
+	import { Plus, Shuffle } from "lucide-svelte";
 	import { onMount } from "svelte";
+	import { goto } from "$app/navigation";
+	import { page } from "$app/stores";
 	import AppMenu from "$lib/app-menu/AppMenu.svelte";
 	import Card from "$lib/Card.svelte";
 	import CardDetail from "$lib/CardDetail.svelte";
-	import ExcludeList from "$lib/ExcludeList.svelte";
-	import { createSwipeHandlers } from "$lib/utils/swipe-gesture.svelte";
-	import {
-		getPinnedCardIds,
-		getExcludedCardIds,
-		setPinnedCardIds,
-		setExcludedCardIds,
-		getPinnedCards,
-		getExcludedCards,
-	} from "$lib/stores/card-state.svelte";
-	import { parseCompressedIds } from "$lib/utils/url-sync";
-	import { resolveCardsFromUrl } from "$lib/stores/url-card-sync.svelte";
-	import {
-		drawRandomCards as drawRandomCardsLogic,
-		drawMissingCommons as drawMissingCommonsLogic,
-		buildCardUrl,
-	} from "$lib/utils/card-draw";
-	import { buildShareUrl, shareOrCopy } from "$lib/utils/share";
-	import { allConstraints } from "@heart-of-crown-randomizer/constraint";
 	import ConstraintPanel from "$lib/ConstraintPanel.svelte";
 	import DebugPanel from "$lib/DebugPanel.svelte";
+	import ExcludeList from "$lib/ExcludeList.svelte";
 	import {
-		getEnabledConstraints,
+		getExcludedCardIds,
+		getExcludedCards,
+		getPinnedCardIds,
+		getPinnedCards,
+		setExcludedCardIds,
+		setPinnedCardIds,
+	} from "$lib/stores/card-state.svelte";
+	import {
 		getEnabledConstraintIds,
+		getEnabledConstraints,
 		setEnabledConstraintIds,
 	} from "$lib/stores/constraint-state.svelte";
-	import { Shuffle, Plus } from "lucide-svelte";
+	import { resolveCardsFromUrl } from "$lib/stores/url-card-sync.svelte";
+	import {
+		buildCardUrl,
+		drawMissingCommons as drawMissingCommonsLogic,
+		drawRandomCards as drawRandomCardsLogic,
+	} from "$lib/utils/card-draw";
+	import { buildShareUrl, shareOrCopy } from "$lib/utils/share";
+	import { createSwipeHandlers } from "$lib/utils/swipe-gesture.svelte";
+	import { parseCompressedIds } from "$lib/utils/url-sync";
+
 	const isDebugMode = $derived($page.url.searchParams.get("debug") === "true");
 
 	let numberOfCommons = $state(10);
@@ -145,7 +146,9 @@
 
 	function drawMissingCommons() {
 		const newCards = drawMissingCommonsLogic(allCommons, selectedCommons, numberOfCommons);
-		if (newCards.length === 0) { return; }
+		if (newCards.length === 0) {
+			return;
+		}
 
 		selectedCommons = [...selectedCommons, ...newCards];
 		navigateWithCardState();

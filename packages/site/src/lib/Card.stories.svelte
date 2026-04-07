@@ -2,11 +2,11 @@
 	module
 	lang="ts"
 >
+	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+	import { Edition } from "@heart-of-crown-randomizer/card/type";
 	import { defineMeta } from "@storybook/addon-svelte-csf";
 	import { fn } from "@storybook/test";
 	import Card from "./Card.svelte";
-	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-	import { Edition } from "@heart-of-crown-randomizer/card/type";
 
 	const sampleCard: CommonCard = {
 		id: 1,

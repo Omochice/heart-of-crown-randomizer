@@ -20,15 +20,18 @@ export type ValidationResult = { ok: true } | { ok: false; message: string };
  * @param targetCount - Target number of cards to select
  * @returns Validation result with error message if invalid
  */
-export function validatePinConstraints(pinnedCount: number, targetCount: number): ValidationResult {
-	if (pinnedCount <= targetCount) {
-		return { ok: true };
-	}
-	const cardsToRemove = pinnedCount - targetCount;
-	return {
-		ok: false,
-		message: `ピンされたカードが多すぎます（${pinnedCount}/${targetCount}）。ピンを${cardsToRemove}枚解除してください。`,
-	};
+export function validatePinConstraints(
+  pinnedCount: number,
+  targetCount: number,
+): ValidationResult {
+  if (pinnedCount <= targetCount) {
+    return { ok: true };
+  }
+  const cardsToRemove = pinnedCount - targetCount;
+  return {
+    ok: false,
+    message: `ピンされたカードが多すぎます（${pinnedCount}/${targetCount}）。ピンを${cardsToRemove}枚解除してください。`,
+  };
 }
 
 /**
@@ -42,15 +45,15 @@ export function validatePinConstraints(pinnedCount: number, targetCount: number)
  * @returns Validation result with error message if invalid
  */
 export function validateExcludeConstraints(
-	availableCount: number,
-	targetCount: number,
+  availableCount: number,
+  targetCount: number,
 ): ValidationResult {
-	if (availableCount >= targetCount) {
-		return { ok: true };
-	}
-	const exclusionsToRemove = targetCount - availableCount;
-	return {
-		ok: false,
-		message: `除外により選択可能なカードが不足しています（${availableCount}/${targetCount}）。除外を${exclusionsToRemove}枚解除してください。`,
-	};
+  if (availableCount >= targetCount) {
+    return { ok: true };
+  }
+  const exclusionsToRemove = targetCount - availableCount;
+  return {
+    ok: false,
+    message: `除外により選択可能なカードが不足しています（${availableCount}/${targetCount}）。除外を${exclusionsToRemove}枚解除してください。`,
+  };
 }

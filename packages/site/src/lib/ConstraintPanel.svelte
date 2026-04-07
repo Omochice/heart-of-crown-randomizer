@@ -1,10 +1,10 @@
 <script lang="ts">
+	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
 	import { validateCombination } from "@heart-of-crown-randomizer/constraint";
-	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-	import { getEnabledConstraintIds, toggleConstraint } from "$lib/stores/constraint-state.svelte";
+	import { Check, ChevronDown, ChevronUp, SlidersHorizontal } from "lucide-svelte";
 	import { getPinnedCards } from "$lib/stores/card-state.svelte";
-	import { SlidersHorizontal, ChevronUp, ChevronDown, Check } from "lucide-svelte";
+	import { getEnabledConstraintIds, toggleConstraint } from "$lib/stores/constraint-state.svelte";
 
 	type Props = {
 		constraints: readonly Constraint[];
@@ -32,14 +32,18 @@
 	 * with each other even when individually applicable.
 	 */
 	function canToggle(constraint: Constraint): boolean {
-		if (enabledIds.has(constraint.id)) { return true; }
+		if (enabledIds.has(constraint.id)) {
+			return true;
+		}
 
 		const hypothetical = constraints.filter((c) => enabledIds.has(c.id) || c.id === constraint.id);
 		return validateCombination(hypothetical, { ...selectionContext, rng: () => 0.5 });
 	}
 
 	function handleToggle(constraint: Constraint) {
-		if (!canToggle(constraint)) { return; }
+		if (!canToggle(constraint)) {
+			return;
+		}
 		toggleConstraint(constraint.id);
 	}
 </script>
