@@ -7,7 +7,6 @@
       "!**/node_modules",
       "!**/dist",
       "!**/package.json",
-      "!**/*.svelte",
       "!**/.svelte-kit/**"
     ]
   },
@@ -34,5 +33,21 @@
         "useBlockStatements": "error"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.svelte"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          }
+        }
+      },
+      "formatter": {
+        "enabled": false
+      }
+    }
+  ]
 }
