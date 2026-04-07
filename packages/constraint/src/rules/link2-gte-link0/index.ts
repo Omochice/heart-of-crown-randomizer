@@ -37,7 +37,7 @@ export const link2GteLink0: Constraint = {
     );
     const requiredLink2 = countInCards(context.required, isLink2);
 
-    const link2Deficit = Math.max(0, requiredLink0 + 1 - requiredLink2);
+    const link2Deficit = Math.max(0, requiredLink0 - requiredLink2);
     if (link2Deficit <= 0) {
       return context;
     }
