@@ -38,10 +38,11 @@ const pickContextArb: fc.Arbitrary<PickContext> = fc
     const pool = uniqueById(rawPool.filter((c) => !pickedIds.has(c.id)));
     return {
       picked,
-      pool: pool.length > 0 ? pool : rawPool.slice(0, 1),
+      pool,
       remainingCount: 1 + extraRemaining,
     };
-  });
+  })
+  .filter((ctx) => ctx.pool.length > 0);
 
 /**
  * Only contexts where the constraint is still satisfiable
