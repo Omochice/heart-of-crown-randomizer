@@ -4,6 +4,7 @@
 	import { Basic, FarEasternBorder } from "@heart-of-crown-randomizer/card";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { onMount } from "svelte";
+	import AppMenu from "$lib/app-menu/AppMenu.svelte";
 	import Card from "$lib/Card.svelte";
 	import CardDetail from "$lib/CardDetail.svelte";
 	import ExcludeList from "$lib/ExcludeList.svelte";
@@ -29,6 +30,7 @@
 	import DebugPanel from "$lib/DebugPanel.svelte";
 	import {
 		getEnabledConstraints,
+		getEnabledConstraintIds,
 		setEnabledConstraintIds,
 	} from "$lib/stores/constraint-state.svelte";
 	import { Shuffle, Plus } from "lucide-svelte";
@@ -162,6 +164,7 @@
 
 	const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 
+	const selectedCardIds = $derived(selectedCommons.map((c) => c.id));
 	const excludedCards = $derived(getExcludedCards(allCommons));
 	const missingCount = $derived(Math.max(0, numberOfCommons - selectedCommons.length));
 </script>
@@ -172,6 +175,12 @@
 			<span class="title-main">ハートオブクラウン</span>
 			<span class="title-accent">ランダマイザー</span>
 		</div>
+		<AppMenu
+			{selectedCardIds}
+			pinnedIds={getPinnedCardIds()}
+			excludedIds={getExcludedCardIds()}
+			constraintIds={getEnabledConstraintIds()}
+		/>
 	</header>
 
 	<div
@@ -302,6 +311,7 @@
 	.page-header {
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 	}
 
 	.page-title {
