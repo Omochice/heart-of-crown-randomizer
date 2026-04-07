@@ -153,9 +153,11 @@ describe("link2GteLink0", () => {
 
   describe("full iterative selection", () => {
     test.prop([link2SufficientContextArb])(
-      "always satisfies isSatisfied",
+      "always satisfies isSatisfied and selects exactly count cards",
       (ctx) => {
+        const applied = link2GteLink0.apply(ctx);
         const result = simulateIterativeSelect(ctx);
+        expect(result).toHaveLength(applied.count);
         expect(link2GteLink0.isSatisfied(result)).toBe(true);
       },
     );
