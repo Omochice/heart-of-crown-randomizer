@@ -16,16 +16,16 @@ describe("link2GteLink0", () => {
   }).filter((ctx) => link2GteLink0.canApply(ctx));
 
   test.prop([link2RichContextArb])(
-    "after apply, pool link-0 count <= required link-2 count",
+    "after apply, required link-2 covers required link-0",
     (ctx) => {
       const result = link2GteLink0.apply(ctx);
-      const link0InPool = result.pool.filter(
-        (c) => !c.hasChild && c.link === 0,
-      ).length;
       const link2InRequired = result.required.filter(
         (c) => !c.hasChild && c.link === 2,
       ).length;
-      expect(link0InPool).toBeLessThanOrEqual(link2InRequired);
+      const link0InRequired = result.required.filter(
+        (c) => !c.hasChild && c.link === 0,
+      ).length;
+      expect(link2InRequired).toBeGreaterThanOrEqual(link0InRequired);
     },
   );
 
