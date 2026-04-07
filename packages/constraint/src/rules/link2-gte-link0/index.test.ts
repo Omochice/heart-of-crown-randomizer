@@ -23,6 +23,21 @@ describe("link2GteLink0", () => {
       expect(result.pool).toEqual([link1Card, extraLink2]);
     });
 
+    it("does not push required past count when all slots are already filled", () => {
+      const link0Card = makeDuplicateCard({ id: 1, link: 0 });
+      const link2InPool = makeDuplicateCard({ id: 2, link: 2 });
+      const context = makeContext({
+        pool: [link2InPool],
+        required: [link0Card],
+        count: 1,
+      });
+
+      const result = link2GteLink0.apply(context);
+
+      expect(result.required).toHaveLength(1);
+      expect(result.required).toEqual([link0Card]);
+    });
+
     it("does not force link-2 when required already has enough", () => {
       const link2InReq = makeDuplicateCard({ id: 1, link: 2 });
       const link0CardA = makeDuplicateCard({ id: 2, link: 0 });
