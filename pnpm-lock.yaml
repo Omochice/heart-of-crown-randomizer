@@ -185,6 +185,9 @@ importers:
         specifier: workspace:*
         version: link:../randomizer
     devDependencies:
+      '@biomejs/biome':
+        specifier: 'catalog:'
+        version: 2.4.10
       '@playwright/test':
         specifier: 1.59.1
         version: 1.59.1
@@ -239,6 +242,9 @@ importers:
       lucide-svelte:
         specifier: 1.0.1
         version: 1.0.1(svelte@5.55.1)
+      npm-run-all2:
+        specifier: 'catalog:'
+        version: 8.0.4
       playwright:
         specifier: 1.59.1
         version: 1.59.1
@@ -269,6 +275,9 @@ importers:
       vite:
         specifier: 8.0.3
         version: 8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1)
+      vitest:
+        specifier: 'catalog:'
+        version: 4.1.2(@types/node@24.12.2)(@vitest/browser-playwright@4.1.2)(jsdom@29.0.1)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1))
 
 packages:
 
