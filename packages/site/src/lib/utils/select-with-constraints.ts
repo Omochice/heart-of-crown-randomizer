@@ -1,6 +1,6 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
-import { select } from "@heart-of-crown-randomizer/randomizer";
+import { createRNG, select } from "@heart-of-crown-randomizer/randomizer";
 
 /**
  * Pick cards one at a time, narrowing the candidate pool on each pick
@@ -71,7 +71,7 @@ export function selectWithConstraints(
 		pool: filteredPool,
 		required: [...pinnedCards],
 		count,
-		rng: Math.random,
+		rng: createRNG(),
 	};
 
 	if (constraints) {
