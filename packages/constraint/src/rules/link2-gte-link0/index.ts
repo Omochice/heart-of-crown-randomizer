@@ -1,5 +1,5 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-import type { Constraint, SelectionContext } from "../../type";
+import type { Constraint, PickContext, SelectionContext } from "../../type";
 import { countInCards, getLink, isLink2 } from "../shared/card-properties";
 import { pickFromPool } from "../shared/pick-from-pool";
 
@@ -7,13 +7,12 @@ import { pickFromPool } from "../shared/pick-from-pool";
  * Constraint ensuring the number of link-2 cards is at least as large
  * as the number of link-0 cards in the final selection.
  *
- * When applied, link-2 cards are moved from pool to required via
- * pickFromPool, then link-0 cards in pool are trimmed so that the
- * worst-case random selection still satisfies link2 >= link0.
+ * apply() forces a minimal number of link-2 cards into required to
+ * cover any required link-0 cards, ensuring validateCombination works.
  *
- * Pool trimming alone (without forcing link-2 into required) cannot
- * guarantee the constraint because random selection may pick fewer
- * link-2 cards than link-0 cards from the remaining pool.
+ * filterPoolForNextPick() dynamically narrows the candidate pool on
+ * each iterative pick using a link budget algorithm, allowing all
+ * link-0 cards to remain in the pool while guaranteeing the constraint.
  */
 export const link2GteLink0: Constraint = {
   id: 2,
@@ -43,5 +42,16 @@ export const link2GteLink0: Constraint = {
       return context;
     }
     return pickFromPool(context, isLink2, link2Deficit);
+  },
+
+  filterPoolForNextPick(context: Readonly<PickContext>): CommonCard[] {
+    const budget =
+      countInCards(context.picked, isLink2) -
+      countInCards(context.picked, (c) => getLink(c) === 0);
+    const slack = budget + context.remainingCount;
+
+    if (slack >= 2) return [...context.pool];
+    if (slack >= 1) return context.pool.filter((c) => getLink(c) !== 0);
+    return context.pool.filter(isLink2);
   },
 };
