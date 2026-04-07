@@ -23,11 +23,12 @@ function iterativeSelect(
 
 		let available: readonly CommonCard[] = pool;
 		for (const constraint of dynamicConstraints) {
-			available = constraint.filterPoolForNextPick!({
-				picked,
-				pool: available,
-				remainingCount: remaining,
-			});
+			available =
+				constraint.filterPoolForNextPick?.({
+					picked,
+					pool: available,
+					remainingCount: remaining,
+				}) ?? available;
 		}
 
 		// Fallback: when every constraint filters the pool to empty, pick
