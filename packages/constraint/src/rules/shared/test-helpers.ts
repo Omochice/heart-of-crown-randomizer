@@ -109,7 +109,9 @@ export const commonCardArb: fc.Arbitrary<CommonCard> = fc.oneof(
 function uniqueById(cards: CommonCard[]): CommonCard[] {
   const seen = new Set<number>();
   return cards.filter((c) => {
-    if (seen.has(c.id)) return false;
+    if (seen.has(c.id)) {
+      return false;
+    }
     seen.add(c.id);
     return true;
   });
@@ -161,7 +163,9 @@ export function describeApplyInvariants(
     test.prop([contextArb()])(
       "apply never creates cards (total can only shrink or stay)",
       (ctx) => {
-        if (!constraint.canApply(ctx)) return;
+        if (!constraint.canApply(ctx)) {
+          return;
+        }
         const result = constraint.apply(ctx);
         const before = ctx.pool.length + ctx.required.length;
         const after = result.pool.length + result.required.length;
@@ -170,7 +174,9 @@ export function describeApplyInvariants(
     );
 
     test.prop([contextArb()])("apply does not change count", (ctx) => {
-      if (!constraint.canApply(ctx)) return;
+      if (!constraint.canApply(ctx)) {
+        return;
+      }
       const result = constraint.apply(ctx);
       expect(result.count).toBe(ctx.count);
     });
@@ -178,7 +184,9 @@ export function describeApplyInvariants(
     test.prop([contextArb()])(
       "apply keeps required as superset of original required",
       (ctx) => {
-        if (!constraint.canApply(ctx)) return;
+        if (!constraint.canApply(ctx)) {
+          return;
+        }
         const result = constraint.apply(ctx);
         for (const card of ctx.required) {
           expect(result.required).toContain(card);

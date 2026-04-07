@@ -7,8 +7,9 @@
       "!**/node_modules",
       "!**/dist",
       "!**/package.json",
-      "!**/*.svelte",
-      "!**/.svelte-kit/**"
+      "!**/.svelte-kit/**",
+      "!**/playwright-report/**",
+      "!**/test-results/**"
     ]
   },
   "formatter": {
@@ -30,8 +31,25 @@
         "noUnusedTemplateLiteral": "error",
         "useNumberNamespace": "error",
         "noInferrableTypes": "error",
-        "noUselessElse": "error"
+        "noUselessElse": "error",
+        "useBlockStatements": "error"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.svelte"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          }
+        }
+      },
+      "formatter": {
+        "enabled": false
+      }
+    }
+  ]
 }

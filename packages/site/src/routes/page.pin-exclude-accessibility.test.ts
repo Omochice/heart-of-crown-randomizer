@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/svelte";
-import Card from "$lib/Card.svelte";
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+import { fireEvent, render, screen } from "@testing-library/svelte";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import Card from "$lib/Card.svelte";
 import * as CardState from "$lib/stores/card-state.svelte";
 
 /**
@@ -16,155 +16,155 @@ import * as CardState from "$lib/stores/card-state.svelte";
  * keyboard-specific interactions here.
  */
 describe("Card Keyboard Accessibility (Task 7.1 - Requirement 6.1)", () => {
-	const mockCard: CommonCard = {
-		id: 1,
-		name: "Test Card",
-		cost: 3,
-		type: "common",
-		link: 0,
-		mainType: ["attack"],
-		effect: "",
-		hasChild: false,
-		edition: 0,
-	};
+  const mockCard: CommonCard = {
+    id: 1,
+    name: "Test Card",
+    cost: 3,
+    type: "common",
+    link: 0,
+    mainType: ["attack"],
+    effect: "",
+    hasChild: false,
+    edition: 0,
+  };
 
-	const mockSwipeHandlers = {
-		onSwipeStart: vi.fn(),
-		onSwipeMove: vi.fn(),
-		onSwipeEnd: vi.fn(),
-		onSwipeCancel: vi.fn(),
-		originalIndex: 0,
-	};
+  const mockSwipeHandlers = {
+    onSwipeStart: vi.fn(),
+    onSwipeMove: vi.fn(),
+    onSwipeEnd: vi.fn(),
+    onSwipeCancel: vi.fn(),
+    originalIndex: 0,
+  };
 
-	beforeEach(() => {
-		// Reset card state before each test
-		CardState.setPinnedCardIds(new Set());
-		CardState.setExcludedCardIds(new Set());
-	});
+  beforeEach(() => {
+    // Reset card state before each test
+    CardState.setPinnedCardIds(new Set());
+    CardState.setExcludedCardIds(new Set());
+  });
 
-	describe("Keyboard Operation - Tab Navigation", () => {
-		it("should allow focusing pin button with Tab key", () => {
-			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
+  describe("Keyboard Operation - Tab Navigation", () => {
+    it("should allow focusing pin button with Tab key", () => {
+      render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const pinButton = screen.getByRole("button", { name: /ピン/ });
+      const pinButton = screen.getByRole("button", { name: /ピン/ });
 
-			// Pin button should be focusable (button elements are natively focusable)
-			pinButton.focus();
-			expect(document.activeElement).toBe(pinButton);
-		});
+      // Pin button should be focusable (button elements are natively focusable)
+      pinButton.focus();
+      expect(document.activeElement).toBe(pinButton);
+    });
 
-		it("should allow focusing exclude button with Tab key", () => {
-			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
+    it("should allow focusing exclude button with Tab key", () => {
+      render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const excludeButton = screen.getByRole("button", { name: /除外/ });
+      const excludeButton = screen.getByRole("button", { name: /除外/ });
 
-			// Exclude button should be focusable (button elements are natively focusable)
-			excludeButton.focus();
-			expect(document.activeElement).toBe(excludeButton);
-		});
+      // Exclude button should be focusable (button elements are natively focusable)
+      excludeButton.focus();
+      expect(document.activeElement).toBe(excludeButton);
+    });
 
-		it("should maintain tab order: pin button before exclude button", () => {
-			const { container } = render(Card, {
-				props: { card: mockCard, ...mockSwipeHandlers },
-			});
+    it("should maintain tab order: pin button before exclude button", () => {
+      const { container } = render(Card, {
+        props: { card: mockCard, ...mockSwipeHandlers },
+      });
 
-			const buttons = container.querySelectorAll("button");
-			expect(buttons.length).toBe(2);
+      const buttons = container.querySelectorAll("button");
+      expect(buttons.length).toBe(2);
 
-			// Pin button should come first in DOM order (determines tab order)
-			const pinButton = screen.getByRole("button", { name: /ピン/ });
-			const excludeButton = screen.getByRole("button", { name: /除外/ });
+      // Pin button should come first in DOM order (determines tab order)
+      const pinButton = screen.getByRole("button", { name: /ピン/ });
+      const excludeButton = screen.getByRole("button", { name: /除外/ });
 
-			expect(buttons[0]).toBe(pinButton);
-			expect(buttons[1]).toBe(excludeButton);
-		});
+      expect(buttons[0]).toBe(pinButton);
+      expect(buttons[1]).toBe(excludeButton);
+    });
 
-		it("should not have tabindex attribute (relying on native button behavior)", () => {
-			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
+    it("should not have tabindex attribute (relying on native button behavior)", () => {
+      render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const pinButton = screen.getByRole("button", { name: /ピン/ });
-			const excludeButton = screen.getByRole("button", { name: /除外/ });
+      const pinButton = screen.getByRole("button", { name: /ピン/ });
+      const excludeButton = screen.getByRole("button", { name: /除外/ });
 
-			// Native <button> elements are focusable by default (no tabindex needed)
-			expect(pinButton.hasAttribute("tabindex")).toBe(false);
-			expect(excludeButton.hasAttribute("tabindex")).toBe(false);
-		});
-	});
+      // Native <button> elements are focusable by default (no tabindex needed)
+      expect(pinButton.hasAttribute("tabindex")).toBe(false);
+      expect(excludeButton.hasAttribute("tabindex")).toBe(false);
+    });
+  });
 
-	describe("Keyboard Operation - Native Button Semantics", () => {
-		it("should use native button element for pin button (guarantees Enter/Space support)", () => {
-			const { container } = render(Card, {
-				props: { card: mockCard, ...mockSwipeHandlers },
-			});
+  describe("Keyboard Operation - Native Button Semantics", () => {
+    it("should use native button element for pin button (guarantees Enter/Space support)", () => {
+      render(Card, {
+        props: { card: mockCard, ...mockSwipeHandlers },
+      });
 
-			const pinButton = screen.getByRole("button", { name: /ピン/ });
+      const pinButton = screen.getByRole("button", { name: /ピン/ });
 
-			// Verify it's a native <button> element, not div+role="button"
-			expect(pinButton.tagName).toBe("BUTTON");
-		});
+      // Verify it's a native <button> element, not div+role="button"
+      expect(pinButton.tagName).toBe("BUTTON");
+    });
 
-		it("should use native button element for exclude button (guarantees Enter/Space support)", () => {
-			const { container } = render(Card, {
-				props: { card: mockCard, ...mockSwipeHandlers },
-			});
+    it("should use native button element for exclude button (guarantees Enter/Space support)", () => {
+      render(Card, {
+        props: { card: mockCard, ...mockSwipeHandlers },
+      });
 
-			const excludeButton = screen.getByRole("button", { name: /除外/ });
+      const excludeButton = screen.getByRole("button", { name: /除外/ });
 
-			// Verify it's a native <button> element, not div+role="button"
-			expect(excludeButton.tagName).toBe("BUTTON");
-		});
+      // Verify it's a native <button> element, not div+role="button"
+      expect(excludeButton.tagName).toBe("BUTTON");
+    });
 
-		it("should have type=button on pin button to prevent form submission", () => {
-			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
+    it("should have type=button on pin button to prevent form submission", () => {
+      render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const pinButton = screen.getByRole("button", { name: /ピン/ });
+      const pinButton = screen.getByRole("button", { name: /ピン/ });
 
-			// type="button" prevents accidental form submission when inside a form
-			expect(pinButton.getAttribute("type")).toBe("button");
-		});
+      // type="button" prevents accidental form submission when inside a form
+      expect(pinButton.getAttribute("type")).toBe("button");
+    });
 
-		it("should have type=button on exclude button to prevent form submission", () => {
-			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
+    it("should have type=button on exclude button to prevent form submission", () => {
+      render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const excludeButton = screen.getByRole("button", { name: /除外/ });
+      const excludeButton = screen.getByRole("button", { name: /除外/ });
 
-			// type="button" prevents accidental form submission when inside a form
-			expect(excludeButton.getAttribute("type")).toBe("button");
-		});
-	});
+      // type="button" prevents accidental form submission when inside a form
+      expect(excludeButton.getAttribute("type")).toBe("button");
+    });
+  });
 
-	describe("Keyboard Operation - Focus Retention After Click", () => {
-		it("should retain focus on pin button after click activation", async () => {
-			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
+  describe("Keyboard Operation - Focus Retention After Click", () => {
+    it("should retain focus on pin button after click activation", async () => {
+      render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const pinButton = screen.getByRole("button", { name: /ピン/ });
-			pinButton.focus();
+      const pinButton = screen.getByRole("button", { name: /ピン/ });
+      pinButton.focus();
 
-			// Click the button (simulates user interaction)
-			await fireEvent.click(pinButton);
+      // Click the button (simulates user interaction)
+      await fireEvent.click(pinButton);
 
-			// Focus should remain on the button
-			// This ensures keyboard users don't lose their place after activating a button
-			expect(document.activeElement).toBe(pinButton);
-		});
+      // Focus should remain on the button
+      // This ensures keyboard users don't lose their place after activating a button
+      expect(document.activeElement).toBe(pinButton);
+    });
 
-		it("should retain focus on exclude button after click activation", async () => {
-			render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
+    it("should retain focus on exclude button after click activation", async () => {
+      render(Card, { props: { card: mockCard, ...mockSwipeHandlers } });
 
-			const excludeButton = screen.getByRole("button", { name: /除外/ });
-			excludeButton.focus();
+      const excludeButton = screen.getByRole("button", { name: /除外/ });
+      excludeButton.focus();
 
-			// Click the button (simulates user interaction)
-			await fireEvent.click(excludeButton);
+      // Click the button (simulates user interaction)
+      await fireEvent.click(excludeButton);
 
-			// Focus should remain on the button
-			expect(document.activeElement).toBe(excludeButton);
-		});
-	});
+      // Focus should remain on the button
+      expect(document.activeElement).toBe(excludeButton);
+    });
+  });
 
-	describe("Accessibility Documentation (Requirement 6.1)", () => {
-		it("documents the keyboard operation requirements", () => {
-			const expectedBehavior = `
+  describe("Accessibility Documentation (Requirement 6.1)", () => {
+    it("documents the keyboard operation requirements", () => {
+      const expectedBehavior = `
 				Keyboard Operation Requirements (WCAG 2.1.1 - Keyboard):
 				- All pin/exclude buttons MUST be keyboard accessible
 				- Tab key moves focus to buttons in logical order (pin before exclude)
@@ -194,11 +194,11 @@ describe("Card Keyboard Accessibility (Task 7.1 - Requirement 6.1)", () => {
 				- Muscle memory from other web applications (standard button behavior)
 				- Less code to maintain (no custom keyboard event handlers)
 			`;
-			expect(expectedBehavior).toBeTruthy();
-		});
+      expect(expectedBehavior).toBeTruthy();
+    });
 
-		it("documents why native button elements were chosen over div+role", () => {
-			const designRationale = `
+    it("documents why native button elements were chosen over div+role", () => {
+      const designRationale = `
 				WHY NOT use <div role="button" tabindex="0" onkeydown={...}>?
 
 				We chose native <button> elements over div+role+custom-handlers because:
@@ -235,7 +235,7 @@ describe("Card Keyboard Accessibility (Task 7.1 - Requirement 6.1)", () => {
 				Decision: Native buttons provide better accessibility with significantly less code.
 				The browser's built-in keyboard support is more reliable than our custom implementation.
 			`;
-			expect(designRationale).toBeTruthy();
-		});
-	});
+      expect(designRationale).toBeTruthy();
+    });
+  });
 });

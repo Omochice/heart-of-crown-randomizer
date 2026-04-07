@@ -7,9 +7,11 @@ import { decodeIds, encodeIds } from "@heart-of-crown-randomizer/id-codec";
  * parameter (`s`), keeping all ID sets compact and consistent.
  */
 export function parseCompressedIds(url: URL, param: string): Set<number> {
-	const encoded = url.searchParams.get(param);
-	if (encoded === null || encoded === "") return new Set();
-	return new Set(decodeIds(encoded));
+  const encoded = url.searchParams.get(param);
+  if (encoded === null || encoded === "") {
+    return new Set();
+  }
+  return new Set(decodeIds(encoded));
 }
 
 /**
@@ -20,28 +22,34 @@ export function parseCompressedIds(url: URL, param: string): Set<number> {
  * on the first state-to-URL sync.
  */
 export function buildUrlWithCardState(
-	baseUrl: URL,
-	pinnedIds: ReadonlySet<number>,
-	excludedIds: ReadonlySet<number>,
-	constraintIds: ReadonlySet<number>,
+  baseUrl: URL,
+  pinnedIds: ReadonlySet<number>,
+  excludedIds: ReadonlySet<number>,
+  constraintIds: ReadonlySet<number>,
 ): URL {
-	const url = new URL(baseUrl);
+  const url = new URL(baseUrl);
 
-	url.searchParams.delete("pin");
-	url.searchParams.delete("exclude");
-	url.searchParams.delete("p");
-	url.searchParams.delete("e");
-	url.searchParams.delete("c");
+  url.searchParams.delete("pin");
+  url.searchParams.delete("exclude");
+  url.searchParams.delete("p");
+  url.searchParams.delete("e");
+  url.searchParams.delete("c");
 
-	const pEncoded = encodeIds([...pinnedIds]);
-	const eEncoded = encodeIds([...excludedIds]);
-	const cEncoded = encodeIds([...constraintIds]);
+  const pEncoded = encodeIds([...pinnedIds]);
+  const eEncoded = encodeIds([...excludedIds]);
+  const cEncoded = encodeIds([...constraintIds]);
 
-	if (pEncoded) url.searchParams.set("p", pEncoded);
-	if (eEncoded) url.searchParams.set("e", eEncoded);
-	if (cEncoded) url.searchParams.set("c", cEncoded);
+  if (pEncoded) {
+    url.searchParams.set("p", pEncoded);
+  }
+  if (eEncoded) {
+    url.searchParams.set("e", eEncoded);
+  }
+  if (cEncoded) {
+    url.searchParams.set("c", cEncoded);
+  }
 
-	return url;
+  return url;
 }
 
 /**
@@ -51,10 +59,17 @@ export function buildUrlWithCardState(
  * params already match the current state, preventing circular
  * effect triggers between URL-to-State and State-to-URL effects.
  */
-export function setsEqual(a: ReadonlySet<number>, b: ReadonlySet<number>): boolean {
-	if (a.size !== b.size) return false;
-	for (const id of a) {
-		if (!b.has(id)) return false;
-	}
-	return true;
+export function setsEqual(
+  a: ReadonlySet<number>,
+  b: ReadonlySet<number>,
+): boolean {
+  if (a.size !== b.size) {
+    return false;
+  }
+  for (const id of a) {
+    if (!b.has(id)) {
+      return false;
+    }
+  }
+  return true;
 }

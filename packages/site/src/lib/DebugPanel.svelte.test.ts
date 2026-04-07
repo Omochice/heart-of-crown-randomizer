@@ -1,196 +1,244 @@
-import { describe, expect, it, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/svelte";
-import DebugPanel from "./DebugPanel.svelte";
-import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
-import { makeCard } from "$lib/test-helpers";
+import type {
+  Constraint,
+  SelectionContext,
+} from "@heart-of-crown-randomizer/constraint";
+import { fireEvent, render, screen } from "@testing-library/svelte";
+import { beforeEach, describe, expect, it } from "vitest";
 import * as constraintState from "$lib/stores/constraint-state.svelte";
+import { makeCard } from "$lib/test-helpers";
+import DebugPanel from "./DebugPanel.svelte";
 
-function makeConstraint(id: number, label: string, isSatisfied = true): Constraint {
-	return {
-		id,
-		label,
-		canApply: () => true,
-		isSatisfied: () => isSatisfied,
-		apply: (ctx: SelectionContext) => ctx,
-	};
+function makeConstraint(
+  id: number,
+  label: string,
+  isSatisfied = true,
+): Constraint {
+  return {
+    id,
+    label,
+    canApply: () => true,
+    isSatisfied: () => isSatisfied,
+    apply: (ctx: SelectionContext) => ctx,
+  };
 }
 
 const allCards = Array.from({ length: 10 }, (_, i) => makeCard(i + 1));
-const constraints = [makeConstraint(1, "Constraint 1"), makeConstraint(2, "Constraint 2", false)];
+const constraints = [
+  makeConstraint(1, "Constraint 1"),
+  makeConstraint(2, "Constraint 2", false),
+];
 
 const defaultProps = {
-	constraints,
-	selectedCards: [],
-	allCards,
-	pinnedCards: [],
-	excludedIds: new Set<number>(),
-	count: 10,
+  constraints,
+  selectedCards: [],
+  allCards,
+  pinnedCards: [],
+  excludedIds: new Set<number>(),
+  count: 10,
 };
 
 describe("DebugPanel", () => {
-	beforeEach(() => {
-		// Reset constraint state by toggling off any enabled constraints
-		for (const c of constraints) {
-			if (constraintState.getEnabledConstraintIds().has(c.id)) {
-				constraintState.toggleConstraint(c.id);
-			}
-		}
-	});
+  beforeEach(() => {
+    // Reset constraint state by toggling off any enabled constraints
+    for (const c of constraints) {
+      if (constraintState.getEnabledConstraintIds().has(c.id)) {
+        constraintState.toggleConstraint(c.id);
+      }
+    }
+  });
 
-	describe("FAB button", () => {
-		it("should render the FAB button", () => {
-			render(DebugPanel, { props: defaultProps });
+  describe("FAB button", () => {
+    it("should render the FAB button", () => {
+      render(DebugPanel, { props: defaultProps });
 
-			const fab = screen.getByRole("button", { name: /debug panel/i });
-			expect(fab).toBeDefined();
-		});
+      const fab = screen.getByRole("button", { name: /debug panel/i });
+      expect(fab).toBeDefined();
+    });
 
-		it("should toggle panel visibility on click", async () => {
-			render(DebugPanel, { props: defaultProps });
+    it("should toggle panel visibility on click", async () => {
+      render(DebugPanel, { props: defaultProps });
 
-			expect(screen.queryByRole("complementary")).toBeNull();
+      expect(screen.queryByRole("complementary")).toBeNull();
 
-			const fab = screen.getByRole("button", { name: /open debug panel/i });
-			await fireEvent.click(fab);
+      const fab = screen.getByRole("button", { name: /open debug panel/i });
+      await fireEvent.click(fab);
 
-			expect(screen.queryByRole("complementary")).not.toBeNull();
-		});
+      expect(screen.queryByRole("complementary")).not.toBeNull();
+    });
 
-		it("should close panel on second click", async () => {
-			render(DebugPanel, { props: defaultProps });
+    it("should close panel on second click", async () => {
+      render(DebugPanel, { props: defaultProps });
 
-			const fab = screen.getByRole("button", { name: /open debug panel/i });
-			await fireEvent.click(fab);
-			expect(screen.queryByRole("complementary")).not.toBeNull();
+      const fab = screen.getByRole("button", { name: /open debug panel/i });
+      await fireEvent.click(fab);
+      expect(screen.queryByRole("complementary")).not.toBeNull();
 
-			const closeFab = screen.getByRole("button", { name: /close debug panel/i });
-			await fireEvent.click(closeFab);
-			expect(screen.queryByRole("complementary")).toBeNull();
-		});
-	});
+      const closeFab = screen.getByRole("button", {
+        name: /close debug panel/i,
+      });
+      await fireEvent.click(closeFab);
+      expect(screen.queryByRole("complementary")).toBeNull();
+    });
+  });
 
-	describe("Constraint status section", () => {
-		it("should show all constraints with OFF badge when none enabled", async () => {
-			render(DebugPanel, { props: defaultProps });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+  describe("Constraint status section", () => {
+    it("should show all constraints with OFF badge when none enabled", async () => {
+      render(DebugPanel, { props: defaultProps });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			const badges = screen.getAllByText("OFF");
-			expect(badges).toHaveLength(2);
-		});
+      const badges = screen.getAllByText("OFF");
+      expect(badges).toHaveLength(2);
+    });
 
-		it("should show ON badge for enabled constraints", async () => {
-			constraintState.toggleConstraint(1);
+    it("should show ON badge for enabled constraints", async () => {
+      constraintState.toggleConstraint(1);
 
-			render(DebugPanel, { props: defaultProps });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+      render(DebugPanel, { props: defaultProps });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText("ON")).toBeDefined();
-			expect(screen.getAllByText("OFF")).toHaveLength(1);
-		});
-	});
+      expect(screen.getByText("ON")).toBeDefined();
+      expect(screen.getAllByText("OFF")).toHaveLength(1);
+    });
+  });
 
-	describe("Constraint satisfaction section", () => {
-		it("should show 'No active constraints.' when none enabled", async () => {
-			render(DebugPanel, { props: defaultProps });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+  describe("Constraint satisfaction section", () => {
+    it("should show 'No active constraints.' when none enabled", async () => {
+      render(DebugPanel, { props: defaultProps });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText("No active constraints.")).toBeDefined();
-		});
+      expect(screen.getByText("No active constraints.")).toBeDefined();
+    });
 
-		it("should show N/A when constraint is enabled but no cards selected", async () => {
-			constraintState.toggleConstraint(1);
+    it("should show N/A when constraint is enabled but no cards selected", async () => {
+      constraintState.toggleConstraint(1);
 
-			render(DebugPanel, { props: defaultProps });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+      render(DebugPanel, { props: defaultProps });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText("N/A")).toBeDefined();
-		});
+      expect(screen.getByText("N/A")).toBeDefined();
+    });
 
-		it("should show PASS for satisfied constraint with selected cards", async () => {
-			constraintState.toggleConstraint(1);
-			const selected = allCards.slice(0, 3);
+    it("should show PASS for satisfied constraint with selected cards", async () => {
+      constraintState.toggleConstraint(1);
+      const selected = allCards.slice(0, 3);
 
-			render(DebugPanel, { props: { ...defaultProps, selectedCards: selected } });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+      render(DebugPanel, {
+        props: { ...defaultProps, selectedCards: selected },
+      });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText("PASS")).toBeDefined();
-		});
+      expect(screen.getByText("PASS")).toBeDefined();
+    });
 
-		it("should show FAIL for unsatisfied constraint with selected cards", async () => {
-			constraintState.toggleConstraint(2);
-			const selected = allCards.slice(0, 3);
+    it("should show FAIL for unsatisfied constraint with selected cards", async () => {
+      constraintState.toggleConstraint(2);
+      const selected = allCards.slice(0, 3);
 
-			render(DebugPanel, { props: { ...defaultProps, selectedCards: selected } });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+      render(DebugPanel, {
+        props: { ...defaultProps, selectedCards: selected },
+      });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText("FAIL")).toBeDefined();
-		});
-	});
+      expect(screen.getByText("FAIL")).toBeDefined();
+    });
+  });
 
-	describe("Pinned cards section", () => {
-		it("should show pinned cards with their names", async () => {
-			const pinnedCards = [allCards[0], allCards[2]];
+  describe("Pinned cards section", () => {
+    it("should show pinned cards with their names", async () => {
+      const pinnedCards = [allCards[0], allCards[2]];
 
-			render(DebugPanel, { props: { ...defaultProps, pinnedCards } });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+      render(DebugPanel, { props: { ...defaultProps, pinnedCards } });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText("Pinned (2)")).toBeDefined();
-			expect(screen.getByText("Card 1")).toBeDefined();
-			expect(screen.getByText("Card 3")).toBeDefined();
-		});
+      expect(screen.getByText("Pinned (2)")).toBeDefined();
+      expect(screen.getByText("Card 1")).toBeDefined();
+      expect(screen.getByText("Card 3")).toBeDefined();
+    });
 
-		it("should show empty message when no cards are pinned", async () => {
-			render(DebugPanel, { props: defaultProps });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+    it("should show empty message when no cards are pinned", async () => {
+      render(DebugPanel, { props: defaultProps });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText("Pinned (0)")).toBeDefined();
-		});
-	});
+      expect(screen.getByText("Pinned (0)")).toBeDefined();
+    });
+  });
 
-	describe("Excluded cards section", () => {
-		it("should show excluded cards with their names", async () => {
-			const excludedIds = new Set([2, 4]);
+  describe("Excluded cards section", () => {
+    it("should show excluded cards with their names", async () => {
+      const excludedIds = new Set([2, 4]);
 
-			render(DebugPanel, { props: { ...defaultProps, excludedIds } });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+      render(DebugPanel, { props: { ...defaultProps, excludedIds } });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText("Excluded (2)")).toBeDefined();
-			expect(screen.getByText("Card 2")).toBeDefined();
-			expect(screen.getByText("Card 4")).toBeDefined();
-		});
+      expect(screen.getByText("Excluded (2)")).toBeDefined();
+      expect(screen.getByText("Card 2")).toBeDefined();
+      expect(screen.getByText("Card 4")).toBeDefined();
+    });
 
-		it("should show empty message when no cards are excluded", async () => {
-			render(DebugPanel, { props: defaultProps });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+    it("should show empty message when no cards are excluded", async () => {
+      render(DebugPanel, { props: defaultProps });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText("Excluded (0)")).toBeDefined();
-		});
-	});
+      expect(screen.getByText("Excluded (0)")).toBeDefined();
+    });
+  });
 
-	describe("Drawable pool section", () => {
-		it("should show all cards in pool when no exclusions or pins", async () => {
-			render(DebugPanel, { props: defaultProps });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+  describe("Drawable pool section", () => {
+    it("should show all cards in pool when no exclusions or pins", async () => {
+      render(DebugPanel, { props: defaultProps });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText(`Drawable Pool (${allCards.length})`)).toBeDefined();
-		});
+      expect(
+        screen.getByText(`Drawable Pool (${allCards.length})`),
+      ).toBeDefined();
+    });
 
-		it("should exclude cards from pool based on excludedIds", async () => {
-			const excludedIds = new Set([1, 2]);
+    it("should exclude cards from pool based on excludedIds", async () => {
+      const excludedIds = new Set([1, 2]);
 
-			render(DebugPanel, { props: { ...defaultProps, excludedIds } });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+      render(DebugPanel, { props: { ...defaultProps, excludedIds } });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText(`Drawable Pool (${allCards.length - 2})`)).toBeDefined();
-		});
+      expect(
+        screen.getByText(`Drawable Pool (${allCards.length - 2})`),
+      ).toBeDefined();
+    });
 
-		it("should exclude pinned cards from pool", async () => {
-			const pinnedCards = [allCards[0]];
+    it("should exclude pinned cards from pool", async () => {
+      const pinnedCards = [allCards[0]];
 
-			render(DebugPanel, { props: { ...defaultProps, pinnedCards } });
-			await fireEvent.click(screen.getByRole("button", { name: /open debug panel/i }));
+      render(DebugPanel, { props: { ...defaultProps, pinnedCards } });
+      await fireEvent.click(
+        screen.getByRole("button", { name: /open debug panel/i }),
+      );
 
-			expect(screen.getByText(`Drawable Pool (${allCards.length - 1})`)).toBeDefined();
-		});
-	});
+      expect(
+        screen.getByText(`Drawable Pool (${allCards.length - 1})`),
+      ).toBeDefined();
+    });
+  });
 });

@@ -13,7 +13,9 @@ describe("noAttack", () => {
   test.prop([contextArb()])(
     "after apply, pool contains no attack cards",
     (ctx) => {
-      if (!noAttack.canApply(ctx)) return;
+      if (!noAttack.canApply(ctx)) {
+        return;
+      }
       const result = noAttack.apply(ctx);
       for (const card of result.pool) {
         if (card.hasChild) {

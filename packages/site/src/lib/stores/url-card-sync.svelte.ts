@@ -8,11 +8,18 @@ import { setsEqual } from "$lib/utils/url-sync";
  * We filter with Boolean rather than throwing on invalid IDs because
  * future card sets may produce IDs not present in the current allCommons list.
  */
-export function resolveCardsFromUrl(url: URL, allCommons: CommonCard[]): CommonCard[] {
-	const encoded = url.searchParams.get("s");
-	if (encoded === null) return [];
-	const ids = decodeIds(encoded);
-	return ids.map((id) => allCommons.find((c) => c.id === id)).filter(Boolean) as CommonCard[];
+export function resolveCardsFromUrl(
+  url: URL,
+  allCommons: CommonCard[],
+): CommonCard[] {
+  const encoded = url.searchParams.get("s");
+  if (encoded === null) {
+    return [];
+  }
+  const ids = decodeIds(encoded);
+  return ids
+    .map((id) => allCommons.find((c) => c.id === id))
+    .filter(Boolean) as CommonCard[];
 }
 
 /**
@@ -22,10 +29,13 @@ export function resolveCardsFromUrl(url: URL, allCommons: CommonCard[]): CommonC
  * URL-to-State and State-to-URL sync effects.
  */
 export function shouldUpdatePinExclude(
-	currentPinned: ReadonlySet<number>,
-	currentExcluded: ReadonlySet<number>,
-	newPinned: Set<number>,
-	newExcluded: Set<number>,
+  currentPinned: ReadonlySet<number>,
+  currentExcluded: ReadonlySet<number>,
+  newPinned: Set<number>,
+  newExcluded: Set<number>,
 ): boolean {
-	return !setsEqual(currentPinned, newPinned) || !setsEqual(currentExcluded, newExcluded);
+  return (
+    !setsEqual(currentPinned, newPinned) ||
+    !setsEqual(currentExcluded, newExcluded)
+  );
 }

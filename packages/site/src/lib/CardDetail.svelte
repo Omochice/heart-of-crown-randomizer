@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
-	import { getStripColor, getCategoryLabel } from "$lib/utils/card-display";
-	import { X, Layers, Coins } from "lucide-svelte";
-	import { fly, fade } from "svelte/transition";
+	import { Coins, Layers, X } from "lucide-svelte";
 	import { onMount } from "svelte";
+	import { fade, fly } from "svelte/transition";
+	import { getCategoryLabel, getStripColor } from "$lib/utils/card-display";
 
 	type Props = {
 		card: CommonCard;
@@ -36,7 +36,9 @@
 	}
 
 	function handleKeydown(e: KeyboardEvent) {
-		if (e.key === "Escape") onClose();
+		if (e.key === "Escape") {
+			onClose();
+		}
 	}
 </script>
 

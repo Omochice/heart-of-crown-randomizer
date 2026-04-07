@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+	import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
+	import { Bug, X } from "lucide-svelte";
 	import {
 		getEnabledConstraintIds,
 		getEnabledConstraints,
 	} from "$lib/stores/constraint-state.svelte";
-	import { Bug, X } from "lucide-svelte";
 
 	type Props = {
 		constraints: readonly Constraint[];

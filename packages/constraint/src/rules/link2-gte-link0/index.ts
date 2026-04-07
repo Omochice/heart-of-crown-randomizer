@@ -49,8 +49,12 @@ export const link2GteLink0: Constraint = {
       countInCards(context.picked, isLink0);
     const slack = budget + context.remainingCount;
 
-    if (slack >= 2) return context.pool;
-    if (slack === 1) return context.pool.filter((c) => !isLink0(c));
+    if (slack >= 2) {
+      return context.pool;
+    }
+    if (slack === 1) {
+      return context.pool.filter((c) => !isLink0(c));
+    }
     return context.pool.filter(isLink2);
   },
 };
