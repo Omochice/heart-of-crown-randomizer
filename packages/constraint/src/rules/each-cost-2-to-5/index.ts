@@ -17,7 +17,7 @@ const costPredicates: Array<(c: CommonCard) => boolean> = [
  */
 export const eachCost2to5: Constraint = {
   id: 5,
-  label: "コスト2〜4、5以上を各1枚以上含む",
+  label: "コスト2〜5を各1枚以上含む",
 
   isSatisfied(cards: readonly CommonCard[]): boolean {
     return costPredicates.every((pred) => cards.some(pred));
