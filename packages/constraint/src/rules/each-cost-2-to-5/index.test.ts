@@ -53,6 +53,29 @@ describe("eachCost2to5", () => {
       expect(costs).toContain(4);
       expect(costs).toContain(5);
     });
+
+    it("picks a card with cost > 5 to fill the high-cost slot", () => {
+      const context = makeContext({
+        pool: [
+          makeDuplicateCard({ id: 1, cost: 2 }),
+          makeDuplicateCard({ id: 2, cost: 3 }),
+          makeDuplicateCard({ id: 3, cost: 4 }),
+          makeDuplicateCard({ id: 4, cost: 6 }),
+        ],
+        required: [],
+        count: 10,
+        rng: seededRng(),
+      });
+
+      const result = eachCost2to5.apply(context);
+
+      expect(result.required).toHaveLength(4);
+      const costs = result.required.map((c) => c.cost);
+      expect(costs).toContain(2);
+      expect(costs).toContain(3);
+      expect(costs).toContain(4);
+      expect(costs.some((c) => c >= 5)).toBe(true);
+    });
   });
 
   describe("canApply", () => {
@@ -75,6 +98,29 @@ describe("eachCost2to5", () => {
       ];
       const context = makeContext({ pool, required: [], count: 4 });
       expect(eachCost2to5.canApply(context)).toBe(true);
+    });
+
+    it("returns true when cost > 5 is available instead of exact 5", () => {
+      const pool = [
+        makeDuplicateCard({ id: 1, cost: 2 }),
+        makeDuplicateCard({ id: 2, cost: 3 }),
+        makeDuplicateCard({ id: 3, cost: 4 }),
+        makeDuplicateCard({ id: 4, cost: 6 }),
+      ];
+      const context = makeContext({ pool, required: [], count: 4 });
+      expect(eachCost2to5.canApply(context)).toBe(true);
+    });
+  });
+
+  describe("isSatisfied", () => {
+    it("returns true when cards include cost > 5 instead of exact 5", () => {
+      const cards = [
+        makeDuplicateCard({ id: 1, cost: 2 }),
+        makeDuplicateCard({ id: 2, cost: 3 }),
+        makeDuplicateCard({ id: 3, cost: 4 }),
+        makeDuplicateCard({ id: 4, cost: 7 }),
+      ];
+      expect(eachCost2to5.isSatisfied(cards)).toBe(true);
     });
   });
 });
