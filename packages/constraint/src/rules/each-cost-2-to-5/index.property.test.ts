@@ -16,21 +16,22 @@ describe("eachCost2to5", () => {
   }).filter((ctx) => eachCost2to5.canApply(ctx));
 
   test.prop([eachCostContextArb])(
-    "after apply, required covers each cost 2, 3, 4, 5",
+    "after apply, required covers each cost 2, 3, 4 and at least one cost >= 5",
     (ctx) => {
       const result = eachCost2to5.apply(ctx);
-      for (const cost of [2, 3, 4, 5]) {
+      for (const cost of [2, 3, 4]) {
         expect(result.required.some((c) => c.cost === cost)).toBe(true);
       }
+      expect(result.required.some((c) => c.cost >= 5)).toBe(true);
     },
   );
 
   test.prop([fc.array(commonCardArb, { minLength: 0, maxLength: 20 })])(
-    "isSatisfied is true iff cards include each cost 2, 3, 4, 5",
+    "isSatisfied is true iff cards include each cost 2, 3, 4 and at least one cost >= 5",
     (cards) => {
-      const hasCosts = [2, 3, 4, 5].every((cost) =>
-        cards.some((c) => c.cost === cost),
-      );
+      const hasCosts =
+        [2, 3, 4].every((cost) => cards.some((c) => c.cost === cost)) &&
+        cards.some((c) => c.cost >= 5);
       expect(eachCost2to5.isSatisfied(cards)).toBe(hasCosts);
     },
   );
