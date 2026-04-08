@@ -3,7 +3,7 @@ import type { Constraint, SelectionContext } from "../../type";
 import { isHighCost } from "../shared/card-properties";
 import { pickFromPool } from "../shared/pick-from-pool";
 
-const costPredicates: Array<(c: CommonCard) => boolean> = [
+const costPredicates: readonly ((c: CommonCard) => boolean)[] = [
   (c) => c.cost === 2,
   (c) => c.cost === 3,
   (c) => c.cost === 4,
