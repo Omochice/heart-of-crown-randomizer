@@ -66,6 +66,13 @@ describe("dedent (tagged template)", () => {
     `;
     expect(result).toBe("hello\nworld");
   });
+
+  test("throws on template interpolations", () => {
+    expect(() => {
+      // @ts-expect-error -- intentionally passing interpolation to test runtime guard
+      dedent`hello ${"world"}`;
+    }).toThrow("dedent does not support template interpolations");
+  });
 });
 
 describe("dedentPlugin", () => {

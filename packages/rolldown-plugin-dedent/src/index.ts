@@ -40,6 +40,9 @@ export function dedent(
   strings: TemplateStringsArray,
   ..._values: never[]
 ): string {
+  if (strings.length !== 1) {
+    throw new TypeError("dedent does not support template interpolations");
+  }
   return dedentString(strings[0]);
 }
 
