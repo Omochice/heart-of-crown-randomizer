@@ -5,7 +5,7 @@ import type { Plugin } from "rolldown";
  * The first and last lines are trimmed if they contain only whitespace.
  */
 export function dedentString(raw: string): string {
-  const lines = raw.split("\n");
+  const lines = raw.replace(/\r\n/g, "\n").split("\n");
 
   // Drop leading empty line (from opening backtick)
   if (lines.length > 0 && lines[0].trim() === "") {

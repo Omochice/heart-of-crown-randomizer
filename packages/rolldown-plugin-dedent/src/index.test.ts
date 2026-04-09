@@ -56,6 +56,11 @@ also no indent
     `;
     expect(dedentString(input)).toBe("hello\nworld");
   });
+
+  test("normalizes CRLF line endings", () => {
+    const input = "\r\n      hello\r\n      world\r\n    ";
+    expect(dedentString(input)).toBe("hello\nworld");
+  });
 });
 
 describe("dedent (tagged template)", () => {
