@@ -23,6 +23,7 @@
     },
     "test": {},
     "build": {
+      "dependsOn": ["^build"],
       "outputs": ["dist/**", ".svelte-kit/**"]
     }
   }
