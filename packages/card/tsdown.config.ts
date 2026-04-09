@@ -1,3 +1,4 @@
+import { dedentPlugin } from "@heart-of-crown-randomizer/rolldown-plugin-dedent";
 import { defineConfig } from "tsdown";
 
 export default defineConfig({
@@ -11,4 +12,5 @@ export default defineConfig({
   outDir: "dist",
   dts: true,
   clean: true,
+  plugins: [dedentPlugin()],
 });
