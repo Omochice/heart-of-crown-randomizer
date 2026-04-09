@@ -1,3 +1,4 @@
+import { dedent } from "@heart-of-crown-randomizer/rolldown-plugin-dedent";
 import type { Princess } from "../type";
 
 export const princesses = [
@@ -40,8 +41,10 @@ export const princesses = [
     cost: 6,
     succession: 0,
     edition: 0,
-    effect:
-      "手札からカードを1枚捨てる：あなたの捨て札から《行動》カードを1枚手札に加える。この能力はメインフェイズに1回のみ使用出来る。",
+    effect: dedent`
+      手札からカードを1枚捨てる：あなたの捨て札から《行動》カードを1枚手札に加える。
+      この能力はメインフェイズに1回のみ使用出来る。
+    `,
   },
   {
     id: 4,
@@ -51,8 +54,9 @@ export const princesses = [
     cost: 6,
     succession: 0,
     edition: 0,
-    effect:
-      "このプリンセスを擁立した時、マーケットから〔コストが5以下のカード〕を2枚まで選び、あなたの山札の一番上に好きな順番で置いても良い。",
+    effect: dedent`
+      このプリンセスを擁立した時、マーケットから〔コストが5以下のカード〕を2枚まで選び、あなたの山札の一番上に好きな順番で置いても良い。
+    `,
   },
   {
     id: 5,
@@ -62,7 +66,10 @@ export const princesses = [
     cost: 6,
     succession: 0,
     edition: 0,
-    effect:
-      "このプリンセスを擁立した時、あなたのフィールドにあるカードの総数が22~24なら2個、25以上なら3個の『双子カウンター』を得る。『双子カウンター』を1個ゲームから取り除く：このターンの後に追加のターンを得る。この能力で続けて追加のターンは得られない。",
+    effect: dedent`
+      このプリンセスを擁立した時、あなたのフィールドにあるカードの総数が22~24なら2個、25以上なら3個の『双子カウンター』を得る。
+      『双子カウンター』を1個ゲームから取り除く：このターンの後に追加のターンを得る。
+      この能力で続けて追加のターンは得られない。
+    `,
   },
 ] as const satisfies Princess[];
