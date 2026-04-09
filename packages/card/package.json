@@ -62,6 +62,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
+    "@heart-of-crown-randomizer/rolldown-plugin-dedent": "workspace:*",
     "@typescript/native-preview": "catalog:",
     "npm-run-all2": "catalog:",
     "rimraf": "catalog:",
