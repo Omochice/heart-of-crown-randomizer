@@ -6,7 +6,9 @@
 	import { getCategoryLabel, getStripColor } from "$lib/utils/card-display";
 
 	type Props = {
+		/** Card data to display in the detail sheet */
 		card: CommonCard;
+		/** Callback to close the detail sheet */
 		onClose: () => void;
 	};
 
