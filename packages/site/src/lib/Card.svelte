@@ -5,12 +5,19 @@
 	import { getCategoryLabel, getStripColor, getSubTypeLabel } from "$lib/utils/card-display";
 
 	type Props = {
+		/** Card data to render */
 		card: CommonCard;
+		/** Called when a swipe gesture begins */
 		onSwipeStart: (e: MouseEvent | TouchEvent, index: number) => void;
+		/** Called during a swipe gesture */
 		onSwipeMove: (e: TouchEvent | MouseEvent) => void;
+		/** Called when a swipe gesture completes */
 		onSwipeEnd: () => void;
+		/** Called when a swipe gesture is cancelled */
 		onSwipeCancel: () => void;
+		/** Original index of this card in the list, used for swipe tracking */
 		originalIndex: number;
+		/** Called when the card is clicked */
 		onclick?: () => void;
 	};
 
