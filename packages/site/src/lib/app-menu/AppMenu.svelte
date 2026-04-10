@@ -3,9 +3,13 @@
 	import { buildGitHubIssueUrl } from "./github-issue";
 
 	type Props = {
+		/** IDs of currently selected cards */
 		selectedCardIds: number[];
+		/** IDs of pinned cards */
 		pinnedIds: ReadonlySet<number>;
+		/** IDs of excluded cards */
 		excludedIds: ReadonlySet<number>;
+		/** IDs of enabled constraints */
 		constraintIds: ReadonlySet<number>;
 	};
 
