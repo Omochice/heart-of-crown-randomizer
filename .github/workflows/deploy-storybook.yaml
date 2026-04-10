@@ -27,7 +27,7 @@ jobs:
           node-version: lts/*
           cache: pnpm
       - run: pnpm install
-      - run: pnpm --filter=@heart-of-crown-randomizer/site run build-storybook
+      - run: pnpm turbo run build-storybook --filter=@heart-of-crown-randomizer/site
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
           path: packages/site/storybook-static
