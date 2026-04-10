@@ -5,6 +5,7 @@
 	import { getCategoryLabel, getStripColor } from "$lib/utils/card-display";
 
 	type Props = {
+		/** Cards currently excluded from the draw pool */
 		cards: CommonCard[];
 	};
 

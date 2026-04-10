@@ -8,11 +8,17 @@
 	} from "$lib/stores/constraint-state.svelte";
 
 	type Props = {
+		/** Available constraints */
 		constraints: readonly Constraint[];
+		/** Currently selected cards from the draw */
 		selectedCards: readonly CommonCard[];
+		/** All common cards in the game */
 		allCards: CommonCard[];
+		/** Cards pinned by the user */
 		pinnedCards: CommonCard[];
+		/** IDs of cards excluded from the draw pool */
 		excludedIds: ReadonlySet<number>;
+		/** Number of cards to select */
 		count: number;
 	};
 

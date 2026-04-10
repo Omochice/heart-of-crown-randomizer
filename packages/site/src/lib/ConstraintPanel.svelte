@@ -7,9 +7,13 @@
 	import { getEnabledConstraintIds, toggleConstraint } from "$lib/stores/constraint-state.svelte";
 
 	type Props = {
+		/** Available constraints to toggle */
 		constraints: readonly Constraint[];
+		/** All common cards in the game */
 		allCards: CommonCard[];
+		/** IDs of cards excluded from the draw pool */
 		excludedIds: ReadonlySet<number>;
+		/** Number of cards to select */
 		count: number;
 	};
 
