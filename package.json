@@ -35,7 +35,8 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "onFail": "error"
+      "version": "10.33.0",
+      "onFail": "download"
     }
   }
 }
