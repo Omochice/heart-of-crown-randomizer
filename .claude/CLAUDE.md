@@ -64,5 +64,5 @@ Project-wide context is maintained in `doc/steering/` (`product.md`, `tech.md`, 
 
 - TypeScript strict mode, no `any`.
 - Biome for formatting and linting.
-- Files use kebab-case. Types and interfaces use PascalCase.
+- TypeScript modules and tests use kebab-case. Svelte component files use PascalCase. Types and interfaces use PascalCase.
 - Code and comments in English.
