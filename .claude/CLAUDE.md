@@ -15,7 +15,7 @@ All commands are run from the repository root unless noted otherwise.
 pnpm build          # Build all packages (turbo, respects dependency order)
 pnpm test           # Run all test suites
 pnpm check          # Type-check + lint (all packages)
-pnpm fmt            # Format (biome + sort-package-json)
+pnpm fmt            # Format (biome + sort-package-json + Prettier for *.svelte)
 pnpm dev            # Start SvelteKit dev server (builds library dependencies first)
 ```
 
