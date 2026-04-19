@@ -172,7 +172,7 @@ Never include: API keys, passwords, credentials, database URLs, internal IPs, se
 
 - **Language**: [e.g., TypeScript, Python]
 - **Framework**: [e.g., React, Next.js, Django]
-- **Runtime**: [e.g., Node.js 20+]
+- **Runtime**: [e.g., Node.js (version specified in engines field)]
 
 ## Key Libraries
 
@@ -196,7 +196,7 @@ Never include: API keys, passwords, credentials, database URLs, internal IPs, se
 
 ### Required Tools
 
-[Key tools and version requirements]
+[Key tools with references to config files for versions]
 
 ### Common Commands
 
