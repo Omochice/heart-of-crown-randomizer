@@ -352,7 +352,12 @@ export const commons = [
     succession: 3,
     hasChild: false,
     link: 1,
-    effect: "このカードはキープ出来ない。",
+    effect: dedent`
+      このカードはキープ出来ない。
+      カードを2枚引く。
+      3コイン得る。
+      クリンナップフェイズの開始時に、あなたの直轄地があるならば、このカードをセットする。
+    `,
     edition: 1,
   },
   {
