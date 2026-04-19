@@ -35,13 +35,13 @@ Check `doc/steering/` status:
 ## Bootstrap Flow
 
 1. Analyze codebase (JIT):
-   - `glob_file_search` for source files
-   - `read_file` for README, package.json, etc.
-   - `grep` for patterns
+    - `glob_file_search` for source files
+    - `read_file` for README, package.json, etc.
+    - `grep` for patterns
 2. Extract patterns (not lists):
-   - Product: Purpose, value, core capabilities
-   - Tech: Frameworks, decisions, conventions
-   - Structure: Organization, naming, imports
+    - Product: Purpose, value, core capabilities
+    - Tech: Frameworks, decisions, conventions
+    - Structure: Organization, naming, imports
 3. Generate steering files following the templates below
 4. Apply the steering principles below
 5. Present summary for review
@@ -55,9 +55,9 @@ Check `doc/steering/` status:
 1. Load all existing steering (`doc/steering/*.md`)
 2. Analyze codebase for changes (JIT)
 3. Detect drift:
-   - **Steering -> Code**: Missing elements -> Warning
-   - **Code -> Steering**: New patterns -> Update candidate
-   - **Custom files**: Check relevance
+    - **Steering -> Code**: Missing elements -> Warning
+    - **Code -> Steering**: New patterns -> Update candidate
+    - **Custom files**: Check relevance
 4. Propose updates (additive, preserve user content)
 5. Report: Updates, warnings, recommendations
 
