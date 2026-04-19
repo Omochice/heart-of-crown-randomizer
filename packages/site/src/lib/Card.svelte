@@ -37,7 +37,7 @@
 
 	const stripColor = $derived(getStripColor(card));
 	const categoryLabel = $derived(getCategoryLabel(card));
-	const linkCount = $derived(card.hasChild ? (card.cards[0]?.link ?? 0) : card.link);
+	const linkCount = $derived(card.hasChild ? 0 : card.link);
 	const subTypeLabel = $derived(getSubTypeLabel(card));
 
 	function handleTogglePin(e: MouseEvent) {
