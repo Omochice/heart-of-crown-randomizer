@@ -23,7 +23,7 @@ const mainTypeLabels: Record<MainType, string> = {
 
 export function getMainTypes(card: CommonCard): MainType[] {
   return card.hasChild
-    ? (card.cards[0]?.mainType ?? ["action"])
+    ? [...new Set(card.cards.flatMap((c) => c.mainType))]
     : card.mainType;
 }
 

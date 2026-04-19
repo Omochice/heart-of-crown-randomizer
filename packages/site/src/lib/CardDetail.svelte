@@ -17,15 +17,13 @@
 	const stripColor = $derived(getStripColor(card));
 	const categoryLabel = $derived(getCategoryLabel(card));
 
-	const effect = $derived(card.hasChild ? (card.cards[0]?.effect ?? "") : card.effect);
+	const effect = $derived(card.hasChild ? "" : card.effect);
 
-	const linkCount = $derived(card.hasChild ? (card.cards[0]?.link ?? 0) : card.link);
+	const linkCount = $derived(card.hasChild ? 0 : card.link);
 
-	const succession = $derived(
-		card.hasChild ? (card.cards[0]?.succession ?? undefined) : card.succession,
-	);
+	const succession = $derived(card.hasChild ? undefined : card.succession);
 
-	const coin = $derived(card.hasChild ? (card.cards[0]?.coin ?? undefined) : card.coin);
+	const coin = $derived(card.hasChild ? undefined : card.coin);
 
 	let closeButtonRef: HTMLButtonElement;
 
