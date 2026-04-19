@@ -8,6 +8,10 @@
           {
             "type": "command",
             "command": "pnpm run fmt"
+          },
+          {
+            "type": "command",
+            "command": "nix fmt"
           }
         ]
       }

@@ -14,9 +14,12 @@ Package-first monorepo separating concerns by responsibility: data (card definit
 
 ```text
 packages/
-  card/         # Type definitions + card data exports
-  randomizer/   # Pure functions for selection/shuffling
-  site/         # SvelteKit app consuming card + randomizer
+  card/                     # Type definitions + card data exports
+  constraint/               # Preset constraint rules for card selection
+  id-codec/                 # Bitfield-based encode/decode for ID sets
+  randomizer/               # Pure functions for selection/shuffling
+  rolldown-plugin-dedent/   # Build plugin for dedent tagged templates
+  site/                     # SvelteKit app consuming all packages
 ```
 
 ### Package Internal Structure
@@ -43,6 +46,21 @@ routes/
   +page.svelte               # Route component
   page.{concern}.test.ts     # Tests split by concern
                              # (accessibility, reactivity, url-reactivity, etc.)
+```
+
+### Constraint Rules (`packages/constraint/src/rules/`)
+
+**Location**: `packages/constraint/src/rules/{rule-name}/`
+**Purpose**: Each constraint rule is a self-contained module with its own tests
+**Pattern**:
+
+```text
+rules/
+  shared/                    # Common helpers (card-properties, test-helpers)
+  {rule-name}/
+    index.ts                 # Rule implementation
+    index.test.ts            # Unit tests
+    index.property.test.ts   # Property-based tests
 ```
 
 ### Card Data Organization (`packages/card/src/`)
@@ -95,7 +113,10 @@ import type { Identifiable } from "./types";
 ### Separation of Concerns
 
 - **card**: Pure data + types (no logic)
+- **constraint**: Preset constraint rules depending on card types (no DOM, no state)
+- **id-codec**: Bitfield encoding/decoding for ID sets (no dependencies on other packages)
 - **randomizer**: Pure functions (no DOM, no state)
+- **rolldown-plugin-dedent**: Build-time plugin (dev tooling, not runtime)
 - **site**: All UI state, effects, and rendering
 
 ### Test Collocation

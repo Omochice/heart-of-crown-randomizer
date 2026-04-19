@@ -5,10 +5,11 @@ A card randomizer tool for the Heart of Crown deck-building game. Provides deter
 ## Core Capabilities
 
 - **Deterministic Randomization**: Seeded random generation for reproducible card draws
-- **Constraint Validation**: Enforce rules like max/min selections, required/forbidden combinations
+- **Constraint Validation**: Preset constraint rules (cost distribution, link balance, attack control) as a dedicated package
 - **Card Pool Management**: Support for multiple game editions (Basic, Far Eastern Border) with typed card definitions
+- **URL State Sharing**: Bitfield-based ID codec enables compact, shareable URLs for card configurations
 - **Web Interface**: Interactive SvelteKit site for card selection and sharing
-- **Package Reusability**: Separate randomizer and card definition packages for flexible integration
+- **Package Reusability**: Modular packages (card, constraint, id-codec, randomizer) for flexible integration
 
 ## Target Use Cases
 

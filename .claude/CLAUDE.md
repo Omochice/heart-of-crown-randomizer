@@ -1,72 +1,68 @@
-# AI-DLC and Spec-Driven Development
+# CLAUDE.md
 
-Kiro-style Spec Driven Development implementation on AI-DLC (AI Development Life Cycle)
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Context
+## Project Overview
 
-### Paths
+A card randomizer for the Heart of Crown deck-building game.
+Monorepo with modular packages separating card data, randomization logic, constraint rules, ID encoding, and the web frontend.
 
-- Steering: `.kiro/steering/`
-- Specs: `.kiro/specs/`
+## Commands
 
-### Steering vs Specification
+All commands are run from the repository root unless noted otherwise.
 
-**Steering** (`.kiro/steering/`) - Guide AI with project-wide rules and context
-**Specs** (`.kiro/specs/`) - Formalize development process for individual features
+```bash
+pnpm build          # Build all packages (turbo, respects dependency order)
+pnpm test           # Run all test suites
+pnpm check          # Type-check + lint (all packages)
+pnpm fmt            # Format (biome + sort-package-json + Prettier for *.svelte)
+pnpm dev            # Start SvelteKit dev server (builds library dependencies first)
+```
 
-### Active Specifications
+Per-package commands (run from `packages/{name}/`):
 
-- Check `.kiro/specs/` for active specifications
-- Use `/kiro:spec-status [feature-name]` to check progress
+```bash
+pnpm test                        # Run tests for this package
+pnpm vitest run src/foo.test.ts  # Run a single test file
+pnpm vitest run -t "test name"   # Run a single test by name
+pnpm check:type                  # Type-check only (tsgo for libraries, svelte-check for site)
+pnpm check:biome                 # Lint only
+```
 
-## Development Guidelines
+## Architecture
 
-- User interaction language MUST match the user's input language
-- Code and code comments MUST be written in English
-- All Markdown content written to project files (e.g., requirements.md, design.md, tasks.md, research.md, validation reports) MUST be written in the target language configured for this specification (see spec.json.language)
+```text
+packages/
+  card/           # Pure data + types. Card definitions grouped by edition (basic/, far-eastern-border/).
+  constraint/     # Preset constraint rules for balanced card selection. Each rule in rules/{name}/.
+  id-codec/       # Bitfield encode/decode for compact URL state. No dependencies on other packages.
+  randomizer/     # Pure functions for seeded selection/shuffling. Depends on seedrandom.
+  rolldown-plugin-dedent/  # Build-time plugin for dedent tagged templates.
+  site/           # SvelteKit web app consuming all above packages.
+```
 
-## Minimal Workflow
+Dependency flow: `site` depends on `card`, `constraint`, `id-codec`, `randomizer`. `constraint` depends on `card`. `card` uses `rolldown-plugin-dedent` at build time. `id-codec` and `randomizer` have no internal dependencies.
 
-- Phase 0 (optional): `/kiro:steering`, `/kiro:steering-custom`
-- Phase 1 (Specification):
-    - `/kiro:spec-init "description"`
-    - `/kiro:spec-requirements {feature}`
-    - `/kiro:validate-gap {feature}` (optional: for existing codebase)
-    - `/kiro:spec-design {feature} [-y]`
-    - `/kiro:validate-design {feature}` (optional: design review)
-    - `/kiro:spec-tasks {feature} [-y]`
-- Phase 2 (Implementation): `/kiro:spec-impl {feature} [tasks]`
-    - `/kiro:validate-impl {feature}` (optional: after implementation)
-- Progress check: `/kiro:spec-status {feature}` (use anytime)
+### Key Patterns
 
-## Development Rules
+- **Functional core**: randomizer and constraint packages are pure functions with no side effects. All UI state and effects live in site.
+- **Discriminated unions**: Card types use a `type` field (`"basic" | "common" | "rare" | "princess"`) as discriminator, with `MainType`/`SubType` for game-domain classification.
+- **ESM-only**: All packages use `"type": "module"` with `.mjs`/`.d.mts` outputs.
+- **No path aliases**: Imports use workspace namespace (`@heart-of-crown-randomizer/*`) or relative paths.
 
-- 3-phase approval workflow: Requirements → Design → Tasks → Implementation
-- Human review required each phase; use `-y` only for intentional fast-track
-- Keep steering current and verify alignment with `/kiro:spec-status`
-- Follow the user's instructions precisely, and within that scope act autonomously: gather the necessary context and complete the requested work end-to-end in this run, asking questions only when essential information is missing or the instructions are critically ambiguous.
+### Test Patterns
 
-## TDD Process
+- Tests co-located with source: `{feature}.test.ts` next to `{feature}.ts`.
+- Site splits tests by concern: `page.accessibility.test.ts`, `page.reactivity.test.ts`.
+- Constraint rules include property-based tests (`index.property.test.ts`) using `@fast-check/vitest`.
 
-- Each task MUST follow the Red-Green-Refactor cycle:
-    - **Red**: Write a failing test first
-    - **Green**: Write minimal code to make the test pass
-    - **Refactor**: Improve code quality while keeping tests green
-- Each step (Red, Green, Refactor) MUST have its own commit
-- All commits MUST follow conventional commit format
-- Commit type MUST be decided based on how users (randomizer users) are affected by the change
-- Specification updates MUST use `chore(spec):` prefix
+## Steering
 
-## Code Documentation
+Project-wide context is maintained in `doc/steering/` (`product.md`, `tech.md`, `structure.md`). Use `/steering` to sync these with the codebase.
 
-- Code comments SHOULD explain WHY NOT an alternative approach was chosen, rather than WHAT or HOW
-- Test code SHOULD clearly describe WHAT is being tested
-- Commit body MUST include:
-    - WHY the change was made
-    - How to verify the change (verification method)
+## Code Style
 
-## Steering Configuration
-
-- Load entire `.kiro/steering/` as project memory
-- Default files: `product.md`, `tech.md`, `structure.md`
-- Custom files are supported (managed via `/kiro:steering-custom`)
+- TypeScript strict mode, no `any`.
+- Biome for formatting and linting.
+- TypeScript modules and tests use kebab-case. Svelte component files use PascalCase. Types and interfaces use PascalCase.
+- Code and comments in English.

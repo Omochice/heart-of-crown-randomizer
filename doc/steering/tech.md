@@ -2,14 +2,15 @@
 
 ## Architecture
 
-Monorepo with three distinct packages: core randomizer logic (pure functions), card definitions (static data), and web interface (SvelteKit). Emphasizes testability through deterministic seeding and separation of concerns.
+Monorepo with multiple packages: core randomizer logic (pure functions), card definitions (static data), constraint rules, ID codec, and web interface (SvelteKit). Emphasizes testability through deterministic seeding and separation of concerns.
 
 ## Core Technologies
 
-- **Language**: TypeScript 5.9+ (strict mode)
+- **Language**: TypeScript (strict mode)
 - **Build**: Turbo for monorepo orchestration, tsdown for library bundling
-- **Runtime**: Node.js 22.18.0+ (specified in engines)
-- **Frontend**: SvelteKit 2.x + Vite 7.x + Tailwind CSS 4.x
+- **Type Checker**: `tsgo` (`@typescript/native-preview`) for library packages, `svelte-check` for site
+- **Runtime**: Node.js (version specified in engines field)
+- **Frontend**: SvelteKit + Vite + Tailwind CSS
 - **Testing**: Vitest with property-based testing via fast-check
 
 ## Key Libraries
@@ -23,7 +24,7 @@ Monorepo with three distinct packages: core randomizer logic (pure functions), c
 ### Type Safety
 
 - TypeScript strict mode enforced across all packages
-- Discriminated unions for card types (`type: "basic" | "common" | "rare" | "princess"`)
+- Discriminated unions for card types (`type: "basic" | "common" | "rare" | "princess"`) with `MainType`/`SubType` for game-domain classification
 - No `any` usage; explicit typing for constraint predicates and filters
 
 ### Code Quality
@@ -41,19 +42,16 @@ Monorepo with three distinct packages: core randomizer logic (pure functions), c
 
 ## Development Environment
 
-### Required Tools
-
-- pnpm 10.26.2+ (package manager, specified in packageManager)
-- Node.js 22.18.0+
-- Turbo (monorepo orchestration)
-
 ### Package Structure
 
 ```text
 packages/
-  card/           # Card type definitions and data
-  randomizer/     # Core randomization logic
-  site/           # SvelteKit web interface
+  card/                     # Card type definitions and data
+  constraint/               # Preset constraint rules for card selection
+  id-codec/                 # Bitfield-based encode/decode for ID sets
+  randomizer/               # Core randomization logic
+  rolldown-plugin-dedent/   # Build plugin for dedent tagged templates
+  site/                     # SvelteKit web interface
 ```
 
 ### Common Commands
