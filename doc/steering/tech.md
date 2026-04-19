@@ -42,12 +42,6 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 
 ## Development Environment
 
-### Required Tools
-
-- pnpm (package manager, version specified in packageManager field)
-- Node.js (version specified in engines field)
-- Turbo (monorepo orchestration)
-
 ### Package Structure
 
 ```text
