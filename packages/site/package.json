@@ -39,7 +39,7 @@
 		"@sveltejs/kit": "2.57.1",
 		"@sveltejs/mcp": "0.1.22",
 		"@sveltejs/vite-plugin-svelte": "7.0.0",
-		"@tailwindcss/vite": "4.2.3",
+		"@tailwindcss/vite": "4.2.4",
 		"@testing-library/jest-dom": "6.9.1",
 		"@testing-library/svelte": "5.3.1",
 		"@types/node": "24.12.2",
@@ -55,7 +55,7 @@
 		"storybook": "10.3.5",
 		"svelte": "5.55.4",
 		"svelte-check": "4.4.6",
-		"tailwindcss": "4.2.3",
+		"tailwindcss": "4.2.4",
 		"typescript": "6.0.3",
 		"vite": "8.0.9",
 		"vitest": "catalog:"
