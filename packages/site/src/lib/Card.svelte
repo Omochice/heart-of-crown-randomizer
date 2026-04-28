@@ -194,8 +194,8 @@
 
 	.card-categories {
 		display: flex;
-		gap: 4px;
-		width: 36px;
+		gap: 2px;
+		width: 40px;
 		flex-shrink: 0;
 	}
 
