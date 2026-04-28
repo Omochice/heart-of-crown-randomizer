@@ -82,12 +82,14 @@
 	</div>
 
 	<div class="card-body">
-		{#each categoryLabels as cat}
-			<span
-				class="card-category"
-				style:color={cat.color}>{cat.label}</span
-			>
-		{/each}
+		<span class="card-categories">
+			{#each categoryLabels as cat}
+				<span
+					class="card-category"
+					style:color={cat.color}>{cat.label}</span
+				>
+			{/each}
+		</span>
 
 		<span
 			class="card-name"
@@ -190,10 +192,16 @@
 		min-width: 0;
 	}
 
+	.card-categories {
+		display: flex;
+		gap: 4px;
+		width: 36px;
+		flex-shrink: 0;
+	}
+
 	.card-category {
 		font-size: 9px;
 		font-weight: 700;
-		flex-shrink: 0;
 	}
 
 	.card-name {
