@@ -27,20 +27,28 @@ export function getMainTypes(card: CommonCard): MainType[] {
     : card.mainType;
 }
 
-export function getStripColor(card: CommonCard): string {
+const mainTypeColors: Record<MainType, string> = {
+  action: "var(--accent-indigo)",
+  attack: "var(--accent-red)",
+  territory: "var(--accent-green)",
+  succession: "var(--accent-silver)",
+  disaster: "var(--accent-coral)",
+  princess: "var(--accent-pink)",
+};
+
+export function getStripColors(card: CommonCard): string[] {
   const types = getMainTypes(card);
-  if (types.includes("attack")) {
-    return "var(--accent-red)";
-  }
-  if (types.includes("territory")) {
-    return "var(--accent-green)";
-  }
-  return "var(--accent-indigo)";
+  return types.map((t) => mainTypeColors[t]);
 }
 
-export function getCategoryLabel(card: CommonCard): string {
+export function getCategoryLabels(
+  card: CommonCard,
+): { label: string; color: string }[] {
   const types = getMainTypes(card);
-  return mainTypeLabels[types[0]];
+  return types.map((t) => ({
+    label: mainTypeLabels[t],
+    color: mainTypeColors[t],
+  }));
 }
 
 export function getSubTypeLabel(card: CommonCard): string | undefined {
