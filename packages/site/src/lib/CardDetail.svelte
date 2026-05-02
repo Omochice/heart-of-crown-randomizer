@@ -3,7 +3,7 @@
 	import { Coins, Layers, X } from "lucide-svelte";
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
-	import { getCategoryLabel, getStripColor } from "$lib/utils/card-display";
+	import { getCategoryLabels } from "$lib/utils/card-display";
 
 	type Props = {
 		/** Card data to display in the detail sheet */
@@ -14,8 +14,7 @@
 
 	let { card, onClose }: Props = $props();
 
-	const stripColor = $derived(getStripColor(card));
-	const categoryLabel = $derived(getCategoryLabel(card));
+	const categoryLabels = $derived(getCategoryLabels(card));
 
 	const effect = $derived(card.hasChild ? "" : card.effect);
 
@@ -66,10 +65,12 @@
 		<div class="detail-content">
 			<div class="detail-header">
 				<h2 class="detail-title">{card.name}</h2>
-				<span
-					class="detail-dot"
-					style:background-color={stripColor}
-				></span>
+				{#each categoryLabels as cat}
+					<span
+						class="detail-dot"
+						style:background-color={cat.color}
+					></span>
+				{/each}
 				<button
 					type="button"
 					class="detail-close"
@@ -82,12 +83,14 @@
 			</div>
 
 			<div class="detail-meta">
-				<span
-					class="detail-badge detail-badge--category"
-					style:background-color={stripColor}
-				>
-					{categoryLabel}
-				</span>
+				{#each categoryLabels as cat}
+					<span
+						class="detail-badge detail-badge--category"
+						style:background-color={cat.color}
+					>
+						{cat.label}
+					</span>
+				{/each}
 				<span class="detail-badge detail-badge--cost">
 					コスト {card.cost}
 				</span>

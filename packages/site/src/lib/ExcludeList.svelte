@@ -2,7 +2,7 @@
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { Ban, ChevronDown, ChevronUp, X } from "lucide-svelte";
 	import { toggleExclude } from "$lib/stores/card-state.svelte";
-	import { getCategoryLabel, getStripColor } from "$lib/utils/card-display";
+	import { getCategoryLabels } from "$lib/utils/card-display";
 
 	type Props = {
 		/** Cards currently excluded from the draw pool */
@@ -50,15 +50,22 @@
 				{#if i > 0}
 					<div class="exclude-divider"></div>
 				{/if}
+				{@const categories = getCategoryLabels(card)}
 				<div class="exclude-row">
-					<div
-						class="exclude-strip"
-						style:background-color={getStripColor(card)}
-					></div>
-					<span
-						class="exclude-category"
-						style:color={getStripColor(card)}>{getCategoryLabel(card)}</span
-					>
+					<div class="exclude-strip">
+						{#each categories as cat}
+							<div
+								class="exclude-strip-segment"
+								style:background-color={cat.color}
+							></div>
+						{/each}
+					</div>
+					{#each categories as cat}
+						<span
+							class="exclude-category"
+							style:color={cat.color}>{cat.label}</span
+						>
+					{/each}
 					<span class="exclude-card-name">{card.name}</span>
 					<span class="exclude-cost">{card.cost}</span>
 					<button
@@ -138,6 +145,13 @@
 		width: 3px;
 		border-radius: 2px;
 		align-self: stretch;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
+
+	.exclude-strip-segment {
+		flex: 1;
 	}
 
 	.exclude-category {

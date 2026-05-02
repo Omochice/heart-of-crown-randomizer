@@ -2,7 +2,7 @@
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { Ban, Pin } from "lucide-svelte";
 	import { getCardState, toggleExclude, togglePin } from "$lib/stores/card-state.svelte";
-	import { getCategoryLabel, getStripColor, getSubTypeLabel } from "$lib/utils/card-display";
+	import { getCategoryLabels, getSubTypeLabel } from "$lib/utils/card-display";
 
 	type Props = {
 		/** Card data to render */
@@ -35,8 +35,7 @@
 	const isPinned = $derived(state === "pinned");
 	const isExcluded = $derived(state === "excluded");
 
-	const stripColor = $derived(getStripColor(card));
-	const categoryLabel = $derived(getCategoryLabel(card));
+	const categoryLabels = $derived(getCategoryLabels(card));
 	const linkCount = $derived(card.hasChild ? 0 : card.link);
 	const subTypeLabel = $derived(getSubTypeLabel(card));
 
@@ -72,16 +71,24 @@
 		if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) handleCardClick();
 	}}
 >
-	<div
-		class="card-strip"
-		style:background-color={stripColor}
-	></div>
+	<div class="card-strip">
+		{#each categoryLabels as cat}
+			<div
+				class="card-strip-segment"
+				style:background-color={cat.color}
+			></div>
+		{/each}
+	</div>
 
 	<div class="card-body">
-		<span
-			class="card-category"
-			style:color={stripColor}>{categoryLabel}</span
-		>
+		<span class="card-categories">
+			{#each categoryLabels as cat}
+				<span
+					class="card-category"
+					style:color={cat.color}>{cat.label}</span
+				>
+			{/each}
+		</span>
 
 		<span
 			class="card-name"
@@ -167,6 +174,12 @@
 	.card-strip {
 		width: 4px;
 		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.card-strip-segment {
+		flex: 1;
 	}
 
 	.card-body {
@@ -178,10 +191,16 @@
 		min-width: 0;
 	}
 
+	.card-categories {
+		display: flex;
+		gap: 2px;
+		width: 40px;
+		flex-shrink: 0;
+	}
+
 	.card-category {
 		font-size: 9px;
 		font-weight: 700;
-		flex-shrink: 0;
 	}
 
 	.card-name {
