@@ -10,8 +10,8 @@ catalogs:
       specifier: 2.4.13
       version: 2.4.13
     '@fast-check/vitest':
-      specifier: 0.4.0
-      version: 0.4.0
+      specifier: 0.4.1
+      version: 0.4.1
     '@typescript/native-preview':
       specifier: 7.0.0-dev.20260429.1
       version: 7.0.0-dev.20260429.1
@@ -95,7 +95,7 @@ importers:
         version: 2.4.13
       '@fast-check/vitest':
         specifier: 'catalog:'
-        version: 0.4.0(vitest@4.1.5)
+        version: 0.4.1(vitest@4.1.5)
       '@typescript/native-preview':
         specifier: 'catalog:'
         version: 7.0.0-dev.20260429.1
@@ -150,7 +150,7 @@ importers:
         version: 2.4.13
       '@fast-check/vitest':
         specifier: 'catalog:'
-        version: 0.4.0(vitest@4.1.5)
+        version: 0.4.1(vitest@4.1.5)
       '@types/seedrandom':
         specifier: 3.0.8
         version: 3.0.8
@@ -895,8 +895,8 @@ packages:
       '@noble/hashes':
         optional: true
 
-  '@fast-check/vitest@0.4.0':
-    resolution: {integrity: sha512-uv/x7EyT9/fRM0oxNP2myhxHtB1pZyHYMMLVoBGFff57cyINSGftPf3ZhqNzww7ajn/ufr/Bx6OPXX/TUFezmQ==}
+  '@fast-check/vitest@0.4.1':
+    resolution: {integrity: sha512-OX6TecB+ZzRfPc49jcPChcV1cf5aDu77CdDU8liecWVam7eD7mPvJNP50b9bBSTxVoGN5wzxrX9PIcCnqgC8bg==}
     peerDependencies:
       vitest: ^4.1.0
 
@@ -4428,7 +4428,7 @@ snapshots:
 
   '@exodus/bytes@1.15.0': {}
 
-  '@fast-check/vitest@0.4.0(vitest@4.1.5)':
+  '@fast-check/vitest@0.4.1(vitest@4.1.5)':
     dependencies:
       fast-check: 4.7.0
       vitest: 4.1.5(@types/node@24.12.2)(@vitest/browser-playwright@4.1.5)(jsdom@29.1.0)(vite@8.0.10(@types/node@24.12.2)(esbuild@0.27.7)(jiti@2.6.1))
