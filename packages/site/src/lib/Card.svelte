@@ -2,7 +2,7 @@
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { Ban, Pin } from "lucide-svelte";
 	import { getCardState, toggleExclude, togglePin } from "$lib/stores/card-state.svelte";
-	import { getCategoryLabels, getStripColors, getSubTypeLabel } from "$lib/utils/card-display";
+	import { getCategoryLabels, getSubTypeLabel } from "$lib/utils/card-display";
 
 	type Props = {
 		/** Card data to render */
@@ -35,7 +35,6 @@
 	const isPinned = $derived(state === "pinned");
 	const isExcluded = $derived(state === "excluded");
 
-	const stripColors = $derived(getStripColors(card));
 	const categoryLabels = $derived(getCategoryLabels(card));
 	const linkCount = $derived(card.hasChild ? 0 : card.link);
 	const subTypeLabel = $derived(getSubTypeLabel(card));
@@ -73,10 +72,10 @@
 	}}
 >
 	<div class="card-strip">
-		{#each stripColors as color}
+		{#each categoryLabels as cat}
 			<div
 				class="card-strip-segment"
-				style:background-color={color}
+				style:background-color={cat.color}
 			></div>
 		{/each}
 	</div>

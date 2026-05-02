@@ -36,11 +36,6 @@ const mainTypeColors: Record<MainType, string> = {
   princess: "var(--card-princess)",
 };
 
-export function getStripColors(card: CommonCard): string[] {
-  const types = getMainTypes(card);
-  return types.map((t) => mainTypeColors[t]);
-}
-
 export function getCategoryLabels(
   card: CommonCard,
 ): { label: string; color: string }[] {

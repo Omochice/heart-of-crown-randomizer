@@ -3,7 +3,7 @@
 	import { Coins, Layers, X } from "lucide-svelte";
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
-	import { getCategoryLabels, getStripColors } from "$lib/utils/card-display";
+	import { getCategoryLabels } from "$lib/utils/card-display";
 
 	type Props = {
 		/** Card data to display in the detail sheet */
@@ -14,7 +14,6 @@
 
 	let { card, onClose }: Props = $props();
 
-	const stripColors = $derived(getStripColors(card));
 	const categoryLabels = $derived(getCategoryLabels(card));
 
 	const effect = $derived(card.hasChild ? "" : card.effect);
@@ -66,10 +65,10 @@
 		<div class="detail-content">
 			<div class="detail-header">
 				<h2 class="detail-title">{card.name}</h2>
-				{#each stripColors as color}
+				{#each categoryLabels as cat}
 					<span
 						class="detail-dot"
-						style:background-color={color}
+						style:background-color={cat.color}
 					></span>
 				{/each}
 				<button
