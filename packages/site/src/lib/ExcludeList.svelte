@@ -147,6 +147,7 @@
 		align-self: stretch;
 		display: flex;
 		flex-direction: column;
+		overflow: hidden;
 	}
 
 	.exclude-strip-segment {
