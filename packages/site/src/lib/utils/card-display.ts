@@ -28,12 +28,12 @@ export function getMainTypes(card: CommonCard): MainType[] {
 }
 
 const mainTypeColors: Record<MainType, string> = {
-  action: "var(--accent-indigo)",
-  attack: "var(--accent-red)",
-  territory: "var(--accent-green)",
-  succession: "var(--accent-silver)",
-  disaster: "var(--accent-coral)",
-  princess: "var(--accent-pink)",
+  action: "var(--card-action)",
+  attack: "var(--card-attack)",
+  territory: "var(--card-territory)",
+  succession: "var(--card-succession)",
+  disaster: "var(--card-disaster)",
+  princess: "var(--card-princess)",
 };
 
 export function getStripColors(card: CommonCard): string[] {
