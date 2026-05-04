@@ -25,7 +25,7 @@
     "rimraf": "catalog:",
     "sort-package-json": "catalog:",
     "textlint": "15.6.0",
-    "turbo": "2.9.6",
+    "turbo": "2.9.7",
     "vitest": "catalog:"
   },
   "packageManager": "pnpm@10.33.2",
