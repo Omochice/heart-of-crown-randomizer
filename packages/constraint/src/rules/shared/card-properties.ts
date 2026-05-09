@@ -1,21 +1,4 @@
-import type {
-  CommonCard,
-  DuplicateCard,
-} from "@heart-of-crown-randomizer/card/type";
-
-/**
- * Extract the link value from a card.
- *
- * UniqueCard has no top-level `link` property (its sub-cards each have
- * their own link values), so we return undefined for it rather than
- * trying to aggregate sub-card links.
- */
-export function getLink(card: CommonCard): DuplicateCard["link"] | undefined {
-  if (card.hasChild) {
-    return undefined;
-  }
-  return card.link;
-}
+import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 
 /**
  * Count how many cards in an array satisfy a predicate.
