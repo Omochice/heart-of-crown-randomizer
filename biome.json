@@ -7,15 +7,7 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": [
-      "**",
-      "!**/node_modules",
-      "!**/dist",
-      "!**/package.json",
-      "!**/.svelte-kit/**",
-      "!**/playwright-report/**",
-      "!**/test-results/**"
-    ]
+    "includes": ["**", "!**/package.json"]
   },
   "formatter": {
     "enabled": true,
