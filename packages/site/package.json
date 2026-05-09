@@ -5,11 +5,10 @@
 	"scripts": {
 		"build": "vite build",
 		"build-storybook": "storybook build",
-		"check": "npm-run-all2 check:biome check:svelte",
+		"check": "npm-run-all2 check:*",
 		"check:biome": "biome ci .",
 		"check:knip": "knip",
 		"check:svelte": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"dev": "vite dev",
 		"fmt": "npm-run-all2 fmt:*",
 		"fmt:biome": "biome check --write --unsafe .",
@@ -19,7 +18,8 @@
 		"preview": "vite preview",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest run",
-		"test:e2e": "playwright test"
+		"test:e2e": "playwright test",
+		"watch:check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"dependencies": {
 		"@heart-of-crown-randomizer/card": "workspace:*",
