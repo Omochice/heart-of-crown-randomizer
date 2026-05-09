@@ -54,6 +54,7 @@
     "build": "tsdown",
     "check": "npm-run-all2 check:*",
     "check:biome": "biome ci .",
+    "check:knip": "knip",
     "check:type": "tsgo --noEmit",
     "clean": "rimraf dist",
     "fmt": "npm-run-all2 fmt:*",
@@ -63,10 +64,13 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@heart-of-crown-randomizer/rolldown-plugin-dedent": "workspace:*",
+    "@types/node": "24.12.2",
     "@typescript/native-preview": "catalog:",
+    "knip": "catalog:",
     "npm-run-all2": "catalog:",
     "rimraf": "catalog:",
     "sort-package-json": "catalog:",
-    "tsdown": "catalog:"
+    "tsdown": "catalog:",
+    "typescript": "6.0.3"
   }
 }

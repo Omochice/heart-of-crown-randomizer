@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
+    "@knip/mcp": "0.0.28",
     "@textlint-ja/textlint-rule-preset-ai-writing": "1.6.3",
     "npm-run-all2": "catalog:",
     "rimraf": "catalog:",

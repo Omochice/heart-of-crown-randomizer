@@ -5,6 +5,11 @@
       "command": "pnpm",
       "env": {},
       "args": ["--filter=@heart-of-crown-randomizer/site", "exec", "svelte-mcp"]
+    },
+    "knip": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": ["exec", "knip-mcp"]
     }
   }
 }
