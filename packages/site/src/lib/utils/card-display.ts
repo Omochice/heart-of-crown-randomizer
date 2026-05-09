@@ -21,7 +21,7 @@ const mainTypeLabels: Record<MainType, string> = {
   princess: "姫",
 };
 
-export function getMainTypes(card: CommonCard): MainType[] {
+function getMainTypes(card: CommonCard): MainType[] {
   return card.hasChild
     ? [...new Set(card.cards.flatMap((c) => c.mainType))]
     : card.mainType;
