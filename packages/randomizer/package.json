@@ -41,6 +41,7 @@
     "@fast-check/vitest": "catalog:",
     "@types/seedrandom": "3.0.8",
     "@typescript/native-preview": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
     "knip": "catalog:",
     "npm-run-all2": "catalog:",
     "rimraf": "catalog:",

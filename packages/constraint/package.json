@@ -38,6 +38,7 @@
     "@biomejs/biome": "catalog:",
     "@fast-check/vitest": "catalog:",
     "@typescript/native-preview": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
     "knip": "catalog:",
     "npm-run-all2": "catalog:",
     "rimraf": "catalog:",
