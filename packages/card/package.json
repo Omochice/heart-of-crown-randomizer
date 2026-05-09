@@ -64,13 +64,11 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@heart-of-crown-randomizer/rolldown-plugin-dedent": "workspace:*",
-    "@types/node": "24.12.2",
     "@typescript/native-preview": "catalog:",
     "knip": "catalog:",
     "npm-run-all2": "catalog:",
     "rimraf": "catalog:",
     "sort-package-json": "catalog:",
-    "tsdown": "catalog:",
-    "typescript": "6.0.3"
+    "tsdown": "catalog:"
   }
 }
