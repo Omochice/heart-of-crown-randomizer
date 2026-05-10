@@ -34,7 +34,7 @@
     "@typescript/native-preview": "catalog:",
     "npm-run-all2": "catalog:",
     "rimraf": "catalog:",
-    "rolldown": "1.0.0-rc.18",
+    "rolldown": "1.0.0",
     "sort-package-json": "catalog:",
     "tsdown": "catalog:",
     "vitest": "catalog:"
