@@ -50,7 +50,7 @@
 		"npm-run-all2": "catalog:",
 		"playwright": "1.60.0",
 		"prettier": "3.8.3",
-		"prettier-plugin-svelte": "3.5.1",
+		"prettier-plugin-svelte": "3.5.2",
 		"sort-package-json": "catalog:",
 		"storybook": "10.3.6",
 		"svelte": "5.55.5",
