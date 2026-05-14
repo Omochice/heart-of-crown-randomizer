@@ -28,7 +28,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
-		"@playwright/test": "1.59.1",
+		"@playwright/test": "1.60.0",
 		"@storybook/addon-docs": "10.3.6",
 		"@storybook/addon-interactions": "8.6.14",
 		"@storybook/addon-svelte-csf": "5.1.2",
@@ -48,7 +48,7 @@
 		"jsdom": "29.1.1",
 		"lucide-svelte": "1.0.1",
 		"npm-run-all2": "catalog:",
-		"playwright": "1.59.1",
+		"playwright": "1.60.0",
 		"prettier": "3.8.3",
 		"prettier-plugin-svelte": "3.5.1",
 		"sort-package-json": "catalog:",
