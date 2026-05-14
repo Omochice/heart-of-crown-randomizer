@@ -75,12 +75,13 @@ jobs:
       - run: pnpm --filter=@heart-of-crown-randomizer/site exec playwright install
       - run: pnpm --filter ./packages/site run test:e2e
   status-check:
-    timeout-minutes: 30
+    timeout-minutes: 1
     runs-on: ubuntu-latest
     needs:
       - nix-flake-check
       - check-typescript
     permissions: {}
-    if: failure()
+    if: ${{ always() }}
     steps:
-      - run: exit 1
+      - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: exit 1
