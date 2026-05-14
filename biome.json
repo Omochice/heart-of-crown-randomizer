@@ -1,16 +1,13 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.4.15/schema.json",
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
   "files": {
-    "includes": [
-      "**",
-      "!**/node_modules",
-      "!**/dist",
-      "!**/package.json",
-      "!**/.svelte-kit/**",
-      "!**/playwright-report/**",
-      "!**/test-results/**"
-    ]
+    "includes": ["**", "!**/package.json"]
   },
   "formatter": {
     "enabled": true,
