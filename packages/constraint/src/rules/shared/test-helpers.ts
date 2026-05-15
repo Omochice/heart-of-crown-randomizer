@@ -49,7 +49,7 @@ export function seededRng(initialSeed = 42): () => number {
 
 // -- Property test arbitraries --
 
-export const mainTypeArb: fc.Arbitrary<MainType> = fc.constantFrom(
+const mainTypeArb: fc.Arbitrary<MainType> = fc.constantFrom(
   "action",
   "attack",
   "territory",
@@ -58,7 +58,7 @@ export const mainTypeArb: fc.Arbitrary<MainType> = fc.constantFrom(
   "disaster",
 );
 
-export const linkArb: fc.Arbitrary<0 | 1 | 2> = fc.constantFrom(0, 1, 2);
+const linkArb: fc.Arbitrary<0 | 1 | 2> = fc.constantFrom(0, 1, 2);
 
 export const duplicateCardArb: fc.Arbitrary<DuplicateCard> = fc
   .record({
@@ -79,7 +79,7 @@ export const duplicateCardArb: fc.Arbitrary<DuplicateCard> = fc
     edition: 0 as const,
   }));
 
-export const uniqueCardArb: fc.Arbitrary<UniqueCard> = fc
+const uniqueCardArb: fc.Arbitrary<UniqueCard> = fc
   .record({
     id: fc.integer({ min: 10001, max: 20000 }),
     cost: fc.integer({ min: 1, max: 8 }),

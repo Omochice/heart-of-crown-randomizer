@@ -5,7 +5,7 @@
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { Edition } from "@heart-of-crown-randomizer/card/type";
 	import { defineMeta } from "@storybook/addon-svelte-csf";
-	import { fn } from "@storybook/test";
+	import { fn } from "storybook/test";
 	import CardDetail from "./CardDetail.svelte";
 
 	const actionCard: CommonCard = {

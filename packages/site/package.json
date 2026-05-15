@@ -5,10 +5,10 @@
 	"scripts": {
 		"build": "vite build",
 		"build-storybook": "storybook build",
-		"check": "npm-run-all2 check:biome check:svelte",
+		"check": "npm-run-all2 check:*",
 		"check:biome": "biome ci .",
+		"check:knip": "knip",
 		"check:svelte": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"dev": "vite dev",
 		"fmt": "npm-run-all2 fmt:*",
 		"fmt:biome": "biome check --write --unsafe .",
@@ -18,7 +18,8 @@
 		"preview": "vite preview",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest run",
-		"test:e2e": "playwright test"
+		"test:e2e": "playwright test",
+		"watch:check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"dependencies": {
 		"@heart-of-crown-randomizer/card": "workspace:*",
@@ -30,22 +31,19 @@
 		"@biomejs/biome": "catalog:",
 		"@playwright/test": "1.60.0",
 		"@storybook/addon-docs": "10.3.6",
-		"@storybook/addon-interactions": "8.6.14",
 		"@storybook/addon-svelte-csf": "5.1.2",
 		"@storybook/svelte": "10.3.6",
 		"@storybook/sveltekit": "10.3.6",
-		"@storybook/test": "8.6.15",
 		"@sveltejs/adapter-cloudflare": "7.2.8",
 		"@sveltejs/kit": "2.59.1",
 		"@sveltejs/mcp": "0.1.22",
 		"@sveltejs/vite-plugin-svelte": "7.1.2",
 		"@tailwindcss/vite": "4.3.0",
-		"@testing-library/jest-dom": "6.9.1",
 		"@testing-library/svelte": "5.3.1",
 		"@types/node": "24.12.4",
-		"@vitest/browser": "4.1.6",
 		"@vitest/browser-playwright": "4.1.6",
 		"jsdom": "29.1.1",
+		"knip": "catalog:",
 		"lucide-svelte": "1.0.1",
 		"npm-run-all2": "catalog:",
 		"playwright": "1.60.0",
@@ -59,5 +57,10 @@
 		"typescript": "6.0.3",
 		"vite": "8.0.12",
 		"vitest": "catalog:"
+	},
+	"knip": {
+		"ignoreDependencies": [
+			"@sveltejs/mcp"
+		]
 	}
 }

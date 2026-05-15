@@ -22,6 +22,7 @@
     "build": "tsdown",
     "check": "npm-run-all2 check:*",
     "check:biome": "biome ci .",
+    "check:knip": "knip",
     "check:type": "tsgo --noEmit",
     "clean": "rimraf dist",
     "fmt": "npm-run-all2 fmt:*",
@@ -34,6 +35,8 @@
   "devDependencies": {
     "@biomejs/biome": "catalog:",
     "@typescript/native-preview": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "knip": "catalog:",
     "npm-run-all2": "catalog:",
     "rimraf": "catalog:",
     "sort-package-json": "catalog:",
