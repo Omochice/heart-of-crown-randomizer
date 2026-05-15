@@ -16,4 +16,4 @@ catalog:
   vitest: "4.1.6"
   "@vitest/coverage-v8": "4.1.6"
   "@typescript/native-preview": "7.0.0-dev.20260512.1"
-  knip: "6.12.2"
+  knip: "6.13.0"
