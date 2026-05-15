@@ -42,7 +42,7 @@
 		"@tailwindcss/vite": "4.3.0",
 		"@testing-library/jest-dom": "6.9.1",
 		"@testing-library/svelte": "5.3.1",
-		"@types/node": "24.12.3",
+		"@types/node": "24.12.4",
 		"@vitest/browser": "4.1.6",
 		"@vitest/browser-playwright": "4.1.6",
 		"jsdom": "29.1.1",
