@@ -247,8 +247,8 @@ importers:
         specifier: 0.0.28
         version: 0.0.28
       '@textlint-ja/textlint-rule-preset-ai-writing':
-        specifier: 1.6.3
-        version: 1.6.3
+        specifier: 1.7.0
+        version: 1.7.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 8.0.4
@@ -2117,8 +2117,8 @@ packages:
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
 
-  '@textlint-ja/textlint-rule-preset-ai-writing@1.6.3':
-    resolution: {integrity: sha512-QQxO3sK6mGQyPS753jZ2zIy0EgAQHqiJ3oadnwV/hs5sOZn2WOqHWNAnjwEXLYiFNvI53zVMTiabL31cJPigiw==}
+  '@textlint-ja/textlint-rule-preset-ai-writing@1.7.0':
+    resolution: {integrity: sha512-xq+y592q4qP4SK5Vs40JRi98BmpJJoIaUO8/U+puOErCyazQvoZqDswIuKsFi1IEFmZ/wNn8OkfJ/5GNhrppNw==}
 
   '@textlint/ast-node-types@13.4.1':
     resolution: {integrity: sha512-qrZyhCh8Ekk6nwArx3BROybm9BnX6vF7VcZbijetV/OM3yfS4rTYhoMWISmhVEP2H2re0CtWEyMl/XF+WdvVLQ==}
@@ -5713,7 +5713,7 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.1
 
-  '@textlint-ja/textlint-rule-preset-ai-writing@1.6.3':
+  '@textlint-ja/textlint-rule-preset-ai-writing@1.7.0':
     dependencies:
       '@textlint/regexp-string-matcher': 2.0.2
       kuromojin: 3.0.1
