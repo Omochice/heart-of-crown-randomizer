@@ -1,11 +1,9 @@
 packages:
   - packages/*
-onlyBuiltDependencies:
-  - "@biomejs/biome"
-  - esbuild
-  - sharp
-  - svelte-preprocess
-  - workerd
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
 catalog:
   "@biomejs/biome": "2.4.15"
   "@fast-check/vitest": "0.4.1"
