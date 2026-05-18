@@ -218,8 +218,8 @@ catalogs:
       specifier: 4.1.6
       version: 4.1.6
     knip:
-      specifier: 6.13.1
-      version: 6.13.1
+      specifier: 6.14.0
+      version: 6.14.0
     npm-run-all2:
       specifier: 8.0.4
       version: 8.0.4
@@ -281,7 +281,7 @@ importers:
         version: 7.0.0-dev.20260515.1
       knip:
         specifier: 'catalog:'
-        version: 6.13.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
+        version: 6.14.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
       npm-run-all2:
         specifier: 'catalog:'
         version: 8.0.4
@@ -315,7 +315,7 @@ importers:
         version: 4.1.6(@vitest/browser@4.1.6)(vitest@4.1.6)
       knip:
         specifier: 'catalog:'
-        version: 6.13.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
+        version: 6.14.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
       npm-run-all2:
         specifier: 'catalog:'
         version: 8.0.4
@@ -345,7 +345,7 @@ importers:
         version: 4.1.6(@vitest/browser@4.1.6)(vitest@4.1.6)
       knip:
         specifier: 'catalog:'
-        version: 6.13.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
+        version: 6.14.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
       npm-run-all2:
         specifier: 'catalog:'
         version: 8.0.4
@@ -385,7 +385,7 @@ importers:
         version: 4.1.6(@vitest/browser@4.1.6)(vitest@4.1.6)
       knip:
         specifier: 'catalog:'
-        version: 6.13.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
+        version: 6.14.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
       npm-run-all2:
         specifier: 'catalog:'
         version: 8.0.4
@@ -412,7 +412,7 @@ importers:
         version: 7.0.0-dev.20260515.1
       knip:
         specifier: 'catalog:'
-        version: 6.13.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
+        version: 6.14.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
       npm-run-all2:
         specifier: 'catalog:'
         version: 8.0.4
@@ -494,7 +494,7 @@ importers:
         version: 29.1.1
       knip:
         specifier: 'catalog:'
-        version: 6.13.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
+        version: 6.14.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)
       lucide-svelte:
         specifier: 1.0.1
         version: 1.0.1(svelte@5.55.7)
@@ -3396,6 +3396,11 @@ packages:
 
   knip@6.13.1:
     resolution: {integrity: sha512-hvSnb+YDpDWW1LXub4U0JFfkQhscwgInWuQOv99WTutPZavf1cEP3GwxzEzO2JJpGI9yATk6l0jPLY1V3fp1sQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    hasBin: true
+
+  knip@6.14.0:
+    resolution: {integrity: sha512-yEI9ysdGQ3h77gLObvovH0KUYs6ITtJ1f6owmXRalOO32TbolYvHY7Z+2AEOXqw0ZWeh9219/agh2K/GmtfsxQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -7186,7 +7191,7 @@ snapshots:
       - '@emnapi/core'
       - '@emnapi/runtime'
 
-  knip@6.13.1(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0):
+  knip@6.14.0(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0):
     dependencies:
       fdir: 6.5.0(picomatch@4.0.4)
       formatly: 0.3.0
