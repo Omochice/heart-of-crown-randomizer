@@ -25,7 +25,7 @@
     "npm-run-all2": "catalog:",
     "rimraf": "catalog:",
     "sort-package-json": "catalog:",
-    "textlint": "15.7.0",
+    "textlint": "15.7.1",
     "turbo": "2.9.14",
     "vitest": "catalog:"
   },
