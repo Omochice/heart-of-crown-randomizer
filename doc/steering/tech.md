@@ -35,10 +35,11 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 
 ### Testing
 
-- Vitest for all test suites (unit, integration, property-based)
+- Vitest for all test suites (unit, integration, property-based, browser-based)
+- Playwright for e2e tests run against the built site (`packages/site/test/`)
 - Property-based testing with `@fast-check/vitest` for randomizer invariants
 - Separate test files per concern (e.g., `page.accessibility.test.ts`, `page.reactivity.test.ts`)
-- Tests live alongside source in `src/` directories
+- Tests live alongside source in `src/` directories; e2e tests in separate `test/` directory
 
 ## Development Environment
 
@@ -77,6 +78,12 @@ packages/
 - Pure functions in randomizer package (no side effects)
 - Card definitions as static typed data (exported const objects)
 - Svelte components handle all UI state and side effects
+
+### Svelte 5 Runes
+
+- Components use `$props()`, `$state()`, `$derived()` runes (Svelte 5 syntax)
+- Shared reactive state lives in `.svelte.ts` files (not `.ts`) to enable rune usage outside components
+- Files using runes outside components follow the `.svelte.ts` naming convention
 
 ### ESM-Only
 

@@ -43,10 +43,40 @@ src/
 
 ```text
 routes/
+  +layout.svelte             # Root layout (Tailwind CSS import, children render)
   +page.svelte               # Route component
   page.{concern}.test.ts     # Tests split by concern
                              # (accessibility, reactivity, url-reactivity, etc.)
+  page.{concern}.e2e.test.ts # e2e concern tests (run via Vitest browser mode)
 ```
+
+### Site Components and State (`packages/site/src/lib/`)
+
+**Location**: `packages/site/src/lib/`
+**Purpose**: Reusable UI components, shared reactive state, and utility functions
+**Pattern**:
+
+```text
+lib/
+  {Component}.svelte          # UI component
+  {Component}.stories.svelte  # Storybook story
+  {Component}.svelte.test.ts  # Component tests
+  {feature}/                  # Sub-feature directory (e.g., app-menu/)
+    {Feature}.svelte
+    {Feature}.svelte.test.ts
+  stores/                     # Svelte 5 reactive state modules
+    {name}.svelte.ts          # Shared state using $state() runes
+    {name}.svelte.test.ts
+  utils/                      # Pure helper functions
+    {name}.ts
+    {name}.test.ts
+```
+
+### E2E Tests (`packages/site/test/`)
+
+**Location**: `packages/site/test/`
+**Purpose**: Playwright end-to-end tests against the built/previewed site
+**Pattern**: Single `page.spec.ts` (or more files) run via `playwright.config.ts`; distinct from Vitest unit tests in `src/`
 
 ### Constraint Rules (`packages/constraint/src/rules/`)
 
@@ -84,7 +114,9 @@ card/src/
 ## Naming Conventions
 
 - **Files**: kebab-case (`constraint.ts`, `page.reactivity.test.ts`)
-- **Test Files**: `{feature}.test.ts` or `{page}.{concern}.test.ts` for split concerns
+- **Svelte Components**: PascalCase (`Card.svelte`, `CardDetail.svelte`)
+- **Svelte Rune Files**: `.svelte.ts` suffix for non-component files that use Svelte 5 runes (`card-state.svelte.ts`)
+- **Test Files**: `{feature}.test.ts` for pure TS; `{name}.svelte.test.ts` for Svelte/rune files; `{page}.{concern}.test.ts` for split route concerns
 - **Packages**: `@heart-of-crown-randomizer/{name}` scoped namespace
 - **TypeScript**: Interfaces/types use PascalCase, discriminated unions with lowercase string literals
 
