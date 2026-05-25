@@ -48,7 +48,7 @@
 		"npm-run-all2": "catalog:",
 		"playwright": "1.60.0",
 		"prettier": "3.8.3",
-		"prettier-plugin-svelte": "3.5.2",
+		"prettier-plugin-svelte": "4.0.1",
 		"sort-package-json": "catalog:",
 		"storybook": "10.4.0",
 		"svelte": "5.55.9",
