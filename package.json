@@ -29,14 +29,14 @@
     "turbo": "2.9.16",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@11.5.0",
+  "packageManager": "pnpm@11.5.1",
   "engines": {
     "node": ">=24.0.0"
   },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "version": "11.5.0",
+      "version": "11.5.1",
       "onFail": "download"
     }
   }
