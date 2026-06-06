@@ -36,7 +36,7 @@
     "knip": "catalog:",
     "npm-run-all2": "catalog:",
     "rimraf": "catalog:",
-    "rolldown": "1.0.3",
+    "rolldown": "1.1.0",
     "sort-package-json": "catalog:",
     "tsdown": "catalog:",
     "vitest": "catalog:"
