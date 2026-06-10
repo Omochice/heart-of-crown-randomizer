@@ -51,7 +51,7 @@
 		"prettier-plugin-svelte": "4.1.0",
 		"sort-package-json": "catalog:",
 		"storybook": "10.4.2",
-		"svelte": "5.56.2",
+		"svelte": "5.56.3",
 		"svelte-check": "4.6.0",
 		"tailwindcss": "4.3.0",
 		"typescript": "6.0.3",
