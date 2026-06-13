@@ -65,6 +65,9 @@ describe("swipeDownToDismiss", () => {
     swipeDownToDismiss(node, { onDismiss });
 
     node.dispatchEvent(touchEvent("touchstart", { clientX: 0, clientY: 100 }));
+    node.dispatchEvent(touchEvent("touchmove", { clientX: 0, clientY: 180 }));
+    expect(node.style.transform).not.toBe("");
+
     node.dispatchEvent(
       new TouchEvent("touchmove", {
         touches: [
