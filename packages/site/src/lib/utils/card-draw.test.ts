@@ -1,4 +1,4 @@
-import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+import type { DuplicateCard } from "@heart-of-crown-randomizer/card/type";
 import {
   type Constraint,
   noAttack,
@@ -156,23 +156,23 @@ describe("drawMissingCommons", () => {
 });
 
 describe("drawMissingCommons with constraints", () => {
-  const makeAttackCard = (id: number): CommonCard => ({
-    ...makeCard(id),
+  const makeAttackCard = (id: number): DuplicateCard => ({
+    ...(makeCard(id) as DuplicateCard),
     mainType: ["attack"],
   });
 
-  it("adds no attack card when noAttack is active and only attack cards remain to fill the slot", () => {
+  it("does not fill with attack cards when noAttack is active and non-attack cards are available", () => {
     const selected = Array.from({ length: 9 }, (_, i) => makeCard(i + 1));
     const pool = [
       ...selected,
-      ...Array.from({ length: 6 }, (_, i) => makeAttackCard(i + 10)),
+      ...Array.from({ length: 3 }, (_, i) => makeCard(i + 10)),
+      ...Array.from({ length: 6 }, (_, i) => makeAttackCard(i + 13)),
     ];
 
     const result = drawMissingCommons(pool, selected, 10, [noAttack]);
 
-    for (const card of result) {
-      expect(card.mainType).not.toContain("attack");
-    }
+    expect(result).toHaveLength(1);
+    expect(noAttack.isSatisfied([...selected, ...result])).toBe(true);
   });
 });
 
