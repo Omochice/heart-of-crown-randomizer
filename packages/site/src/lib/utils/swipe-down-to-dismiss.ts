@@ -89,6 +89,13 @@ export const swipeDownToDismiss: Action<
       return;
     }
 
+    // A second finger landing mid-drag means a pinch, not a dismiss; hand the
+    // gesture back to the browser so it can drive the multi-touch interaction.
+    if (event.touches.length !== 1) {
+      resetDrag(false);
+      return;
+    }
+
     const deltaX = event.touches[0].clientX - state.startX;
     const deltaY = event.touches[0].clientY - state.startY;
 

@@ -60,6 +60,27 @@ describe("swipeDownToDismiss", () => {
     expect(onDismiss).not.toHaveBeenCalled();
   });
 
+  it("hands the gesture back when a second finger joins mid-drag", () => {
+    const node = createNode();
+    swipeDownToDismiss(node, { onDismiss });
+
+    node.dispatchEvent(touchEvent("touchstart", { clientX: 0, clientY: 100 }));
+    node.dispatchEvent(
+      new TouchEvent("touchmove", {
+        touches: [
+          { clientX: 0, clientY: 250 } as Touch,
+          { clientX: 40, clientY: 260 } as Touch,
+        ],
+        cancelable: true,
+        bubbles: true,
+      }),
+    );
+    node.dispatchEvent(touchEvent("touchend", { clientX: 0, clientY: 250 }));
+
+    expect(onDismiss).not.toHaveBeenCalled();
+    expect(node.style.transform).toBe("");
+  });
+
   it("does not start a drag while the content is scrolled away from the top", () => {
     const node = createNode();
     Object.defineProperty(node, "scrollTop", { value: 40, configurable: true });
