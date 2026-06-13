@@ -4,6 +4,7 @@
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
 	import { getCategoryLabels } from "$lib/utils/card-display";
+	import { swipeDownToDismiss } from "$lib/utils/swipe-down-to-dismiss";
 
 	type Props = {
 		/** Card data to display in the detail sheet */
@@ -59,6 +60,7 @@
 		aria-label="カード詳細: {card.name}"
 		transition:fly={{ y: 400, duration: 300 }}
 		onclick={(e) => e.stopPropagation()}
+		use:swipeDownToDismiss={{ onDismiss: onClose }}
 	>
 		<div class="detail-handle"></div>
 
