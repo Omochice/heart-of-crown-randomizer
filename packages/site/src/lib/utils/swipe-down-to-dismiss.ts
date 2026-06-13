@@ -26,6 +26,10 @@ export const swipeDownToDismiss: Action<
   SwipeDownToDismissOptions
 > = (node, options) => {
   let current = options;
+  // Tracks the pending timeout that clears the snap-back transition. A stale
+  // timeout firing mid-animation would reset `transition` and cut a later
+  // snap-back short, so every new reset or touch start clears the previous one.
+  let resetTimeoutId: ReturnType<typeof setTimeout> | undefined;
   const state = {
     startX: 0,
     startY: 0,
@@ -33,13 +37,22 @@ export const swipeDownToDismiss: Action<
     dragging: false,
   };
 
+  function clearResetTimeout(): void {
+    if (resetTimeoutId !== undefined) {
+      clearTimeout(resetTimeoutId);
+      resetTimeoutId = undefined;
+    }
+  }
+
   // `animate` distinguishes a release that springs back into place (touchend
   // below the threshold, or a cancel) from one that must clear instantly so the
   // browser regains the gesture (an upward or horizontal move mid-drag).
   function resetDrag(animate: boolean): void {
+    clearResetTimeout();
     if (animate) {
       node.style.transition = `transform ${RESET_TRANSITION_MS}ms ease-out`;
-      setTimeout(() => {
+      resetTimeoutId = setTimeout(() => {
+        resetTimeoutId = undefined;
         if (node.isConnected) {
           node.style.transition = "";
         }
@@ -60,6 +73,7 @@ export const swipeDownToDismiss: Action<
     if (node.scrollTop > 0 || event.touches.length !== 1) {
       return;
     }
+    clearResetTimeout();
     state.startX = event.touches[0].clientX;
     state.startY = event.touches[0].clientY;
     state.deltaY = 0;
@@ -114,6 +128,7 @@ export const swipeDownToDismiss: Action<
       current = next;
     },
     destroy(): void {
+      clearResetTimeout();
       node.removeEventListener("touchstart", onTouchStart);
       node.removeEventListener("touchmove", onTouchMove);
       node.removeEventListener("touchend", onTouchEnd);
