@@ -66,6 +66,9 @@ export const swipeDownToDismiss: Action<
   }
 
   function onTouchCancel(): void {
+    if (!state.dragging) {
+      return;
+    }
     resetDrag(true);
   }
 
