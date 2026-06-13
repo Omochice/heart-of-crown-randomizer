@@ -15,6 +15,11 @@ type SwipeDownToDismissOptions = {
  * scrolling the content downward is never hijacked. Releasing below the
  * threshold animates the sheet back into place; releasing past it leaves the
  * sheet translated so the component's own exit transition continues the motion.
+ *
+ * The gesture is intentionally touch-only: it targets the mobile bottom-sheet
+ * interaction where a downward swipe is the expected dismissal. Pointer and
+ * keyboard users dismiss the sheet through the backdrop, close button, or
+ * Escape instead.
  */
 export const swipeDownToDismiss: Action<
   HTMLElement,
@@ -28,23 +33,27 @@ export const swipeDownToDismiss: Action<
     dragging: false,
   };
 
-  function settle(): void {
-    node.style.transition = `transform ${RESET_TRANSITION_MS}ms ease-out`;
+  // `animate` distinguishes a release that springs back into place (touchend
+  // below the threshold, or a cancel) from one that must clear instantly so the
+  // browser regains the gesture (an upward or horizontal move mid-drag).
+  function resetDrag(animate: boolean): void {
+    if (animate) {
+      node.style.transition = `transform ${RESET_TRANSITION_MS}ms ease-out`;
+      setTimeout(() => {
+        if (node.isConnected) {
+          node.style.transition = "";
+        }
+      }, RESET_TRANSITION_MS);
+    } else {
+      node.style.transition = "";
+    }
     node.style.transform = "";
-    setTimeout(() => {
-      if (node.isConnected) {
-        node.style.transition = "";
-      }
-    }, RESET_TRANSITION_MS);
     state.dragging = false;
     state.deltaY = 0;
   }
 
-  function release(): void {
-    node.style.transition = "";
-    node.style.transform = "";
-    state.dragging = false;
-    state.deltaY = 0;
+  function onTouchCancel(): void {
+    resetDrag(true);
   }
 
   function onTouchStart(event: TouchEvent): void {
@@ -69,7 +78,7 @@ export const swipeDownToDismiss: Action<
     // Upward or dominantly horizontal motion is not a dismiss gesture; hand it
     // back to the browser so scrolling and horizontal swipes still work.
     if (deltaY <= 0 || Math.abs(deltaX) > deltaY) {
-      release();
+      resetDrag(false);
       return;
     }
 
@@ -92,13 +101,13 @@ export const swipeDownToDismiss: Action<
       return;
     }
 
-    settle();
+    resetDrag(true);
   }
 
   node.addEventListener("touchstart", onTouchStart, { passive: true });
   node.addEventListener("touchmove", onTouchMove, { passive: false });
   node.addEventListener("touchend", onTouchEnd);
-  node.addEventListener("touchcancel", settle);
+  node.addEventListener("touchcancel", onTouchCancel);
 
   return {
     update(next: SwipeDownToDismissOptions): void {
@@ -108,7 +117,7 @@ export const swipeDownToDismiss: Action<
       node.removeEventListener("touchstart", onTouchStart);
       node.removeEventListener("touchmove", onTouchMove);
       node.removeEventListener("touchend", onTouchEnd);
-      node.removeEventListener("touchcancel", settle);
+      node.removeEventListener("touchcancel", onTouchCancel);
     },
   };
 };
