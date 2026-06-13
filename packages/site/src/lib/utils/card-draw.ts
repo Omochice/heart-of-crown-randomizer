@@ -64,13 +64,16 @@ export function drawMissingCommons(
   selectedCommons: CommonCard[],
   numberOfCommons: number,
   constraints?: readonly Constraint[],
+  excludedIds?: ReadonlySet<number>,
 ): CommonCard[] {
   if (selectedCommons.length >= numberOfCommons) {
     return [];
   }
 
   const selectedIds = new Set(selectedCommons.map((c) => c.id));
-  const hasAvailable = allCommons.some((c) => !selectedIds.has(c.id));
+  const hasAvailable = allCommons.some(
+    (c) => !selectedIds.has(c.id) && !excludedIds?.has(c.id),
+  );
   if (!hasAvailable) {
     return [];
   }
@@ -78,7 +81,7 @@ export function drawMissingCommons(
   const filled = selectWithConstraints(
     allCommons,
     selectedCommons,
-    new Set(),
+    excludedIds ?? new Set(),
     numberOfCommons,
     constraints,
   );

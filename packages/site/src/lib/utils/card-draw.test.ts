@@ -174,6 +174,24 @@ describe("drawMissingCommons with constraints", () => {
     expect(result).toHaveLength(1);
     expect(noAttack.isSatisfied([...selected, ...result])).toBe(true);
   });
+
+  it("does not fill with cards the user excluded", () => {
+    const selected = allCommons.slice(0, 7);
+    const excludedIds = new Set([8, 9, 10]);
+
+    const result = drawMissingCommons(
+      allCommons,
+      selected,
+      10,
+      [],
+      excludedIds,
+    );
+
+    const resultIds = result.map((c) => c.id);
+    for (const excludedId of excludedIds) {
+      expect(resultIds).not.toContain(excludedId);
+    }
+  });
 });
 
 describe("buildCardUrl", () => {

@@ -146,11 +146,13 @@
 
 	function drawMissingCommons() {
 		const activeConstraints = getEnabledConstraints(allConstraints);
+		const excludedIds = getExcludedCardIds();
 		const newCards = drawMissingCommonsLogic(
 			allCommons,
 			selectedCommons,
 			numberOfCommons,
 			activeConstraints,
+			excludedIds,
 		);
 		if (newCards.length === 0) {
 			return;
