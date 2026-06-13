@@ -175,7 +175,12 @@
 		position: fixed;
 		inset: 0;
 		background: rgba(0, 0, 0, 0.4);
-		z-index: 50;
+		/*
+		 * The sheet is in the top layer, but this dim is a normal-flow element,
+		 * so it must outrank every other page layer (the app menu is z-index 100)
+		 * to keep the whole background dimmed behind the modal.
+		 */
+		z-index: 200;
 	}
 
 	.detail-sheet {
