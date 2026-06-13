@@ -179,7 +179,8 @@
 		overflow-y: auto;
 		/* Stop a swipe or scroll at the sheet edge from chaining to the page. */
 		overscroll-behavior: contain;
-		padding-top: 12px;
+		/* Reset the UA dialog padding; only the top gap is wanted here. */
+		padding: 12px 0 0;
 	}
 
 	.detail-sheet::backdrop {
