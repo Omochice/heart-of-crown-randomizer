@@ -1,7 +1,6 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import type { Constraint } from "@heart-of-crown-randomizer/constraint";
 import { encodeIds } from "@heart-of-crown-randomizer/id-codec";
-import { filterByIds, select } from "@heart-of-crown-randomizer/randomizer";
 import { selectWithConstraints } from "./select-with-constraints";
 import {
   validateExcludeConstraints,
@@ -55,27 +54,38 @@ export function drawRandomCards(
 }
 
 /**
- * We filter out already-selected cards by ID rather than by reference
- * because card objects may differ between renders while IDs are stable.
+ * The already-selected cards are passed as required so the same
+ * constraint-aware selection used by the initial draw fills the
+ * remaining slots; otherwise an additional draw could add cards that
+ * an active constraint excludes (e.g. attack cards under noAttack).
  */
 export function drawMissingCommons(
   allCommons: CommonCard[],
   selectedCommons: CommonCard[],
   numberOfCommons: number,
+  constraints?: readonly Constraint[],
+  excludedIds?: ReadonlySet<number>,
 ): CommonCard[] {
   if (selectedCommons.length >= numberOfCommons) {
     return [];
   }
 
-  const excludedIds = selectedCommons.map((c) => c.id);
-  const availableCommons = filterByIds(allCommons, excludedIds);
-
-  if (availableCommons.length === 0) {
+  const selectedIds = new Set(selectedCommons.map((c) => c.id));
+  const hasAvailable = allCommons.some(
+    (c) => !selectedIds.has(c.id) && !excludedIds?.has(c.id),
+  );
+  if (!hasAvailable) {
     return [];
   }
 
-  const cardsToAdd = numberOfCommons - selectedCommons.length;
-  return select(availableCommons, cardsToAdd);
+  const filled = selectWithConstraints(
+    allCommons,
+    selectedCommons,
+    excludedIds ?? new Set(),
+    numberOfCommons,
+    constraints,
+  );
+  return filled.filter((c) => !selectedIds.has(c.id));
 }
 
 /**

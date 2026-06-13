@@ -1,6 +1,8 @@
-import type {
-  Constraint,
-  SelectionContext,
+import type { DuplicateCard } from "@heart-of-crown-randomizer/card/type";
+import {
+  type Constraint,
+  noAttack,
+  type SelectionContext,
 } from "@heart-of-crown-randomizer/constraint";
 import { decodeIds } from "@heart-of-crown-randomizer/id-codec";
 import { describe, expect, it } from "vitest";
@@ -150,6 +152,45 @@ describe("drawMissingCommons", () => {
     const result = drawMissingCommons(allCommons, allCommons, 25);
 
     expect(result).toHaveLength(0);
+  });
+});
+
+describe("drawMissingCommons with constraints", () => {
+  const makeAttackCard = (id: number): DuplicateCard => ({
+    ...(makeCard(id) as DuplicateCard),
+    mainType: ["attack"],
+  });
+
+  it("does not fill with attack cards when noAttack is active and non-attack cards are available", () => {
+    const selected = Array.from({ length: 9 }, (_, i) => makeCard(i + 1));
+    const pool = [
+      ...selected,
+      ...Array.from({ length: 3 }, (_, i) => makeCard(i + 10)),
+      ...Array.from({ length: 6 }, (_, i) => makeAttackCard(i + 13)),
+    ];
+
+    const result = drawMissingCommons(pool, selected, 10, [noAttack]);
+
+    expect(result).toHaveLength(1);
+    expect(noAttack.isSatisfied([...selected, ...result])).toBe(true);
+  });
+
+  it("does not fill with cards the user excluded", () => {
+    const selected = allCommons.slice(0, 7);
+    const excludedIds = new Set([8, 9, 10]);
+
+    const result = drawMissingCommons(
+      allCommons,
+      selected,
+      10,
+      [],
+      excludedIds,
+    );
+
+    const resultIds = result.map((c) => c.id);
+    for (const excludedId of excludedIds) {
+      expect(resultIds).not.toContain(excludedId);
+    }
   });
 });
 
