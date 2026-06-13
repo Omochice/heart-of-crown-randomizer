@@ -43,10 +43,15 @@
 		};
 	});
 
-	// A modal dialog reports backdrop clicks as clicks on the dialog itself, but
-	// so are clicks on the dialog's own padding gutter. Comparing against the
-	// sheet's bounds dismisses only when the click truly landed outside it.
+	// A genuine backdrop click targets the dialog element itself and lands
+	// outside the sheet. Requiring the target rules out clicks bubbling up from
+	// children (whose keyboard/programmatic events carry clientX/Y 0 and would
+	// otherwise read as outside), while the bounds check rules out the dialog's
+	// own padding gutter, which also targets the dialog but sits inside it.
 	function handleDialogClick(event: MouseEvent) {
+		if (event.target !== dialogRef) {
+			return;
+		}
 		const rect = dialogRef.getBoundingClientRect();
 		const isOutsideSheet =
 			event.clientX < rect.left ||
