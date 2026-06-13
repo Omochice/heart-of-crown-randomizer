@@ -43,10 +43,17 @@
 		};
 	});
 
-	// A click whose target is the dialog itself landed on the (transparent)
-	// native backdrop rather than the sheet content, so treat it as dismiss.
+	// A modal dialog reports backdrop clicks as clicks on the dialog itself, but
+	// so are clicks on the dialog's own padding gutter. Comparing against the
+	// sheet's bounds dismisses only when the click truly landed outside it.
 	function handleDialogClick(event: MouseEvent) {
-		if (event.target === dialogRef) {
+		const rect = dialogRef.getBoundingClientRect();
+		const isOutsideSheet =
+			event.clientX < rect.left ||
+			event.clientX > rect.right ||
+			event.clientY < rect.top ||
+			event.clientY > rect.bottom;
+		if (isOutsideSheet) {
 			onClose();
 		}
 	}
