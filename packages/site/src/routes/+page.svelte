@@ -145,7 +145,13 @@
 		});
 
 	function drawMissingCommons() {
-		const newCards = drawMissingCommonsLogic(allCommons, selectedCommons, numberOfCommons);
+		const activeConstraints = getEnabledConstraints(allConstraints);
+		const newCards = drawMissingCommonsLogic(
+			allCommons,
+			selectedCommons,
+			numberOfCommons,
+			activeConstraints,
+		);
 		if (newCards.length === 0) {
 			return;
 		}
