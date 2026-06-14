@@ -27,9 +27,9 @@
 
 	let dialogRef: HTMLDialogElement;
 
-	// showModal (not the `open` attribute) makes the background inert and
-	// top-layer and moves focus to the close button. It does not lock page
-	// scrolling, so the body is locked here to keep the gesture on the sheet.
+	// The `open` attribute would show the dialog but not make it modal, inert, or
+	// focus-trapping; showModal does, but still does not lock page scroll, so the
+	// body is locked here too.
 	onMount(() => {
 		dialogRef.showModal();
 		const previousOverflow = document.body.style.overflow;
@@ -39,9 +39,9 @@
 		};
 	});
 
-	// A real backdrop click targets the dialog itself and lands outside its
-	// bounds. The target check ignores bubbled child clicks (whose synthetic
-	// events carry clientX/Y 0); the bounds check ignores the padding gutter.
+	// Target-only would also fire on the padding gutter; bounds-only would fire on
+	// bubbled child clicks (whose synthetic events carry clientX/Y 0). Both
+	// together leave only genuine backdrop clicks.
 	function handleDialogClick(event: MouseEvent) {
 		if (event.target !== dialogRef) {
 			return;
@@ -57,7 +57,8 @@
 		}
 	}
 
-	// Drive the close through Svelte's exit transition so Escape animates out too.
+	// preventDefault stops the dialog's instant native close so Escape animates
+	// out via Svelte like every other dismissal path.
 	function handleCancel(event: Event) {
 		event.preventDefault();
 		onClose();
@@ -159,10 +160,10 @@
 </dialog>
 
 <style>
-	/* Visual dim only; the native ::backdrop stays transparent for hit-testing.
-	   A separate element lets the dim fade out with the sheet, which ::backdrop
-	   cannot. z-index outranks the other page layers (app menu is 100) so the
-	   normal-flow dim covers the whole background while the sheet is top-layer. */
+	/* Not the native ::backdrop: it cannot fade out on exit, so a separate element
+	   carries the dim (::backdrop stays transparent, used only for hit-testing).
+	   z-index must outrank the other page layers (app menu is 100) because this
+	   dim is normal-flow while the sheet is top-layer. */
 	.detail-backdrop {
 		position: fixed;
 		inset: 0;
@@ -181,9 +182,9 @@
 		max-width: 48rem;
 		max-height: 80vh;
 		overflow-y: auto;
-		/* Stop a swipe or scroll at the sheet edge from chaining to the page. */
+		/* Without contain, a swipe or scroll at the sheet edge chains to the page. */
 		overscroll-behavior: contain;
-		/* Reset the UA dialog padding; only the top gap is wanted here. */
+		/* The UA dialog padding (1em) would pad all sides; keep only the top gap. */
 		padding: 12px 0 0;
 	}
 

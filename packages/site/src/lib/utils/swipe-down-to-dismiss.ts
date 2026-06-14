@@ -21,8 +21,8 @@ export const swipeDownToDismiss: Action<
   SwipeDownToDismissOptions
 > = (node, options) => {
   let current = options;
-  // A stale snap-back timeout firing mid-animation would clear `transition` and
-  // cut a later snap-back short, so it is cleared on each reset and touch start.
+  // Not fire-and-forget: a stale timeout would clear `transition` mid-animation
+  // and cut a later snap-back short, so it is cleared on each reset and start.
   let resetTimeoutId: ReturnType<typeof setTimeout> | undefined;
   const state = {
     startX: 0,
@@ -38,8 +38,8 @@ export const swipeDownToDismiss: Action<
     }
   }
 
-  // `animate` springs the sheet back (release below threshold, or cancel); the
-  // instant path hands the gesture back to the browser mid-drag.
+  // Not always animated: handing the gesture back mid-drag must clear instantly,
+  // or the browser's scroll/zoom would lag a frame behind the easing.
   function resetDrag(animate: boolean): void {
     clearResetTimeout();
     if (animate) {
@@ -82,7 +82,8 @@ export const swipeDownToDismiss: Action<
       return;
     }
 
-    // A second finger mid-drag is a pinch, not a dismiss; hand it back.
+    // Don't keep dragging off the first finger: a second one means a pinch, so
+    // hand the gesture back to the browser instead.
     if (event.touches.length !== 1) {
       resetDrag(false);
       return;
@@ -91,8 +92,8 @@ export const swipeDownToDismiss: Action<
     const deltaX = event.touches[0].clientX - state.startX;
     const deltaY = event.touches[0].clientY - state.startY;
 
-    // Upward or dominantly horizontal motion is not a dismiss; hand it back so
-    // scrolling and horizontal swipes still work.
+    // Don't capture upward or dominantly horizontal motion: preventing its
+    // default would break native scrolling and horizontal swipes, so hand back.
     if (deltaY <= 0 || Math.abs(deltaX) > deltaY) {
       resetDrag(false);
       return;
