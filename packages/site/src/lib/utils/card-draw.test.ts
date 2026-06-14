@@ -4,7 +4,7 @@ import {
   noAttack,
   type SelectionContext,
 } from "@heart-of-crown-randomizer/constraint";
-import { decodeIds } from "@heart-of-crown-randomizer/id-codec";
+import { decodeIds, encodeIds } from "@heart-of-crown-randomizer/id-codec";
 import { describe, expect, it } from "vitest";
 import { makeCard } from "$lib/test-helpers";
 import { buildCardUrl, drawMissingCommons, drawRandomCards } from "./card-draw";
@@ -197,27 +197,37 @@ describe("drawMissingCommons with constraints", () => {
 describe("buildCardUrl", () => {
   it("should update s while preserving p/e/c params from currentSearchParams", () => {
     const cards = [makeCard(1), makeCard(5)];
-    const searchParams = new URLSearchParams("s=stale&p=AQ&e=Ag&c=BA");
+    const pinned = encodeIds([2]);
+    const excluded = encodeIds([3]);
+    const constraints = encodeIds([4]);
+    const searchParams = new URLSearchParams(
+      `s=stale&p=${pinned}&e=${excluded}&c=${constraints}`,
+    );
 
     const result = buildCardUrl(cards, searchParams);
 
     const params = new URLSearchParams(result.slice(1));
     expect(new Set(decodeIds(params.get("s") ?? ""))).toEqual(new Set([1, 5]));
-    expect(params.get("p")).toBe("AQ");
-    expect(params.get("e")).toBe("Ag");
-    expect(params.get("c")).toBe("BA");
+    expect(params.get("p")).toBe(pinned);
+    expect(params.get("e")).toBe(excluded);
+    expect(params.get("c")).toBe(constraints);
   });
 
   it("should remove s when cards is empty but keep p/e/c", () => {
-    const searchParams = new URLSearchParams("s=stale&p=AQ&e=Ag&c=BA");
+    const pinned = encodeIds([2]);
+    const excluded = encodeIds([3]);
+    const constraints = encodeIds([4]);
+    const searchParams = new URLSearchParams(
+      `s=stale&p=${pinned}&e=${excluded}&c=${constraints}`,
+    );
 
     const result = buildCardUrl([], searchParams);
 
     const params = new URLSearchParams(result.slice(1));
     expect(params.has("s")).toBe(false);
-    expect(params.get("p")).toBe("AQ");
-    expect(params.get("e")).toBe("Ag");
-    expect(params.get("c")).toBe("BA");
+    expect(params.get("p")).toBe(pinned);
+    expect(params.get("e")).toBe(excluded);
+    expect(params.get("c")).toBe(constraints);
   });
 
   it("should preserve debug param from currentSearchParams", () => {
