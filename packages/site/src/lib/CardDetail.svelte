@@ -4,6 +4,7 @@
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
 	import { getCategoryLabels } from "$lib/utils/card-display";
+	import { swipeDownToDismiss } from "$lib/utils/swipe-down-to-dismiss";
 
 	type Props = {
 		/** Card data to display in the detail sheet */
@@ -24,142 +25,171 @@
 
 	const coin = $derived(card.hasChild ? undefined : card.coin);
 
-	let closeButtonRef: HTMLButtonElement;
+	let dialogRef: HTMLDialogElement;
 
+	// The `open` attribute would show the dialog but not make it modal, inert, or
+	// focus-trapping; showModal does, but still does not lock page scroll, so the
+	// body is locked here too.
 	onMount(() => {
-		closeButtonRef?.focus();
+		dialogRef.showModal();
+		const previousOverflow = document.body.style.overflow;
+		document.body.style.overflow = "hidden";
+		return () => {
+			document.body.style.overflow = previousOverflow;
+		};
 	});
 
-	function handleBackdropClick() {
-		onClose();
-	}
-
-	function handleKeydown(e: KeyboardEvent) {
-		if (e.key === "Escape") {
+	// Target-only would also fire on the padding gutter; bounds-only would fire on
+	// bubbled child clicks (whose synthetic events carry clientX/Y 0). Both
+	// together leave only genuine backdrop clicks.
+	function handleDialogClick(event: MouseEvent) {
+		if (event.target !== dialogRef) {
+			return;
+		}
+		const rect = dialogRef.getBoundingClientRect();
+		const isOutsideSheet =
+			event.clientX < rect.left ||
+			event.clientX > rect.right ||
+			event.clientY < rect.top ||
+			event.clientY > rect.bottom;
+		if (isOutsideSheet) {
 			onClose();
 		}
 	}
+
+	// preventDefault stops the dialog's instant native close so Escape animates
+	// out via Svelte like every other dismissal path.
+	function handleCancel(event: Event) {
+		event.preventDefault();
+		onClose();
+	}
 </script>
 
-<svelte:window onkeydown={handleKeydown} />
-
-<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
 	class="detail-backdrop"
 	transition:fade={{ duration: 200 }}
-	onclick={handleBackdropClick}
-	onkeydown={handleKeydown}
+	aria-hidden="true"
+></div>
+
+<dialog
+	bind:this={dialogRef}
+	class="detail-sheet"
+	aria-label="カード詳細: {card.name}"
+	transition:fly={{ y: 400, duration: 300 }}
+	onclick={handleDialogClick}
+	oncancel={handleCancel}
+	use:swipeDownToDismiss={{ onDismiss: onClose }}
 >
-	<!-- svelte-ignore a11y_click_events_have_key_events -->
-	<div
-		class="detail-sheet"
-		role="dialog"
-		aria-modal="true"
-		tabindex="-1"
-		aria-label="カード詳細: {card.name}"
-		transition:fly={{ y: 400, duration: 300 }}
-		onclick={(e) => e.stopPropagation()}
-	>
-		<div class="detail-handle"></div>
+	<div class="detail-handle"></div>
 
-		<div class="detail-content">
-			<div class="detail-header">
-				<h2 class="detail-title">{card.name}</h2>
-				{#each categoryLabels as cat}
-					<span
-						class="detail-dot"
-						style:background-color={cat.color}
-					></span>
-				{/each}
-				<button
-					type="button"
-					class="detail-close"
-					bind:this={closeButtonRef}
-					onclick={onClose}
-					aria-label="閉じる"
+	<div class="detail-content">
+		<div class="detail-header">
+			<h2 class="detail-title">{card.name}</h2>
+			{#each categoryLabels as cat}
+				<span
+					class="detail-dot"
+					style:background-color={cat.color}
+				></span>
+			{/each}
+			<button
+				type="button"
+				class="detail-close"
+				onclick={onClose}
+				aria-label="閉じる"
+			>
+				<X size={16} />
+			</button>
+		</div>
+
+		<div class="detail-meta">
+			{#each categoryLabels as cat}
+				<span
+					class="detail-badge detail-badge--category"
+					style:background-color={cat.color}
 				>
-					<X size={16} />
-				</button>
-			</div>
-
-			<div class="detail-meta">
-				{#each categoryLabels as cat}
-					<span
-						class="detail-badge detail-badge--category"
-						style:background-color={cat.color}
-					>
-						{cat.label}
-					</span>
-				{/each}
-				<span class="detail-badge detail-badge--cost">
-					コスト {card.cost}
+					{cat.label}
 				</span>
-				{#if linkCount > 0}
-					<span class="detail-badge detail-badge--link">
-						<Layers size={12} />
-						リンク {linkCount}
-					</span>
-				{/if}
-			</div>
-
-			{#if succession !== undefined}
-				<div class="detail-info-row">
-					<span class="detail-info-label">継承点</span>
-					<span class="detail-info-value">{succession}</span>
-				</div>
-			{/if}
-
-			{#if coin !== undefined}
-				<div class="detail-info-row">
-					<Coins size={14} />
-					<span class="detail-info-label">コイン</span>
-					<span class="detail-info-value">{coin}</span>
-				</div>
-			{/if}
-
-			<div class="detail-divider"></div>
-
-			{#if effect}
-				<div class="detail-section">
-					<h3 class="detail-section-label">カード説明</h3>
-					<p class="detail-effect">{effect}</p>
-				</div>
-			{/if}
-
-			{#if card.hasChild && card.cards.length > 1}
-				<div class="detail-section">
-					<h3 class="detail-section-label">バリエーション</h3>
-					{#each card.cards as variant, i (i)}
-						<div class="detail-variant">
-							<span class="detail-variant-name">{variant.name}</span>
-							<span class="detail-variant-effect">{variant.effect}</span>
-						</div>
-					{/each}
-				</div>
+			{/each}
+			<span class="detail-badge detail-badge--cost">
+				コスト {card.cost}
+			</span>
+			{#if linkCount > 0}
+				<span class="detail-badge detail-badge--link">
+					<Layers size={12} />
+					リンク {linkCount}
+				</span>
 			{/if}
 		</div>
+
+		{#if succession !== undefined}
+			<div class="detail-info-row">
+				<span class="detail-info-label">継承点</span>
+				<span class="detail-info-value">{succession}</span>
+			</div>
+		{/if}
+
+		{#if coin !== undefined}
+			<div class="detail-info-row">
+				<Coins size={14} />
+				<span class="detail-info-label">コイン</span>
+				<span class="detail-info-value">{coin}</span>
+			</div>
+		{/if}
+
+		<div class="detail-divider"></div>
+
+		{#if effect}
+			<div class="detail-section">
+				<h3 class="detail-section-label">カード説明</h3>
+				<p class="detail-effect">{effect}</p>
+			</div>
+		{/if}
+
+		{#if card.hasChild && card.cards.length > 1}
+			<div class="detail-section">
+				<h3 class="detail-section-label">バリエーション</h3>
+				{#each card.cards as variant, i (i)}
+					<div class="detail-variant">
+						<span class="detail-variant-name">{variant.name}</span>
+						<span class="detail-variant-effect">{variant.effect}</span>
+					</div>
+				{/each}
+			</div>
+		{/if}
 	</div>
-</div>
+</dialog>
 
 <style>
+	/* Not the native ::backdrop: it cannot fade out on exit, so a separate element
+	   carries the dim (::backdrop stays transparent, used only for hit-testing).
+	   z-index must outrank the other page layers (app menu is 100) because this
+	   dim is normal-flow while the sheet is top-layer. */
 	.detail-backdrop {
 		position: fixed;
 		inset: 0;
 		background: rgba(0, 0, 0, 0.4);
-		z-index: 50;
-		display: flex;
-		align-items: flex-end;
-		justify-content: center;
+		z-index: 200;
 	}
 
 	.detail-sheet {
+		position: fixed;
+		inset: auto 0 0 0;
+		margin: 0 auto;
 		background: var(--bg-primary);
+		border: none;
 		border-radius: 24px 24px 0 0;
 		width: 100%;
 		max-width: 48rem;
 		max-height: 80vh;
 		overflow-y: auto;
-		padding-top: 12px;
+		/* Without contain, a swipe or scroll at the sheet edge chains to the page. */
+		overscroll-behavior: contain;
+		/* The UA dialog padding (1em) would pad all sides; keep only the top gap. */
+		padding: 12px 0 0;
+	}
+
+	.detail-sheet::backdrop {
+		background: transparent;
 	}
 
 	.detail-handle {
