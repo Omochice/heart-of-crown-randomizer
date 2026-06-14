@@ -67,7 +67,7 @@ describe("Debug Mode E2E: debug param preservation", () => {
       throw new Error("draw failed");
     }
 
-    const shareUrl = buildShareUrl("http://localhost", result.cards);
+    const shareUrl = buildShareUrl("http://localhost", result.cards, new Set());
 
     const url = new URL(shareUrl);
     expect(url.searchParams.get("debug")).toBeNull();

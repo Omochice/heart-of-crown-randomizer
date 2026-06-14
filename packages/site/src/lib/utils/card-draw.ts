@@ -89,23 +89,22 @@ export function drawMissingCommons(
 }
 
 /**
- * Build a navigation URL containing only the card selection and debug flag.
+ * Build a navigation URL that updates the card selection while carrying the
+ * rest of the query through.
  *
- * Pin/exclude/constraint state (p/e/c params) are intentionally omitted
- * because they serve as one-shot restore hints on direct page access, not
- * as continuously-synced state. Any navigation clears them from the URL.
+ * We copy the incoming params rather than rebuilding from scratch: pin/exclude/
+ * constraint (p/e/c) are continuously synced to the URL, so a fresh query would
+ * strip the preferences the user just set on every draw.
  */
 export function buildCardUrl(
   cards: CommonCard[],
   currentSearchParams?: URLSearchParams,
 ): string {
-  const params = new URLSearchParams();
+  const params = new URLSearchParams(currentSearchParams);
   if (cards.length > 0) {
     params.set("s", encodeIds(cards.map((c) => c.id)));
-  }
-  const debug = currentSearchParams?.get("debug");
-  if (debug != null) {
-    params.set("debug", debug);
+  } else {
+    params.delete("s");
   }
   return `?${params.toString()}`;
 }

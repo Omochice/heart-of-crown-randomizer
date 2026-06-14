@@ -2,16 +2,27 @@ import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { encodeIds } from "@heart-of-crown-randomizer/id-codec";
 
 /**
- * Build a shareable URL containing only card selection (no pin/exclude).
+ * Build a shareable URL with the card selection and the constraints behind it.
  *
- * We intentionally omit pin/exclude from the share URL because shared
- * links represent a specific card set, not the author's editing state.
+ * Unlike the live URL, we leave pin/exclude out: those are the author's personal
+ * editing state, whereas the constraints shape the draw the recipient sees, so
+ * only the constraints are worth carrying into a shared link.
  */
-export function buildShareUrl(origin: string, cards: CommonCard[]): string {
+export function buildShareUrl(
+  origin: string,
+  cards: CommonCard[],
+  constraintIds: ReadonlySet<number>,
+): string {
   if (cards.length === 0) {
     return "";
   }
-  return `${origin}?s=${encodeIds(cards.map((c) => c.id))}`;
+  const params = new URLSearchParams();
+  params.set("s", encodeIds(cards.map((c) => c.id)));
+  const encodedConstraints = encodeIds([...constraintIds]);
+  if (encodedConstraints) {
+    params.set("c", encodedConstraints);
+  }
+  return `${origin}?${params.toString()}`;
 }
 
 /**

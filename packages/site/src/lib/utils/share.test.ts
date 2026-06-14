@@ -7,17 +7,27 @@ describe("buildShareUrl", () => {
   it("should build share URL with compressed 's' parameter that round-trips back to original card IDs", () => {
     const cards = [makeCard(1), makeCard(5), makeCard(12)];
 
-    const result = buildShareUrl("https://example.com", cards);
+    const result = buildShareUrl("https://example.com", cards, new Set());
 
-    expect(result).toMatch(/^https:\/\/example\.com\?s=.+$/);
     const sParam = new URL(result).searchParams.get("s") ?? "";
     expect(decodeIds(sParam)).toEqual([1, 5, 12]);
   });
 
   it("should return empty string for empty cards", () => {
-    const result = buildShareUrl("https://example.com", []);
+    const result = buildShareUrl("https://example.com", [], new Set());
 
     expect(result).toBe("");
+  });
+
+  it("should include constraints as 'c' while never emitting p/e", () => {
+    const cards = [makeCard(1)];
+
+    const result = buildShareUrl("https://example.com", cards, new Set([3, 7]));
+
+    const params = new URL(result).searchParams;
+    expect(decodeIds(params.get("c") ?? "")).toEqual([3, 7]);
+    expect(params.has("p")).toBe(false);
+    expect(params.has("e")).toBe(false);
   });
 });
 

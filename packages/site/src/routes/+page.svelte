@@ -33,7 +33,7 @@
 	} from "$lib/utils/card-draw";
 	import { buildShareUrl, shareOrCopy } from "$lib/utils/share";
 	import { createSwipeHandlers } from "$lib/utils/swipe-gesture.svelte";
-	import { parseCompressedIds } from "$lib/utils/url-sync";
+	import { buildUrlWithCardState, parseCompressedIds } from "$lib/utils/url-sync";
 
 	const isDebugMode = $derived($page.url.searchParams.get("debug") === "true");
 
@@ -42,13 +42,17 @@
 	let shareUrl = $state("");
 	let errorMessage = $state("");
 	let detailCard: CommonCard | null = $state(null);
+	// Gates the preference-to-URL effect until onMount has restored state from the
+	// URL; without it the effect would run first against empty state and navigate
+	// the URL's preferences away before they are read back.
+	let restored = $state(false);
 
 	/**
 	 * We use $effect instead of $derived because buildShareUrl requires
 	 * window.location.origin, which is unavailable during SSR.
 	 */
 	$effect(() => {
-		shareUrl = buildShareUrl(window.location.origin, selectedCommons);
+		shareUrl = buildShareUrl(window.location.origin, selectedCommons, getEnabledConstraintIds());
 	});
 
 	$effect(() => {
@@ -62,18 +66,28 @@
 		}
 	});
 
+	// Parse one preference param in isolation: a hand-edited, malformed value
+	// (decodeIds throws) drops only that param instead of discarding the others.
+	function parsePreferenceIds(url: URL, param: string): Set<number> {
+		try {
+			return parseCompressedIds(url, param);
+		} catch {
+			return new Set();
+		}
+	}
+
 	/**
-	 * Restore pin/exclude/constraint state from URL on initial page load.
+	 * Restore pin/exclude/constraint state from the URL on initial page load.
 	 *
-	 * These params are one-shot hints: consumed once on direct access,
-	 * then cleared from the URL on the next navigation (card draw,
-	 * pin change, etc.) because buildCardUrl does not include them.
+	 * The params are kept in the URL continuously (see the effect below), so this
+	 * read is what restores the preferences after a reload, not just on a fresh
+	 * shared link.
 	 */
 	onMount(() => {
 		const url = $page.url;
-		const pinnedIds = parseCompressedIds(url, "p");
-		const excludedIds = parseCompressedIds(url, "e");
-		const constraintIds = parseCompressedIds(url, "c");
+		const pinnedIds = parsePreferenceIds(url, "p");
+		const excludedIds = parsePreferenceIds(url, "e");
+		const constraintIds = parsePreferenceIds(url, "c");
 
 		// Pin takes precedence over exclude for overlapping IDs
 		for (const id of pinnedIds) {
@@ -87,6 +101,38 @@
 		if (constraintIds.size > 0) {
 			setEnabledConstraintIds(constraintIds);
 		}
+		restored = true;
+	});
+
+	/**
+	 * Mirror pin/exclude/constraint state into the URL so a reload restores it.
+	 * Toggling a preference does not navigate on its own, so this effect is what
+	 * keeps the URL current.
+	 *
+	 * We gate on `restored` rather than running on mount: before onMount seeds
+	 * state the effect would see empty state against a populated URL and navigate
+	 * the preferences away. We hand `goto` the whole URL object, not just its
+	 * search, so the hash survives and an empty query still navigates to the bare
+	 * path instead of being a no-op. Comparing the rebuilt search against the
+	 * current one both prevents a navigation loop and lets a stale legacy
+	 * pin/exclude param get rewritten away. replaceState keeps rapid toggles out
+	 * of the history that draws push onto.
+	 */
+	$effect(() => {
+		if (!restored) {
+			return;
+		}
+		const pinnedIds = getPinnedCardIds();
+		const excludedIds = getExcludedCardIds();
+		const constraintIds = getEnabledConstraintIds();
+		const url = $page.url;
+
+		const nextUrl = buildUrlWithCardState(url, pinnedIds, excludedIds, constraintIds);
+		if (nextUrl.search === url.search) {
+			return;
+		}
+
+		goto(nextUrl, { replaceState: true, keepFocus: true, noScroll: true });
 	});
 
 	function drawRandomCards() {
