@@ -66,6 +66,16 @@
 		}
 	});
 
+	// Parse one preference param in isolation: a hand-edited, malformed value
+	// (decodeIds throws) drops only that param instead of discarding the others.
+	function parsePreferenceIds(url: URL, param: string): Set<number> {
+		try {
+			return parseCompressedIds(url, param);
+		} catch {
+			return new Set();
+		}
+	}
+
 	/**
 	 * Restore pin/exclude/constraint state from the URL on initial page load.
 	 *
@@ -75,19 +85,9 @@
 	 */
 	onMount(() => {
 		const url = $page.url;
-		let pinnedIds: Set<number>;
-		let excludedIds: Set<number>;
-		let constraintIds: Set<number>;
-		try {
-			pinnedIds = parseCompressedIds(url, "p");
-			excludedIds = parseCompressedIds(url, "e");
-			constraintIds = parseCompressedIds(url, "c");
-		} catch {
-			// A hand-edited, malformed param should not crash the page load.
-			pinnedIds = new Set();
-			excludedIds = new Set();
-			constraintIds = new Set();
-		}
+		const pinnedIds = parsePreferenceIds(url, "p");
+		const excludedIds = parsePreferenceIds(url, "e");
+		const constraintIds = parsePreferenceIds(url, "c");
 
 		// Pin takes precedence over exclude for overlapping IDs
 		for (const id of pinnedIds) {
