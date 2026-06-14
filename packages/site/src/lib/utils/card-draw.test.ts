@@ -195,16 +195,29 @@ describe("drawMissingCommons with constraints", () => {
 });
 
 describe("buildCardUrl", () => {
-  it("should include only compressed card IDs without p/e/c params", () => {
+  it("should update s while preserving p/e/c params from currentSearchParams", () => {
     const cards = [makeCard(1), makeCard(5)];
+    const searchParams = new URLSearchParams("s=stale&p=AQ&e=Ag&c=BA");
 
-    const result = buildCardUrl(cards);
+    const result = buildCardUrl(cards, searchParams);
 
     const params = new URLSearchParams(result.slice(1));
     expect(new Set(decodeIds(params.get("s") ?? ""))).toEqual(new Set([1, 5]));
-    expect(params.has("p")).toBe(false);
-    expect(params.has("e")).toBe(false);
-    expect(params.has("c")).toBe(false);
+    expect(params.get("p")).toBe("AQ");
+    expect(params.get("e")).toBe("Ag");
+    expect(params.get("c")).toBe("BA");
+  });
+
+  it("should remove s when cards is empty but keep p/e/c", () => {
+    const searchParams = new URLSearchParams("s=stale&p=AQ&e=Ag&c=BA");
+
+    const result = buildCardUrl([], searchParams);
+
+    const params = new URLSearchParams(result.slice(1));
+    expect(params.has("s")).toBe(false);
+    expect(params.get("p")).toBe("AQ");
+    expect(params.get("e")).toBe("Ag");
+    expect(params.get("c")).toBe("BA");
   });
 
   it("should preserve debug param from currentSearchParams", () => {

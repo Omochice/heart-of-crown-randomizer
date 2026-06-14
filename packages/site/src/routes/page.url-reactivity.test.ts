@@ -36,10 +36,22 @@ describe("+page.svelte URL Reactivity Bug", () => {
   });
 
   it("should have separate $effect blocks for different concerns", () => {
-    // Expected: Separate effects for localStorage, URL params, and shareUrl updates
-    // This helps with proper dependency tracking
+    // Separate effects for shareUrl, URL-to-selection, and preference-to-URL,
+    // which helps with proper dependency tracking.
     const effectCount = (pageContent.match(/\$effect\(/g) || []).length;
-    expect(effectCount).toBeGreaterThanOrEqual(2);
+    expect(effectCount).toBeGreaterThanOrEqual(3);
+  });
+
+  it("should mirror preference state into the URL with replaceState", () => {
+    expect(pageContent).toContain("buildUrlWithCardState");
+    expect(pageContent).toMatch(/replaceState:\s*true/);
+  });
+
+  it("should gate the preference-to-URL effect until restore completes", () => {
+    // Without this guard the effect runs before onMount seeds state and wipes
+    // the URL's preferences; the flag pins that mitigation in place.
+    expect(pageContent).toMatch(/let restored = \$state\(false\)/);
+    expect(pageContent).toContain("if (!ready)");
   });
 
   it("should use $page store syntax for accessing URL", () => {

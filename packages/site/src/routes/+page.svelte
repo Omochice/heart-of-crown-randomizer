@@ -33,7 +33,7 @@
 	} from "$lib/utils/card-draw";
 	import { buildShareUrl, shareOrCopy } from "$lib/utils/share";
 	import { createSwipeHandlers } from "$lib/utils/swipe-gesture.svelte";
-	import { parseCompressedIds } from "$lib/utils/url-sync";
+	import { buildUrlWithCardState, parseCompressedIds, setsEqual } from "$lib/utils/url-sync";
 
 	const isDebugMode = $derived($page.url.searchParams.get("debug") === "true");
 
@@ -42,13 +42,17 @@
 	let shareUrl = $state("");
 	let errorMessage = $state("");
 	let detailCard: CommonCard | null = $state(null);
+	// Gates the preference-to-URL effect until onMount has restored state from the
+	// URL; without it the effect would run first against empty state and navigate
+	// the URL's preferences away before they are read back.
+	let restored = $state(false);
 
 	/**
 	 * We use $effect instead of $derived because buildShareUrl requires
 	 * window.location.origin, which is unavailable during SSR.
 	 */
 	$effect(() => {
-		shareUrl = buildShareUrl(window.location.origin, selectedCommons);
+		shareUrl = buildShareUrl(window.location.origin, selectedCommons, getEnabledConstraintIds());
 	});
 
 	$effect(() => {
@@ -63,17 +67,27 @@
 	});
 
 	/**
-	 * Restore pin/exclude/constraint state from URL on initial page load.
+	 * Restore pin/exclude/constraint state from the URL on initial page load.
 	 *
-	 * These params are one-shot hints: consumed once on direct access,
-	 * then cleared from the URL on the next navigation (card draw,
-	 * pin change, etc.) because buildCardUrl does not include them.
+	 * The params are kept in the URL continuously (see the effect below), so this
+	 * read is what restores the preferences after a reload, not just on a fresh
+	 * shared link.
 	 */
 	onMount(() => {
 		const url = $page.url;
-		const pinnedIds = parseCompressedIds(url, "p");
-		const excludedIds = parseCompressedIds(url, "e");
-		const constraintIds = parseCompressedIds(url, "c");
+		let pinnedIds: Set<number>;
+		let excludedIds: Set<number>;
+		let constraintIds: Set<number>;
+		try {
+			pinnedIds = parseCompressedIds(url, "p");
+			excludedIds = parseCompressedIds(url, "e");
+			constraintIds = parseCompressedIds(url, "c");
+		} catch {
+			// A hand-edited, malformed param should not crash the page load.
+			pinnedIds = new Set();
+			excludedIds = new Set();
+			constraintIds = new Set();
+		}
 
 		// Pin takes precedence over exclude for overlapping IDs
 		for (const id of pinnedIds) {
@@ -87,6 +101,56 @@
 		if (constraintIds.size > 0) {
 			setEnabledConstraintIds(constraintIds);
 		}
+		restored = true;
+	});
+
+	/**
+	 * Mirror pin/exclude/constraint state into the URL so a reload restores it.
+	 * Toggling a preference does not navigate on its own, so this effect is what
+	 * keeps the URL current.
+	 *
+	 * We gate on `restored` rather than letting it run on mount, because before
+	 * onMount seeds state the effect would compare empty state against a populated
+	 * URL and navigate the preferences away. replaceState keeps rapid toggles out
+	 * of the history that draws push onto.
+	 */
+	$effect(() => {
+		const pinnedIds = getPinnedCardIds();
+		const excludedIds = getExcludedCardIds();
+		const constraintIds = getEnabledConstraintIds();
+		const url = $page.url;
+		const ready = restored;
+		if (!ready) {
+			return;
+		}
+
+		let urlPinned: Set<number>;
+		let urlExcluded: Set<number>;
+		let urlConstraints: Set<number>;
+		try {
+			urlPinned = parseCompressedIds(url, "p");
+			urlExcluded = parseCompressedIds(url, "e");
+			urlConstraints = parseCompressedIds(url, "c");
+		} catch {
+			// Treat a malformed param as absent so it gets overwritten, not thrown.
+			urlPinned = new Set();
+			urlExcluded = new Set();
+			urlConstraints = new Set();
+		}
+
+		if (
+			setsEqual(urlPinned, pinnedIds) &&
+			setsEqual(urlExcluded, excludedIds) &&
+			setsEqual(urlConstraints, constraintIds)
+		) {
+			return;
+		}
+
+		goto(buildUrlWithCardState(url, pinnedIds, excludedIds, constraintIds).search, {
+			replaceState: true,
+			keepFocus: true,
+			noScroll: true,
+		});
 	});
 
 	function drawRandomCards() {
