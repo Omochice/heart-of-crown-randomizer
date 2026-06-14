@@ -51,7 +51,7 @@ describe("+page.svelte URL Reactivity Bug", () => {
     // Without this guard the effect runs before onMount seeds state and wipes
     // the URL's preferences; the flag pins that mitigation in place.
     expect(pageContent).toMatch(/let restored = \$state\(false\)/);
-    expect(pageContent).toContain("if (!ready)");
+    expect(pageContent).toMatch(/!restored/);
   });
 
   it("should use $page store syntax for accessing URL", () => {

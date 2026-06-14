@@ -33,7 +33,7 @@
 	} from "$lib/utils/card-draw";
 	import { buildShareUrl, shareOrCopy } from "$lib/utils/share";
 	import { createSwipeHandlers } from "$lib/utils/swipe-gesture.svelte";
-	import { buildUrlWithCardState, parseCompressedIds, setsEqual } from "$lib/utils/url-sync";
+	import { buildUrlWithCardState, parseCompressedIds } from "$lib/utils/url-sync";
 
 	const isDebugMode = $derived($page.url.searchParams.get("debug") === "true");
 
@@ -109,48 +109,30 @@
 	 * Toggling a preference does not navigate on its own, so this effect is what
 	 * keeps the URL current.
 	 *
-	 * We gate on `restored` rather than letting it run on mount, because before
-	 * onMount seeds state the effect would compare empty state against a populated
-	 * URL and navigate the preferences away. replaceState keeps rapid toggles out
+	 * We gate on `restored` rather than running on mount: before onMount seeds
+	 * state the effect would see empty state against a populated URL and navigate
+	 * the preferences away. We hand `goto` the whole URL object, not just its
+	 * search, so the hash survives and an empty query still navigates to the bare
+	 * path instead of being a no-op. Comparing the rebuilt search against the
+	 * current one both prevents a navigation loop and lets a stale legacy
+	 * pin/exclude param get rewritten away. replaceState keeps rapid toggles out
 	 * of the history that draws push onto.
 	 */
 	$effect(() => {
+		if (!restored) {
+			return;
+		}
 		const pinnedIds = getPinnedCardIds();
 		const excludedIds = getExcludedCardIds();
 		const constraintIds = getEnabledConstraintIds();
 		const url = $page.url;
-		const ready = restored;
-		if (!ready) {
+
+		const nextUrl = buildUrlWithCardState(url, pinnedIds, excludedIds, constraintIds);
+		if (nextUrl.search === url.search) {
 			return;
 		}
 
-		let urlPinned: Set<number>;
-		let urlExcluded: Set<number>;
-		let urlConstraints: Set<number>;
-		try {
-			urlPinned = parseCompressedIds(url, "p");
-			urlExcluded = parseCompressedIds(url, "e");
-			urlConstraints = parseCompressedIds(url, "c");
-		} catch {
-			// Treat a malformed param as absent so it gets overwritten, not thrown.
-			urlPinned = new Set();
-			urlExcluded = new Set();
-			urlConstraints = new Set();
-		}
-
-		if (
-			setsEqual(urlPinned, pinnedIds) &&
-			setsEqual(urlExcluded, excludedIds) &&
-			setsEqual(urlConstraints, constraintIds)
-		) {
-			return;
-		}
-
-		goto(buildUrlWithCardState(url, pinnedIds, excludedIds, constraintIds).search, {
-			replaceState: true,
-			keepFocus: true,
-			noScroll: true,
-		});
+		goto(nextUrl, { replaceState: true, keepFocus: true, noScroll: true });
 	});
 
 	function drawRandomCards() {
