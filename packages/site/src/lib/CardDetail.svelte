@@ -27,13 +27,9 @@
 
 	let dialogRef: HTMLDialogElement;
 
-	// `showModal` is what makes the background inert and the dialog top-layer;
-	// the `open` attribute alone would not. Focus moves to the close button (the
-	// only focusable descendant) automatically, so no manual focus is needed.
-	//
-	// `showModal` does not lock page scrolling, so the page behind would still
-	// scroll; locking the body keeps the gesture contained to the sheet until
-	// the sheet is dismissed.
+	// showModal (not the `open` attribute) makes the background inert and
+	// top-layer and moves focus to the close button. It does not lock page
+	// scrolling, so the body is locked here to keep the gesture on the sheet.
 	onMount(() => {
 		dialogRef.showModal();
 		const previousOverflow = document.body.style.overflow;
@@ -43,11 +39,9 @@
 		};
 	});
 
-	// A genuine backdrop click targets the dialog element itself and lands
-	// outside the sheet. Requiring the target rules out clicks bubbling up from
-	// children (whose keyboard/programmatic events carry clientX/Y 0 and would
-	// otherwise read as outside), while the bounds check rules out the dialog's
-	// own padding gutter, which also targets the dialog but sits inside it.
+	// A real backdrop click targets the dialog itself and lands outside its
+	// bounds. The target check ignores bubbled child clicks (whose synthetic
+	// events carry clientX/Y 0); the bounds check ignores the padding gutter.
 	function handleDialogClick(event: MouseEvent) {
 		if (event.target !== dialogRef) {
 			return;
@@ -63,8 +57,7 @@
 		}
 	}
 
-	// Let Svelte's exit transition drive the close instead of the dialog closing
-	// itself instantly, so the sheet animates out on Escape like every other path.
+	// Drive the close through Svelte's exit transition so Escape animates out too.
 	function handleCancel(event: Event) {
 		event.preventDefault();
 		onClose();
@@ -166,20 +159,14 @@
 </dialog>
 
 <style>
-	/*
-	 * Visual dim only. The dialog's own ::backdrop is kept transparent and used
-	 * solely for modal hit-testing, so this element can fade in and out with the
-	 * sheet via a Svelte transition, which ::backdrop cannot do on exit.
-	 */
+	/* Visual dim only; the native ::backdrop stays transparent for hit-testing.
+	   A separate element lets the dim fade out with the sheet, which ::backdrop
+	   cannot. z-index outranks the other page layers (app menu is 100) so the
+	   normal-flow dim covers the whole background while the sheet is top-layer. */
 	.detail-backdrop {
 		position: fixed;
 		inset: 0;
 		background: rgba(0, 0, 0, 0.4);
-		/*
-		 * The sheet is in the top layer, but this dim is a normal-flow element,
-		 * so it must outrank every other page layer (the app menu is z-index 100)
-		 * to keep the whole background dimmed behind the modal.
-		 */
 		z-index: 200;
 	}
 

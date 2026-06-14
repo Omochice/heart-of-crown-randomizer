@@ -11,24 +11,18 @@ type SwipeDownToDismissOptions = {
 /**
  * Lets a bottom sheet be closed with a downward swipe.
  *
- * The drag only engages when the scroll container is already at the top, so
- * scrolling the content downward is never hijacked. Releasing below the
- * threshold animates the sheet back into place; releasing past it leaves the
- * sheet translated so the component's own exit transition continues the motion.
- *
- * The gesture is intentionally touch-only: it targets the mobile bottom-sheet
- * interaction where a downward swipe is the expected dismissal. Pointer and
- * keyboard users dismiss the sheet through the backdrop, close button, or
- * Escape instead.
+ * Touch-only by design. It engages only when the scroll container is at the top
+ * so content scrolling is never hijacked, and past the threshold it leaves the
+ * sheet translated so the component's exit transition continues the motion.
+ * Pointer and keyboard users dismiss via the backdrop, close button, or Escape.
  */
 export const swipeDownToDismiss: Action<
   HTMLElement,
   SwipeDownToDismissOptions
 > = (node, options) => {
   let current = options;
-  // Tracks the pending timeout that clears the snap-back transition. A stale
-  // timeout firing mid-animation would reset `transition` and cut a later
-  // snap-back short, so every new reset or touch start clears the previous one.
+  // A stale snap-back timeout firing mid-animation would clear `transition` and
+  // cut a later snap-back short, so it is cleared on each reset and touch start.
   let resetTimeoutId: ReturnType<typeof setTimeout> | undefined;
   const state = {
     startX: 0,
@@ -44,9 +38,8 @@ export const swipeDownToDismiss: Action<
     }
   }
 
-  // `animate` distinguishes a release that springs back into place (touchend
-  // below the threshold, or a cancel) from one that must clear instantly so the
-  // browser regains the gesture (an upward or horizontal move mid-drag).
+  // `animate` springs the sheet back (release below threshold, or cancel); the
+  // instant path hands the gesture back to the browser mid-drag.
   function resetDrag(animate: boolean): void {
     clearResetTimeout();
     if (animate) {
@@ -89,8 +82,7 @@ export const swipeDownToDismiss: Action<
       return;
     }
 
-    // A second finger landing mid-drag means a pinch, not a dismiss; hand the
-    // gesture back to the browser so it can drive the multi-touch interaction.
+    // A second finger mid-drag is a pinch, not a dismiss; hand it back.
     if (event.touches.length !== 1) {
       resetDrag(false);
       return;
@@ -99,8 +91,8 @@ export const swipeDownToDismiss: Action<
     const deltaX = event.touches[0].clientX - state.startX;
     const deltaY = event.touches[0].clientY - state.startY;
 
-    // Upward or dominantly horizontal motion is not a dismiss gesture; hand it
-    // back to the browser so scrolling and horizontal swipes still work.
+    // Upward or dominantly horizontal motion is not a dismiss; hand it back so
+    // scrolling and horizontal swipes still work.
     if (deltaY <= 0 || Math.abs(deltaX) > deltaY) {
       resetDrag(false);
       return;
