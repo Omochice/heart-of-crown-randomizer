@@ -221,8 +221,8 @@ catalogs:
       specifier: 6.16.1
       version: 6.16.1
     npm-run-all2:
-      specifier: 9.0.1
-      version: 9.0.1
+      specifier: 9.0.2
+      version: 9.0.2
     rimraf:
       specifier: 6.1.3
       version: 6.1.3
@@ -251,7 +251,7 @@ importers:
         version: 1.7.0
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.1
+        version: 9.0.2
       rimraf:
         specifier: 'catalog:'
         version: 6.1.3
@@ -284,7 +284,7 @@ importers:
         version: 6.16.1
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.1
+        version: 9.0.2
       rimraf:
         specifier: 'catalog:'
         version: 6.1.3
@@ -318,7 +318,7 @@ importers:
         version: 6.16.1
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.1
+        version: 9.0.2
       rimraf:
         specifier: 'catalog:'
         version: 6.1.3
@@ -348,7 +348,7 @@ importers:
         version: 6.16.1
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.1
+        version: 9.0.2
       rimraf:
         specifier: 'catalog:'
         version: 6.1.3
@@ -388,7 +388,7 @@ importers:
         version: 6.16.1
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.1
+        version: 9.0.2
       rimraf:
         specifier: 'catalog:'
         version: 6.1.3
@@ -415,7 +415,7 @@ importers:
         version: 6.16.1
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.1
+        version: 9.0.2
       rimraf:
         specifier: 'catalog:'
         version: 6.1.3
@@ -500,7 +500,7 @@ importers:
         version: 1.0.1(svelte@5.56.3)
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.1
+        version: 9.0.2
       playwright:
         specifier: 1.60.0
         version: 1.60.0
@@ -3690,8 +3690,8 @@ packages:
     resolution: {integrity: sha512-tdt4aFn9QamlhdN3HV2D2ccpBwO5/fyjjbXUxYA6uBjyekMZcZvDq0aSj9t5Jo+tih6AYFnt/cuIRn9013e0Uw==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
 
-  npm-run-all2@9.0.1:
-    resolution: {integrity: sha512-ZtK8WXZBUA9x0XD6nxYdFLe86FxpkCTq2LiQxzX0LeXQY/vyAigQZXjjj/xfTwgV4Yqe/vYNIq2W09lrHKTcuQ==}
+  npm-run-all2@9.0.2:
+    resolution: {integrity: sha512-+dd4SO2jAlLE06OzmJKzIe6QvvjXezcbmobnh8usR0a8BzQCABTdqTXqVPji0ICOhSQpIIrkGd7IzNl5iDaRSA==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0, npm: '>= 10'}
     hasBin: true
 
@@ -3800,9 +3800,9 @@ packages:
     resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
     engines: {node: '>=12'}
 
-  pidtree@0.6.1:
-    resolution: {integrity: sha512-e0F9AOF1JMrCfBsyJOwU9lNvQ0WtXTq0j/4jk0BQ5JSI9VAybPXmDpPRw/2FQ3e5d3ZFN1mLh7jW99m/jjaptw==}
-    engines: {node: '>=0.10'}
+  pidtree@1.0.0:
+    resolution: {integrity: sha512-avfAvjB9Dd0wdj3rjJX//yS+G79OO0KrS5pJHFJENjYGX6N4SMgEDBBI/yFy0lloOYSaC6XQxzpOAMPfSYFV/Q==}
+    engines: {node: '>=18'}
     hasBin: true
 
   pkce-challenge@5.0.1:
@@ -7494,13 +7494,13 @@ snapshots:
 
   npm-normalize-package-bin@6.0.0: {}
 
-  npm-run-all2@9.0.1:
+  npm-run-all2@9.0.2:
     dependencies:
       ansi-styles: 6.2.3
       cross-spawn: 7.0.6
       memorystream: 0.3.1
       picomatch: 4.0.4
-      pidtree: 0.6.1
+      pidtree: 1.0.0
       read-package-json-fast: 6.0.0
       shell-quote: 1.8.4
       which: 7.0.0
@@ -7667,7 +7667,7 @@ snapshots:
 
   picomatch@4.0.4: {}
 
-  pidtree@0.6.1: {}
+  pidtree@1.0.0: {}
 
   pkce-challenge@5.0.1: {}
 
