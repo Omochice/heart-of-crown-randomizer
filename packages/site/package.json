@@ -35,7 +35,7 @@
 		"@storybook/svelte": "10.4.6",
 		"@storybook/sveltekit": "10.4.6",
 		"@sveltejs/adapter-cloudflare": "7.2.9",
-		"@sveltejs/kit": "2.66.0",
+		"@sveltejs/kit": "2.67.0",
 		"@sveltejs/mcp": "0.1.24",
 		"@sveltejs/vite-plugin-svelte": "7.1.2",
 		"@tailwindcss/vite": "4.3.1",
