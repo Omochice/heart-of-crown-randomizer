@@ -39,7 +39,7 @@
 		"@sveltejs/mcp": "0.1.24",
 		"@sveltejs/vite-plugin-svelte": "7.1.2",
 		"@tailwindcss/vite": "4.3.1",
-		"@testing-library/svelte": "5.4.1",
+		"@testing-library/svelte": "5.4.2",
 		"@types/node": "24.13.2",
 		"@vitest/browser-playwright": "4.1.9",
 		"jsdom": "29.1.1",
