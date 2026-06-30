@@ -47,7 +47,7 @@
 		"lucide-svelte": "1.0.1",
 		"npm-run-all2": "catalog:",
 		"playwright": "1.61.1",
-		"prettier": "3.8.5",
+		"prettier": "3.9.0",
 		"prettier-plugin-svelte": "4.1.1",
 		"sort-package-json": "catalog:",
 		"storybook": "10.4.6",
