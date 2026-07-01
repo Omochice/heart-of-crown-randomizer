@@ -13,5 +13,5 @@ catalog:
   tsdown: "0.22.2"
   vitest: "4.1.9"
   "@vitest/coverage-v8": "4.1.9"
-  "@typescript/native-preview": "7.0.0-dev.20260627.2"
+  "@typescript/native-preview": "7.0.0-dev.20260628.1"
   knip: "6.16.1"
