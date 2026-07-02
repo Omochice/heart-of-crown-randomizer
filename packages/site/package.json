@@ -38,7 +38,7 @@
 		"@sveltejs/kit": "2.68.0",
 		"@sveltejs/mcp": "0.1.24",
 		"@sveltejs/vite-plugin-svelte": "7.1.2",
-		"@tailwindcss/vite": "4.3.1",
+		"@tailwindcss/vite": "4.3.2",
 		"@testing-library/svelte": "5.4.2",
 		"@types/node": "24.13.2",
 		"@vitest/browser-playwright": "4.1.9",
@@ -53,7 +53,7 @@
 		"storybook": "10.4.6",
 		"svelte": "5.56.4",
 		"svelte-check": "4.7.1",
-		"tailwindcss": "4.3.1",
+		"tailwindcss": "4.3.2",
 		"typescript": "6.0.3",
 		"vite": "8.1.0",
 		"vitest": "catalog:"
