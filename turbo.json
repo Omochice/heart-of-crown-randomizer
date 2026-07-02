@@ -6,10 +6,10 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["@heart-of-crown-randomizer/card#build"]
+      "dependsOn": ["^build"]
     },
     "check": {
-      "dependsOn": ["@heart-of-crown-randomizer/card#build"]
+      "dependsOn": ["^build"]
     },
     "test": {},
     "build": {
