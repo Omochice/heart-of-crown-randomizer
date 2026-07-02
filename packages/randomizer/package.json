@@ -1,6 +1,7 @@
 {
   "name": "@heart-of-crown-randomizer/randomizer",
   "version": "1.0.0",
+  "private": true,
   "description": "Testable card randomization library with deterministic seeding",
   "keywords": [
     "randomizer",

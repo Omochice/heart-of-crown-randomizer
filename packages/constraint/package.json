@@ -1,6 +1,7 @@
 {
   "name": "@heart-of-crown-randomizer/constraint",
   "version": "1.0.0",
+  "private": true,
   "description": "Preset constraint definitions for card selection",
   "keywords": [
     "constraint",
