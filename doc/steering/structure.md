@@ -44,8 +44,21 @@ src/
 ```text
 routes/
   +page.svelte               # Route component
-  page.{concern}.test.ts     # Tests split by concern
-                             # (accessibility, reactivity, url-reactivity, etc.)
+  page.{concern}.test.ts     # Vitest tests split by concern
+                             # (accessibility, reactivity, url-reactivity, full-flow.e2e, etc.)
+```
+
+Note: `page.full-flow.e2e.test.ts`-style files run under Vitest (jsdom), not Playwright — "e2e" here means a full in-process user-flow test, not a real browser test.
+
+### Playwright E2E Tests (`packages/site/test/`)
+
+**Location**: `packages/site/test/`
+**Purpose**: Real browser end-to-end tests against a built/served app, run via `pnpm test:e2e`
+**Pattern**:
+
+```text
+test/
+  {feature}.spec.ts   # Playwright test, separate from src/ Vitest tests
 ```
 
 ### Constraint Rules (`packages/constraint/src/rules/`)

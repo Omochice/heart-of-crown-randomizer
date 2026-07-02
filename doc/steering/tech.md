@@ -18,6 +18,8 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 - **seedrandom**: Deterministic PRNG for reproducible randomization
 - **Storybook**: Component development and documentation
 - **Biome**: Code formatting and linting (replaces ESLint/Prettier)
+- **Knip**: Unused file/export/dependency detection, run per-package as `check:knip`
+- **Playwright**: Browser-based end-to-end tests for the site package
 
 ## Development Standards
 
@@ -31,14 +33,16 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 
 - Biome for formatting and linting (configured via `biome.json`)
 - Sort-package-json for consistent package.json ordering
+- Knip for dead-code/unused-dependency detection, part of each package's `check` script
 - Test coverage via Vitest (with coverage reports available)
 
 ### Testing
 
 - Vitest for all test suites (unit, integration, property-based)
 - Property-based testing with `@fast-check/vitest` for randomizer invariants
-- Separate test files per concern (e.g., `page.accessibility.test.ts`, `page.reactivity.test.ts`)
+- Separate test files per concern (e.g., `page.accessibility.test.ts`, `page.reactivity.test.ts`, `page.full-flow.e2e.test.ts`)
 - Tests live alongside source in `src/` directories
+- Playwright for browser-based end-to-end tests in `site`, kept separate from Vitest unit/component tests (see `test:e2e` script and `structure.md`)
 
 ## Development Environment
 
