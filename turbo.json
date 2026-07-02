@@ -6,20 +6,10 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": [
-        "@heart-of-crown-randomizer/card#build",
-        "@heart-of-crown-randomizer/id-codec#build",
-        "@heart-of-crown-randomizer/constraint#build",
-        "@heart-of-crown-randomizer/randomizer#build"
-      ]
+      "dependsOn": ["@heart-of-crown-randomizer/card#build"]
     },
     "check": {
-      "dependsOn": [
-        "@heart-of-crown-randomizer/card#build",
-        "@heart-of-crown-randomizer/id-codec#build",
-        "@heart-of-crown-randomizer/constraint#build",
-        "@heart-of-crown-randomizer/randomizer#build"
-      ]
+      "dependsOn": ["@heart-of-crown-randomizer/card#build"]
     },
     "test": {},
     "build": {
