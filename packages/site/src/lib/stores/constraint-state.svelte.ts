@@ -1,38 +1,38 @@
 import type { Constraint } from "@heart-of-crown-randomizer/constraint";
+import { SvelteSet } from "svelte/reactivity";
 
 /**
- * We reassign the entire Set rather than mutating because Svelte 5's
- * $state proxy does not reliably propagate Set mutations to $derived
- * in other modules.
+ * We use SvelteSet rather than a plain Set inside a $state proxy because
+ * the proxy does not propagate Set mutations to $derived in other
+ * modules; SvelteSet makes those mutations observable directly.
  */
-const state = $state({
-  enabledIds: new Set<number>(),
-});
+const enabledIds = new SvelteSet<number>();
 
 /** Get the set of currently enabled constraint IDs. */
 export function getEnabledConstraintIds(): ReadonlySet<number> {
-  return state.enabledIds;
+  return enabledIds;
 }
 
 /** Toggle a constraint on/off by ID. */
 export function toggleConstraint(id: number): void {
-  const next = new Set(state.enabledIds);
-  if (next.has(id)) {
-    next.delete(id);
+  if (enabledIds.has(id)) {
+    enabledIds.delete(id);
   } else {
-    next.add(id);
+    enabledIds.add(id);
   }
-  state.enabledIds = next;
 }
 
 /** Bulk-set the enabled constraint IDs (for URL restore). */
 export function setEnabledConstraintIds(ids: ReadonlySet<number>): void {
-  state.enabledIds = new Set(ids);
+  enabledIds.clear();
+  for (const id of ids) {
+    enabledIds.add(id);
+  }
 }
 
 /** Get the enabled Constraint objects from a list of all available constraints. */
 export function getEnabledConstraints(
   allConstraints: readonly Constraint[],
 ): Constraint[] {
-  return allConstraints.filter((c) => state.enabledIds.has(c.id));
+  return allConstraints.filter((c) => enabledIds.has(c.id));
 }

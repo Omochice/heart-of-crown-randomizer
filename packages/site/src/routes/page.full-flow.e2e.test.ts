@@ -337,9 +337,9 @@ describe("Full Flow E2E: URL Sharing → State Restoration", () => {
     setExcludedCardIds(parseCompressedIds(url, "e"));
     setEnabledConstraintIds(parseCompressedIds(url, "c"));
 
-    expect(getPinnedCardIds()).toEqual(new Set([1, 5]));
-    expect(getExcludedCardIds()).toEqual(new Set([7]));
-    expect(getEnabledConstraintIds()).toEqual(new Set([3]));
+    expect(new Set(getPinnedCardIds())).toEqual(new Set([1, 5]));
+    expect(new Set(getExcludedCardIds())).toEqual(new Set([7]));
+    expect(new Set(getEnabledConstraintIds())).toEqual(new Set([3]));
   });
 
   it("should build URL with complete state for sharing", () => {
