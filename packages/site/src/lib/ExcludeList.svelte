@@ -53,14 +53,14 @@
 				{@const categories = getCategoryLabels(card)}
 				<div class="exclude-row">
 					<div class="exclude-strip">
-						{#each categories as cat}
+						{#each categories as cat (cat.label)}
 							<div
 								class="exclude-strip-segment"
 								style:background-color={cat.color}
 							></div>
 						{/each}
 					</div>
-					{#each categories as cat}
+					{#each categories as cat (cat.label)}
 						<span
 							class="exclude-category"
 							style:color={cat.color}>{cat.label}</span
