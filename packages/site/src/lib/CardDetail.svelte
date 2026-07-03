@@ -85,7 +85,7 @@
 	<div class="detail-content">
 		<div class="detail-header">
 			<h2 class="detail-title">{card.name}</h2>
-			{#each categoryLabels as cat}
+			{#each categoryLabels as cat (cat.label)}
 				<span
 					class="detail-dot"
 					style:background-color={cat.color}
@@ -102,7 +102,7 @@
 		</div>
 
 		<div class="detail-meta">
-			{#each categoryLabels as cat}
+			{#each categoryLabels as cat (cat.label)}
 				<span
 					class="detail-badge detail-badge--category"
 					style:background-color={cat.color}

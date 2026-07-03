@@ -72,7 +72,7 @@
 	}}
 >
 	<div class="card-strip">
-		{#each categoryLabels as cat}
+		{#each categoryLabels as cat (cat.label)}
 			<div
 				class="card-strip-segment"
 				style:background-color={cat.color}
@@ -82,7 +82,7 @@
 
 	<div class="card-body">
 		<span class="card-categories">
-			{#each categoryLabels as cat}
+			{#each categoryLabels as cat (cat.label)}
 				<span
 					class="card-category"
 					style:color={cat.color}>{cat.label}</span
@@ -105,7 +105,7 @@
 			{#if linkCount === 0}
 				<span class="card-link-dot card-link-dot--gray"></span>
 			{:else}
-				{#each Array(linkCount) as _}
+				{#each Array(linkCount) as _, i (i)}
 					<span class="card-link-dot"></span>
 				{/each}
 			{/if}
