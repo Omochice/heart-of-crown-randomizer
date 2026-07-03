@@ -5,7 +5,7 @@
 	import { Plus, Shuffle } from "lucide-svelte";
 	import { onMount } from "svelte";
 	import { goto } from "$app/navigation";
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 	import AppMenu from "$lib/app-menu/AppMenu.svelte";
 	import Card from "$lib/Card.svelte";
 	import CardDetail from "$lib/CardDetail.svelte";
@@ -35,7 +35,7 @@
 	import { createSwipeHandlers } from "$lib/utils/swipe-gesture.svelte";
 	import { buildUrlWithCardState, parseCompressedIds } from "$lib/utils/url-sync";
 
-	const isDebugMode = $derived($page.url.searchParams.get("debug") === "true");
+	const isDebugMode = $derived(page.url.searchParams.get("debug") === "true");
 
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
@@ -56,7 +56,7 @@
 	});
 
 	$effect(() => {
-		const newSelectedCommons = resolveCardsFromUrl($page.url, allCommons);
+		const newSelectedCommons = resolveCardsFromUrl(page.url, allCommons);
 		const idsMatch =
 			selectedCommons.length === newSelectedCommons.length &&
 			selectedCommons.every((card, i) => card.id === newSelectedCommons[i]?.id);
@@ -84,7 +84,7 @@
 	 * shared link.
 	 */
 	onMount(() => {
-		const url = $page.url;
+		const url = page.url;
 		const pinnedIds = parsePreferenceIds(url, "p");
 		const excludedIds = parsePreferenceIds(url, "e");
 		const constraintIds = parsePreferenceIds(url, "c");
@@ -125,7 +125,7 @@
 		const pinnedIds = getPinnedCardIds();
 		const excludedIds = getExcludedCardIds();
 		const constraintIds = getEnabledConstraintIds();
-		const url = $page.url;
+		const url = page.url;
 
 		const nextUrl = buildUrlWithCardState(url, pinnedIds, excludedIds, constraintIds);
 		if (nextUrl.search === url.search) {
@@ -156,7 +156,7 @@
 		selectedCommons = result.cards;
 		errorMessage = "";
 
-		goto(buildCardUrl(selectedCommons, $page.url.searchParams), {
+		goto(buildCardUrl(selectedCommons, page.url.searchParams), {
 			keepFocus: true,
 			noScroll: true,
 		});
@@ -175,7 +175,7 @@
 	}
 
 	function navigateWithCardState() {
-		goto(buildCardUrl(selectedCommons, $page.url.searchParams), {
+		goto(buildCardUrl(selectedCommons, page.url.searchParams), {
 			keepFocus: true,
 			noScroll: true,
 		});

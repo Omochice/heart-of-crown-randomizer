@@ -2,22 +2,23 @@ import { render, screen, waitFor } from "@testing-library/svelte";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import Page from "./+page.svelte";
 
-vi.mock("$app/stores", async () => {
-  const { writable } = await import("svelte/store");
-  return {
-    page: writable({
-      url: new URL("http://localhost?card=17&card=18&card=19"),
-      params: {},
-      route: { id: "/" },
-      status: 200,
-      error: null,
-      data: {},
-      form: null,
-    }),
-    navigating: writable(null),
-    updated: writable(false),
-  };
-});
+/**
+ * A plain object stands in for the rune-backed page state rather than a
+ * reactive mock: the URL is fixed for the whole file, so the component
+ * only reads the value and never needs to observe a change.
+ */
+vi.mock("$app/state", () => ({
+  page: {
+    url: new URL("http://localhost?card=17&card=18&card=19"),
+    params: {},
+    route: { id: "/" },
+    status: 200,
+    error: null,
+    data: {},
+    form: null,
+    state: {},
+  },
+}));
 
 vi.mock("$app/navigation", () => ({
   goto: vi.fn(),
@@ -53,9 +54,9 @@ describe("+page.svelte URL change reactivity", () => {
   it("should re-run effect when URL parameters change (after fix)", async () => {
     render(Page);
 
-    // Note: This test needs to be rewritten to work with svelteTesting() plugin
-    // The plugin provides static mocks, so dynamic URL changes require a different approach
-    // For now, we just verify initial rendering works
+    // Note: This test needs to be rewritten with a rune-backed page mock,
+    // because the static object above cannot notify the component of
+    // dynamic URL changes. For now, we just verify initial rendering works.
 
     await waitFor(() => {
       // After fix, the component should react to each URL change

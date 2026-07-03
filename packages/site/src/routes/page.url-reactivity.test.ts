@@ -13,11 +13,11 @@ describe("+page.svelte URL Reactivity Bug", () => {
     pageContent = readFileSync(join(__dirname, "+page.svelte"), "utf-8");
   });
 
-  it("should use reactive page store from $app/stores", () => {
-    // The bug: Using non-reactive page from $app/state
-    // Expected: Should import from $app/stores for reactivity
-    expect(pageContent).toContain('import { page } from "$app/stores"');
-    expect(pageContent).not.toContain('import { page } from "$app/state"');
+  it("should use reactive page state from $app/state", () => {
+    // $app/stores is deprecated since SvelteKit 2.12; page.url from
+    // $app/state is fine-grained reactive when read inside $effect/$derived.
+    expect(pageContent).toContain('import { page } from "$app/state"');
+    expect(pageContent).not.toContain('import { page } from "$app/stores"');
   });
 
   it("should NOT use isInitialized guard that prevents reactivity", () => {
@@ -54,11 +54,11 @@ describe("+page.svelte URL Reactivity Bug", () => {
     expect(pageContent).toMatch(/!restored/);
   });
 
-  it("should use $page store syntax for accessing URL", () => {
-    // When using reactive page store, should use $page.url syntax
+  it("should read the URL as page.url, not the store subscription $page.url", () => {
     // URL param parsing is delegated to utility functions (resolveCardsFromUrl, parseCompressedIds)
-    if (pageContent.includes('from "$app/stores"')) {
-      expect(pageContent).toContain("$page.url");
+    if (pageContent.includes('from "$app/state"')) {
+      expect(pageContent).toContain("page.url");
+      expect(pageContent).not.toContain("$page.url");
     }
   });
 });
@@ -75,7 +75,7 @@ describe("+page.svelte URL Reactivity - Integration Behavior", () => {
 			Expected behavior after fix:
 			- When user navigates with browser back/forward buttons
 			- URL parameters change (e.g., ?card=1&card=2 -> ?card=3&card=4)
-			- $effect watching $page.url should re-run
+			- $effect watching page.url should re-run
 			- selectedCommons should update to reflect new URL
 			- shareUrl should update reactively
 
