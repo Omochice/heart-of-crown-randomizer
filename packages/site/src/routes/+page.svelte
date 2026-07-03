@@ -6,6 +6,7 @@
 	import { onMount } from "svelte";
 	import { browser } from "$app/environment";
 	import { goto } from "$app/navigation";
+	import { resolve } from "$app/paths";
 	import { page } from "$app/state";
 	import AppMenu from "$lib/app-menu/AppMenu.svelte";
 	import Card from "$lib/Card.svelte";
@@ -114,11 +115,12 @@
 	 *
 	 * We gate on `restored` rather than running on mount: before onMount seeds
 	 * state the effect would see empty state against a populated URL and navigate
-	 * the preferences away. We hand `goto` the whole URL object, not just its
-	 * search, so the hash survives and an empty query still navigates to the bare
-	 * path instead of being a no-op. Comparing the rebuilt search against the
-	 * current one both prevents a navigation loop and lets a stale legacy
-	 * pin/exclude param get rewritten away. replaceState keeps rapid toggles out
+	 * the preferences away. We navigate to resolve("/") plus the rebuilt search
+	 * and hash, not just the search, so the hash survives and an empty query
+	 * still navigates to the bare path instead of being a no-op. Comparing the
+	 * rebuilt search against the current one both prevents a navigation loop and
+	 * lets a stale legacy pin/exclude param get rewritten away. replaceState
+	 * keeps rapid toggles out
 	 * of the history that draws push onto.
 	 */
 	$effect(() => {
@@ -135,7 +137,11 @@
 			return;
 		}
 
-		goto(nextUrl, { replaceState: true, keepFocus: true, noScroll: true });
+		goto(`${resolve("/")}${nextUrl.search}${nextUrl.hash}`, {
+			replaceState: true,
+			keepFocus: true,
+			noScroll: true,
+		});
 	});
 
 	function drawRandomCards() {
@@ -159,7 +165,7 @@
 		selectedCommons = result.cards;
 		errorMessage = "";
 
-		goto(buildCardUrl(selectedCommons, page.url.searchParams), {
+		goto(`${resolve("/")}${buildCardUrl(selectedCommons, page.url.searchParams)}`, {
 			keepFocus: true,
 			noScroll: true,
 		});
@@ -178,7 +184,7 @@
 	}
 
 	function navigateWithCardState() {
-		goto(buildCardUrl(selectedCommons, page.url.searchParams), {
+		goto(`${resolve("/")}${buildCardUrl(selectedCommons, page.url.searchParams)}`, {
 			keepFocus: true,
 			noScroll: true,
 		});
