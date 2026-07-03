@@ -41,14 +41,14 @@ export function getExcludedCardIds(): ReadonlySet<number> {
   return excludedCardIds;
 }
 
-export function setPinnedCardIds(ids: Set<number>): void {
+export function setPinnedCardIds(ids: ReadonlySet<number>): void {
   replaceWith(pinnedCardIds, ids);
   for (const id of ids) {
     excludedCardIds.delete(id);
   }
 }
 
-export function setExcludedCardIds(ids: Set<number>): void {
+export function setExcludedCardIds(ids: ReadonlySet<number>): void {
   replaceWith(excludedCardIds, ids);
   for (const id of ids) {
     pinnedCardIds.delete(id);
