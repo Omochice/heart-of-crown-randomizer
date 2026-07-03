@@ -22,9 +22,22 @@ export function toggleConstraint(id: number): void {
   }
 }
 
-/** Bulk-set the enabled constraint IDs (for URL restore). */
+/**
+ * Bulk-set the enabled constraint IDs (for URL restore).
+ *
+ * We diff instead of clear-and-add because clearing would also empty an
+ * aliased input set and would invalidate subscribers of members that did
+ * not change.
+ */
 export function setEnabledConstraintIds(ids: ReadonlySet<number>): void {
-  enabledIds.clear();
+  if (ids === enabledIds) {
+    return;
+  }
+  for (const id of enabledIds) {
+    if (!ids.has(id)) {
+      enabledIds.delete(id);
+    }
+  }
   for (const id of ids) {
     enabledIds.add(id);
   }

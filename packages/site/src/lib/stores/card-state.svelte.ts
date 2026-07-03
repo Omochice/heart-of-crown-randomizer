@@ -11,11 +11,23 @@ export type CardStateType = "normal" | "pinned" | "excluded";
 const pinnedCardIds = new SvelteSet<number>();
 const excludedCardIds = new SvelteSet<number>();
 
+/**
+ * We diff instead of clear-and-add because clearing would also empty an
+ * aliased input set and would invalidate subscribers of members that did
+ * not change.
+ */
 function replaceWith(
   target: SvelteSet<number>,
   ids: ReadonlySet<number>,
 ): void {
-  target.clear();
+  if (target === ids) {
+    return;
+  }
+  for (const id of target) {
+    if (!ids.has(id)) {
+      target.delete(id);
+    }
+  }
   for (const id of ids) {
     target.add(id);
   }
