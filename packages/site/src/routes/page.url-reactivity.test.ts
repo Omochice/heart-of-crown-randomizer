@@ -36,10 +36,11 @@ describe("+page.svelte URL Reactivity Bug", () => {
   });
 
   it("should have separate $effect blocks for different concerns", () => {
-    // Separate effects for shareUrl, URL-to-selection, and preference-to-URL,
-    // which helps with proper dependency tracking.
+    // Separate effects for URL-to-selection and preference-to-URL, which
+    // helps with proper dependency tracking; shareUrl is a $derived value
+    // rather than an effect.
     const effectCount = (pageContent.match(/\$effect\(/g) || []).length;
-    expect(effectCount).toBeGreaterThanOrEqual(3);
+    expect(effectCount).toBeGreaterThanOrEqual(2);
   });
 
   it("should mirror preference state into the URL with replaceState", () => {

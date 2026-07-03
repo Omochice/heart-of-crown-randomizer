@@ -4,6 +4,7 @@
 	import { allConstraints } from "@heart-of-crown-randomizer/constraint";
 	import { Plus, Shuffle } from "lucide-svelte";
 	import { onMount } from "svelte";
+	import { browser } from "$app/environment";
 	import { goto } from "$app/navigation";
 	import { page } from "$app/state";
 	import AppMenu from "$lib/app-menu/AppMenu.svelte";
@@ -39,7 +40,6 @@
 
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
-	let shareUrl = $state("");
 	let errorMessage = $state("");
 	let detailCard: CommonCard | null = $state(null);
 	// Gates the preference-to-URL effect until onMount has restored state from the
@@ -48,12 +48,15 @@
 	let restored = $state(false);
 
 	/**
-	 * We use $effect instead of $derived because buildShareUrl requires
-	 * window.location.origin, which is unavailable during SSR.
+	 * We guard with `browser` instead of deriving unconditionally because
+	 * buildShareUrl requires window.location.origin, which is unavailable
+	 * during SSR.
 	 */
-	$effect(() => {
-		shareUrl = buildShareUrl(window.location.origin, selectedCommons, getEnabledConstraintIds());
-	});
+	const shareUrl = $derived(
+		browser
+			? buildShareUrl(window.location.origin, selectedCommons, getEnabledConstraintIds())
+			: "",
+	);
 
 	$effect(() => {
 		const newSelectedCommons = resolveCardsFromUrl(page.url, allCommons);
