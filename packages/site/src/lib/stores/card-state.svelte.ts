@@ -1,51 +1,65 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
+import { SvelteSet } from "svelte/reactivity";
 
 export type CardStateType = "normal" | "pinned" | "excluded";
 
 /**
- * We reassign entire Sets rather than mutating them because Svelte 5's
- * $state proxy does not reliably propagate Set.add()/delete() mutations
- * to $derived in other modules. Property reassignment guarantees the
- * proxy detects the change.
+ * We use SvelteSet rather than a plain Set inside a $state proxy because
+ * the proxy does not propagate Set.add()/delete() mutations to $derived
+ * in other modules; SvelteSet makes those mutations observable directly.
  */
-const state = $state({
-  pinnedCardIds: new Set<number>(),
-  excludedCardIds: new Set<number>(),
-});
+const pinnedCardIds = new SvelteSet<number>();
+const excludedCardIds = new SvelteSet<number>();
+
+/**
+ * We diff instead of clear-and-add because clearing would also empty an
+ * aliased input set and would invalidate subscribers of members that did
+ * not change.
+ */
+function replaceWith(
+  target: SvelteSet<number>,
+  ids: ReadonlySet<number>,
+): void {
+  if (target === ids) {
+    return;
+  }
+  for (const id of target) {
+    if (!ids.has(id)) {
+      target.delete(id);
+    }
+  }
+  for (const id of ids) {
+    target.add(id);
+  }
+}
 
 export function getPinnedCardIds(): ReadonlySet<number> {
-  return state.pinnedCardIds;
+  return pinnedCardIds;
 }
 
 export function getExcludedCardIds(): ReadonlySet<number> {
-  return state.excludedCardIds;
+  return excludedCardIds;
 }
 
-export function setPinnedCardIds(ids: Set<number>): void {
-  const nextPinned = new Set(ids);
-  const nextExcluded = new Set(state.excludedCardIds);
-  for (const id of nextPinned) {
-    nextExcluded.delete(id);
+export function setPinnedCardIds(ids: ReadonlySet<number>): void {
+  replaceWith(pinnedCardIds, ids);
+  for (const id of ids) {
+    excludedCardIds.delete(id);
   }
-  state.pinnedCardIds = nextPinned;
-  state.excludedCardIds = nextExcluded;
 }
 
-export function setExcludedCardIds(ids: Set<number>): void {
-  const nextExcluded = new Set(ids);
-  const nextPinned = new Set(state.pinnedCardIds);
-  for (const id of nextExcluded) {
-    nextPinned.delete(id);
+export function setExcludedCardIds(ids: ReadonlySet<number>): void {
+  replaceWith(excludedCardIds, ids);
+  for (const id of ids) {
+    pinnedCardIds.delete(id);
   }
-  state.excludedCardIds = nextExcluded;
-  state.pinnedCardIds = nextPinned;
 }
 
 export function getCardState(cardId: number): CardStateType {
-  if (state.pinnedCardIds.has(cardId)) {
+  if (pinnedCardIds.has(cardId)) {
     return "pinned";
   }
-  if (state.excludedCardIds.has(cardId)) {
+  if (excludedCardIds.has(cardId)) {
     return "excluded";
   }
   return "normal";
@@ -57,18 +71,12 @@ export function getCardState(cardId: number): CardStateType {
  * button click and users expect immediate state change.
  */
 export function togglePin(cardId: number): void {
-  const nextPinned = new Set(state.pinnedCardIds);
-  const nextExcluded = new Set(state.excludedCardIds);
-
-  if (nextPinned.has(cardId)) {
-    nextPinned.delete(cardId);
+  if (pinnedCardIds.has(cardId)) {
+    pinnedCardIds.delete(cardId);
   } else {
-    nextPinned.add(cardId);
-    nextExcluded.delete(cardId); // Cannot be both pinned and excluded
+    pinnedCardIds.add(cardId);
+    excludedCardIds.delete(cardId); // Cannot be both pinned and excluded
   }
-
-  state.pinnedCardIds = nextPinned;
-  state.excludedCardIds = nextExcluded;
 }
 
 /**
@@ -77,24 +85,18 @@ export function togglePin(cardId: number): void {
  * button click and users expect immediate state change.
  */
 export function toggleExclude(cardId: number): void {
-  const nextPinned = new Set(state.pinnedCardIds);
-  const nextExcluded = new Set(state.excludedCardIds);
-
-  if (nextExcluded.has(cardId)) {
-    nextExcluded.delete(cardId);
+  if (excludedCardIds.has(cardId)) {
+    excludedCardIds.delete(cardId);
   } else {
-    nextExcluded.add(cardId);
-    nextPinned.delete(cardId); // Cannot be both excluded and pinned
+    excludedCardIds.add(cardId);
+    pinnedCardIds.delete(cardId); // Cannot be both excluded and pinned
   }
-
-  state.pinnedCardIds = nextPinned;
-  state.excludedCardIds = nextExcluded;
 }
 
 export function getPinnedCards(allCards: CommonCard[]): CommonCard[] {
-  return allCards.filter((card) => state.pinnedCardIds.has(card.id));
+  return allCards.filter((card) => pinnedCardIds.has(card.id));
 }
 
 export function getExcludedCards(allCards: CommonCard[]): CommonCard[] {
-  return allCards.filter((card) => state.excludedCardIds.has(card.id));
+  return allCards.filter((card) => excludedCardIds.has(card.id));
 }
