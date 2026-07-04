@@ -72,7 +72,7 @@ describe("+page.svelte URL Reactivity - Integration Behavior", () => {
     const expectedBehavior = `
 			Expected behavior after fix:
 			- When user navigates with browser back/forward buttons
-			- URL parameters change (e.g., ?card=1&card=2 -> ?card=3&card=4)
+			- The s parameter (bitfield-encoded card IDs) changes
 			- $effect watching page.url should re-run
 			- selectedCommons should update to reflect new URL
 			- shareUrl should update reactively
