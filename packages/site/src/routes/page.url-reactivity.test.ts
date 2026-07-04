@@ -56,10 +56,8 @@ describe("+page.svelte URL Reactivity Bug", () => {
 
   it("should read the URL as page.url, not the store subscription $page.url", () => {
     // URL param parsing is delegated to utility functions (resolveCardsFromUrl, parseCompressedIds)
-    if (pageContent.includes('from "$app/state"')) {
-      expect(pageContent).toContain("page.url");
-      expect(pageContent).not.toContain("$page.url");
-    }
+    expect(pageContent).toContain("page.url");
+    expect(pageContent).not.toContain("$page.url");
   });
 });
 
