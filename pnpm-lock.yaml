@@ -218,8 +218,8 @@ catalogs:
       specifier: 4.1.9
       version: 4.1.9
     knip:
-      specifier: 6.23.0
-      version: 6.23.0
+      specifier: 6.24.0
+      version: 6.24.0
     npm-run-all2:
       specifier: 9.0.2
       version: 9.0.2
@@ -281,7 +281,7 @@ importers:
         version: 7.0.0-dev.20260702.3
       knip:
         specifier: 'catalog:'
-        version: 6.23.0
+        version: 6.24.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 9.0.2
@@ -315,7 +315,7 @@ importers:
         version: 4.1.9(@vitest/browser@4.1.9)(vitest@4.1.9)
       knip:
         specifier: 'catalog:'
-        version: 6.23.0
+        version: 6.24.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 9.0.2
@@ -339,7 +339,7 @@ importers:
         version: 4.1.9(@vitest/browser@4.1.9)(vitest@4.1.9)
       knip:
         specifier: 'catalog:'
-        version: 6.23.0
+        version: 6.24.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 9.0.2
@@ -373,7 +373,7 @@ importers:
         version: 4.1.9(@vitest/browser@4.1.9)(vitest@4.1.9)
       knip:
         specifier: 'catalog:'
-        version: 6.23.0
+        version: 6.24.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 9.0.2
@@ -394,7 +394,7 @@ importers:
         version: 7.0.0-dev.20260702.3
       knip:
         specifier: 'catalog:'
-        version: 6.23.0
+        version: 6.24.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 9.0.2
@@ -476,7 +476,7 @@ importers:
         version: 29.1.1
       knip:
         specifier: 'catalog:'
-        version: 6.23.0
+        version: 6.24.0
       lucide-svelte:
         specifier: 1.0.1
         version: 1.0.1(svelte@5.56.4)
@@ -3252,8 +3252,8 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
-  knip@6.23.0:
-    resolution: {integrity: sha512-2DvAOX2pZWiG4SLvRRxOAU0aWGEn1ZoVblI541xIoXFdHqq2THMZXy66/qcY5WGuW3TXhb9T1x1zd/Hd1u+yqg==}
+  knip@6.24.0:
+    resolution: {integrity: sha512-PokLlgeEjLh1rAsB7ts+52wZ37HBr1nDhE6NNONwEaXdeZGCJOkP7ZlIAI2Gtu8xohquzTWy75bc/1diI9shQw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -6951,7 +6951,7 @@ snapshots:
       yaml: 2.9.0
       zod: 4.4.3
 
-  knip@6.23.0:
+  knip@6.24.0:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.4)
       formatly: 0.3.0
