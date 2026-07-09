@@ -41,7 +41,7 @@
 		"@tailwindcss/vite": "4.3.2",
 		"@testing-library/svelte": "5.4.2",
 		"@types/node": "24.13.2",
-		"@vitest/browser-playwright": "4.1.9",
+		"@vitest/browser-playwright": "4.1.10",
 		"jsdom": "29.1.1",
 		"knip": "catalog:",
 		"lucide-svelte": "1.0.1",
