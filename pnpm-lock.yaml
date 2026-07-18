@@ -218,8 +218,8 @@ catalogs:
       specifier: 4.1.10
       version: 4.1.10
     knip:
-      specifier: 6.26.0
-      version: 6.26.0
+      specifier: 6.27.0
+      version: 6.27.0
     npm-run-all2:
       specifier: 9.0.2
       version: 9.0.2
@@ -281,7 +281,7 @@ importers:
         version: 7.0.0-dev.20260707.2
       knip:
         specifier: 'catalog:'
-        version: 6.26.0
+        version: 6.27.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 9.0.2
@@ -315,7 +315,7 @@ importers:
         version: 4.1.10(@vitest/browser@4.1.10)(vitest@4.1.10)
       knip:
         specifier: 'catalog:'
-        version: 6.26.0
+        version: 6.27.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 9.0.2
@@ -339,7 +339,7 @@ importers:
         version: 4.1.10(@vitest/browser@4.1.10)(vitest@4.1.10)
       knip:
         specifier: 'catalog:'
-        version: 6.26.0
+        version: 6.27.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 9.0.2
@@ -373,7 +373,7 @@ importers:
         version: 4.1.10(@vitest/browser@4.1.10)(vitest@4.1.10)
       knip:
         specifier: 'catalog:'
-        version: 6.26.0
+        version: 6.27.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 9.0.2
@@ -394,7 +394,7 @@ importers:
         version: 7.0.0-dev.20260707.2
       knip:
         specifier: 'catalog:'
-        version: 6.26.0
+        version: 6.27.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 9.0.2
@@ -476,7 +476,7 @@ importers:
         version: 29.1.1
       knip:
         specifier: 'catalog:'
-        version: 6.26.0
+        version: 6.27.0
       lucide-svelte:
         specifier: 1.0.1
         version: 1.0.1(svelte@5.56.5)
@@ -3411,6 +3411,11 @@ packages:
 
   knip@6.26.0:
     resolution: {integrity: sha512-e9eELEEpBpGTd4H4HB7818/DYj9dMzMyUqAddfYwUN/EbSkgIjOuWEF96W/xHsmV0SDrsdXjIM+oZ2xpPzPsBA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    hasBin: true
+
+  knip@6.27.0:
+    resolution: {integrity: sha512-CngYEYrD0n20N06FXA8n3u/0Wnnugoa+B9k14OP+iKIgkCHuzvIdsP3nfwjhByoc1WfogpxfiriMboAXFETDUw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -7187,6 +7192,22 @@ snapshots:
   kleur@4.1.5: {}
 
   knip@6.26.0:
+    dependencies:
+      fdir: 6.5.0(picomatch@4.0.5)
+      formatly: 0.3.0
+      get-tsconfig: 4.14.0
+      jiti: 2.7.0
+      oxc-parser: 0.137.0
+      oxc-resolver: 11.21.3
+      picomatch: 4.0.5
+      smol-toml: 1.7.0
+      strip-json-comments: 5.0.3
+      tinyglobby: 0.2.17
+      unbash: 4.0.2
+      yaml: 2.9.0
+      zod: 4.4.3
+
+  knip@6.27.0:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.5)
       formatly: 0.3.0
