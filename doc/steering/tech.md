@@ -16,8 +16,10 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 ## Key Libraries
 
 - **seedrandom**: Deterministic PRNG for reproducible randomization
-- **Storybook**: Component development and documentation
+- **Storybook**: Component development and documentation (`.stories.svelte` files co-located with components)
+- **Playwright**: Browser-based end-to-end testing for the site (separate from Vitest unit/integration tests)
 - **Biome**: Code formatting and linting (replaces ESLint/Prettier)
+- **Knip**: Unused exports/dependencies detection, run per package via `check:knip`
 
 ## Development Standards
 
@@ -30,6 +32,7 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 ### Code Quality
 
 - Biome for formatting and linting (configured via `biome.json`)
+- Knip for unused exports/dependencies detection (`check:knip`, one of every package's `check` steps)
 - Sort-package-json for consistent package.json ordering
 - Test coverage via Vitest (with coverage reports available)
 
@@ -38,6 +41,8 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 - Vitest for all test suites (unit, integration, property-based)
 - Property-based testing with `@fast-check/vitest` for randomizer invariants
 - Separate test files per concern (e.g., `page.accessibility.test.ts`, `page.reactivity.test.ts`)
+- Vitest-based flow tests named `*.e2e.test.ts` exercise full user flows in-process (still jsdom, not a browser)
+- Playwright drives real-browser E2E specs in `packages/site/test/*.spec.ts` (`pnpm test:e2e`, config in `playwright.config.ts`) — distinct tier from the Vitest-based `*.e2e.test.ts` files
 - Tests live alongside source in `src/` directories
 
 ## Development Environment
