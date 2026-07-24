@@ -63,6 +63,27 @@ rules/
     index.property.test.ts   # Property-based tests
 ```
 
+### Site Library (`packages/site/src/lib/`)
+
+**Location**: `packages/site/src/lib/`
+**Purpose**: Svelte components, reactive state, and helpers consumed by routes
+**Pattern**:
+
+```text
+lib/
+  {Component}.svelte              # UI component
+  {Component}.stories.svelte      # Storybook story, co-located with the component
+  {Component}.svelte.test.ts      # Component test
+  stores/
+    {feature}-state.svelte.ts     # Svelte 5 rune-based reactive state
+  utils/
+    {feature}.ts                  # Pure helper functions, no Svelte runes
+  {feature}/                      # Self-contained feature folder bundling
+    {Feature}.svelte              # component + story + test (+ supporting logic)
+    {Feature}.stories.svelte
+    {Feature}.svelte.test.ts
+```
+
 ### Card Data Organization (`packages/card/src/`)
 
 **Location**: Organized by edition/rarity
@@ -84,7 +105,9 @@ card/src/
 ## Naming Conventions
 
 - **Files**: kebab-case (`constraint.ts`, `page.reactivity.test.ts`)
-- **Test Files**: `{feature}.test.ts` or `{page}.{concern}.test.ts` for split concerns
+- **Svelte Components/Stories**: PascalCase (`Card.svelte`, `Card.stories.svelte`)
+- **Rune-based Modules**: `.svelte.ts` suffix signals a module uses Svelte 5 runes (e.g. `card-state.svelte.ts`); its test keeps the same suffix (`card-state.svelte.test.ts`)
+- **Test Files**: `{feature}.test.ts` or `{page}.{concern}.test.ts` for split concerns; `*.e2e.test.ts` for Vitest-based full-flow tests; `*.ssr.test.ts` for server-side-render-specific behavior
 - **Packages**: `@heart-of-crown-randomizer/{name}` scoped namespace
 - **TypeScript**: Interfaces/types use PascalCase, discriminated unions with lowercase string literals
 
