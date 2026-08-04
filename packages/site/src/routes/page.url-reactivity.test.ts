@@ -36,10 +36,25 @@ describe("+page.svelte URL Reactivity Bug", () => {
   });
 
   it("should have separate $effect blocks for different concerns", () => {
-    // Separate effects for shareUrl, URL-to-selection, and preference-to-URL,
-    // which helps with proper dependency tracking.
+    // One combined effect was rejected: it would re-run every concern
+    // whenever any single dependency changed.
     const effectCount = (pageContent.match(/\$effect\(/g) || []).length;
-    expect(effectCount).toBeGreaterThanOrEqual(3);
+    expect(effectCount).toBeGreaterThanOrEqual(2);
+  });
+
+  it("should derive shareUrl rather than assign it inside an $effect", () => {
+    expect(pageContent).toMatch(/const shareUrl = \$derived\(/);
+    expect(pageContent).not.toMatch(/let shareUrl = \$state\(/);
+    expect(pageContent).not.toMatch(/shareUrl = buildShareUrl\(/);
+  });
+
+  it("should build the share URL from an origin that survives SSR", () => {
+    expect(pageContent).toMatch(
+      /const shareUrl = \$derived\(\s*buildShareUrl\(page\.url\.origin/,
+    );
+    // window.location.origin was rejected: it is undefined during SSR, so it
+    // would drag a browser guard back into the derivation.
+    expect(pageContent).not.toContain("window.location.origin");
   });
 
   it("should mirror preference state into the URL with replaceState", () => {

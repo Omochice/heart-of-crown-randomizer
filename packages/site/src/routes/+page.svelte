@@ -39,7 +39,6 @@
 
 	let numberOfCommons = $state(10);
 	let selectedCommons: CommonCard[] = $state([]);
-	let shareUrl = $state("");
 	let errorMessage = $state("");
 	let detailCard: CommonCard | null = $state(null);
 	// Gates the preference-to-URL effect until onMount has restored state from the
@@ -48,12 +47,12 @@
 	let restored = $state(false);
 
 	/**
-	 * We use $effect instead of $derived because buildShareUrl requires
-	 * window.location.origin, which is unavailable during SSR.
+	 * We take the origin from page.url rather than window.location because the
+	 * latter is undefined during SSR and would force a browser guard here.
 	 */
-	$effect(() => {
-		shareUrl = buildShareUrl(window.location.origin, selectedCommons, getEnabledConstraintIds());
-	});
+	const shareUrl = $derived(
+		buildShareUrl(page.url.origin, selectedCommons, getEnabledConstraintIds()),
+	);
 
 	$effect(() => {
 		const newSelectedCommons = resolveCardsFromUrl(page.url, allCommons);
