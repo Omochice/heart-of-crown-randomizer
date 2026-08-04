@@ -4,7 +4,6 @@
 	import { allConstraints } from "@heart-of-crown-randomizer/constraint";
 	import { Plus, Shuffle } from "lucide-svelte";
 	import { onMount } from "svelte";
-	import { browser } from "$app/environment";
 	import { goto } from "$app/navigation";
 	import { page } from "$app/state";
 	import AppMenu from "$lib/app-menu/AppMenu.svelte";
@@ -48,14 +47,11 @@
 	let restored = $state(false);
 
 	/**
-	 * We guard with `browser` instead of deriving unconditionally because
-	 * buildShareUrl requires window.location.origin, which is unavailable
-	 * during SSR.
+	 * We take the origin from page.url rather than window.location because the
+	 * latter is undefined during SSR and would force a browser guard here.
 	 */
 	const shareUrl = $derived(
-		browser
-			? buildShareUrl(window.location.origin, selectedCommons, getEnabledConstraintIds())
-			: "",
+		buildShareUrl(page.url.origin, selectedCommons, getEnabledConstraintIds()),
 	);
 
 	$effect(() => {
