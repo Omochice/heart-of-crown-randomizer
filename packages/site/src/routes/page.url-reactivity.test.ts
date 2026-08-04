@@ -48,6 +48,15 @@ describe("+page.svelte URL Reactivity Bug", () => {
     expect(pageContent).not.toMatch(/shareUrl = buildShareUrl\(/);
   });
 
+  it("should build the share URL from an origin that survives SSR", () => {
+    expect(pageContent).toMatch(
+      /const shareUrl = \$derived\(\s*buildShareUrl\(page\.url\.origin/,
+    );
+    // window.location.origin was rejected: it is undefined during SSR, so it
+    // would drag a browser guard back into the derivation.
+    expect(pageContent).not.toContain("window.location.origin");
+  });
+
   it("should mirror preference state into the URL with replaceState", () => {
     expect(pageContent).toContain("buildUrlWithCardState");
     expect(pageContent).toMatch(/replaceState:\s*true/);
