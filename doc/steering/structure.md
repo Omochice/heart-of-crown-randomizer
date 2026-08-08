@@ -46,6 +46,31 @@ routes/
   +page.svelte               # Route component
   page.{concern}.test.ts     # Tests split by concern
                              # (accessibility, reactivity, url-reactivity, etc.)
+  page.{flow}.e2e.test.ts    # Vitest (jsdom) integration tests for a full user flow,
+                             # NOT Playwright despite the ".e2e" name
+```
+
+Real browser E2E specs (Playwright) live separately in `packages/site/test/` and run via `pnpm test:e2e`.
+
+### Site Library (`packages/site/src/lib/`)
+
+**Location**: `packages/site/src/lib/`
+**Purpose**: Components, state, and helpers shared across routes
+**Pattern**:
+
+```text
+lib/
+  Component.svelte            # UI component (PascalCase)
+  Component.stories.svelte    # Storybook story, co-located with the component
+  Component.svelte.test.ts    # Component test, co-located with the component
+  {feature}/                  # Self-contained feature grouping a component with its own logic
+    Feature.svelte
+    Feature.stories.svelte
+    logic.ts
+  stores/
+    {name}-state.svelte.ts    # Svelte 5 rune-based state (`.svelte.ts` suffix)
+  utils/
+    {name}.ts                 # Pure helper functions, no Svelte runes
 ```
 
 ### Constraint Rules (`packages/constraint/src/rules/`)
