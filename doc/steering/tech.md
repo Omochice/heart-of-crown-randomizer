@@ -16,8 +16,10 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 ## Key Libraries
 
 - **seedrandom**: Deterministic PRNG for reproducible randomization
-- **Storybook**: Component development and documentation
+- **Storybook**: Component development and documentation; stories are co-located with components (`Component.stories.svelte`) and deployed via CI
 - **Biome**: Code formatting and linting (replaces ESLint/Prettier)
+- **Playwright**: Browser-based end-to-end testing for the site (separate from Vitest unit/component tests)
+- **Knip**: Unused file/export/dependency detection, run per package via `check:knip`
 
 ## Development Standards
 
@@ -30,6 +32,7 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 ### Code Quality
 
 - Biome for formatting and linting (configured via `biome.json`)
+- Knip for detecting unused files, exports, and dependencies (`check:knip` in every package)
 - Sort-package-json for consistent package.json ordering
 - Test coverage via Vitest (with coverage reports available)
 
@@ -39,8 +42,15 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 - Property-based testing with `@fast-check/vitest` for randomizer invariants
 - Separate test files per concern (e.g., `page.accessibility.test.ts`, `page.reactivity.test.ts`)
 - Tests live alongside source in `src/` directories
+- Vitest-based integration tests named `*.e2e.test.ts` live under `routes/` and exercise full flows (e.g. pin → randomize → result) against jsdom, not a real browser
+- Real browser E2E tests use Playwright, live under `packages/site/test/`, and run via `pnpm test:e2e` (separately from `pnpm test` in CI)
 
 ## Development Environment
+
+### Reproducible Dev Environment
+
+- Nix flake (`flake.nix`) provides pinned dev shells per tool; CI validates it via `nix flake check`
+- `treefmt-nix` formats non-JS/TS files (e.g. Markdown via `rumdl`); Biome remains the formatter for TS/JS/JSON
 
 ### Package Structure
 
