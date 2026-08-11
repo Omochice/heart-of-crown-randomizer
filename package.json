@@ -9,6 +9,7 @@
   "scripts": {
     "build": "turbo run build",
     "check": "npm-run-all2 check:*",
+    "check:biome": "biome ci .",
     "check:knip": "knip",
     "check:turbo": "turbo run check",
     "clean": "turbo run clean",
