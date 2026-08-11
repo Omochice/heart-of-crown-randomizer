@@ -412,8 +412,8 @@ importers:
         specifier: 2.70.2
         version: 2.70.2(@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.56.8)(vite@8.2.1(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0)))(svelte@5.56.8)(typescript@6.0.3)(vite@8.2.1(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
       '@sveltejs/mcp':
-        specifier: 0.1.25
-        version: 0.1.25(jiti@2.7.0)(supports-color@10.2.2)(typescript@6.0.3)
+        specifier: 0.1.26
+        version: 0.1.26(jiti@2.7.0)(supports-color@10.2.2)(typescript@6.0.3)
       '@sveltejs/vite-plugin-svelte':
         specifier: 7.3.0
         version: 7.3.0(svelte@5.56.8)(vite@8.2.1(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.0))
@@ -1943,8 +1943,8 @@ packages:
     resolution: {integrity: sha512-K7dsJDQxBOF+f+epuhMactcjK2VP4MRkLKtwSykNtEI+cKVEyzrmmhQ1pmoxI800m4JKcyJ05L2M4yPwAGiBNw==}
     engines: {node: '>= 18.0.0'}
 
-  '@sveltejs/mcp@0.1.25':
-    resolution: {integrity: sha512-gjXU22CAxs+HA/7hW8v/cuHZR7qOOQWQTVKA2BNeXivrojrYHRRT1OqDxms8rWcSdXKGC8MjOibFpshWd8KWig==}
+  '@sveltejs/mcp@0.1.26':
+    resolution: {integrity: sha512-AhRME2FGrSmPbLc6bQYgpNNO3msWQ6qH00Lwl6sDs9s7FgK2cDn9+BBxKDahYh2ATfk/+Jr4tQHL1jeQ5AyNIg==}
     hasBin: true
 
   '@sveltejs/vite-plugin-svelte@7.3.0':
@@ -4286,8 +4286,8 @@ packages:
     resolution: {integrity: sha512-GgouD1B+sWwvkaEq8vXC15DjQitxbvs12oIXELpconwm+Tg3zfcEv4jgzq3vtKverDXsg3VI8aRgNL2Nra0Iog==}
     hasBin: true
 
-  tmcp@1.19.4:
-    resolution: {integrity: sha512-fMoUJ3Gef9iA0yKZNeW2SQCCKTluCwghUyOz/qxPS8XxrQk6Jlw4lgql3S+s6L//FteLeSJ7erKxMWl727mZoQ==}
+  tmcp@1.20.0-next.1:
+    resolution: {integrity: sha512-InQcjBBHgZvcQvEIK86CtFZFl/Tq2OO8ry8mWynn7uHvO7BCYdk56rzoRImFK5MIJJ8k0L0a/z7kL9YOHPQUaw==}
 
   toidentifier@1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
@@ -5770,11 +5770,11 @@ snapshots:
 
   '@sveltejs/load-config@0.2.2': {}
 
-  '@sveltejs/mcp@0.1.25(jiti@2.7.0)(supports-color@10.2.2)(typescript@6.0.3)':
+  '@sveltejs/mcp@0.1.26(jiti@2.7.0)(supports-color@10.2.2)(typescript@6.0.3)':
     dependencies:
       eslint: 9.39.5(jiti@2.7.0)(supports-color@10.2.2)
       sade: 1.8.1
-      tmcp: 1.19.4(typescript@6.0.3)
+      tmcp: 1.20.0-next.1(typescript@6.0.3)
     transitivePeerDependencies:
       - jiti
       - supports-color
@@ -8283,7 +8283,7 @@ snapshots:
     dependencies:
       tldts-core: 7.4.10
 
-  tmcp@1.19.4(typescript@6.0.3):
+  tmcp@1.20.0-next.1(typescript@6.0.3):
     dependencies:
       '@standard-schema/spec': 1.1.0
       json-rpc-2.0: 1.7.1
