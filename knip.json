@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreDependencies": [
+    "@knip/mcp",
+    "@textlint-ja/textlint-rule-preset-ai-writing",
+    "textlint"
+  ],
+  "workspaces": {
+    "packages/site": {
+      "ignoreDependencies": ["@sveltejs/mcp"]
+    }
+  }
+}

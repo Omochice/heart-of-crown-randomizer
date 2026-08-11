@@ -9,10 +9,12 @@
   "scripts": {
     "build": "turbo run build",
     "check": "npm-run-all2 check:*",
+    "check:knip": "knip",
     "check:turbo": "turbo run check",
     "clean": "turbo run clean",
     "dev": "turbo run dev --filter=@heart-of-crown-randomizer/site",
     "fmt": "npm-run-all2 fmt:*",
+    "fmt:biome": "biome check --write --unsafe .",
     "fmt:package": "sort-package-json",
     "fmt:turbo": "turbo run fmt",
     "test": "turbo run test"
@@ -21,8 +23,8 @@
     "@biomejs/biome": "catalog:",
     "@knip/mcp": "0.0.32",
     "@textlint-ja/textlint-rule-preset-ai-writing": "1.7.0",
+    "knip": "6.29.0",
     "npm-run-all2": "catalog:",
-    "rimraf": "catalog:",
     "sort-package-json": "catalog:",
     "textlint": "15.8.0",
     "turbo": "2.10.9"
