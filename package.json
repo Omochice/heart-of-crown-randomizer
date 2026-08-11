@@ -6,7 +6,6 @@
   "keywords": [],
   "license": "Zlib",
   "author": "",
-  "main": "index.js",
   "scripts": {
     "build": "turbo run build",
     "check": "npm-run-all2 check:*",
