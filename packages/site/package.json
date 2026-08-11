@@ -6,11 +6,9 @@
 		"build": "vite build",
 		"build-storybook": "storybook build",
 		"check": "npm-run-all2 check:*",
-		"check:biome": "biome ci .",
 		"check:svelte": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"dev": "vite dev",
 		"fmt": "npm-run-all2 fmt:*",
-		"fmt:biome": "biome check --write --unsafe .",
 		"fmt:package": "sort-package-json",
 		"fmt:prettier": "prettier --write \"**/*.svelte\"",
 		"prepare": "svelte-kit sync || echo ''",
@@ -27,7 +25,6 @@
 		"@heart-of-crown-randomizer/randomizer": "workspace:*"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "catalog:",
 		"@playwright/test": "1.62.1",
 		"@storybook/addon-docs": "10.5.7",
 		"@storybook/addon-svelte-csf": "5.1.2",

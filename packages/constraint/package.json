@@ -15,10 +15,8 @@
   },
   "scripts": {
     "check": "npm-run-all2 check:*",
-    "check:biome": "biome ci .",
     "check:type": "tsgo --noEmit",
     "fmt": "npm-run-all2 fmt:*",
-    "fmt:biome": "biome check --write --unsafe .",
     "fmt:package": "sort-package-json",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -28,7 +26,6 @@
     "@heart-of-crown-randomizer/card": "workspace:*"
   },
   "devDependencies": {
-    "@biomejs/biome": "catalog:",
     "@fast-check/vitest": "catalog:",
     "@typescript/native-preview": "catalog:",
     "@vitest/coverage-v8": "catalog:",

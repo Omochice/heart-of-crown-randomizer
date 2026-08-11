@@ -205,9 +205,6 @@ settings:
 
 catalogs:
   default:
-    '@biomejs/biome':
-      specifier: 2.5.7
-      version: 2.5.7
     '@fast-check/vitest':
       specifier: 0.4.1
       version: 0.4.1
@@ -238,7 +235,7 @@ importers:
   .:
     devDependencies:
       '@biomejs/biome':
-        specifier: 'catalog:'
+        specifier: 2.5.7
         version: 2.5.7
       '@knip/mcp':
         specifier: 0.0.32
@@ -264,9 +261,6 @@ importers:
 
   packages/card:
     devDependencies:
-      '@biomejs/biome':
-        specifier: 'catalog:'
-        version: 2.5.7
       '@heart-of-crown-randomizer/rolldown-plugin-dedent':
         specifier: workspace:*
         version: link:../rolldown-plugin-dedent
@@ -292,9 +286,6 @@ importers:
         specifier: workspace:*
         version: link:../card
     devDependencies:
-      '@biomejs/biome':
-        specifier: 'catalog:'
-        version: 2.5.7
       '@fast-check/vitest':
         specifier: 'catalog:'
         version: 0.4.1(vitest@4.1.10)
@@ -316,9 +307,6 @@ importers:
 
   packages/id-codec:
     devDependencies:
-      '@biomejs/biome':
-        specifier: 'catalog:'
-        version: 2.5.7
       '@typescript/native-preview':
         specifier: 'catalog:'
         version: 7.0.0-dev.20260707.2
@@ -341,9 +329,6 @@ importers:
         specifier: ^3.0.5
         version: 3.0.5
     devDependencies:
-      '@biomejs/biome':
-        specifier: 'catalog:'
-        version: 2.5.7
       '@fast-check/vitest':
         specifier: 'catalog:'
         version: 0.4.1(vitest@4.1.10)
@@ -368,9 +353,6 @@ importers:
 
   packages/rolldown-plugin-dedent:
     devDependencies:
-      '@biomejs/biome':
-        specifier: 'catalog:'
-        version: 2.5.7
       '@typescript/native-preview':
         specifier: 'catalog:'
         version: 7.0.0-dev.20260707.2
@@ -408,9 +390,6 @@ importers:
         specifier: workspace:*
         version: link:../randomizer
     devDependencies:
-      '@biomejs/biome':
-        specifier: 'catalog:'
-        version: 2.5.7
       '@playwright/test':
         specifier: 1.62.1
         version: 1.62.1
