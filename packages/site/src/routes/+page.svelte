@@ -155,10 +155,7 @@
 		selectedCommons = result.cards;
 		errorMessage = "";
 
-		goto(buildCardUrl(selectedCommons, page.url.searchParams), {
-			keepFocus: true,
-			noScroll: true,
-		});
+		navigateWithCardState();
 	}
 
 	async function copyToClipboard() {
