@@ -1,5 +1,5 @@
 {
-  "$schema": "https://unpkg.com/knip@6.29.0/schema.json",
+  "$schema": "https://unpkg.com/knip@6.32.0/schema.json",
   "ignoreDependencies": [
     "@knip/mcp",
     "@textlint-ja/textlint-rule-preset-ai-writing",
