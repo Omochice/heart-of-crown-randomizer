@@ -24,7 +24,7 @@
     "@biomejs/biome": "2.5.7",
     "@knip/mcp": "0.0.34",
     "@textlint-ja/textlint-rule-preset-ai-writing": "1.7.0",
-    "knip": "6.32.0",
+    "knip": "6.32.1",
     "npm-run-all2": "catalog:",
     "sort-package-json": "catalog:",
     "textlint": "15.8.0",
