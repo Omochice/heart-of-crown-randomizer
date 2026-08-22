@@ -11,13 +11,16 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 - **Type Checker**: `tsgo` (`@typescript/native-preview`) for library packages, `svelte-check` for site
 - **Runtime**: Node.js (version specified in engines field)
 - **Frontend**: SvelteKit + Vite + Tailwind CSS
-- **Testing**: Vitest with property-based testing via fast-check
+- **Testing**: Vitest with property-based testing via fast-check; Playwright for end-to-end tests
 
 ## Key Libraries
 
 - **seedrandom**: Deterministic PRNG for reproducible randomization
 - **Storybook**: Component development and documentation
 - **Biome**: Code formatting and linting (replaces ESLint/Prettier)
+- **Playwright**: Browser-driven end-to-end tests for the site package
+- **knip**: Detects unused files, exports, and dependencies across the monorepo
+- **textlint**: Prose linting (AI-writing preset) for documentation and written content
 
 ## Development Standards
 
@@ -32,12 +35,16 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 - Biome for formatting and linting (configured via `biome.json`)
 - Sort-package-json for consistent package.json ordering
 - Test coverage via Vitest (with coverage reports available)
+- knip (`pnpm check:knip`, config in `knip.json`) flags unused files, exports, and dependencies
+- textlint with the AI-writing preset (`.textlintrc.json`) checks prose quality
 
 ### Testing
 
 - Vitest for all test suites (unit, integration, property-based)
 - Property-based testing with `@fast-check/vitest` for randomizer invariants
+- Playwright for end-to-end tests in the site package (`packages/site/playwright.config.ts`, `pnpm test:e2e`)
 - Separate test files per concern (e.g., `page.accessibility.test.ts`, `page.reactivity.test.ts`)
+- Test filename suffixes signal what a test needs to run: plain `.test.ts` for pure logic, `.svelte.test.ts` when Svelte runtime/component context is required, `.e2e.test.ts` for Playwright-driven browser tests
 - Tests live alongside source in `src/` directories
 
 ## Development Environment

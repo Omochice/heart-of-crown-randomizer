@@ -43,10 +43,29 @@ src/
 
 ```text
 routes/
-  +page.svelte               # Route component
-  page.{concern}.test.ts     # Tests split by concern
-                             # (accessibility, reactivity, url-reactivity, etc.)
+  +page.svelte                    # Route component
+  page.{concern}.test.ts          # Tests split by concern
+                                  # (accessibility, reactivity, url-sync, draw-random-cards, etc.)
+  page.{concern}.e2e.test.ts      # Playwright end-to-end variant of a concern
 ```
+
+### Site Library (`packages/site/src/lib/`)
+
+**Location**: `packages/site/src/lib/`
+**Purpose**: Shared Svelte components, state stores, and helpers consumed by routes
+**Pattern**:
+
+```text
+lib/
+  {Component}.svelte              # Component
+  {Component}.svelte.test.ts      # Component test (needs Svelte runtime)
+  {Component}.stories.svelte      # Storybook story
+  stores/                         # Cross-cutting reactive state (card-state, constraint-state, url-card-sync)
+  utils/                          # Framework-agnostic helper functions
+  {feature}/                      # Self-contained feature folder (e.g. app-menu/), same co-location pattern inside
+```
+
+Components, stores, and feature folders follow the same file-suffix convention: `.svelte.test.ts` for tests needing component/runtime context, `.ssr.test.ts` for server-rendering-specific tests, plain `.test.ts` for pure logic.
 
 ### Constraint Rules (`packages/constraint/src/rules/`)
 
