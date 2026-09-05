@@ -43,9 +43,10 @@ src/
 
 ```text
 routes/
-  +page.svelte               # Route component
-  page.{concern}.test.ts     # Tests split by concern
-                             # (accessibility, reactivity, url-reactivity, etc.)
+  +page.svelte                   # Route component
+  page.{concern}.test.ts         # Vitest tests split by concern
+                                 # (accessibility, reactivity, url-reactivity, etc.)
+  page.{concern}.e2e.test.ts     # Playwright end-to-end tests (e.g. full-flow, debug-mode)
 ```
 
 ### Constraint Rules (`packages/constraint/src/rules/`)
@@ -61,6 +62,18 @@ rules/
     index.ts                 # Rule implementation
     index.test.ts            # Unit tests
     index.property.test.ts   # Property-based tests
+```
+
+### Storybook Stories (`packages/site/src/lib/`)
+
+**Location**: Co-located with the component
+**Purpose**: Interactive documentation/dev sandbox for UI components
+**Pattern**:
+
+```text
+lib/
+  Card.svelte
+  Card.stories.svelte        # Storybook stories for the component
 ```
 
 ### Card Data Organization (`packages/card/src/`)
