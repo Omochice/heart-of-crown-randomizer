@@ -25,7 +25,7 @@
 		"@heart-of-crown-randomizer/randomizer": "workspace:*"
 	},
 	"devDependencies": {
-		"@playwright/test": "1.62.1",
+		"@playwright/test": "1.63.0",
 		"@storybook/addon-docs": "10.6.0",
 		"@storybook/addon-svelte-csf": "5.1.3",
 		"@storybook/svelte": "10.6.0",
@@ -41,7 +41,7 @@
 		"jsdom": "30.0.1",
 		"lucide-svelte": "1.0.1",
 		"npm-run-all2": "catalog:",
-		"playwright": "1.62.1",
+		"playwright": "1.63.0",
 		"prettier": "3.9.6",
 		"prettier-plugin-svelte": "4.1.1",
 		"sort-package-json": "catalog:",
