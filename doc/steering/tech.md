@@ -18,6 +18,9 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 - **seedrandom**: Deterministic PRNG for reproducible randomization
 - **Storybook**: Component development and documentation
 - **Biome**: Code formatting and linting (replaces ESLint/Prettier)
+- **@testing-library/svelte**: Component-level testing for Svelte components (site package)
+- **Playwright**: Browser-based end-to-end tests against a built preview server (site package)
+- **knip**: Detects unused files, exports, and dependencies across the monorepo
 
 ## Development Standards
 
@@ -31,13 +34,15 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 
 - Biome for formatting and linting (configured via `biome.json`)
 - Sort-package-json for consistent package.json ordering
+- Knip for unused exports/dependencies (`pnpm check` runs it alongside type-check and lint)
 - Test coverage via Vitest (with coverage reports available)
 
 ### Testing
 
-- Vitest for all test suites (unit, integration, property-based)
-- Property-based testing with `@fast-check/vitest` for randomizer invariants
-- Separate test files per concern (e.g., `page.accessibility.test.ts`, `page.reactivity.test.ts`)
+- Vitest for all test suites (unit, integration, property-based) across every package
+- Property-based testing with `@fast-check/vitest` for randomizer and constraint invariants
+- Site adds `@testing-library/svelte` (via `svelteTesting()` Vite plugin) for component-level tests, and Playwright for true browser end-to-end specs (`packages/site/test/*.spec.ts`, run against a built preview server)
+- Separate test files per concern (e.g., `page.accessibility.test.ts`, `page.reactivity.svelte.test.ts`); suffixes signal intent: `.svelte.test.ts` for runes/component-dependent tests, `.ssr.test.ts` for server-render safety, `.e2e.test.ts` for full-flow integration tests run under Vitest (distinct from Playwright's browser specs)
 - Tests live alongside source in `src/` directories
 
 ## Development Environment
