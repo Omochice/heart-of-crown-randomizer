@@ -45,7 +45,27 @@ src/
 routes/
   +page.svelte               # Route component
   page.{concern}.test.ts     # Tests split by concern
-                             # (accessibility, reactivity, url-reactivity, etc.)
+                             # (accessibility, reactivity, url-reactivity,
+                             # debug-mode.e2e, full-flow.e2e, etc.)
+```
+
+### Site Components (`packages/site/src/lib/`)
+
+**Location**: `packages/site/src/lib/` (flat, with subfolders for multi-file components)
+**Purpose**: Reusable Svelte components, Storybook stories, and tests co-located by component
+**Pattern**:
+
+```text
+lib/
+  Card.svelte                # Component
+  Card.stories.svelte        # Storybook story
+  Card.svelte.test.ts        # Component test (@testing-library/svelte)
+  app-menu/                  # Subfolder when a component has helpers
+    AppMenu.svelte
+    AppMenu.stories.svelte
+    github-issue.ts          # Non-component helper, plain kebab-case
+  stores/                    # Svelte 5 runes-based state modules
+  utils/                     # Framework-agnostic helper functions
 ```
 
 ### Constraint Rules (`packages/constraint/src/rules/`)
@@ -83,8 +103,10 @@ card/src/
 
 ## Naming Conventions
 
-- **Files**: kebab-case (`constraint.ts`, `page.reactivity.test.ts`)
-- **Test Files**: `{feature}.test.ts` or `{page}.{concern}.test.ts` for split concerns
+- **Files**: kebab-case (`constraint.ts`, `page.reactivity.svelte.test.ts`); Svelte components use PascalCase (`Card.svelte`)
+- **Runes State Modules**: `.svelte.ts` suffix for TypeScript files that use Svelte 5 runes outside a component (e.g., `card-state.svelte.ts`) — required by the Svelte compiler, not just convention
+- **Test Files**: `{feature}.test.ts`, or `{page}.{concern}.test.ts` for split concerns. Suffix chains signal intent: `.svelte.test.ts` (tests a runes/component module), `.ssr.test.ts` (server-render safety), `.e2e.test.ts` (Vitest full-flow integration, not a browser test)
+- **Browser E2E Specs**: Real Playwright specs live outside `src/`, in `packages/site/test/*.spec.ts`, run against a built preview server
 - **Packages**: `@heart-of-crown-randomizer/{name}` scoped namespace
 - **TypeScript**: Interfaces/types use PascalCase, discriminated unions with lowercase string literals
 
