@@ -48,6 +48,17 @@ routes/
                              # (accessibility, reactivity, url-reactivity, etc.)
 ```
 
+### End-to-End Tests (`packages/site/test/`)
+
+**Location**: `packages/site/test/`
+**Purpose**: Playwright specs exercising the built site, kept separate from co-located unit tests
+**Pattern**:
+
+```text
+test/
+  {flow}.spec.ts    # Playwright end-to-end test
+```
+
 ### Constraint Rules (`packages/constraint/src/rules/`)
 
 **Location**: `packages/constraint/src/rules/{rule-name}/`
