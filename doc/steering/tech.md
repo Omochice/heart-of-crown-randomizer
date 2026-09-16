@@ -16,8 +16,11 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 ## Key Libraries
 
 - **seedrandom**: Deterministic PRNG for reproducible randomization
-- **Storybook**: Component development and documentation
-- **Biome**: Code formatting and linting (replaces ESLint/Prettier)
+- **Storybook**: Component development and documentation (`.stories.svelte` files via `@storybook/addon-svelte-csf`)
+- **Biome**: Code formatting and linting for TS/JS (replaces ESLint/Prettier)
+- **Prettier**: Formatting for `*.svelte` files only (Biome does not format Svelte templates)
+- **Playwright**: End-to-end testing of the built site
+- **knip**: Detects unused files, exports, and dependencies across the monorepo
 
 ## Development Standards
 
@@ -31,14 +34,16 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 
 - Biome for formatting and linting (configured via `biome.json`)
 - Sort-package-json for consistent package.json ordering
+- knip for unused-dependency/export detection (`pnpm check:knip` at root, configured via `knip.json`)
 - Test coverage via Vitest (with coverage reports available)
 
 ### Testing
 
-- Vitest for all test suites (unit, integration, property-based)
+- Vitest for unit, integration, and property-based test suites
 - Property-based testing with `@fast-check/vitest` for randomizer invariants
 - Separate test files per concern (e.g., `page.accessibility.test.ts`, `page.reactivity.test.ts`)
 - Tests live alongside source in `src/` directories
+- Playwright for end-to-end tests against the built site, kept separate in `packages/site/test/` (not co-located with source, unlike unit tests)
 
 ## Development Environment
 
@@ -61,7 +66,7 @@ packages/
 # Build: pnpm build (turbo runs all package builds)
 # Test: pnpm test (turbo runs all test suites)
 # Check: pnpm check (type-check + linting)
-# Format: pnpm fmt (biome + sort-package-json)
+# Format: pnpm fmt (biome + sort-package-json + Prettier for *.svelte)
 ```
 
 ## Key Technical Decisions
