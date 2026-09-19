@@ -46,6 +46,32 @@ routes/
   +page.svelte               # Route component
   page.{concern}.test.ts     # Tests split by concern
                              # (accessibility, reactivity, url-reactivity, etc.)
+  page.{concern}.e2e.test.ts # Vitest-based full-flow integration tests
+                             # (exercise stores/utils together; not browser e2e)
+```
+
+### Browser E2E Tests (`packages/site/test/`)
+
+**Location**: `packages/site/test/`
+**Purpose**: Real browser end-to-end tests run via Playwright (`pnpm test:e2e`), separate from the co-located Vitest `*.e2e.test.ts` integration tests
+**Pattern**:
+
+```text
+test/
+  page.spec.ts   # Playwright test.describe/test against a running preview server
+```
+
+### Component Stories (`packages/site/src/lib/`)
+
+**Location**: Alongside the component they document
+**Purpose**: Storybook stories for interactive component development
+**Pattern**:
+
+```text
+lib/
+  Card.svelte
+  Card.svelte.test.ts    # Component test (Svelte 5 runes require .svelte.test.ts)
+  Card.stories.svelte    # Storybook story
 ```
 
 ### Constraint Rules (`packages/constraint/src/rules/`)
@@ -84,7 +110,8 @@ card/src/
 ## Naming Conventions
 
 - **Files**: kebab-case (`constraint.ts`, `page.reactivity.test.ts`)
-- **Test Files**: `{feature}.test.ts` or `{page}.{concern}.test.ts` for split concerns
+- **Test Files**: `{feature}.test.ts` or `{page}.{concern}.test.ts` for split concerns; `{component}.svelte.test.ts` for component tests using Svelte 5 runes; `{page}.{concern}.e2e.test.ts` for Vitest full-flow integration tests; `packages/site/test/*.spec.ts` for real Playwright browser tests
+- **Story Files**: `{Component}.stories.svelte` co-located with the component
 - **Packages**: `@heart-of-crown-randomizer/{name}` scoped namespace
 - **TypeScript**: Interfaces/types use PascalCase, discriminated unions with lowercase string literals
 
