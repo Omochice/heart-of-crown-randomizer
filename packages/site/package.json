@@ -38,7 +38,7 @@
 		"@testing-library/svelte": "5.4.2",
 		"@types/node": "24.13.5",
 		"@vitest/browser-playwright": "4.1.11",
-		"jsdom": "30.0.1",
+		"jsdom": "30.1.0",
 		"lucide-svelte": "1.0.1",
 		"npm-run-all2": "catalog:",
 		"playwright": "1.63.0",
