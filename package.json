@@ -28,7 +28,7 @@
     "npm-run-all2": "catalog:",
     "sort-package-json": "catalog:",
     "textlint": "15.8.0",
-    "turbo": "2.11.2"
+    "turbo": "2.11.3"
   },
   "packageManager": "pnpm@11.27.0",
   "engines": {
