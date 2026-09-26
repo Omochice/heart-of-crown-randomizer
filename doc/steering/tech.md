@@ -30,6 +30,7 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 ### Code Quality
 
 - Biome for formatting and linting (configured via `biome.json`)
+- Knip for unused files/dependencies/exports detection (configured via `knip.json`, run via `check:knip`)
 - Sort-package-json for consistent package.json ordering
 - Test coverage via Vitest (with coverage reports available)
 
@@ -39,6 +40,7 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 - Property-based testing with `@fast-check/vitest` for randomizer invariants
 - Separate test files per concern (e.g., `page.accessibility.test.ts`, `page.reactivity.test.ts`)
 - Tests live alongside source in `src/` directories
+- Playwright drives end-to-end tests for the site (`*.e2e.test.ts`, gated separately in CI via `test:e2e` since it requires a browser install)
 
 ## Development Environment
 
@@ -60,9 +62,14 @@ packages/
 # Dev: pnpm dev (from site package)
 # Build: pnpm build (turbo runs all package builds)
 # Test: pnpm test (turbo runs all test suites)
-# Check: pnpm check (type-check + linting)
+# Check: pnpm check (biome + knip + per-package type-check/lint via turbo)
 # Format: pnpm fmt (biome + sort-package-json)
 ```
+
+### Repository Tooling (Nix)
+
+- A Nix flake (`flake.nix`) provides a reproducible dev shell and CI checks orthogonal to the pnpm/TypeScript toolchain: GitHub Actions workflow linting (actionlint, ghalint, zizmor), Renovate config validation, and `treefmt`-based formatting for non-TS files (Markdown, TOML, YAML, Nix).
+- CI runs `nix flake check` alongside the pnpm-based `pnpm check`/`pnpm test` jobs; contributors touching workflows, Markdown, or repo-wide formatting should expect this gate.
 
 ## Key Technical Decisions
 
