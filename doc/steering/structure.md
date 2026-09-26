@@ -46,7 +46,29 @@ routes/
   +page.svelte               # Route component
   page.{concern}.test.ts     # Tests split by concern
                              # (accessibility, reactivity, url-reactivity, etc.)
+  page.{concern}.e2e.test.ts # Playwright end-to-end tests for a concern
+                             # (full-flow, debug-mode); run separately via test:e2e
 ```
+
+### Site Library (`packages/site/src/lib/`)
+
+**Location**: `packages/site/src/lib/`
+**Purpose**: Shared components, state, and helpers for the site
+**Pattern**:
+
+```text
+lib/
+  {Component}.svelte           # UI component
+  {Component}.svelte.test.ts   # Component test
+  {Component}.stories.svelte   # Storybook story
+  stores/
+    {feature}-state.svelte.ts  # Svelte 5 rune-based state module
+  utils/
+    {feature}.ts                # Pure helper functions
+  {feature}/                    # Grouped feature (e.g. app-menu/) mirrors this same pattern
+```
+
+**`.svelte.ts` suffix**: files that use Svelte 5 runes outside of a `.svelte` component (state stores, reactive utilities) use the `{name}.svelte.ts` extension, distinct from plain `.ts` for non-reactive logic. Their tests follow as `{name}.svelte.test.ts`.
 
 ### Constraint Rules (`packages/constraint/src/rules/`)
 
