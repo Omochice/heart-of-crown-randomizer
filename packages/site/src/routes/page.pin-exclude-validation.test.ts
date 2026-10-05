@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   validateExcludeConstraints,
   validatePinConstraints,
-} from "$lib/utils/validation";
+} from "#lib/utils/validation.ts";
 
 describe("validatePinConstraints", () => {
   it("should return ok when pinned count is less than target count", () => {

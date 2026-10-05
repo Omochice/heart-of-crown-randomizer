@@ -11,11 +11,11 @@
 
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { describe, expect, it } from "vitest";
-import { selectWithConstraints } from "$lib/utils/select-with-constraints";
+import { selectWithConstraints } from "#lib/utils/select-with-constraints.ts";
 import {
   validateExcludeConstraints,
   validatePinConstraints,
-} from "$lib/utils/validation";
+} from "#lib/utils/validation.ts";
 
 // Mock card data for testing
 const mockCards: CommonCard[] = [

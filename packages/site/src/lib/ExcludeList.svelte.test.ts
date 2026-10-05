@@ -1,7 +1,7 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { fireEvent, render, screen } from "@testing-library/svelte";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import * as cardState from "$lib/stores/card-state.svelte";
+import * as cardState from "#lib/stores/card-state.svelte.ts";
 import ExcludeList from "./ExcludeList.svelte";
 
 const mockAttackCard: CommonCard = {

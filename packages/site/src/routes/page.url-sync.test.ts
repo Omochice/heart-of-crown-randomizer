@@ -5,12 +5,15 @@ import {
   getPinnedCardIds,
   setExcludedCardIds,
   setPinnedCardIds,
-} from "$lib/stores/card-state.svelte";
+} from "#lib/stores/card-state.svelte.ts";
 import {
   getEnabledConstraintIds,
   setEnabledConstraintIds,
-} from "$lib/stores/constraint-state.svelte";
-import { buildUrlWithCardState, parseCompressedIds } from "$lib/utils/url-sync";
+} from "#lib/stores/constraint-state.svelte.ts";
+import {
+  buildUrlWithCardState,
+  parseCompressedIds,
+} from "#lib/utils/url-sync.ts";
 
 describe("parseCompressedIds (page integration)", () => {
   it("should parse compressed pinned IDs from 'p' parameter", () => {

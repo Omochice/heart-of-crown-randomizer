@@ -6,7 +6,7 @@ import {
 } from "@heart-of-crown-randomizer/constraint";
 import { decodeIds, encodeIds } from "@heart-of-crown-randomizer/id-codec";
 import { describe, expect, it } from "vitest";
-import { makeCard } from "$lib/test-helpers";
+import { makeCard } from "#lib/test-helpers.ts";
 import { buildCardUrl, drawMissingCommons, drawRandomCards } from "./card-draw";
 
 const allCommons = Array.from({ length: 20 }, (_, i) => makeCard(i + 1));

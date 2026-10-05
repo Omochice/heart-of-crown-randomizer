@@ -4,8 +4,8 @@ import type {
 } from "@heart-of-crown-randomizer/constraint";
 import { fireEvent, render, screen } from "@testing-library/svelte";
 import { beforeEach, describe, expect, it } from "vitest";
-import * as constraintState from "$lib/stores/constraint-state.svelte";
-import { makeCard } from "$lib/test-helpers";
+import * as constraintState from "#lib/stores/constraint-state.svelte.ts";
+import { makeCard } from "#lib/test-helpers.ts";
 import DebugPanel from "./DebugPanel.svelte";
 
 function makeConstraint(

@@ -57,9 +57,9 @@ describe("+page.svelte URL Reactivity Bug", () => {
     expect(pageContent).not.toContain("window.location.origin");
   });
 
-  it("should mirror preference state into the URL with replaceState", () => {
+  it("should mirror preference state into the URL by replacing the history entry", () => {
     expect(pageContent).toContain("buildUrlWithCardState");
-    expect(pageContent).toMatch(/replaceState:\s*true/);
+    expect(pageContent).toMatch(/replace:\s*true/);
   });
 
   it("should gate the preference-to-URL effect until restore completes", () => {

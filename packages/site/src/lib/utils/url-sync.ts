@@ -1,4 +1,5 @@
 import { decodeIds, encodeIds } from "@heart-of-crown-randomizer/id-codec";
+import type { ReadonlyURL } from "$app/state";
 
 /**
  * Parse compressed IDs from a single URL parameter.
@@ -6,7 +7,10 @@ import { decodeIds, encodeIds } from "@heart-of-crown-randomizer/id-codec";
  * We use the same bitfield+base64url encoding as the card selection
  * parameter (`s`), keeping all ID sets compact and consistent.
  */
-export function parseCompressedIds(url: URL, param: string): Set<number> {
+export function parseCompressedIds(
+  url: ReadonlyURL,
+  param: string,
+): Set<number> {
   const encoded = url.searchParams.get(param);
   if (encoded === null || encoded === "") {
     return new Set();
@@ -22,12 +26,12 @@ export function parseCompressedIds(url: URL, param: string): Set<number> {
  * on the first state-to-URL sync.
  */
 export function buildUrlWithCardState(
-  baseUrl: URL,
+  baseUrl: ReadonlyURL,
   pinnedIds: ReadonlySet<number>,
   excludedIds: ReadonlySet<number>,
   constraintIds: ReadonlySet<number>,
 ): URL {
-  const url = new URL(baseUrl);
+  const url = new URL(baseUrl.href);
 
   url.searchParams.delete("pin");
   url.searchParams.delete("exclude");

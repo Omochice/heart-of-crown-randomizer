@@ -4,15 +4,12 @@
 	import { allConstraints } from "@heart-of-crown-randomizer/constraint";
 	import { Plus, Shuffle } from "lucide-svelte";
 	import { onMount } from "svelte";
-	import { goto } from "$app/navigation";
-	import { resolve } from "$app/paths";
-	import { page } from "$app/state";
-	import AppMenu from "$lib/app-menu/AppMenu.svelte";
-	import Card from "$lib/Card.svelte";
-	import CardDetail from "$lib/CardDetail.svelte";
-	import ConstraintPanel from "$lib/ConstraintPanel.svelte";
-	import DebugPanel from "$lib/DebugPanel.svelte";
-	import ExcludeList from "$lib/ExcludeList.svelte";
+	import AppMenu from "#lib/app-menu/AppMenu.svelte";
+	import Card from "#lib/Card.svelte";
+	import CardDetail from "#lib/CardDetail.svelte";
+	import ConstraintPanel from "#lib/ConstraintPanel.svelte";
+	import DebugPanel from "#lib/DebugPanel.svelte";
+	import ExcludeList from "#lib/ExcludeList.svelte";
 	import {
 		getExcludedCardIds,
 		getExcludedCards,
@@ -20,21 +17,25 @@
 		getPinnedCards,
 		setExcludedCardIds,
 		setPinnedCardIds,
-	} from "$lib/stores/card-state.svelte";
+	} from "#lib/stores/card-state.svelte.ts";
 	import {
 		getEnabledConstraintIds,
 		getEnabledConstraints,
 		setEnabledConstraintIds,
-	} from "$lib/stores/constraint-state.svelte";
-	import { resolveCardsFromUrl } from "$lib/stores/url-card-sync.svelte";
+	} from "#lib/stores/constraint-state.svelte.ts";
+	import { resolveCardsFromUrl } from "#lib/stores/url-card-sync.svelte.ts";
 	import {
 		buildCardUrl,
 		drawMissingCommons as drawMissingCommonsLogic,
 		drawRandomCards as drawRandomCardsLogic,
-	} from "$lib/utils/card-draw";
-	import { buildShareUrl, shareOrCopy } from "$lib/utils/share";
-	import { createSwipeHandlers } from "$lib/utils/swipe-gesture.svelte";
-	import { buildUrlWithCardState, parseCompressedIds } from "$lib/utils/url-sync";
+	} from "#lib/utils/card-draw.ts";
+	import { buildShareUrl, shareOrCopy } from "#lib/utils/share.ts";
+	import { createSwipeHandlers } from "#lib/utils/swipe-gesture.svelte.ts";
+	import { buildUrlWithCardState, parseCompressedIds } from "#lib/utils/url-sync.ts";
+	import { goto } from "$app/navigation";
+	import { resolve } from "$app/paths";
+	import type { ReadonlyURL } from "$app/state";
+	import { page } from "$app/state";
 
 	const isDebugMode = $derived(page.url.searchParams.get("debug") === "true");
 
@@ -68,7 +69,7 @@
 
 	// Parse one preference param in isolation: a hand-edited, malformed value
 	// (decodeIds throws) drops only that param instead of discarding the others.
-	function parsePreferenceIds(url: URL, param: string): Set<number> {
+	function parsePreferenceIds(url: ReadonlyURL, param: string): Set<number> {
 		try {
 			return parseCompressedIds(url, param);
 		} catch {
@@ -115,7 +116,7 @@
 	 * than the resolved path alone, so the hash survives and an empty query still
 	 * navigates to the bare path instead of being a no-op. Comparing the rebuilt
 	 * search against the current one both prevents a navigation loop and lets a
-	 * stale legacy pin/exclude param get rewritten away. replaceState keeps rapid
+	 * stale legacy pin/exclude param get rewritten away. Replacing the entry keeps rapid
 	 * toggles out of the history that draws push onto.
 	 */
 	$effect(() => {
@@ -133,9 +134,8 @@
 		}
 
 		goto(`${resolve("/")}${nextUrl.search}${nextUrl.hash}`, {
-			replaceState: true,
-			keepFocus: true,
-			noScroll: true,
+			replace: true,
+			reset: false,
 		});
 	});
 
@@ -177,8 +177,7 @@
 
 	function navigateWithCardState() {
 		goto(`${resolve("/")}${buildCardUrl(selectedCommons, page.url.searchParams)}`, {
-			keepFocus: true,
-			noScroll: true,
+			reset: false,
 		});
 	}
 

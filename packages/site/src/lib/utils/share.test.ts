@@ -1,6 +1,6 @@
 import { decodeIds } from "@heart-of-crown-randomizer/id-codec";
 import { describe, expect, it, vi } from "vitest";
-import { makeCard } from "$lib/test-helpers";
+import { makeCard } from "#lib/test-helpers.ts";
 import { buildShareText, buildShareUrl, shareOrCopy } from "./share";
 
 describe("buildShareUrl", () => {

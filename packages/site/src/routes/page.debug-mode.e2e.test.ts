@@ -8,14 +8,14 @@ import { beforeEach, describe, expect, it } from "vitest";
 import {
   setExcludedCardIds,
   setPinnedCardIds,
-} from "$lib/stores/card-state.svelte";
+} from "#lib/stores/card-state.svelte.ts";
 import {
   getEnabledConstraintIds,
   getEnabledConstraints,
   toggleConstraint,
-} from "$lib/stores/constraint-state.svelte";
-import { buildCardUrl, drawRandomCards } from "$lib/utils/card-draw";
-import { buildShareUrl } from "$lib/utils/share";
+} from "#lib/stores/constraint-state.svelte.ts";
+import { buildCardUrl, drawRandomCards } from "#lib/utils/card-draw.ts";
+import { buildShareUrl } from "#lib/utils/share.ts";
 
 const allCommons = [...Basic.commons, ...FarEasternBorder.commons];
 

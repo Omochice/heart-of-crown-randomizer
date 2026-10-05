@@ -1,6 +1,7 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { decodeIds } from "@heart-of-crown-randomizer/id-codec";
-import { setsEqual } from "$lib/utils/url-sync";
+import { setsEqual } from "#lib/utils/url-sync.ts";
+import type { ReadonlyURL } from "$app/state";
 
 /**
  * Resolve card objects from URL "s" parameter (bitfield-encoded card IDs).
@@ -9,7 +10,7 @@ import { setsEqual } from "$lib/utils/url-sync";
  * future card sets may produce IDs not present in the current allCommons list.
  */
 export function resolveCardsFromUrl(
-  url: URL,
+  url: ReadonlyURL,
   allCommons: CommonCard[],
 ): CommonCard[] {
   const encoded = url.searchParams.get("s");
