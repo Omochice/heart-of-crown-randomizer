@@ -1,6 +1,8 @@
 /// <reference types="vitest/config" />
 
+import adapter from "@sveltejs/adapter-cloudflare";
 import { sveltekit } from "@sveltejs/kit/vite";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import tailwindcss from "@tailwindcss/vite";
 import { svelteTesting } from "@testing-library/svelte/vite";
 import {
@@ -12,7 +14,22 @@ import {
 export default defineConfig({
   plugins: [
     tailwindcss(),
-    sveltekit(),
+    sveltekit({
+      preprocess: vitePreprocess(),
+      adapter: adapter({
+        config: undefined,
+        platformProxy: {
+          configPath: undefined,
+          environment: undefined,
+          persist: undefined,
+        },
+        fallback: "plaintext",
+        routes: {
+          include: ["/*"],
+          exclude: ["<all>"],
+        },
+      }),
+    }),
     svelteTesting(),
     // TODO: Remove when @sveltejs/adapter-cloudflare integrates esmExternalRequirePlugin internally.
     // Rolldown generates `createRequire(import.meta.url)` for CJS require() calls in SSR builds,
