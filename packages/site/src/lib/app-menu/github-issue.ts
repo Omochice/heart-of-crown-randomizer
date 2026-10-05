@@ -1,5 +1,5 @@
 import { encodeIds } from "@heart-of-crown-randomizer/id-codec";
-import { buildUrlWithCardState } from "$lib/utils/url-sync";
+import { buildUrlWithCardState } from "#lib/utils/url-sync.ts";
 
 const GITHUB_ISSUE_URL =
   "https://github.com/Omochice/heart-of-crown-randomizer/issues/new";

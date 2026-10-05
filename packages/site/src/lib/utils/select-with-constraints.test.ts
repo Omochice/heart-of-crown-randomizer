@@ -6,7 +6,7 @@ import type {
 } from "@heart-of-crown-randomizer/constraint";
 import { link2GteLink0 } from "@heart-of-crown-randomizer/constraint";
 import { describe, expect, it } from "vitest";
-import { makeCard } from "$lib/test-helpers";
+import { makeCard } from "#lib/test-helpers.ts";
 import { selectWithConstraints } from "./select-with-constraints";
 
 function makeCardWithLink(id: number, link: 0 | 1 | 2): CommonCard {

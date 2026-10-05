@@ -3,8 +3,8 @@
 	import { Coins, Layers, X } from "lucide-svelte";
 	import { onMount } from "svelte";
 	import { fade, fly } from "svelte/transition";
-	import { getCategoryLabels } from "$lib/utils/card-display";
-	import { swipeDownToDismiss } from "$lib/utils/swipe-down-to-dismiss";
+	import { getCategoryLabels } from "#lib/utils/card-display.ts";
+	import { swipeDownToDismiss } from "#lib/utils/swipe-down-to-dismiss.ts";
 
 	type Props = {
 		/** Card data to display in the detail sheet */

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   validateExcludeConstraints,
   validatePinConstraints,
-} from "$lib/utils/validation";
+} from "#lib/utils/validation.ts";
 
 describe("drawRandomCards() validation logic", () => {
   const allCommons = [...Basic.commons, ...FarEasternBorder.commons];

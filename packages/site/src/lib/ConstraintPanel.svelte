@@ -3,8 +3,11 @@
 	import type { Constraint, SelectionContext } from "@heart-of-crown-randomizer/constraint";
 	import { validateCombination } from "@heart-of-crown-randomizer/constraint";
 	import { Check, ChevronDown, ChevronUp, SlidersHorizontal } from "lucide-svelte";
-	import { getPinnedCards } from "$lib/stores/card-state.svelte";
-	import { getEnabledConstraintIds, toggleConstraint } from "$lib/stores/constraint-state.svelte";
+	import { getPinnedCards } from "#lib/stores/card-state.svelte.ts";
+	import {
+		getEnabledConstraintIds,
+		toggleConstraint,
+	} from "#lib/stores/constraint-state.svelte.ts";
 
 	type Props = {
 		/** Available constraints to toggle */

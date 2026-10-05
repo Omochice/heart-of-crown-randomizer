@@ -2,6 +2,9 @@
 	"name": "@heart-of-crown-randomizer/site",
 	"private": true,
 	"type": "module",
+	"imports": {
+		"#lib/*": "./src/lib/*"
+	},
 	"scripts": {
 		"build": "vite build",
 		"build-storybook": "storybook build",

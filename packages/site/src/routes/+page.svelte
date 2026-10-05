@@ -4,15 +4,12 @@
 	import { allConstraints } from "@heart-of-crown-randomizer/constraint";
 	import { Plus, Shuffle } from "lucide-svelte";
 	import { onMount } from "svelte";
-	import { goto } from "$app/navigation";
-	import { resolve } from "$app/paths";
-	import { page } from "$app/state";
-	import AppMenu from "$lib/app-menu/AppMenu.svelte";
-	import Card from "$lib/Card.svelte";
-	import CardDetail from "$lib/CardDetail.svelte";
-	import ConstraintPanel from "$lib/ConstraintPanel.svelte";
-	import DebugPanel from "$lib/DebugPanel.svelte";
-	import ExcludeList from "$lib/ExcludeList.svelte";
+	import AppMenu from "#lib/app-menu/AppMenu.svelte";
+	import Card from "#lib/Card.svelte";
+	import CardDetail from "#lib/CardDetail.svelte";
+	import ConstraintPanel from "#lib/ConstraintPanel.svelte";
+	import DebugPanel from "#lib/DebugPanel.svelte";
+	import ExcludeList from "#lib/ExcludeList.svelte";
 	import {
 		getExcludedCardIds,
 		getExcludedCards,
@@ -20,21 +17,24 @@
 		getPinnedCards,
 		setExcludedCardIds,
 		setPinnedCardIds,
-	} from "$lib/stores/card-state.svelte";
+	} from "#lib/stores/card-state.svelte.ts";
 	import {
 		getEnabledConstraintIds,
 		getEnabledConstraints,
 		setEnabledConstraintIds,
-	} from "$lib/stores/constraint-state.svelte";
-	import { resolveCardsFromUrl } from "$lib/stores/url-card-sync.svelte";
+	} from "#lib/stores/constraint-state.svelte.ts";
+	import { resolveCardsFromUrl } from "#lib/stores/url-card-sync.svelte.ts";
 	import {
 		buildCardUrl,
 		drawMissingCommons as drawMissingCommonsLogic,
 		drawRandomCards as drawRandomCardsLogic,
-	} from "$lib/utils/card-draw";
-	import { buildShareUrl, shareOrCopy } from "$lib/utils/share";
-	import { createSwipeHandlers } from "$lib/utils/swipe-gesture.svelte";
-	import { buildUrlWithCardState, parseCompressedIds } from "$lib/utils/url-sync";
+	} from "#lib/utils/card-draw.ts";
+	import { buildShareUrl, shareOrCopy } from "#lib/utils/share.ts";
+	import { createSwipeHandlers } from "#lib/utils/swipe-gesture.svelte.ts";
+	import { buildUrlWithCardState, parseCompressedIds } from "#lib/utils/url-sync.ts";
+	import { goto } from "$app/navigation";
+	import { resolve } from "$app/paths";
+	import { page } from "$app/state";
 
 	const isDebugMode = $derived(page.url.searchParams.get("debug") === "true");
 

@@ -11,16 +11,19 @@ import {
   setPinnedCardIds,
   toggleExclude,
   togglePin,
-} from "$lib/stores/card-state.svelte";
+} from "#lib/stores/card-state.svelte.ts";
 import {
   getEnabledConstraintIds,
   setEnabledConstraintIds,
-} from "$lib/stores/constraint-state.svelte";
-import { buildUrlWithCardState, parseCompressedIds } from "$lib/utils/url-sync";
+} from "#lib/stores/constraint-state.svelte.ts";
+import {
+  buildUrlWithCardState,
+  parseCompressedIds,
+} from "#lib/utils/url-sync.ts";
 import {
   validateExcludeConstraints,
   validatePinConstraints,
-} from "$lib/utils/validation";
+} from "#lib/utils/validation.ts";
 
 describe("Full Flow E2E: Pin → Randomize → Result", () => {
   const allCommons = [...Basic.commons, ...FarEasternBorder.commons];

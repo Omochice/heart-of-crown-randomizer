@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { Ban, Pin } from "lucide-svelte";
-	import { getCardState, toggleExclude, togglePin } from "$lib/stores/card-state.svelte";
-	import { getCategoryLabels, getSubTypeLabel } from "$lib/utils/card-display";
+	import { getCardState, toggleExclude, togglePin } from "#lib/stores/card-state.svelte.ts";
+	import { getCategoryLabels, getSubTypeLabel } from "#lib/utils/card-display.ts";
 
 	type Props = {
 		/** Card data to render */

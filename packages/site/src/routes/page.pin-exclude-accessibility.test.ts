@@ -1,8 +1,8 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { fireEvent, render, screen } from "@testing-library/svelte";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import Card from "$lib/Card.svelte";
-import * as CardState from "$lib/stores/card-state.svelte";
+import Card from "#lib/Card.svelte";
+import * as CardState from "#lib/stores/card-state.svelte.ts";
 
 /**
  * Accessibility Tests for Pin/Exclude Buttons (Task 7.1)

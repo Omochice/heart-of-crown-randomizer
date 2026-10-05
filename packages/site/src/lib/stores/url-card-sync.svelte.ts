@@ -1,6 +1,6 @@
 import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 import { decodeIds } from "@heart-of-crown-randomizer/id-codec";
-import { setsEqual } from "$lib/utils/url-sync";
+import { setsEqual } from "#lib/utils/url-sync.ts";
 
 /**
  * Resolve card objects from URL "s" parameter (bitfield-encoded card IDs).

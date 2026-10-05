@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { CommonCard } from "@heart-of-crown-randomizer/card/type";
 	import { Ban, ChevronDown, ChevronUp, X } from "lucide-svelte";
-	import { toggleExclude } from "$lib/stores/card-state.svelte";
-	import { getCategoryLabels } from "$lib/utils/card-display";
+	import { toggleExclude } from "#lib/stores/card-state.svelte.ts";
+	import { getCategoryLabels } from "#lib/utils/card-display.ts";
 
 	type Props = {
 		/** Cards currently excluded from the draw pool */

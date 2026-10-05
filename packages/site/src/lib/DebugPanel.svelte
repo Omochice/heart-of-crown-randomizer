@@ -5,7 +5,7 @@
 	import {
 		getEnabledConstraintIds,
 		getEnabledConstraints,
-	} from "$lib/stores/constraint-state.svelte";
+	} from "#lib/stores/constraint-state.svelte.ts";
 
 	type Props = {
 		/** Available constraints */
