@@ -34,6 +34,7 @@
 	import { buildUrlWithCardState, parseCompressedIds } from "#lib/utils/url-sync.ts";
 	import { goto } from "$app/navigation";
 	import { resolve } from "$app/paths";
+	import type { ReadonlyURL } from "$app/state";
 	import { page } from "$app/state";
 
 	const isDebugMode = $derived(page.url.searchParams.get("debug") === "true");
@@ -68,7 +69,7 @@
 
 	// Parse one preference param in isolation: a hand-edited, malformed value
 	// (decodeIds throws) drops only that param instead of discarding the others.
-	function parsePreferenceIds(url: URL, param: string): Set<number> {
+	function parsePreferenceIds(url: ReadonlyURL, param: string): Set<number> {
 		try {
 			return parseCompressedIds(url, param);
 		} catch {
