@@ -115,7 +115,7 @@
 	 * than the resolved path alone, so the hash survives and an empty query still
 	 * navigates to the bare path instead of being a no-op. Comparing the rebuilt
 	 * search against the current one both prevents a navigation loop and lets a
-	 * stale legacy pin/exclude param get rewritten away. replaceState keeps rapid
+	 * stale legacy pin/exclude param get rewritten away. Replacing the entry keeps rapid
 	 * toggles out of the history that draws push onto.
 	 */
 	$effect(() => {
@@ -133,9 +133,8 @@
 		}
 
 		goto(`${resolve("/")}${nextUrl.search}${nextUrl.hash}`, {
-			replaceState: true,
-			keepFocus: true,
-			noScroll: true,
+			replace: true,
+			reset: false,
 		});
 	});
 
@@ -177,8 +176,7 @@
 
 	function navigateWithCardState() {
 		goto(`${resolve("/")}${buildCardUrl(selectedCommons, page.url.searchParams)}`, {
-			keepFocus: true,
-			noScroll: true,
+			reset: false,
 		});
 	}
 
