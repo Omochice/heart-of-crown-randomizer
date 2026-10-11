@@ -17,7 +17,10 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 
 - **seedrandom**: Deterministic PRNG for reproducible randomization
 - **Storybook**: Component development and documentation
-- **Biome**: Code formatting and linting (replaces ESLint/Prettier)
+- **Biome**: Code formatting and linting for TypeScript (replaces ESLint/Prettier)
+- **Prettier**: Formats only `*.svelte` files (with prettier-plugin-svelte)
+- **Knip**: Detects unused files, exports, and dependencies (`check:knip`)
+- **Playwright**: Browser-mode and end-to-end tests for the site
 
 ## Development Standards
 
@@ -29,7 +32,8 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 
 ### Code Quality
 
-- Biome for formatting and linting (configured via `biome.json`)
+- Biome for formatting and linting (configured via `biome.json`); Prettier for Svelte files
+- Knip for unused code/dependency detection; textlint for prose in docs
 - Sort-package-json for consistent package.json ordering
 - Test coverage via Vitest (with coverage reports available)
 
@@ -60,8 +64,8 @@ packages/
 # Dev: pnpm dev (from site package)
 # Build: pnpm build (turbo runs all package builds)
 # Test: pnpm test (turbo runs all test suites)
-# Check: pnpm check (type-check + linting)
-# Format: pnpm fmt (biome + sort-package-json)
+# Check: pnpm check (biome, knip, per-package type-check)
+# Format: pnpm fmt (biome + sort-package-json + Prettier for Svelte)
 ```
 
 ## Key Technical Decisions
