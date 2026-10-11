@@ -46,6 +46,23 @@ routes/
   +page.svelte               # Route component
   page.{concern}.test.ts     # Tests split by concern
                              # (accessibility, reactivity, url-reactivity, etc.)
+  page.{concern}.e2e.test.ts # Browser-mode end-to-end flows
+```
+
+### Site Library (`packages/site/src/lib/`)
+
+**Location**: `packages/site/src/lib/`
+**Purpose**: Reusable Svelte components and UI state
+**Pattern**:
+
+```text
+lib/
+  {Component}.svelte              # PascalCase component
+  {Component}.svelte.test.ts      # Component test
+  {Component}.stories.svelte      # Storybook story
+  stores/                         # Rune-based state (*.svelte.ts)
+  utils/                          # Non-reactive helpers
+  app-menu/                       # Grouped sub-feature components
 ```
 
 ### Constraint Rules (`packages/constraint/src/rules/`)
@@ -83,7 +100,7 @@ card/src/
 
 ## Naming Conventions
 
-- **Files**: kebab-case (`constraint.ts`, `page.reactivity.test.ts`)
+- **Files**: kebab-case for TypeScript (`constraint.ts`, `page.reactivity.test.ts`); PascalCase for Svelte components (`Card.svelte`)
 - **Test Files**: `{feature}.test.ts` or `{page}.{concern}.test.ts` for split concerns
 - **Packages**: `@heart-of-crown-randomizer/{name}` scoped namespace
 - **TypeScript**: Interfaces/types use PascalCase, discriminated unions with lowercase string literals
@@ -106,7 +123,11 @@ import { createRNG } from "./rng";
 import type { Identifiable } from "./types";
 ```
 
-**No Path Aliases**: Project uses explicit relative/absolute imports without `@/` aliases
+**No Path Aliases** (except in site): Libraries use workspace namespace or relative paths. The site uses the Node subpath import `#lib/*` (declared in its `package.json` `imports`) for `src/lib`, rather than `@/`-style bundler aliases.
+
+```typescript
+import { getPinnedCards } from "#lib/stores/card-state.svelte.ts";
+```
 
 ## Code Organization Principles
 
