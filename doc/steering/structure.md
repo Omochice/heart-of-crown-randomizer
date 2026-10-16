@@ -48,6 +48,12 @@ routes/
                              # (accessibility, reactivity, url-reactivity, etc.)
 ```
 
+### Site Components (`packages/site/src/lib/`)
+
+**Location**: `packages/site/src/lib/`
+**Purpose**: Reusable UI components plus supporting `stores/` and `utils/`
+**Pattern**: PascalCase `Component.svelte` with co-located `Component.svelte.test.ts` and `Component.stories.svelte` (Storybook)
+
 ### Constraint Rules (`packages/constraint/src/rules/`)
 
 **Location**: `packages/constraint/src/rules/{rule-name}/`
@@ -83,7 +89,7 @@ card/src/
 
 ## Naming Conventions
 
-- **Files**: kebab-case (`constraint.ts`, `page.reactivity.test.ts`)
+- **Files**: kebab-case for TypeScript modules and tests (`constraint.ts`, `page.reactivity.test.ts`); PascalCase for Svelte components (`CardDetail.svelte`)
 - **Test Files**: `{feature}.test.ts` or `{page}.{concern}.test.ts` for split concerns
 - **Packages**: `@heart-of-crown-randomizer/{name}` scoped namespace
 - **TypeScript**: Interfaces/types use PascalCase, discriminated unions with lowercase string literals
