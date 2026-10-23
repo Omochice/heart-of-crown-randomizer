@@ -353,8 +353,8 @@ importers:
         specifier: 1.64.1
         version: 1.64.1
       '@storybook/addon-docs':
-        specifier: 10.6.2
-        version: 10.6.2(@types/react@19.2.18)(storybook@10.6.3(@types/react@19.2.18)(prettier@3.9.10)(react@19.2.8))
+        specifier: 10.6.3
+        version: 10.6.3(@types/react@19.2.18)(storybook@10.6.3(@types/react@19.2.18)(prettier@3.9.10)(react@19.2.8))
       '@storybook/addon-svelte-csf':
         specifier: 5.1.5
         version: 5.1.5(@storybook/svelte@10.6.3(storybook@10.6.3(@types/react@19.2.18)(prettier@3.9.10)(react@19.2.8))(svelte@5.57.2))(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.2)(vite@8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(storybook@10.6.3(@types/react@19.2.18)(prettier@3.9.10)(react@19.2.8))(svelte@5.57.2)(vite@8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -2081,11 +2081,11 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@storybook/addon-docs@10.6.2':
-    resolution: {integrity: sha512-f7Rv/rzX1sk4lUDTeoIRkXWcWvNwLv7vBnfpFGb3f88MliB+M4ZekGKNiKtrmi44uLFt52gzwwPzj2eGDu0DQQ==}
+  '@storybook/addon-docs@10.6.3':
+    resolution: {integrity: sha512-365f712au4w/xvFqEKY6TIvTeGGAY7FKRB8zP4CFa3VSv9oyxHaq/ublFg4YDbCeRagppwl1PZ6k4+PoUor3+A==}
     peerDependencies:
       '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      storybook: ^10.6.2
+      storybook: ^10.6.3
     peerDependenciesMeta:
       '@types/react':
         optional: true
@@ -2116,14 +2116,14 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  '@storybook/react-dom-shim@10.6.2':
-    resolution: {integrity: sha512-k0262Vqxjk3wHeg3g/QO/ENDrkC7kkbuwsFSXOdYr7Sl888tsF1DAS7uQ/gr+s/BRz1FLYRX7wBY3smEUV4MJg==}
+  '@storybook/react-dom-shim@10.6.3':
+    resolution: {integrity: sha512-cJUuPrieiTl06kzlgaU89iG+CtLAgUTt0Xdvm8qFT9yR2qwafSaswhwYWlZCNX4nWuOu7eK7uzWTwzKqyDBOWQ==}
     peerDependencies:
       '@types/react': ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       '@types/react-dom': ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-      storybook: ^10.6.2
+      storybook: ^10.6.3
     peerDependenciesMeta:
       '@types/react':
         optional: true
@@ -6043,11 +6043,11 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@storybook/addon-docs@10.6.2(@types/react@19.2.18)(storybook@10.6.3(@types/react@19.2.18)(prettier@3.9.10)(react@19.2.8))':
+  '@storybook/addon-docs@10.6.3(@types/react@19.2.18)(storybook@10.6.3(@types/react@19.2.18)(prettier@3.9.10)(react@19.2.8))':
     dependencies:
       '@mdx-js/react': 3.1.1(@types/react@19.2.18)(react@19.2.8)
       '@storybook/icons': 2.1.0(react@19.2.8)
-      '@storybook/react-dom-shim': 10.6.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.6.3(@types/react@19.2.18)(prettier@3.9.10)(react@19.2.8))
+      '@storybook/react-dom-shim': 10.6.3(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.6.3(@types/react@19.2.18)(prettier@3.9.10)(react@19.2.8))
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
       storybook: 10.6.3(@types/react@19.2.18)(prettier@3.9.10)(react@19.2.8)
@@ -6091,7 +6091,7 @@ snapshots:
     dependencies:
       react: 19.2.8
 
-  '@storybook/react-dom-shim@10.6.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.6.3(@types/react@19.2.18)(prettier@3.9.10)(react@19.2.8))':
+  '@storybook/react-dom-shim@10.6.3(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.6.3(@types/react@19.2.18)(prettier@3.9.10)(react@19.2.8))':
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
