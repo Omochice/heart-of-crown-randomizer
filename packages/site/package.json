@@ -30,7 +30,7 @@
 	"devDependencies": {
 		"@playwright/test": "1.64.1",
 		"@storybook/addon-docs": "10.6.5",
-		"@storybook/addon-svelte-csf": "5.1.5",
+		"@storybook/addon-svelte-csf": "5.1.6",
 		"@storybook/svelte": "10.6.5",
 		"@storybook/sveltekit": "10.6.5",
 		"@sveltejs/adapter-cloudflare": "8.0.1",
