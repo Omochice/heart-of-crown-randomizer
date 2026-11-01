@@ -197,14 +197,14 @@ importers:
         specifier: 2.5.15
         version: 2.5.15
       '@knip/mcp':
-        specifier: 0.0.36
-        version: 0.0.36(supports-color@10.2.2)
+        specifier: 0.0.37
+        version: 0.0.37(supports-color@10.2.2)
       '@textlint-ja/textlint-rule-preset-ai-writing':
         specifier: 1.7.0
         version: 1.7.0
       knip:
-        specifier: 6.43.0
-        version: 6.43.0
+        specifier: 6.44.0
+        version: 6.44.0
       npm-run-all2:
         specifier: 'catalog:'
         version: 9.0.4
@@ -1242,8 +1242,8 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
-  '@knip/mcp@0.0.36':
-    resolution: {integrity: sha512-buqaNx77/sibuS1VihwUuPh91MFxQHAR0co1CCqoQiUW0IvzXXmuEAhbCgxzxiuj5cYB67cluic8drC6HsfeLA==}
+  '@knip/mcp@0.0.37':
+    resolution: {integrity: sha512-JFKhIs8Nl3e6Pgtb34PdolR+Uwf6BLOJL6KDiGgt0wVxAO56Xy5ysq+wk0p++kD4UGHFcmeMwRLZhuVVQ5CDpQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -1272,8 +1272,8 @@ packages:
     resolution: {integrity: sha512-pJCEwGG7Lfr/+PQp9ZTwKXNeO5wzbfKL7H3MYpCorM4oFBoQrdjnBgEoqG+RjhsvS1FKrDbKux+M1HhlnGWqcA==}
     engines: {node: '>=20'}
 
-  '@modelcontextprotocol/sdk@1.30.0':
-    resolution: {integrity: sha512-xKd8OIzlqNzcqcNumGAa6g+PW2kjD5vrpcKOnfldAUPP3j7lnqMPwlTXQm8gF+UwH72z0lqaRbjr9hqGz0eITA==}
+  '@modelcontextprotocol/sdk@1.32.2':
+    resolution: {integrity: sha512-SWsVtH/0vULSQStoZ6xxH2K09Li8fXYTMC64ZeogCdpZ3XSi1eCPOByV1OpuJxuI3OcmHhosDWYyii07tpPsLw==}
     engines: {node: '>=18'}
     peerDependencies:
       '@cfworker/json-schema': ^4.1.1
@@ -3296,8 +3296,8 @@ packages:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
 
-  knip@6.43.0:
-    resolution: {integrity: sha512-8l3cCOg/EXoILO0qcSoMra49yQM91+lEIR4fu5Ko8rrArGX8xKdKZiGI9psPiY6rhLmfLERcMfFEByF0wli5CA==}
+  knip@6.44.0:
+    resolution: {integrity: sha512-mT0fl71Mqrko91azUO2Jw/uhYKwldORKT4liRq6yV0ZAtt6G2eYusdnvx8eBSQJDjvhRGKkpKUUx+vUG6syV4w==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
@@ -5252,11 +5252,11 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@knip/mcp@0.0.36(supports-color@10.2.2)':
+  '@knip/mcp@0.0.37(supports-color@10.2.2)':
     dependencies:
-      '@modelcontextprotocol/sdk': 1.30.0(supports-color@10.2.2)(zod@4.5.4)
-      knip: 6.43.0
-      zod: 4.5.4
+      '@modelcontextprotocol/sdk': 1.32.2(supports-color@10.2.2)(zod@4.6.5)
+      knip: 6.44.0
+      zod: 4.6.5
     transitivePeerDependencies:
       - '@cfworker/json-schema'
       - supports-color
@@ -5296,7 +5296,7 @@ snapshots:
     dependencies:
       zod: 4.5.4
 
-  '@modelcontextprotocol/sdk@1.30.0(supports-color@10.2.2)(zod@4.5.4)':
+  '@modelcontextprotocol/sdk@1.32.2(supports-color@10.2.2)(zod@4.6.5)':
     dependencies:
       '@hono/node-server': 2.1.1(hono@4.13.5)
       ajv: 8.20.0
@@ -5313,8 +5313,8 @@ snapshots:
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
-      zod: 4.5.4
-      zod-to-json-schema: 3.25.2(zod@4.5.4)
+      zod: 4.6.5
+      zod-to-json-schema: 3.25.2(zod@4.6.5)
     transitivePeerDependencies:
       - supports-color
 
@@ -7111,7 +7111,7 @@ snapshots:
 
   kleur@4.1.5: {}
 
-  knip@6.43.0:
+  knip@6.44.0:
     dependencies:
       formatly: 0.11.4
       get-tsconfig: 4.14.3
@@ -8607,9 +8607,9 @@ snapshots:
 
   zlibjs@0.3.1: {}
 
-  zod-to-json-schema@3.25.2(zod@4.5.4):
+  zod-to-json-schema@3.25.2(zod@4.6.5):
     dependencies:
-      zod: 4.5.4
+      zod: 4.6.5
 
   zod@4.5.4: {}
 
