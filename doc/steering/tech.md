@@ -11,13 +11,14 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 - **Type Checker**: `tsgo` (`@typescript/native-preview`) for library packages, `svelte-check` for site
 - **Runtime**: Node.js (version specified in engines field)
 - **Frontend**: SvelteKit + Vite + Tailwind CSS
-- **Testing**: Vitest with property-based testing via fast-check
+- **Testing**: Vitest with property-based testing via fast-check; Playwright for browser E2E in site
 
 ## Key Libraries
 
 - **seedrandom**: Deterministic PRNG for reproducible randomization
 - **Storybook**: Component development and documentation
-- **Biome**: Code formatting and linting (replaces ESLint/Prettier)
+- **Biome**: Code formatting and linting (replaces ESLint; Prettier is kept only for `*.svelte` files)
+- **Knip**: Detects unused files, exports, and dependencies (`pnpm check:knip`)
 
 ## Development Standards
 
@@ -30,13 +31,16 @@ Monorepo with multiple packages: core randomizer logic (pure functions), card de
 ### Code Quality
 
 - Biome for formatting and linting (configured via `biome.json`)
+- Prettier formats Svelte components only (Biome handles everything else)
 - Sort-package-json for consistent package.json ordering
+- Knip enforces no unused exports/dependencies; textlint checks prose
 - Test coverage via Vitest (with coverage reports available)
 
 ### Testing
 
 - Vitest for all test suites (unit, integration, property-based)
 - Property-based testing with `@fast-check/vitest` for randomizer invariants
+- E2E tests (`*.e2e.test.ts`, `test/*.spec.ts`) cover full user flows in site
 - Separate test files per concern (e.g., `page.accessibility.test.ts`, `page.reactivity.test.ts`)
 - Tests live alongside source in `src/` directories
 
@@ -57,11 +61,11 @@ packages/
 ### Common Commands
 
 ```bash
-# Dev: pnpm dev (from site package)
+# Dev: pnpm dev (root; builds library dependencies first)
 # Build: pnpm build (turbo runs all package builds)
 # Test: pnpm test (turbo runs all test suites)
-# Check: pnpm check (type-check + linting)
-# Format: pnpm fmt (biome + sort-package-json)
+# Check: pnpm check (type-check + biome + knip)
+# Format: pnpm fmt (biome + sort-package-json + prettier for svelte)
 ```
 
 ## Key Technical Decisions
