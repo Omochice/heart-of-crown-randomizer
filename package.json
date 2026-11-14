@@ -22,9 +22,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
-    "@knip/mcp": "0.0.37",
+    "@knip/mcp": "0.0.38",
     "@textlint-ja/textlint-rule-preset-ai-writing": "1.7.0",
-    "knip": "6.44.2",
+    "knip": "6.45.1",
     "npm-run-all2": "catalog:",
     "sort-package-json": "catalog:",
     "textlint": "15.8.0",
