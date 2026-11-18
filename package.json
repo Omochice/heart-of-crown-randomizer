@@ -27,7 +27,7 @@
     "knip": "6.44.2",
     "npm-run-all2": "catalog:",
     "sort-package-json": "catalog:",
-    "textlint": "15.8.0",
+    "textlint": "16.0.0",
     "turbo": "2.11.11"
   },
   "packageManager": "pnpm@12.21.0",
