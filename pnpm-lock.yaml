@@ -380,8 +380,8 @@ importers:
         specifier: 3.2.0
         version: 3.2.0(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.3)(typescript@6.0.3)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       '@sveltejs/mcp':
-        specifier: 0.1.30
-        version: 0.1.30(jiti@2.7.0)(supports-color@10.2.2)(typescript@6.0.3)
+        specifier: 0.1.31
+        version: 0.1.31(jiti@2.7.0)(supports-color@10.2.2)(typescript@6.0.3)
       '@sveltejs/vite-plugin-svelte':
         specifier: 7.3.1
         version: 7.3.1(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -2156,8 +2156,8 @@ packages:
     resolution: {integrity: sha512-VT3qmUb8pRV2QrZjd8iAmtg8lf4W0TIjZbvXtz5MKei/q96teWZgGJyyidJzOjzZzvdq616eSRVeMYIQChUTAQ==}
     engines: {node: '>= 18.0.0'}
 
-  '@sveltejs/mcp@0.1.30':
-    resolution: {integrity: sha512-0fi9syGJyrg8/WBAKOyIBxGgHIjj/j4O7CWA0huzng8F/4xIsy/8rVojxK2RkDgz8jIw4eZJCzTwIqKphhZo9Q==}
+  '@sveltejs/mcp@0.1.31':
+    resolution: {integrity: sha512-N+DSKtpecnWwbwQIYramNrksMGyoyG4mGs+75I+iJchk+ZkDTflPYtGSL1ZPDMUwCjVNC+Lt/qqpzj3/0qmVLQ==}
     hasBin: true
 
   '@sveltejs/vite-plugin-svelte@7.3.1':
@@ -5750,7 +5750,7 @@ snapshots:
 
   '@sveltejs/load-config@0.2.3': {}
 
-  '@sveltejs/mcp@0.1.30(jiti@2.7.0)(supports-color@10.2.2)(typescript@6.0.3)':
+  '@sveltejs/mcp@0.1.31(jiti@2.7.0)(supports-color@10.2.2)(typescript@6.0.3)':
     dependencies:
       eslint: 9.39.5(jiti@2.7.0)(supports-color@10.2.2)
       sade: 1.8.1
