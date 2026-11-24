@@ -183,8 +183,8 @@ catalogs:
       specifier: 5.1.1
       version: 5.1.1
     npm-run-all2:
-      specifier: 9.0.4
-      version: 9.0.4
+      specifier: 9.1.0
+      version: 9.1.0
     rimraf:
       specifier: 6.1.4
       version: 6.1.4
@@ -216,7 +216,7 @@ importers:
         version: 6.44.2
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.4
+        version: 9.1.0
       sort-package-json:
         specifier: 'catalog:'
         version: 4.1.0
@@ -237,7 +237,7 @@ importers:
         version: 7.0.0-dev.20260707.2
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.4
+        version: 9.1.0
       rimraf:
         specifier: 'catalog:'
         version: 6.1.4
@@ -265,7 +265,7 @@ importers:
         version: 5.1.1(@vitest/browser@5.1.1)(vitest@5.1.1)
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.4
+        version: 9.1.0
       sort-package-json:
         specifier: 'catalog:'
         version: 4.1.0
@@ -283,7 +283,7 @@ importers:
         version: 5.1.1(@vitest/browser@5.1.1)(vitest@5.1.1)
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.4
+        version: 9.1.0
       sort-package-json:
         specifier: 'catalog:'
         version: 4.1.0
@@ -311,7 +311,7 @@ importers:
         version: 5.1.1(@vitest/browser@5.1.1)(vitest@5.1.1)
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.4
+        version: 9.1.0
       sort-package-json:
         specifier: 'catalog:'
         version: 4.1.0
@@ -326,7 +326,7 @@ importers:
         version: 7.0.0-dev.20260707.2
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.4
+        version: 9.1.0
       rimraf:
         specifier: 'catalog:'
         version: 6.1.4
@@ -405,7 +405,7 @@ importers:
         version: 1.0.1(svelte@5.59.1)
       npm-run-all2:
         specifier: 'catalog:'
-        version: 9.0.4
+        version: 9.1.0
       playwright:
         specifier: 1.65.1
         version: 1.65.1
@@ -2547,10 +2547,6 @@ packages:
     resolution: {integrity: sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==}
     engines: {node: '>=10'}
 
-  ansi-styles@7.0.0:
-    resolution: {integrity: sha512-kKvt3m4uwzqL0wlkPd09CmljPJGOZZ4D0fP65sqFSvPkMRKhNi+74MgIJ5QxE6SxqB4t4KyUFGg8+n5zjo6hew==}
-    engines: {node: '>=22'}
-
   app-root-path@3.1.0:
     resolution: {integrity: sha512-biN3PwB2gUtjaYy/isrU3aNWI5w+fAfvHkSvCKeQGxhmYpwKFUxudR3Yya+KqVRHBmEDYh+/lTozYCFbmzX4nA==}
     engines: {node: '>= 6.0.0'}
@@ -2560,6 +2556,10 @@ packages:
 
   argparse@3.0.4:
     resolution: {integrity: sha512-fwWK3Zq22l4XJJjx5mcBHGikIk+hJqO+32dPm0Jur7+rtG5x1scOjSfdT9ZKeWHPpsya/l0HHK4tDImBkTrtvA==}
+
+  argsclopts@1.1.1:
+    resolution: {integrity: sha512-6WxZv61e68WtkWfKkZSMJ85ErP5DKMr2O8J9cJ9AF/55fAJKq4PzPyVCmP26LGqtqyYhbLcZCAwlUiACYl0sZQ==}
+    engines: {node: ^22.13.0 || >=24, npm: '>=10'}
 
   aria-query@5.3.0:
     resolution: {integrity: sha512-b0P0sZPKtyu8HkeRAfCq0IfURZK+SuwMjY1UXGBU27wpAiTwQAIlq56IbIO+ytk/JjS1fMR14ee5WBBfKi5J6A==}
@@ -3519,10 +3519,6 @@ packages:
     resolution: {integrity: sha512-yz3xRaG20c6/BOzvYoDaGtPmGscs7YivItZEEqe6GbwNfHuxu9YNmvnEkMzKldAGY4/80pRcQRZSEnhquk9XuQ==}
     engines: {node: '>= 0.8'}
 
-  memorystream@0.3.1:
-    resolution: {integrity: sha512-S3UwM3yj5mtUSEfP41UZmt/0SCoVYUcU1rkXv+BQ5Ig8ndL4sPoJNBUJERafdPb5jjHJGuMgytgKvKIf58XNBw==}
-    engines: {node: '>= 0.10.0'}
-
   merge-descriptors@2.0.0:
     resolution: {integrity: sha512-Snk314V5ayFLhp3fkUREub6WtjBfPdCPY1Ln8/8munuLuiYhsABgBVWsozAG+MWMbVEvcdcpbi9R7ww22l9Q3g==}
     engines: {node: '>=18'}
@@ -3625,8 +3621,8 @@ packages:
     resolution: {integrity: sha512-tdt4aFn9QamlhdN3HV2D2ccpBwO5/fyjjbXUxYA6uBjyekMZcZvDq0aSj9t5Jo+tih6AYFnt/cuIRn9013e0Uw==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
 
-  npm-run-all2@9.0.4:
-    resolution: {integrity: sha512-GuGRF8MddEKavyUzjy0k2z2pA76/N+eT8lHlypx0/AhShLKD2FOerQxHhpFhcqnQmAqCkunUCYlf6Z9RKh/4zg==}
+  npm-run-all2@9.1.0:
+    resolution: {integrity: sha512-zYpHPU7vMd/GeR1rRa4ZCd+Xt8/OdTSQELWeje6SE+amea/nWfyiYLj33h14G7w2odDzDH0sdXqBCrHgKSwjXA==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0, npm: '>= 10'}
     hasBin: true
 
@@ -4561,18 +4557,22 @@ packages:
   yuku-ast@0.19.0:
     resolution: {integrity: sha512-PyCsiScaelhxBGzL8dyeJkLqvRZycoh78R31Vrt/WqYrm0hMFoKwIw/X7Dx5mBKLWAMlV9I9HEyBOHnj2gZVyw==}
     engines: {node: '>=14.18.0'}
+    deprecated: 'Yuku is now one package with one core. Use "yuku" instead: https://yuku.fyi/javascript/. Existing installs keep working but get no more fixes.'
 
   yuku-codegen@0.19.0:
     resolution: {integrity: sha512-uymAKHjDuaP4BEpkXC/BSLz4DUEF5oArZ5AuD3888nb2miChjWSgpPdojEJxm3pjpXkgUaCRJQyNAbnMN33wHg==}
     engines: {node: '>=14.18.0'}
+    deprecated: 'Yuku is now one package with one core. Use "yuku" instead: https://yuku.fyi/javascript/. Existing installs keep working but get no more fixes.'
 
   yuku-core@0.19.0:
     resolution: {integrity: sha512-kYK9e1XdfirNhkipzW0wmMcSWcVF/CWnuugodfVYRCUwvoBefweL9HzB96OiKEhsx78V5WbUxbJqlizMX869Qg==}
     engines: {node: '>=14.18.0'}
+    deprecated: 'Yuku is now one package with one core. Use "yuku" instead: https://yuku.fyi/javascript/. Existing installs keep working but get no more fixes.'
 
   yuku-parser@0.19.0:
     resolution: {integrity: sha512-XrBh9ZiQK5mJVRxZBAvD6LwRyAYrK3MFtH3+onyuxFL5hFD44EC3QOmIC1FjTj6H2MMwq46/NAI+NZxLZPZgxg==}
     engines: {node: '>=14.18.0'}
+    deprecated: 'Yuku is now one package with one core. Use "yuku" instead: https://yuku.fyi/javascript/. Existing installs keep working but get no more fixes.'
 
   zimmerframe@1.1.2:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
@@ -6260,13 +6260,13 @@ snapshots:
 
   ansi-styles@5.2.0: {}
 
-  ansi-styles@7.0.0: {}
-
   app-root-path@3.1.0: {}
 
   argparse@2.0.1: {}
 
   argparse@3.0.4: {}
+
+  argsclopts@1.1.1: {}
 
   aria-query@5.3.0:
     dependencies:
@@ -7197,8 +7197,6 @@ snapshots:
 
   media-typer@1.1.1: {}
 
-  memorystream@0.3.1: {}
-
   merge-descriptors@2.0.0: {}
 
   mime-db@1.52.0: {}
@@ -7282,11 +7280,10 @@ snapshots:
 
   npm-normalize-package-bin@6.0.0: {}
 
-  npm-run-all2@9.0.4:
+  npm-run-all2@9.1.0:
     dependencies:
-      ansi-styles: 7.0.0
+      argsclopts: 1.1.1
       cross-spawn: 7.0.6
-      memorystream: 0.3.1
       picomatch: 4.0.7
       pidtree: 1.0.0
       read-package-json-fast: 6.0.0
