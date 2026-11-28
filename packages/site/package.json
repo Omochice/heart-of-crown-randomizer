@@ -39,7 +39,7 @@
 		"@sveltejs/vite-plugin-svelte": "7.3.2",
 		"@tailwindcss/vite": "4.3.5",
 		"@testing-library/svelte": "5.4.2",
-		"@types/node": "26.6.7",
+		"@types/node": "26.6.10",
 		"@vitest/browser-playwright": "5.1.1",
 		"jsdom": "31.0.1",
 		"lucide-svelte": "1.0.1",
