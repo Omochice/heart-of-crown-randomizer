@@ -33,7 +33,7 @@
 		"@storybook/addon-svelte-csf": "5.1.6",
 		"@storybook/svelte": "10.6.9",
 		"@storybook/sveltekit": "10.6.9",
-		"@sveltejs/adapter-cloudflare": "8.0.4",
+		"@sveltejs/adapter-cloudflare": "9.0.0",
 		"@sveltejs/kit": "3.4.0",
 		"@sveltejs/mcp": "0.1.31",
 		"@sveltejs/vite-plugin-svelte": "7.3.2",
